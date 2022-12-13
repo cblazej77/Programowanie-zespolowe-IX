@@ -1,0 +1,8 @@
+# TO-DO list
+
+Zadania do świąt:
+- przygotować repozytorium [OK]
+- przygotować diagram przepływu (HLD) dla aplikacji (ogólna architektura aplikacji), 
+- stworzyć opis funkcjonalnosci projektu z krótkim opisem kazdej funkcjonalnosci (2, 3 zdania),
+- wybrać serwer bazodanowy do aplikacji mobilnej,
+- wymyślić nazwę aplikacji
