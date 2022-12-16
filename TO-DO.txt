@@ -6,3 +6,5 @@ Zadania do świąt:
 - stworzyć opis funkcjonalnosci projektu z krótkim opisem kazdej funkcjonalnosci (2, 3 zdania),
 - wybrać serwer bazodanowy do aplikacji mobilnej,
 - wymyślić nazwę aplikacji
+# Przykłady:
+# artnet, artweb, artistock?
