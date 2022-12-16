@@ -1,11 +1,11 @@
 Funkcjonalności aplikacji i ich opis:
 
-1. 
+1. Rejestracja i logowanie użytkownika (rejestracja poprzez Google/Facebook, lub poprzez podanie Imienia, Nazwiska, adresu e-mail oraz hasła)
 
-2.
+2. Edycja profilu artysty (dodawanie dzieł, opis)
 
-3.
+3. Funkcja chatu zainteresowanego klienta z artystą (będzie tam imię i nazwisko odbiorcy oraz data wysłania wiadomości)
 
-.
-.
-.
+4. Sortowanie i filtrowanie wyników wyszukiwań artystów
+
+5. Lista konwersacji (dla zebrania wszystkich rozmów do jednego okna)
