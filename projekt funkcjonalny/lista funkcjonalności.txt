@@ -4,8 +4,10 @@ Funkcjonalności aplikacji i ich opis:
 
 2. Edycja profilu artysty (dodawanie dzieł, opis)
 
-3. Funkcja chatu zainteresowanego klienta z artystą (będzie tam imię i nazwisko odbiorcy oraz data wysłania wiadomości)
+3. Funkcja chatu zainteresowanego klienta z artystą (Wyświetlanie imienia i nazwiska odbiorcy oraz data wysłania wiadomości)
 
 4. Sortowanie i filtrowanie wyników wyszukiwań artystów
 
 5. Lista konwersacji (dla zebrania wszystkich rozmów do jednego okna)
+
+6. Ocenianie artystów (Przyznanawanie od 0 do 5 gwiazdek dla twórców wraz z komentarzem)
