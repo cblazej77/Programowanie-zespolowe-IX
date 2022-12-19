@@ -16,3 +16,6 @@ Funkcjonalności aplikacji i ich opis:
 
 8. System płatności za wykonane zlecenie (w zamiarze płatność NFT)
 
+9. Ranking artystów według ilości wykonanych zleceń oraz średniej oceny zleceń
+
+10. Filtrowanie ogólnych zleceń według określonych kategorii(np. potrzebowanego stylu) 
