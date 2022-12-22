@@ -10,3 +10,5 @@ Zadania do świąt:
 # Przykłady:
 # artnet, artweb, artistock?
 #FreelanceFinder
+# DesignMatch, ArtMatch, CreativeMatch
+# ArtMarket, DesignMarket
