@@ -181,4 +181,24 @@ export const TextLink = styled.TouchableOpacity`
 export const TextLinkContent = styled.Text`
     color: ${darkLight};
     font-size: 15px;
-`
+`;
+
+export const ChatLabel = styled.View`
+    background-color: ${darkLight};
+    width: 100%;
+    height: 9%;
+`;
+
+export const ChatLabelContent = styled.View`
+    width: 100%;
+    height: 9%;
+`;
+
+export const ChatImageHolder = styled.View`
+    background-color: ${secondary};
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    margin: 10px auto 0px auto;
+`;
