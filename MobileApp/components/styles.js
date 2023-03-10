@@ -6,13 +6,14 @@ import { Constants } from "expo-constants";
 
 //colors
 export const Colors = {
-    primary: "#FFFFFF",
-    secondary: "#B5B8C0",
+    primary: "#F0EDEB",
+    secondary: "#BEB5BC",
     tertiary: "#1D67BD",
-    darkLight: "#09213D",
+    darkLight: "#4A4E69",
     brand: "#000FFF",
     red: "#FF0000",
     green: "#47D531",
+    white: "#FFFFFF"
 };
 
 const {primary, secondary, tertiary, darkLight, brand, red, green} = Colors;
@@ -178,6 +179,6 @@ export const TextLink = styled.TouchableOpacity`
 `;
 
 export const TextLinkContent = styled.Text`
-    color: ${brand};
+    color: ${darkLight};
     font-size: 15px;
 `

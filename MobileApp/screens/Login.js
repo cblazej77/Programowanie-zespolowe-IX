@@ -52,7 +52,7 @@ const Login = () => {
                             label = "Adres Email"
                             icon="mail"
                             placeholder="email@example.com"
-                            placeholderTextColor={darkLight}
+                            placeholderTextColor={'#000000'}
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             value={values.email}
@@ -62,7 +62,7 @@ const Login = () => {
                             label = "Hasło"
                             icon="lock"
                             placeholder="************"
-                            placeholderTextColor={darkLight}
+                            placeholderTextColor={'#000000'}
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}

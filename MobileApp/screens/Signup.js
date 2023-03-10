@@ -27,7 +27,7 @@ import {
     TextLink,
     TextLinkContent
 } from './../components/styles';
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, processColor } from "react-native";
 
 //Colors
 const {brand, darkLight, primary} = Colors;
@@ -159,7 +159,7 @@ const MyTextInput = ({label, icon, isPassword, hidePassword, setHidePassword, is
     return (
         <View>
             <LeftIcon>
-                <Octicons name={icon} size={30} color={brand} />
+                <Octicons name={icon} size={30} color={darkLight} />
             </LeftIcon>
             <StyledInputLabel>{label}</StyledInputLabel>
             {!isDate && <StyledTextInput {...props} />}
