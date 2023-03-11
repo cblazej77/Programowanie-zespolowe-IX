@@ -1,37 +1,77 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { View } from "react-native";
+import { ScrollView, TextInput, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Text } from "react-native";
-import { Image } from "react-native";
 
 import {
     Colors,
     ChatLabel,
-    ChatImageHolder
+    ChatImage,
+    ChatText,
+    ChatIconButton,
+    ChatMessages
 } from './../../components/styles'
 
 //Colors
-const { secondary, darkLight, primary } = Colors;
+const { secondary, darkLight, primary, brand } = Colors;
 
 const Chat = () => {
     return (
-        <View style={{
-            backgroundColor: primary,
-            height: '100%'
-        }}>
+        <View style={{height: '100%'}}>
+            <ChatLabel style={{height: '4%'}}/>
             <ChatLabel>
-                <Text style={{
-                    color: secondary,
-                    
-                }}>
-                    Piotr Nowak
-                </Text>
-                <ChatImageHolder></ChatImageHolder>
-                <ChatImageHolder></ChatImageHolder>
+                <ChatIconButton style={{
+                   marginLeft: -20,
+                   marginRight: 10
+                }} onPress={() => alert('Powrót do wiadomości')} activeOpacity={0.5}>
+                    <ChatImage resizeMode="contain" source={require('./../../assets/img/arrow-left.png')} />
+                </ChatIconButton>
+                
+                <View style={{flex: 3}}>
+                <ChatText numberOfLines={1}>
+                    Piotr Nowacki
+                </ChatText>
+                <ChatText style={{fontSize: 16}}>
+                    605 263 113
+                </ChatText>
+                </View>
+
+                <ChatIconButton onPress={() => alert('Profil uzytkownika')} activeOpacity={0.5}>
+                    <ChatImage resizeMode="contain" source={require('./../../assets/img/user.png')} />
+                </ChatIconButton>
+
+                <ChatIconButton onPress={() => alert('Opcje')} activeOpacity={0.5}>
+                    <ChatImage resizeMode="contain" source={require('./../../assets/img/3-dots.png')} />
+                </ChatIconButton>
             </ChatLabel>
+
+            <ScrollView style={{backgroundColor: primary}}>
+            <Text style={{fontSize: 100}}>
+                test test test test test test test 
+            </Text>
+            </ScrollView>
+
             <ChatLabel style={{
-                marginTop: "auto"
+                marginTop: "auto",
+                height: '7%'
             }}>
+                <ChatIconButton style={{
+                    height: '95%', 
+                    marginLeft: -20
+                    }} onPress={() => alert('Galeria')} activeOpacity={0.5}>
+                    <ChatImage resizeMode="contain" source={require('./../../assets/img/gallery.png')} />
+                </ChatIconButton>
+
+                <TextInput style={{
+                    flex: 4, 
+                    borderRadius: 30,  
+                    height: '75%',
+                    paddingLeft: 15,
+                    marginRight: 10}}
+                            backgroundColor={primary}
+                            placeholderTextColor={secondary}
+                            placeholder="napisz wiadomość..."
+                        />
 
             </ChatLabel>
         </View>

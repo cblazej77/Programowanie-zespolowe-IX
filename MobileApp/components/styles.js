@@ -187,18 +187,33 @@ export const ChatLabel = styled.View`
     background-color: ${darkLight};
     width: 100%;
     height: 9%;
+    flexDirection: row;
+    alignItems: center;
 `;
 
-export const ChatLabelContent = styled.View`
-    width: 100%;
-    height: 9%;
+export const ChatImage = styled.Image`
+    flex: 1;
+    resizeMode: contain;
 `;
 
-export const ChatImageHolder = styled.View`
+/*
+aspectRatio: 1.5;
+    marginTop: 20px;
+    marginBottom: 20px;
+*/
+
+export const ChatText = styled.Text`
+    color: ${primary};
+    fontSize: 25px;
+    flex: 1;
+`;
+
+export const ChatIconButton = styled.TouchableOpacity`
+    height: 50%;
+    flex: 1;
+    margin: auto;
+`;
+
+export const ChatMessages = styled.FlatList`
     background-color: ${secondary};
-    padding: 10px 20px;
-    border-radius: 5px;
-    width: 40px;
-    height: 40px;
-    margin: 10px auto 0px auto;
 `;
