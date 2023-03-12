@@ -25,6 +25,7 @@ export default function HomePage({ navigation }) {
     ]
 
     return (
+<<<<<<< Updated upstream
         <View style={{ flex: 1 }}>
             <ChatLabel style={{height: '4%'}}/>
             <ChatLabel style={{paddingLeft: 15}}>
@@ -66,6 +67,13 @@ export default function HomePage({ navigation }) {
             </ScrollView>
         </View>
 
+=======
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text
+                onPress={() => alert('This is the HomePage')}
+                style={{ fontSize: 26, fontWeight: 'bold'}}>Home Page</Text>
+        </View>    
+>>>>>>> Stashed changes
     );
 };
 
