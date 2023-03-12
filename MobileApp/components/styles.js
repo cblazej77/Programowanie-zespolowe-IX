@@ -227,3 +227,11 @@ export const HomeIconButton = styled.TouchableOpacity`
     flex: 1;
     margin: auto;
 `;
+
+export const HomeTextInput = styled.TextInput`
+    flex: 1;
+    height: 50%;
+    borderRadius: 30px;
+    paddingLeft: 10px;
+    fontSize: 14px;
+`;

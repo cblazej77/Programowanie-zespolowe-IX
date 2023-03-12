@@ -7,7 +7,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomePage from './navigation_screens/HomePage';
 import MessagesScreen from './navigation_screens/MessagesScreen';
 import ProfileScreen from './navigation_screens/ProfileScreen';
-import Chat from './Chat';
 
 //Screen names
 const homeName = 'Home';

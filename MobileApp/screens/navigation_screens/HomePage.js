@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, SafeAreaView, StatusBar, Dimensions, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, StatusBar, Dimensions, StyleSheet, ScrollView, Image } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 const { width } = Dimensions.get('window');
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,8 +8,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
     HomeLabel,
     HomeIconButton,
-    ChatImage
+    ChatImage,
+    Colors,
+    HomeTextInput,
 } from './../../components/styles'
+
+const { primary, secondary, darkLight } = Colors;
 
 export default function HomePage({ navigation }) {
     const sort = [
@@ -26,7 +30,7 @@ export default function HomePage({ navigation }) {
                 </HomeIconButton>
                 <SelectDropdown
                     data={sort}
-                    defaultValueByIndex={1}
+                    defaultValueByIndex={0}
                     onSelect={(selectedItem, index) => {
                         console.log(selectedItem, index);
                     }}
@@ -36,20 +40,48 @@ export default function HomePage({ navigation }) {
                     rowTextForSelection={(item, index) => {
                         return item;
                     }}
-                    //buttonStyle={styles.dropdown1BtnStyle}
-                    //buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                    buttonStyle={styles.DropdownButtonStyle}
+                    buttonTextStyle={styles.DropdownButtonTextStyle}
                     renderDropdownIcon={isOpened => {
                         return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
                     }}
                     dropdownIconPosition={'right'}
-                //dropdownStyle={styles.dropdown1DropdownStyle}
-                //rowStyle={styles.dropdown1RowStyle}
-                //rowTextStyle={styles.dropdown1RowTxtStyle}
+                    dropdownStyle={{ backgroundColor: primary }}
+                rowStyle={styles.DropdownRowStyle}
+                rowTextStyle={styles.DropdownRowTextStyle}
+                />
+                <HomeTextInput
+                    backgroundColor={'#FFFFFF'}
+                    placeholderTextColor={'#D6D6D6'}
+                    placeholder="szukaj"
                 />
             </HomeLabel>
-            <Text
-                onPress={() => alert('This is the HomePage')}
-                style={{ fontSize: 26, fontWeight: 'bold' }}>Home Page</Text>
+            <ScrollView style={{backgroundColor: primary}}>
+                <Text
+                    onPress={() => alert('This is the HomePage')}
+                    style={{ fontSize: 26, fontWeight: 'bold' }}>Home Page</Text>
+            </ScrollView>
         </View>
+
     );
-}
+};
+
+const styles = StyleSheet.create({
+    DropdownButtonStyle: {
+        height: '50%',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 30,
+    },
+    DropdownButtonTextStyle: {
+        fontSize: 14,
+        color: '#D6D6D6',
+    },
+    DropdownRowStyle: {
+        backfroundColor: '#D6D6D6',
+    },
+    DropdownRowTextStyle: {
+        fontSize: 14,
+        color: darkLight,
+        textAlign: 'left'
+    },
+});
