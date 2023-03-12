@@ -23,6 +23,7 @@ export default function HomePage({ navigation }) {
     ]
 
     return (
+<<<<<<< Updated upstream
         <View style={{ flex: 1 }}>
             <HomeLabel>
                 <HomeIconButton onPress={() => alert('Filtrowanie')} activeOpacity={0.5}>
@@ -63,6 +64,13 @@ export default function HomePage({ navigation }) {
             </ScrollView>
         </View>
 
+=======
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text
+                onPress={() => alert('This is the HomePage')}
+                style={{ fontSize: 26, fontWeight: 'bold'}}>Home Page</Text>
+        </View>    
+>>>>>>> Stashed changes
     );
 };
 

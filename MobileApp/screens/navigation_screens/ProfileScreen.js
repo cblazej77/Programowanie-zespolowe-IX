@@ -6,7 +6,7 @@ export default function ProfileScreen({navigation}) {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Text
                 onPress={() => navigation.navigate('Home')}
-                style={{ fontsize: 26, fontWeight: 'bold'}}>Profile Page</Text>
+                style={{ fontSize: 26, fontWeight: 'bold'}}>Profile Page</Text>
         </View>    
     );
 }

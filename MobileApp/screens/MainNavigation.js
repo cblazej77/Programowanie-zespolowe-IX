@@ -35,22 +35,28 @@ export default function MainNavigation() {
                         }
 
                         return <Ionicons name={iconName} size={size} color={color} />;
-
                     },
                     headerShown: false,
+<<<<<<< Updated upstream
                     "tabBarActiveTintColor": "#4A4E69",
                     "tabBarInactiveTintColor": "grey",
                     "tabBarLabelStyle": {
+=======
+                    tabBarActiveTintColor: "#4A4E69",
+                    tabBarInactiveTintColor: "grey",
+                    tabBarLabelStyle: {
+>>>>>>> Stashed changes
                         "paddingBottom": 10,
                         "fontSize": 10
                     },
-                    "tabBarStyle": [
+                    tabBarStyle: [
                         {
                         "display": "flex"
                         },
                         null
                     ]
-                })}
+                })
+            }
 
                 /*tabBarOptions={{
                      activeTintColor: '#4A4E69',
