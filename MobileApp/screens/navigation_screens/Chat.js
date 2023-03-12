@@ -29,7 +29,7 @@ const Chat = () => {
                 
                 <View style={{flex: 3}}>
                 <ChatText numberOfLines={1}>
-                    Piotr Nowacki
+                    Piotr Nowak
                 </ChatText>
                 <ChatText style={{fontSize: 16}}>
                     605 263 113
@@ -47,7 +47,12 @@ const Chat = () => {
 
             <ScrollView style={{backgroundColor: primary}}>
             <Text style={{fontSize: 100}}>
-                test test test test test test test 
+                - - test - - 
+                - - test - -
+                - - test - -
+                - - test - -
+                - - test - -
+                - - test - -
             </Text>
             </ScrollView>
 
