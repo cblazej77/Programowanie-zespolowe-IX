@@ -10,7 +10,7 @@ import {
     ChatText,
     ChatIconButton,
     ChatMessages
-} from './../../components/styles'
+} from './../components/styles'
 
 //Colors
 const { secondary, darkLight, primary, brand } = Colors;
@@ -24,7 +24,7 @@ const Chat = () => {
                    marginLeft: -20,
                    marginRight: 10
                 }} onPress={() => alert('Powrót do wiadomości')} activeOpacity={0.5}>
-                    <ChatImage resizeMode="contain" source={require('./../../assets/img/arrow-left.png')} />
+                    <ChatImage resizeMode="contain" source={require('./../assets/img/arrow-left.png')} />
                 </ChatIconButton>
                 
                 <View style={{flex: 3}}>
@@ -37,11 +37,11 @@ const Chat = () => {
                 </View>
 
                 <ChatIconButton onPress={() => alert('Profil uzytkownika')} activeOpacity={0.5}>
-                    <ChatImage resizeMode="contain" source={require('./../../assets/img/user.png')} />
+                    <ChatImage resizeMode="contain" source={require('./../assets/img/user.png')} />
                 </ChatIconButton>
 
                 <ChatIconButton onPress={() => alert('Opcje')} activeOpacity={0.5}>
-                    <ChatImage resizeMode="contain" source={require('./../../assets/img/3-dots.png')} />
+                    <ChatImage resizeMode="contain" source={require('./../assets/img/3-dots.png')} />
                 </ChatIconButton>
             </ChatLabel>
 
@@ -64,7 +64,7 @@ const Chat = () => {
                     height: '95%', 
                     marginLeft: -20
                     }} onPress={() => alert('Galeria')} activeOpacity={0.5}>
-                    <ChatImage resizeMode="contain" source={require('./../../assets/img/gallery.png')} />
+                    <ChatImage resizeMode="contain" source={require('./../assets/img/gallery.png')} />
                 </ChatIconButton>
 
                 <TextInput style={{

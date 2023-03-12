@@ -198,12 +198,6 @@ export const ChatImage = styled.Image`
     resizeMode: contain;
 `;
 
-/*
-aspectRatio: 1.5;
-    marginTop: 20px;
-    marginBottom: 20px;
-*/
-
 export const ChatText = styled.Text`
     color: ${primary};
     fontSize: 25px;
@@ -218,4 +212,18 @@ export const ChatIconButton = styled.TouchableOpacity`
 
 export const ChatMessages = styled.FlatList`
     background-color: ${secondary};
+`;
+
+export const HomeLabel = styled.View`
+    background-color: ${primary};
+    width: 100%;
+    height: 9%;
+    flexDirection: row;
+    alignItems: center
+`;
+
+export const HomeIconButton = styled.TouchableOpacity`
+    height: 50%;
+    flex: 1;
+    margin: auto;
 `;

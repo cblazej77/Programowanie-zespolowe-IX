@@ -4,7 +4,7 @@ import * as React from 'react';
 import Login from './screens/Login';
 import Signup from './screens/Signup';
 import Welcome from './screens/Welcome';
-import Chat from './screens/navigation_screens/Chat';
+import Chat from './screens/Chat';
 import MainNavigation from './screens/MainNavigation';
 
 
