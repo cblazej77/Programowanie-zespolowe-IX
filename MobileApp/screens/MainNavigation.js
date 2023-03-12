@@ -37,6 +37,7 @@ export default function MainNavigation() {
                         return <Ionicons name={iconName} size={size} color={color} />;
 
                     },
+                    headerShown: false,
                     "tabBarActiveTintColor": "#4A4E69",
                     "tabBarInactiveTintColor": "grey",
                     "tabBarLabelStyle": {
