@@ -37,14 +37,26 @@ export default function MainNavigation() {
                         return <Ionicons name={iconName} size={size} color={color} />;
 
                     },
+                    "tabBarActiveTintColor": "#4A4E69",
+                    "tabBarInactiveTintColor": "grey",
+                    "tabBarLabelStyle": {
+                        "paddingBottom": 10,
+                        "fontSize": 10
+                    },
+                    "tabBarStyle": [
+                        {
+                        "display": "flex"
+                        },
+                        null
+                    ]
                 })}
 
-                tabBarOptions={{
-                    activeTintColor: 'tomato',
-                    inactiveTintColor: 'grey',
-                    labelStyle: { paddingBottom: 10, fontSize: 10},
-                    style: {padding: 10, height: 70}
-                }}
+                // tabBarOptions={{
+                //     activeTintColor: '#4A4E69',
+                //     inactiveTintColor: 'grey',
+                //     labelStyle: { paddingBottom: 10, fontSize: 10},
+                //     style: {padding: 10, height: 70}
+                // }}
 
                 >
 
