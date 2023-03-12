@@ -13,7 +13,8 @@ export const Colors = {
     brand: "#000FFF",
     red: "#FF0000",
     green: "#47D531",
-    white: "#FFFFFF"
+    white: "#FFFFFF",
+
 };
 
 const {primary, secondary, tertiary, darkLight, brand, red, green} = Colors;
@@ -29,6 +30,7 @@ export const InnerContainer = styled.View`
     flex: 1;
     width: 100%;
     align-items: center;
+    background-color: ${primary};
 `;
 
 export const WelcomeConteiner = styled(InnerContainer)`
