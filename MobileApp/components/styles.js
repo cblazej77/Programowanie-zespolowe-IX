@@ -196,6 +196,7 @@ export const ChatLabel = styled.View`
 export const ChatImage = styled.Image`
     flex: 1;
     resizeMode: contain;
+    tintColor: ${primary};
 `;
 
 export const ChatText = styled.Text`
@@ -207,7 +208,6 @@ export const ChatText = styled.Text`
 export const ChatIconButton = styled.TouchableOpacity`
     height: 50%;
     flex: 1;
-    margin: auto;
 `;
 
 export const ChatMessages = styled.FlatList`
@@ -217,15 +217,15 @@ export const ChatMessages = styled.FlatList`
 export const HomeLabel = styled.View`
     background-color: ${primary};
     width: 100%;
-    height: 9%;
+    height: 8%;
     flexDirection: row;
-    alignItems: center
+    alignItems: center;
+    padding: 1px;
 `;
 
 export const HomeIconButton = styled.TouchableOpacity`
-    height: 50%;
-    flex: 1;
-    margin: auto;
+    flex: 0.3;
+    width: 40%;
 `;
 
 export const HomeTextInput = styled.TextInput`
@@ -234,4 +234,11 @@ export const HomeTextInput = styled.TextInput`
     borderRadius: 30px;
     paddingLeft: 10px;
     fontSize: 14px;
+    marginRight: 10px;
+    marginLeft: 5px;
+`;
+
+export const AppText = styled.Text`
+    color: ${primary};
+    fontSize: 30px;
 `;

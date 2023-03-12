@@ -11,6 +11,8 @@ import {
     ChatImage,
     Colors,
     HomeTextInput,
+    ChatLabel,
+    AppText
 } from './../../components/styles'
 
 const { primary, secondary, darkLight } = Colors;
@@ -24,9 +26,13 @@ export default function HomePage({ navigation }) {
 
     return (
         <View style={{ flex: 1 }}>
+            <ChatLabel style={{height: '4%'}}/>
+            <ChatLabel style={{paddingLeft: 15}}>
+                <AppText>Znajdź artystów</AppText>
+            </ChatLabel>
             <HomeLabel>
                 <HomeIconButton onPress={() => alert('Filtrowanie')} activeOpacity={0.5}>
-                    <ChatImage resizeMode="contain" source={require('./../../assets/img/filter.png')} />
+                    <ChatImage style={{tintColor: '#A9A9A9', width: '50%', marginLeft: 10}} resizeMode="contain" source={require('./../../assets/img/filter.png')} />
                 </HomeIconButton>
                 <SelectDropdown
                     data={sort}
@@ -43,7 +49,7 @@ export default function HomePage({ navigation }) {
                     buttonStyle={styles.DropdownButtonStyle}
                     buttonTextStyle={styles.DropdownButtonTextStyle}
                     renderDropdownIcon={isOpened => {
-                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
                     }}
                     dropdownIconPosition={'right'}
                     dropdownStyle={{ backgroundColor: primary }}
@@ -57,9 +63,6 @@ export default function HomePage({ navigation }) {
                 />
             </HomeLabel>
             <ScrollView style={{backgroundColor: primary}}>
-                <Text
-                    onPress={() => alert('This is the HomePage')}
-                    style={{ fontSize: 26, fontWeight: 'bold' }}>Home Page</Text>
             </ScrollView>
         </View>
 
@@ -68,13 +71,16 @@ export default function HomePage({ navigation }) {
 
 const styles = StyleSheet.create({
     DropdownButtonStyle: {
+        flex: 1,
         height: '50%',
+        
         backgroundColor: '#FFFFFF',
         borderRadius: 30,
     },
     DropdownButtonTextStyle: {
         fontSize: 14,
         color: '#D6D6D6',
+        textAlign: 'left'
     },
     DropdownRowStyle: {
         backfroundColor: '#D6D6D6',

@@ -51,8 +51,11 @@ export default function MainNavigation() {
                         null
                     ]
                 })}
-
                 /*tabBarOptions={{
+                    showLabel: false,
+                    keyboardHidesTabBar: true
+                }}
+                tabBarOptions={{
                      activeTintColor: '#4A4E69',
                      inactiveTintColor: 'grey',
                      labelStyle: { paddingBottom: 10, fontSize: 10},
