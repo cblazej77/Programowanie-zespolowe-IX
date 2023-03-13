@@ -15,6 +15,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorObject> handleUsernameNotFoundException(UsernameNotFoundException ex, WebRequest request) {
         ErrorObject errorObject = new ErrorObject(HttpStatus.UNAUTHORIZED.value(), "Invalid email or password", new Date());
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(errorObject, HttpStatus.UNAUTHORIZED);
     }
 }
