@@ -1,15 +1,16 @@
 package com.pz.login.repository;
 
-import com.pz.login.model.ConfirmationToken;
+import com.pz.login.model.user.ConfirmationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, String> {
-    ConfirmationToken findByToken(String confirmationToken);
+    Optional<ConfirmationToken> findByToken(String confirmationToken);
 
     @Transactional
     @Modifying

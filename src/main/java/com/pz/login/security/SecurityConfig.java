@@ -18,11 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JWTAuthEntryPoint authEntryPoint;
-    private final CustomUserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService, JWTAuthEntryPoint authEntryPoint) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(JWTAuthEntryPoint authEntryPoint) {
         this.authEntryPoint = authEntryPoint;
     }
 
@@ -40,8 +38,13 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .formLogin()
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic();
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
