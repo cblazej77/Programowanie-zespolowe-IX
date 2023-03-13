@@ -1,0 +1,45 @@
+@import "header.css";
+
+/*(
+.searchBar[type=text]{
+    padding: 0 20px;
+    margin-left: 30px;
+    font-size: 17px;
+    border: none;
+}
+*/
+.searchBar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.searchBar input[type="text"]{
+    width: 400px;
+    padding: 6px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+}
+
+.searchBar button[type="submit"]{
+    background-color: #ccc;
+    border: solid;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3 ease;
+}
+
+.searchBar button[type="submit"]:hover{
+    background-color: #aaa;
+}
+
+.searchBarButton{
+    color: #fff;
+}
