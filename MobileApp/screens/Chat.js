@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ScrollView, TextInput, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import {
     Colors,
@@ -11,9 +12,13 @@ import {
     ChatIconButton,
     ChatMessages
 } from './../components/styles'
+import MainNavigation from "./MainNavigation";
+import HomePage from "./navigation_screens/HomePage";
 
 //Colors
 const { secondary, darkLight, primary, brand } = Colors;
+
+//const navigation = useNavigation();
 
 const Chat = () => {
     return (
@@ -23,7 +28,7 @@ const Chat = () => {
                 <ChatIconButton style={{
                    marginLeft: -20,
                    marginRight: 10
-                }} onPress={() => alert('Powrót do wiadomości')} activeOpacity={0.5}>
+                }} onPress={() => alert("Powrót do wiadomości")} activeOpacity={0.5}>
                     <ChatImage resizeMode="contain" source={require('./../assets/img/arrow-left.png')} />
                 </ChatIconButton>
                 
@@ -46,7 +51,7 @@ const Chat = () => {
             </ChatLabel>
 
             <ScrollView style={{backgroundColor: primary}}>
-            <Text style={{fontSize: 100}}>
+            <Text style={{fontSize: 100, color: secondary}}>
                 - - test - - 
                 - - test - -
                 - - test - -

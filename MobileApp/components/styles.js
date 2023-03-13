@@ -241,4 +241,5 @@ export const HomeTextInput = styled.TextInput`
 export const AppText = styled.Text`
     color: ${primary};
     fontSize: 30px;
+    fontWeight: bold;
 `;

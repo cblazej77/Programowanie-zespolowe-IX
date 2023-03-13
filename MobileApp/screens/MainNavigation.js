@@ -9,9 +9,9 @@ import MessagesScreen from './navigation_screens/MessagesScreen';
 import ProfileScreen from './navigation_screens/ProfileScreen';
 
 //Screen names
-const homeName = 'Home';
-const profileName = 'Profile';
-const messagesName = 'Messages';
+const homeName = 'Strona główna';
+const profileName = 'Profil';
+const messagesName = 'Wiadomości';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,8 +20,8 @@ export default function MainNavigation() {
         <NavigationContainer>
             <Tab.Navigator
                 initialRouteName={homeName}
-                screenOptions={({route}) => ({
-                    tabBarIcon: ({focused, color, size}) => {
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
                         let iconName;
                         let rn = route.name;
 
@@ -46,27 +46,28 @@ export default function MainNavigation() {
                     },
                     "tabBarStyle": [
                         {
-                        "display": "flex"
+                            "display": "flex"
                         },
                         null
                     ]
                 })}
-                /*tabBarOptions={{
-                    showLabel: false,
-                    keyboardHidesTabBar: true
-                }}
-                tabBarOptions={{
-                     activeTintColor: '#4A4E69',
-                     inactiveTintColor: 'grey',
-                     labelStyle: { paddingBottom: 10, fontSize: 10},
-                     style: {padding: 10, height: 70}
-                }}*/
+            //Chowanie paska nawigacji po wysunięciu klawiatury
+            /*tabBarOptions={{
+                showLabel: false,
+                keyboardHidesTabBar: true
+            }}
+            tabBarOptions={{
+                 activeTintColor: '#4A4E69',
+                 inactiveTintColor: 'grey',
+                 labelStyle: { paddingBottom: 10, fontSize: 10},
+                 style: {padding: 10, height: 70}
+            }}*/
 
-                >
+            >
 
-                <Tab.Screen name={profileName} component={ProfileScreen}/>
-                <Tab.Screen name={homeName} component={HomePage}/>
-                <Tab.Screen name={messagesName} component={MessagesScreen}/>
+                <Tab.Screen name={profileName} component={ProfileScreen} />
+                <Tab.Screen name={homeName} component={HomePage} />
+                <Tab.Screen name={messagesName} component={MessagesScreen} />
 
             </Tab.Navigator>
         </NavigationContainer>

@@ -25,7 +25,6 @@ export default function HomePage({ navigation }) {
     ]
 
     return (
-<<<<<<< Updated upstream
         <View style={{ flex: 1 }}>
             <ChatLabel style={{height: '4%'}}/>
             <ChatLabel style={{paddingLeft: 15}}>
@@ -53,7 +52,7 @@ export default function HomePage({ navigation }) {
                         return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
                     }}
                     dropdownIconPosition={'right'}
-                    dropdownStyle={{ backgroundColor: primary }}
+                    dropdownStyle={styles.DropDownStyle1}
                 rowStyle={styles.DropdownRowStyle}
                 rowTextStyle={styles.DropdownRowTextStyle}
                 />
@@ -67,13 +66,6 @@ export default function HomePage({ navigation }) {
             </ScrollView>
         </View>
 
-=======
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text
-                onPress={() => alert('This is the HomePage')}
-                style={{ fontSize: 26, fontWeight: 'bold'}}>Home Page</Text>
-        </View>    
->>>>>>> Stashed changes
     );
 };
 
@@ -81,7 +73,6 @@ const styles = StyleSheet.create({
     DropdownButtonStyle: {
         flex: 1,
         height: '50%',
-        
         backgroundColor: '#FFFFFF',
         borderRadius: 30,
     },
@@ -96,6 +87,11 @@ const styles = StyleSheet.create({
     DropdownRowTextStyle: {
         fontSize: 14,
         color: darkLight,
-        textAlign: 'left'
+        textAlign: 'left',
+    },
+    DropDownStyle1: {
+        backgroundColor: primary, 
+        borderBottomLeftRadius: 20, 
+        borderBottomRightRadius: 20
     },
 });
