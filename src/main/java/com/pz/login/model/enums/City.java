@@ -1,16 +1,16 @@
 package com.pz.login.model.enums;
 
 public enum City {
-    REMOTE ("Zdalnie"),
-    WARSZAWA ("Warszawa"),
-    KRAKOW ("Kraków"),
-    WROCLAW ("Wrocław"),
-    LODZ ("Łódź"),
-    POZNAN ("Poznań"),
-    GDANSK ("Gdańsk"),
-    SZCZECIN ("Szczecin"),
-    BYDGOSZCZ ("Bydgoszcz"),
-    LUBLIN ("Lublin");
+    REMOTE("Zdalnie"),
+    WARSZAWA("Warszawa"),
+    KRAKOW("Kraków"),
+    WROCLAW("Wrocław"),
+    LODZ("Łódź"),
+    POZNAN("Poznań"),
+    GDANSK("Gdańsk"),
+    SZCZECIN("Szczecin"),
+    BYDGOSZCZ("Bydgoszcz"),
+    LUBLIN("Lublin");
 
     private final String displayName;
 

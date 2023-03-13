@@ -15,13 +15,20 @@ public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_profile_id")
     private ArtistProfile artistProfile;
+
     private String company;
+
     private String city;
+
     private String position;
+
     private YearMonth startDate;
+
     private YearMonth endDate;
+
     private String description;
 }

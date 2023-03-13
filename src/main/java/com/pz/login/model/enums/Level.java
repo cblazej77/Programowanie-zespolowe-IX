@@ -1,9 +1,9 @@
 package com.pz.login.model.enums;
 
 public enum Level {
-    JUNIOR ("Junior"),
-    MID ("Mid"),
-    SENIOR ("Senior");
+    JUNIOR("Junior"),
+    MID("Mid"),
+    SENIOR("Senior");
 
     private final String displayName;
 

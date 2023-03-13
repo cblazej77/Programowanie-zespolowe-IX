@@ -1,14 +1,14 @@
 package com.pz.login.model.enums;
 
 public enum Language {
-    POLISH ("Polski"),
-    ENGLISH ("Angielski"),
-    GERMAN ("Niemiecki"),
-    FRENCH ("Francuski"),
-    SPANISH ("Hiszpański"),
-    ITALIAN ("Włoski"),
-    RUSSIAN ("Rosyjski"),
-    CHINESE ("Chiński");
+    POLISH("Polski"),
+    ENGLISH("Angielski"),
+    GERMAN("Niemiecki"),
+    FRENCH("Francuski"),
+    SPANISH("Hiszpański"),
+    ITALIAN("Włoski"),
+    RUSSIAN("Rosyjski"),
+    CHINESE("Chiński");
 
     private final String displayName;
 
@@ -25,8 +25,8 @@ public enum Language {
         return displayName;
     }
 
-    public String [] getLanguages() {
-        String [] languages = new String[Language.values().length];
+    public String[] getLanguages() {
+        String[] languages = new String[Language.values().length];
         for (int i = 0; i < Language.values().length; i++) {
             languages[i] = Language.values()[i].getDisplayName();
         }
