@@ -14,10 +14,11 @@
     justify-content: center;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     border: 1px solid #ccc;
     border-radius: 20px;
     overflow: hidden;
+    position: absolute;
 }
 
 .searchBar input[type="text"]{
