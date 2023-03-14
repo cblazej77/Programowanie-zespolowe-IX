@@ -36,7 +36,6 @@ blockquote, q {
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
-	content: none;
 }
 
 :focus {
@@ -80,7 +79,7 @@ h2 {
 
 #container {
 	width:  865px;
-	margin: 0px auto;
+	margin: 0 auto;
 }
 
 

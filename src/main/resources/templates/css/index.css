@@ -34,7 +34,7 @@
     border: solid;
     padding: 10px 15px;
     cursor: pointer;
-    transition: background-color 0.3 ease;
+    transition: background-color 0.5s ease-in-out;
 }
 
 .searchBar button[type="submit"]:hover{

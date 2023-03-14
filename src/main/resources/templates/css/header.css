@@ -31,13 +31,12 @@ body{
         );
     font-size: 24px;
     min-width: 100%;
-    min-width: 100%;
     color: white;
     font-family: "Poppins", sans-serif;
 }
 .companyName{
   color: rgba(255,255,255, 0.75);
-  font-family: "Norwesterregular";
+    font-family: "Norwesterregular", serif ;
 }
 
 .text{
@@ -63,7 +62,8 @@ header a {
 
 header {
   padding: 0 20px;
-  background-color: --color-3;
+  background-color: color(var(--color-3));
+  /*background-color: --color-3;*/
   height: 50px;
   min-width: 565px;
   display: flex;
