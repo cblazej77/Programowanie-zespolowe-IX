@@ -7,11 +7,6 @@ import com.pz.login.model.user.UserEntity;
 import com.pz.login.repository.UserRepository;
 import com.pz.login.service.ConfirmationTokenService;
 import com.pz.login.service.EmailService;
-
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +17,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
