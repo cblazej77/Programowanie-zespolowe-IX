@@ -11,7 +11,6 @@ public enum City {
     SZCZECIN("Szczecin"),
     BYDGOSZCZ("Bydgoszcz"),
     LUBLIN("Lublin");
-
     private final String displayName;
 
     City(String displayName) {

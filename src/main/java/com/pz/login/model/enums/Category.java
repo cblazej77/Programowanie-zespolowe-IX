@@ -7,7 +7,6 @@ public enum Category {
     CLOTHING_AND_MERCHANDISE("Odzież i merchandising"),
     ART_AND_ILLUSTRATION("Sztuka i ilustracje"),
     PACKAGING_AND_LABELS("Opakowania i etykiety");
-
     private final String displayName;
 
     Category(String displayName) {

@@ -39,7 +39,6 @@ public enum Tag {
     ART_AND_DESIGN("Sztuka i design"),
     TECHNOLOGY("Technologia"),
     ANIMALS("Zwierzęta");
-
     private final String displayName;
 
     Tag(String displayName) {

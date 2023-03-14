@@ -4,7 +4,6 @@ public enum Level {
     JUNIOR("Junior"),
     MID("Mid"),
     SENIOR("Senior");
-
     private final String displayName;
 
     Level(String displayName) {

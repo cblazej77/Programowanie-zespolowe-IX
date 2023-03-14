@@ -26,9 +26,7 @@ public enum Subcategory {
     MODEL_3D(Category.ART_AND_ILLUSTRATION, "Model 3D"),
     PACKAGING(Category.PACKAGING_AND_LABELS, "Opakowanie"),
     LABEL(Category.PACKAGING_AND_LABELS, "Etykieta");
-
     private final Category category;
-
     private final String displayName;
 
     Subcategory(Category category, String displayName) {

@@ -9,7 +9,6 @@ public enum Language {
     ITALIAN("Włoski"),
     RUSSIAN("Rosyjski"),
     CHINESE("Chiński");
-
     private final String displayName;
 
     Language(String displayName) {
