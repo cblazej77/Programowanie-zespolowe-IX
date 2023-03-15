@@ -44,6 +44,7 @@ export default function MainNavigation() {
                         "paddingBottom": 10,
                         "fontSize": 10
                     },
+                    
                     "tabBarStyle": [
                         {
                             "display": "flex"
@@ -53,10 +54,9 @@ export default function MainNavigation() {
                 })}
             //Chowanie paska nawigacji po wysunięciu klawiatury
             /*tabBarOptions={{
-                showLabel: false,
                 keyboardHidesTabBar: true
             }}
-            tabBarOptions={{
+            /*tabBarOptions={{
                  activeTintColor: '#4A4E69',
                  inactiveTintColor: 'grey',
                  labelStyle: { paddingBottom: 10, fontSize: 10},
