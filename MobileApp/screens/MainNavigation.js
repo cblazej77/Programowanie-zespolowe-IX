@@ -38,6 +38,7 @@ export default function MainNavigation() {
 
                     },
                     headerShown: false,
+                    tabBarShowLabel: false,
                     "tabBarActiveTintColor": "#4A4E69",
                     "tabBarInactiveTintColor": "grey",
                     "tabBarLabelStyle": {
