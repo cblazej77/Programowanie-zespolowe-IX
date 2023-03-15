@@ -1,7 +1,10 @@
+import { Header } from '@react-navigation/stack';
 import * as React from 'react';
-import { Component } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { ListItem, SearchBar } from 'react-native-screens';
+import { useState } from 'react';
+import { View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+import SearchFilter from '../../components/SearchFilter';
+
 
 const DATA = [
     {
@@ -54,85 +57,99 @@ const DATA = [
     },
   ];
   
-  const Item = ({ title }) => {
-    return (
-      <View style={styles.item}>
-        <Text>{title}</Text>
-      </View>
-    );
-  };
   
-  const renderItem = ({ item }) => <Item title={item.title} />;
-  class Search extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        loading: false,
-        data: DATA,
-        error: null,
-        searchValue: '',
-      };
-      this.arrayholder = DATA;
-    }
+  // const Item = ({ title }) => {
+  //   return (
+  //     <View style={styles.item}>
+  //       <Text>{title}</Text>
+  //     </View>
+  //   );
+  // };
   
-    searchFunction = (text) => {
-      const updatedData = this.arrayholder.filter((item) => {
-        const item_data = `${item.title.toUpperCase()})`;
-        const text_data = text.toUpperCase();
-        return item_data.indexOf(text_data) > -1;
-      });
-      this.setState({ data: updatedData, searchValue: text });
-    };
+  // const renderItem = ({ item }) => <Item title={item.title} />;
+  // class Search extends Component {
+  //   constructor(props) {
+  //     super(props);
+  //     this.state = {
+  //       loading: false,
+  //       data: DATA,
+  //       error: null,
+  //       searchValue: '',
+  //     };
+  //     this.arrayholder = DATA;
+  //   }
   
-    render() {
-      return (
-        <View style={styles.container}>
-          <SearchBar
-            placeholder="Search Here..."
-            round
-            value={this.state.searchValue}
-            onChangeText={(text) => this.searchFunction(text)}
-            autoCorrect={false}>
-            </SearchBar>
-          <FlatList
-            data={this.state.data}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
-      );
-    }
-  }
+  //   searchFunction = (text) => {
+  //     const updatedData = this.arrayholder.filter((item) => {
+  //       const item_data = `${item.title.toUpperCase()})`;
+  //       const text_data = text.toUpperCase();
+  //       return item_data.indexOf(text_data) > -1;
+  //     });
+  //     this.setState({ data: updatedData, searchValue: text });
+  //   };
   
-  export default Search;
+  //   render() {
+  //     return (
+  //       <View style={styles.container}>
+  //         <SearchBar
+  //           placeholder="Search Here..."
+  //           round
+  //           value={this.state.searchValue}
+  //           onChangeText={(text) => this.searchFunction(text)}
+  //           autoCorrect={false}>
+  //           </SearchBar>
+  //         <FlatList
+  //           data={this.state.data}
+  //           renderItem={renderItem}
+  //           keyExtractor={(item) => item.id}
+  //         />
+  //       </View>
+  //     );
+  //   }
+  // }
   
-  const styles = StyleSheet.create({
-    container: {
-      marginTop: 50,
-      padding: 2,
-    },
-    item: {
-      backgroundColor: "#f5f520",
-      padding: 20,
-      marginVertical: 8,
-      marginHorizontal: 16,
-    },
-  });
+  // export default Search;
+  
+  // const styles = StyleSheet.create({
+  //   container: {
+  //     marginTop: 50,
+  //     padding: 2,
+  //   },
+  //   item: {
+  //     backgroundColor: "#f5f520",
+  //     padding: 20,
+  //     marginVertical: 8,
+  //     marginHorizontal: 16,
+  //   },
+  // });
 
-// export default function MessagesScreen({navigation}) {
-//     return (
-//         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-//             <SearchBar
-//             placeholder="Search Here..."
-//             lightTheme
-//             round
-//             value={this.state.searchValue}
-//             onChangeText={(text) => this.searchFunction(text)}
-//             autoCorrect={false}>
-//             </SearchBar>
-//             <Text
-//                 onPress={() => navigation.navigate('Home')}
-//                 style={{ fontSize: 26, fontWeight: 'bold'}}>Messages Page</Text>
-//         </View>    
-//     );
-// }
+function MessagesScreen({navigation}) {
+  const [input, setInput] = useState("");
+  return (
+    <View 
+      style = {{
+        margin: 15,
+        width: "90%",
+      }}>
+
+      <View style={{ 
+        marginTop: 40,
+        flexDirection: "row", 
+        alignItems: 'center', 
+        padding: 10,
+        width: "100%",
+        backgroundColor: "#d9dbda",
+        borderRadius: 10,
+        }}>
+          <TextInput
+            value={input}
+            onChangeText={(text) => setInput(text)}
+            style={{fontSize: 15}}
+            placeholder="Search here..."/>
+      </View>
+      <SearchFilter data={DATA} input={input} setInput={setInput}/>    
+    </View>
+  );
+}
+
+export default MessagesScreen;

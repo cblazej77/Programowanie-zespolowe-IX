@@ -30,7 +30,7 @@ import {
 import { View } from "react-native";
 
 //Colors
-const {brand, darkLight, primary} = Colors;
+const {tertiary, darkLight, primary} = Colors;
 
 const Login = () => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -39,7 +39,7 @@ const Login = () => {
         <StyledContainer>
             <StatusBar style="dark" ></StatusBar>
             <InnerContainer>
-                <PageLogo resizeMode="cover" source={require('./../assets/img/logo.png')}></PageLogo>
+                <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
                 <PageTitle>Logowanie</PageTitle>
                 <Formik
                 initialValues={{email: '', password: ''}}
@@ -52,7 +52,7 @@ const Login = () => {
                             label = "Adres Email"
                             icon="mail"
                             placeholder="email@example.com"
-                            placeholderTextColor={'#000000'}
+                            placeholderTextColor={'#00000088'}
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             value={values.email}
@@ -62,7 +62,7 @@ const Login = () => {
                             label = "Hasło"
                             icon="lock"
                             placeholder="************"
-                            placeholderTextColor={'#000000'}
+                            placeholderTextColor={'#00000088'}
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}
@@ -101,7 +101,7 @@ const MyTextInput = ({label, icon, isPassword, hidePassword, setHidePassword, ..
     return (
         <View>
             <LeftIcon>
-                <Octicons name={icon} size={30} color={brand} />
+                <Octicons name={icon} size={30} color={darkLight} />
             </LeftIcon>
             <StyledInputLabel>{label}</StyledInputLabel>
             <StyledTextInput {...props} />

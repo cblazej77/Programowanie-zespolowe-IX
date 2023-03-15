@@ -30,7 +30,7 @@ import {
 import { View, TouchableOpacity, processColor } from "react-native";
 
 //Colors
-const {brand, darkLight, primary} = Colors;
+const {brand, darkLight, primary, tertiary} = Colors;
 
 //Datetimepicker
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -82,7 +82,7 @@ const Signup = () => {
                             label = "Imie i Nazwisko"
                             icon="person"
                             placeholder="Jan Kowalski"
-                            placeholderTextColor={darkLight}
+                            placeholderTextColor={'#00000088'}
                             onChangeText={handleChange('fullName')}
                             onBlur={handleBlur('fullName')}
                             value={values.fullName}
@@ -91,7 +91,7 @@ const Signup = () => {
                             label = "Adres Email"
                             icon="mail"
                             placeholder="email@example.com"
-                            placeholderTextColor={darkLight}
+                            placeholderTextColor={'#00000088'}
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             value={values.email}
@@ -101,7 +101,7 @@ const Signup = () => {
                             label = "Data urodzenia"
                             icon="calendar"
                             placeholder="YYYY - MM - DD"
-                            placeholderTextColor={darkLight}
+                            placeholderTextColor={'#00000088'}
                             onChangeText={handleChange('dateOfBirth')}
                             onBlur={handleBlur('dateOfBirth')}
                             value={dob ? dob.toDateString() : ''}
@@ -113,7 +113,7 @@ const Signup = () => {
                             label = "Hasło"
                             icon="lock"
                             placeholder="************"
-                            placeholderTextColor={darkLight}
+                            placeholderTextColor={'#00000088'}
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}
@@ -126,7 +126,7 @@ const Signup = () => {
                             label = "Potwierdź hasło"
                             icon="lock"
                             placeholder="************"
-                            placeholderTextColor={darkLight}
+                            placeholderTextColor={'#00000088'}
                             onChangeText={handleChange('confirmPassword')}
                             onBlur={handleBlur('confirmPassword')}
                             value={values.confirmPassword}

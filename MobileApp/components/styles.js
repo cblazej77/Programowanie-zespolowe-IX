@@ -8,16 +8,17 @@ import { Constants } from "expo-constants";
 export const Colors = {
     primary: "#F0EDEB",
     secondary: "#BEB5BC",
-    tertiary: "#1D67BD",
+    tertiary: "#000000AA",
     darkLight: "#4A4E69",
     brand: "#000FFF",
     red: "#FF0000",
     green: "#47D531",
     white: "#FFFFFF",
+    grey: "#00000022",
 
 };
 
-const {primary, secondary, tertiary, darkLight, brand, red, green} = Colors;
+const {primary, secondary, tertiary, darkLight, brand, red, green, grey} = Colors;
 
 export const StyledContainer = styled.View`
     flex: 1;
@@ -92,7 +93,7 @@ export const StyledFormArea = styled.View`
 `;
 
 export const StyledTextInput = styled.TextInput`
-    background-color: ${secondary};
+    background-color: ${grey};
     padding: 15px;
     padding-left: 55px;
     padding-right: 55px;
@@ -105,21 +106,21 @@ export const StyledTextInput = styled.TextInput`
 `;
 
 export const StyledInputLabel = styled.Text`
-    color: ${tertiary};
+    color: #000000;
     font-size: 13px;
     text-align: left;
 `;
 
 export const LeftIcon = styled.View`
     left: 15px;
-    top: 38px;
+    top: 37px;
     position: absolute;
     z-index: 1;
 `;
 
 export const RightIcon = styled.TouchableOpacity`
     right: 15px;
-    top: 38px;
+    top: 35px;
     position: absolute;
     z-index: 1;
 `;
