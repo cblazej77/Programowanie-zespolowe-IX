@@ -1,4 +1,5 @@
 # Jak to uruchomić?
+
 1. Możliwe że IntelliJ nie wykryje projektu, trzeba ustawić manualnie katalogi źródłowe i testowe.
 
    Sources: `src/main/java`
@@ -12,8 +13,8 @@
 2. Możliwe że IntelliJ nie wykryje Mavena, wtedy trzeba go dodać w ustawieniach projektu.
 
    `Project -> Programowanie-zespołowe-IX na górze -> Add Framework Support -> Maven`
-    
-    Może trzeba będzie przeładować Mavena.
+
+   Może trzeba będzie przeładować Mavena.
 
 3. W postgresie utwórz baze danych o nazwie `logowanie`
 4. W pliku `application.properties` ustaw swoje dane do bazy danych
@@ -25,8 +26,9 @@
 10. Uruchom aplikację po raz drugi
 
 # Jak to testować?
+
 1. W postmanie wyślij zapytanie POST na `localhost:8080/api/auth/register`
-    z body:
+   z body:
     ```json
     {
     "email": "email",
@@ -44,8 +46,9 @@
         "password": "admin"
     }
     ```
-   
+
 # Wersje zależności
+
 - Java 17.0.6
 - Spring Boot Starter 3.0.1
 - Spring Security 6.0.1
@@ -62,4 +65,5 @@
 - Pomyśleć nad strukturą serwisu i poprawić TO-DO na mainie
 
 # Timestamp
+
 - 21.01.2022 21:50

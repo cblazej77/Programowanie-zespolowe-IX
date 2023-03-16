@@ -8,7 +8,7 @@
     border: none;
 }
 */
-.searchBar{
+.searchBar {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,7 +21,7 @@
     position: absolute;
 }
 
-.searchBar input[type="text"]{
+.searchBar input[type="text"] {
     width: 400px;
     padding: 6px;
     font-size: 16px;
@@ -29,7 +29,7 @@
     outline: none;
 }
 
-.searchBar button[type="submit"]{
+.searchBar button[type="submit"] {
     background-color: #ccc;
     border: solid;
     padding: 10px 15px;
@@ -37,10 +37,10 @@
     transition: background-color 0.5s ease-in-out;
 }
 
-.searchBar button[type="submit"]:hover{
+.searchBar button[type="submit"]:hover {
     background-color: #aaa;
 }
 
-.searchBarButton{
+.searchBarButton {
     color: #fff;
 }
