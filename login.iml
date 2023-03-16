@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Backend/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Backend/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/Backend/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/Backend/target" />
     </content>
   </component>
 </module>
