@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b1739d61-f1c5-4da7-8f12-0b378cee71f9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/projekt funkcjonalny/diagram funkcjonalności.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/projekt funkcjonalny/lista funkcjonalności.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/LoginApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/controller/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/controller/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/dto/AuthResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/dto/LoginDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/dto/RegisterDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/exception/ErrorObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/Commission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/chat/Conversation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/chat/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/City.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Language.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Level.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Subcategory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Tag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/ArtistProfile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/CompanyProfile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/ConfirmationToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/Education.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/Experience.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/UserEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/ArtistProfileRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/CommissionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/CompanyProfileRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/ConfirmationTokenRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/EducationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/ExperienceRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/RoleRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/CustomUserDetailsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/JWTAuthEntryPoint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/JWTAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/JWTGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/SecurityConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/service/ConfirmationTokenService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/service/EmailService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/data.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/images/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/images/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/images/logoKula.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/css/header.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/css/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/css/styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/error.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/fonts/generator_config.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/fonts/norwester-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/fonts/norwester-webfont.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/fonts/specimen_files/grid_12-825-55-15.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/fonts/specimen_files/specimen_stylesheet.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/signUp.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/templates/testWebsite.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/test/java/com/pz/login/LoginApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="HTML File" />
+        <option value="Record" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="kubadev" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="c16b2a4b-41f6-473c-b112-b51c65ad3372" />
+        <option name="url" value="https://github.com/cblazej77/Programowanie-zespolowe-IX.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2K3V3DlqoTGulparyAQd1hbktqT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelOrder2": "2",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RequestMappingsPanelWidth2": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/hunes/Desktop/Studia/Programowanie zespolowe/GitHub/Programowanie-zespolowe-IX/Backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.55402297",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "Errors",
+    "spring.configuration.checksum": "d56b699830e77ba53855679cb1d252da",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hunes\Desktop\Studia\Programowanie zespolowe\GitHub\Programowanie-zespolowe-IX\src\main\java\com\pz\login\repository" />
+      <recent name="C:\Users\hunes\Desktop\Studia\Programowanie zespolowe\GitHub\Programowanie-zespolowe-IX\src\main\java\com\pz\login\model\user" />
+      <recent name="C:\Users\hunes\Desktop\Studia\Programowanie zespolowe\GitHub\Programowanie-zespolowe-IX\src\main\java\com\pz\login\model\enums" />
+      <recent name="C:\Users\hunes\Desktop\Studia\Programowanie zespolowe\GitHub\Programowanie-zespolowe-IX\src\main\java\com\pz\login\model\chat" />
+      <recent name="C:\Users\hunes\Desktop\Studia\Programowanie zespolowe\GitHub\Programowanie-zespolowe-IX\src\main\java\com\pz\login" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.pz.login.repository" />
+      <recent name="com.pz.login.model" />
+      <recent name="com.pz.login.model.user" />
+      <recent name="com.pz.login.security" />
+      <recent name="com.pz.login.config" />
+    </key>
+    <key name="ImportMappingsDialog.RecentPackages">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn dependence:tree" />
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.LoginApplication">
+    <configuration name="generated-requests | #7" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="7" requestIdentifier="#7" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="LoginApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="login" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.pz.login.LoginApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Logowanie-openapi.yaml" type="SwaggerCodegen" temporary="true">
+      <option name="activeConfigurationType" value="FILE" />
+      <option name="configurationPath" value="" />
+      <option name="customJreEnabled" value="false" />
+      <option name="customTemplatesPath" value="" />
+      <option name="enableDebugLogging" value="false" />
+      <option name="generateToPath" value="C:\Users\hunes\Desktop\Studia\Programowanie zespołowe\Local Dev\Logowanie\gen" />
+      <option name="generationParameters">
+        <list />
+      </option>
+      <option name="generatorPath" value="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar" />
+      <option name="jdkPath" value="Default" />
+      <option name="language" value="java" />
+      <option name="specificationPath" value="C:\Users\hunes\AppData\Roaming\JetBrains\IntelliJIdea2022.3\openApiExport\Logowanie-openapi.yaml" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="SwaggerCodegen">
+      <option name="activeConfigurationType" value="FILE" />
+      <option name="configurationPath" value="" />
+      <option name="customJreEnabled" value="false" />
+      <option name="customTemplatesPath" value="" />
+      <option name="enableDebugLogging" value="false" />
+      <option name="generateToPath" value="C:\Users\hunes\Desktop\Studia\Programowanie zespołowe\Local Dev\Logowanie\gen" />
+      <option name="generationParameters">
+        <list />
+      </option>
+      <option name="generatorPath" value="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar" />
+      <option name="jdkPath" value="Default" />
+      <option name="language" value="java" />
+      <option name="specificationPath" value="C:\Users\hunes\AppData\Roaming\JetBrains\IntelliJIdea2022.3\openApiExport\Logowanie-openapi.yaml" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="HTTP Request.generated-requests | #7" />
+      <item itemvalue="Spring Boot.LoginApplication" />
+      <item itemvalue="Swagger Codegen.Logowanie-openapi.yaml" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Swagger Codegen.Logowanie-openapi.yaml" />
+        <item itemvalue="HTTP Request.generated-requests | #7" />
+        <item itemvalue="Swagger Codegen.Logowanie-openapi.yaml" />
+        <item itemvalue="HTTP Request.generated-requests | #7" />
+        <item itemvalue="HTTP Request.generated-requests | #7" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpringBeansView">
+    <option name="beanDetailsProportion" value="0.3" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b1739d61-f1c5-4da7-8f12-0b378cee71f9" name="Changes" comment="" />
+      <created>1673203051741</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1673203051741</updated>
+      <workItem from="1673203052891" duration="11859000" />
+      <workItem from="1673218075483" duration="7161000" />
+      <workItem from="1673283677795" duration="678000" />
+      <workItem from="1673284582963" duration="5920000" />
+      <workItem from="1673809246790" duration="3777000" />
+      <workItem from="1674311905259" duration="1131000" />
+      <workItem from="1674313582994" duration="12868000" />
+      <workItem from="1674331062110" duration="229000" />
+      <workItem from="1678637374080" duration="56000" />
+      <workItem from="1678637431153" duration="1757000" />
+      <workItem from="1678725045035" duration="1657000" />
+      <workItem from="1678733719510" duration="371000" />
+      <workItem from="1678734105625" duration="4771000" />
+      <workItem from="1678738889706" duration="3516000" />
+      <workItem from="1678783266355" duration="87000" />
+      <workItem from="1678814638709" duration="4180000" />
+      <workItem from="1678833929617" duration="3795000" />
+      <workItem from="1678922100890" duration="61000" />
+      <workItem from="1678988919924" duration="205000" />
+      <workItem from="1678989150055" duration="441000" />
+      <workItem from="1678989592576" duration="1217000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="request" />
+        <watch expression="((User)((UsernamePasswordAuthenticationToken)authentication).principal).password" custom="org.springframework.security.core.userdetails.User,org.springframework.security.authentication.UsernamePasswordAuthenticationToken" />
+        <watch expression="((java.util.Collections.UnmodifiableRandomAccessList)((UsernamePasswordAuthenticationToken)authentication).authorities).get(0)" custom="org.springframework.security.authentication.UsernamePasswordAuthenticationToken,java.util.Collections.UnmodifiableRandomAccessList" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
