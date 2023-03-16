@@ -8,65 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1739d61-f1c5-4da7-8f12-0b378cee71f9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e4c03834-376a-4a38-a90e-4d1f0b239408.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e4c03834-376a-4a38-a90e-4d1f0b239408/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e4c03834-376a-4a38-a90e-4d1f0b239408/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e4c03834-376a-4a38-a90e-4d1f0b239408/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e4c03834-376a-4a38-a90e-4d1f0b239408/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e4c03834-376a-4a38-a90e-4d1f0b239408/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e4c03834-376a-4a38-a90e-4d1f0b239408/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/projekt funkcjonalny/diagram funkcjonalności.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/projekt funkcjonalny/lista funkcjonalności.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/LoginApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/LoginApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/dto/AuthResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/dto/AuthResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/dto/LoginDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/dto/LoginDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/dto/RegisterDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/dto/RegisterDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/exception/ErrorObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/exception/ErrorObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/Commission.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/Commission.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/chat/Conversation.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/chat/Conversation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/chat/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/chat/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/enums/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/enums/City.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/enums/Language.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/enums/Level.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Subcategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/enums/Subcategory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/enums/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/enums/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/ArtistProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/user/ArtistProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/CompanyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/user/CompanyProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/ConfirmationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/user/ConfirmationToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/Education.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/user/Education.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/Experience.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/user/Experience.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/user/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/model/user/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/model/user/UserEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/ArtistProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/repository/ArtistProfileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/CommissionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/repository/CommissionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/CompanyProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/repository/CompanyProfileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/ConfirmationTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/repository/ConfirmationTokenRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/EducationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/repository/EducationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/ExperienceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/repository/ExperienceRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/repository/RoleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/CustomUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/security/CustomUserDetailsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/JWTAuthEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/security/JWTAuthEntryPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/JWTAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/security/JWTAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/JWTGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/security/JWTGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/security/SecurityConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/security/SecurityConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/service/ConfirmationTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/service/ConfirmationTokenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/pz/login/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/pz/designmatch/service/EmailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/test/java/com/pz/login/LoginApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/test/java/com/pz/designmatch/LoginApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login.iml" beforeDir="false" afterPath="$PROJECT_DIR$/login.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,7 +224,7 @@
       <workItem from="1678989592576" duration="1217000" />
       <workItem from="1678991704749" duration="441000" />
       <workItem from="1678992149615" duration="93000" />
-      <workItem from="1678992255737" duration="379000" />
+      <workItem from="1678992255737" duration="619000" />
     </task>
     <servers />
   </component>
