@@ -1,6 +1,6 @@
 package com.pz.designmatch.controller;
 
-import com.pz.designmatch.dto.AuthResponseDTO;
+import com.pz.designmatch.dto.AuthResponseDto;
 import com.pz.designmatch.dto.LoginDto;
 import com.pz.designmatch.dto.RegisterDto;
 import com.pz.designmatch.model.user.Role;
@@ -42,14 +42,14 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
                         loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
     }
 
     @PostMapping("register")
