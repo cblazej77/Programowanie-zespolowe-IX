@@ -273,9 +273,7 @@ div.glyph_range {
     background: #000 !important;
     color: #fff !important;
     margin-left: -20px;
-    padding-left: 20px;
     margin-right: -20px;
-    padding-right: 20px;
     padding: 20px;
     margin-bottom: 0;
 }
@@ -292,8 +290,6 @@ div.glyph_range {
 .sample_table td:first-child {
     background-color: #eee;
     text-align: right;
-    padding-right: 5px;
-    padding-left: 0;
     padding: 5px;
     font: 11px/12px 'Courier New', Courier, mono;
 }
@@ -360,17 +356,17 @@ code {
 }
 
 .arialbody {
-    font-family: Arial;
+    font-family: Arial, serif;
     position: relative;
 }
 
 .verdanabody {
-    font-family: Verdana;
+    font-family: Verdana, serif;
     position: relative;
 }
 
 .georgiabody {
-    font-family: Georgia;
+    font-family: Georgia, serif;
     position: relative;
 }
 

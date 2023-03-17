@@ -29,17 +29,29 @@
             <img alt="Avatar" style="width:85px; margin-top: 8%" th:src="@{/images/logoKula.jpg}" src="../static/images/logoKula.jpg">
         </div>
         <div class="loginForm">
-            <input id="user" placeholder=" " type="text">
-            <label for="user">User</label>
+            <input id="Name" placeholder=" " type="text">
+            <label for="Name">Name</label>
+        </div>
+        <div class="loginForm">
+            <input id="Email" placeholder=" " type="text">
+            <label for="Email">Email</label>
+        </div>
+        <div class="loginForm">
+            <input id="Date" placeholder=" " type="text">
+            <label for="Date">Date</label>
         </div>
         <div class="loginForm">
             <input id="password" placeholder=" " type="password">
             <label for="password">Password</label>
         </div>
+        <div class="loginForm">
+            <input id="repeadPassword" placeholder=" " type="password">
+            <label for="repeadPassword">Password</label>
+        </div>
         <div class="lineForm"></div>
         <button class="registerButtonForm" id="b1" type="button">Sign up</button>
         <button class="loginButtonForm" id="b2" type="button">Sign in</button>
-        <button class="continueButtonForm" id="b3" type="button">Continue with Google</button>
+        <li><a href="/login" id="logInDown">Do u have account? Log in!</a></li>
     </form>
 </div>
 </body>

@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-"/>
     <title>HTTP Status 500 – Internal Server Error</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
-    <link href="css/header.css" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/header.css}" type="text/css"/>
 </head>
 <body>
 <header>
-    <div class="companyName" id="brand"><a href="index.html">DESIGNMATCH</a></div>
+    <div class="companyName" id="brand"><a href="/">DESIGNMATCH</a></div>
     <nav>
         <ul>
-            <li><a href="index.html"> Home</a></li>
-            <li><a href="error.html">Error</a></li>
-            <li><a href="login.html">Sing In</a></li>
-            <li id="signUp"><a href="login.html">Sign Up</a></li>
+            <li><a href="/"> Home</a></li>
+            <li><a href="/error">Error</a></li>
+            <li><a href="/login">Sing In</a></li>
+            <li id="signUp"><a href="/login">Sign Up</a></li>
         </ul>
     </nav>
 </header>

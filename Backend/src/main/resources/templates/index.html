@@ -1,27 +1,30 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Design Match - logowanie</title>
-    <link href="../images/favicon.ico" rel="icon" type="image/x-icon">
-    <link href="css/index.css" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/index.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}" type="text/css"/>
 
 </head>
 <body>
 <header>
-    <div class="companyName" id="brand"><a href="index.html">DESIGNMATCH</a>
+    <div class="companyName" id="brand"><a href="/">DESIGNMATCH</a>
         <div class="searchBar">
-            <input placeholder="Search..." type="text"></input>
+            <label>
+                <input placeholder="Search..." type="text">
+            </label>
             <button type="button"><i class="searchBarButton"></i></button>
         </div>
     </div>
     <nav>
         <ul>
-            <li><a href="index.html"> Home</a></li>
-            <li><a href="error.html">Error</a></li>
-            <li><a href="login.html">Sing In</a></li>
-            <li id="signUp"><a href="signUp.html">Sign Up</a></li>
+            <li><a href="/"> Home</a></li>
+            <li><a href="/error">Error</a></li>
+            <li><a href="/login">Sing In</a></li>
+            <li id="signUp"><a href="/register">Sign Up</a></li>
         </ul>
     </nav>
 </header>

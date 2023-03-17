@@ -1,6 +1,7 @@
 package com.pz.designmatch.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,17 +31,20 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint)
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/", "/login/**", "/css/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
+//                  .requestMatchers("/resources/**", "/templates/**", "/static/**", "/css/**", "/fonts/**", "/static/**").permitAll()
+                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    .requestMatchers("/fonts/**").permitAll()
+                    .requestMatchers("/", "/index", "/error", "/login", "/register").permitAll()
+                    .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .usernameParameter("email")
-                .passwordParameter("password")
+                    .formLogin()
+                    .usernameParameter("email")
+                    .passwordParameter("password")
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic();
@@ -63,4 +67,5 @@ public class SecurityConfig {
     public JWTAuthenticationFilter jwtAuthenticationFilter() {
         return new JWTAuthenticationFilter();
     }
+
 }

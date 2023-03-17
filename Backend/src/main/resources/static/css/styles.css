@@ -1,4 +1,4 @@
-@import "header.css";
+/*@import "header.css";*/
 
 * {
     box-sizing: border-box;
@@ -33,7 +33,7 @@ form {
     );
     margin: 20px auto;
     border-radius: 15px;
-    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.3);
     min-width: 200px;
     max-width: 300px;
     padding: 36px 24px;
@@ -50,14 +50,14 @@ button {
     );
     border: none;
     border-radius: 18px;
-    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.35);
     color: rgb(255, 255, 255);
     padding: 12px 24px;
 }
 
 .registerButtonForm {
     background: transparent;
-    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.15);
 }
 
 .continueButtonForm {
@@ -100,12 +100,12 @@ input:not(:placeholder-shown) + label {
     background: white;
     border-radius: 50%;
     overflow: hidden;
-    margin: 0px auto 25px;
+    margin: 0 auto 25px;
 }
 
 #b:hover {
     transform: scale(1.05);
     transition: 0.3s;
     border: 1px solid rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.4);
 }
