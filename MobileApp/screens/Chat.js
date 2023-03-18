@@ -23,7 +23,6 @@ const { secondary, darkLight, primary, brand } = Colors;
 const Chat = () => {
     return (
         <View style={{height: '100%'}}>
-            <ChatLabel style={{height: '4%'}}/>
             <ChatLabel>
                 <ChatIconButton style={{
                    marginLeft: -20,

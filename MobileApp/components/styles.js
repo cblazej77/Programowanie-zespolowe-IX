@@ -18,7 +18,7 @@ export const Colors = {
 
 };
 
-const {primary, secondary, tertiary, darkLight, brand, red, green, grey} = Colors;
+const { primary, secondary, tertiary, darkLight, brand, red, green, grey } = Colors;
 
 export const StyledContainer = styled.View`
     flex: 1;
@@ -139,6 +139,16 @@ export const StyledButton = styled.TouchableOpacity`
         flex-direction: row;
         justify-content: center;
     `}
+`;
+
+export const LoginButton = styled.TouchableOpacity`
+    padding: 15px;
+    background-color: ${darkLight};
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-vertical: 5px;
+    height: 60px;
 `;
 
 export const ButtonText = styled.Text`
