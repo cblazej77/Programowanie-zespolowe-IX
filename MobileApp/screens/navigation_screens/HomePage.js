@@ -23,17 +23,17 @@ const DATA = [
     {
         id: "1",
         name: "Cyprian Woźniak",
-        opinions: 22,
+        opinions: 27,
     },
     {
         id: "2",
         name: "Norbert Krawczyk",
-        opinions: 104,
+        opinions: 108,
     },
     {
         id: "3",
         name: "Blanka Szulc",
-        opinions: 74,
+        opinions: 79,
     },
     {
         id: "4",
@@ -72,7 +72,7 @@ export default function HomePage({ navigation }) {
     const [input, setInput] = useState("");
 
     return (
-        <SafeAreaView style={{ flex: 1 , backgroundColor: primary}}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
             <ChatLabel style={{ paddingLeft: 15 }}>
                 <AppText>Znajdź artystów</AppText>
             </ChatLabel>
@@ -113,28 +113,68 @@ export default function HomePage({ navigation }) {
             <FlatList contentContainerStyle={{ alignItems: 'center' }}
                 data={DATA}
                 keyExtractor={(item, index) => index}
-                ListHeaderComponent={<View style={{ height: 10 }}></View>}
-                renderItem={({ item }) =>
-                    <View style={styles.PostStyle}>
-                        <View style={{ height: '15%', justifyContent: 'center'}}>
-                            <Text style={{ 
-                                color: "#FFF", 
-                                fontSize: 20,
-                                marginLeft: 10
-                                }}>{item.name}</Text>
-                        </View>
-                        <View style={{ 
-                            backgroundColor: "#CCC", 
-                            height: "70%", 
-                            alignItems: 'center', 
-                            justifyContent: 'center'}}>
-                                <Text style={{color: primary}}>Image not found</Text></View>
-                        <View style={{ height: '15%', justifyContent: 'center', marginLeft: 10}}>
-                            <Text style={{ color: "#FFF", }}>{item.opinions} opinii</Text>
-                        </View>
-                    </View>
-                }
-                ItemSeparatorComponent={<View style={{ height: 15 }}></View>}
+                ListHeaderComponent={<View style={{ height: 20 }}></View>}
+                renderItem={({ item }) => {
+                    if (input === "") {
+                        return (
+                            <View style={styles.PostStyle}>
+                                <View style={{
+                                    height: '20%',
+                                    alignItems: 'center',
+                                    flexDirection: 'row'
+                                }}>
+                                    <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginLeft: 10, borderRadius: 30 }} />
+                                    <Text style={{
+                                        color: "#FFF",
+                                        fontSize: 17,
+                                        fontWeight: 'bold',
+                                        marginLeft: 10
+                                    }}>{item.name}</Text>
+                                </View>
+                                <View style={{
+                                    backgroundColor: "#CCC",
+                                    height: "70%",
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    <Text style={{ color: primary }}>Image not found</Text></View>
+                                <View style={{ height: '10%', justifyContent: 'center', marginLeft: 10 }}>
+                                    <Text style={{ color: "#FFF", }}>{item.opinions} opinii</Text>
+                                </View>
+                            </View>
+                        )
+                    }
+
+                    if (item.name.toLowerCase().includes(input.toLowerCase())) {
+                        return (
+                            <View style={styles.PostStyle}>
+                                <View style={{
+                                    height: '20%',
+                                    alignItems: 'center',
+                                    flexDirection: 'row'
+                                }}>
+                                    <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginLeft: 10, borderRadius: 30 }} />
+                                    <Text style={{
+                                        color: "#FFF",
+                                        fontSize: 17,
+                                        fontWeight: 'bold',
+                                        marginLeft: 10
+                                    }}>{item.name}</Text>
+                                </View>
+                                <View style={{
+                                    backgroundColor: "#CCC",
+                                    height: "70%",
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    <Text style={{ color: primary }}>Image not found</Text></View>
+                                <View style={{ height: '10%', justifyContent: 'center', marginLeft: 10 }}>
+                                    <Text style={{ color: "#FFF", }}>{item.opinions} opinii</Text>
+                                </View>
+                            </View>
+                        )
+                    }
+                }}
                 ListFooterComponent={<View style={{ height: 20 }}></View>}
             />
 
@@ -169,10 +209,11 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 20
     },
     PostStyle: {
-        backgroundColor: secondary, 
-        height: 250, 
-        minWidth: "90%", 
-        maxWidth: "90%", 
+        backgroundColor: secondary,
+        height: 350,
+        minWidth: "90%",
+        maxWidth: "90%",
+        marginBottom: 15,
         borderRadius: 5,
     }
 });
