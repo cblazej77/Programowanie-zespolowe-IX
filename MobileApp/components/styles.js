@@ -189,7 +189,7 @@ export const TextLinkContent = styled.Text`
 export const ChatLabel = styled.View`
     background-color: ${darkLight};
     width: 100%;
-    height: 9%;
+    height: 50px;
     flexDirection: row;
     alignItems: center;
 `;
@@ -218,7 +218,7 @@ export const ChatMessages = styled.FlatList`
 export const HomeLabel = styled.View`
     background-color: ${primary};
     width: 100%;
-    height: 8%;
+    height: 45px;
     flexDirection: row;
     alignItems: center;
     padding: 1px;
@@ -241,6 +241,6 @@ export const HomeTextInput = styled.TextInput`
 
 export const AppText = styled.Text`
     color: ${primary};
-    fontSize: 30px;
+    fontSize: 26px;
     fontWeight: bold;
 `;
