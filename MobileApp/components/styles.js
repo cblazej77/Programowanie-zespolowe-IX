@@ -189,10 +189,9 @@ export const TextLinkContent = styled.Text`
 export const ChatLabel = styled.View`
     background-color: ${darkLight};
     width: 100%;
-    height: 8%;
+    height: 50px;
     flexDirection: row;
     alignItems: center;
-    marginTop: 6%;
 `;
 
 export const ChatImage = styled.Image`
@@ -244,5 +243,4 @@ export const AppText = styled.Text`
     color: ${primary};
     fontSize: 26px;
     fontWeight: bold;
-    marginTop: 4%;
 `;

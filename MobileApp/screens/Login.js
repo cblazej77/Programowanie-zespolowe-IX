@@ -41,7 +41,6 @@ const Login = ({navigation}) => {
     return (
         <KeyboardAvoidingWrapper style={{backgroundColor: {primary}}}>
             <StyledContainer>
-                <StatusBar style="dark" ></StatusBar>
                 <InnerContainer>
                     <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
                     <PageTitle>Logowanie</PageTitle>
