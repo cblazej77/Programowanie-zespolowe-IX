@@ -120,3 +120,7 @@ const MyTextInput = ({label, icon, isPassword, hidePassword, setHidePassword, ..
 }
 
 export default Login;
+
+/*<ChatLabel style={{ paddingLeft: 15}}>
+                <AppText>Znajdź artystów</AppText>
+            </ChatLabel>*/

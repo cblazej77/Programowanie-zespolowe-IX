@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Chat from './screens/Chat';
 
 //React Navigation stack
 import LoginNavigation from './screens/LoginNavigation';

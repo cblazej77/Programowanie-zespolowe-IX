@@ -73,9 +73,7 @@ export default function HomePage({ navigation }) {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
-            <ChatLabel style={{ paddingLeft: 15}}>
-                <AppText>Znajdź artystów</AppText>
-            </ChatLabel>
+            
             <HomeLabel>
                 <HomeIconButton onPress={() => alert('Filtrowanie')} activeOpacity={0.5}>
                     <ChatImage style={{ tintColor: '#A9A9A9', width: '50%', marginLeft: 10 }} resizeMode="contain" source={require('./../../assets/img/filter.png')} />
@@ -217,3 +215,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     }
 });
+
+/*
+nagłówek Homepage
+<ChatLabel style={{ paddingLeft: 15}}>
+    <AppText>Znajdź artystów</AppText>
+</ChatLabel>
+*/
