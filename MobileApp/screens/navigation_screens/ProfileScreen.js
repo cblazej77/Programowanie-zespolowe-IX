@@ -17,7 +17,7 @@ export default function ProfileScreen({ navigation }) {
                     flexDirection: "row",
                     width: "50%",
                 }}>
-                    <View >
+                    <View>
                         <AppText style={{ fontSize: 20 }}>Piotr Nowak</AppText>
                         <AppText style={{ fontSize: 16 }}>605263113</AppText>
                     </View>

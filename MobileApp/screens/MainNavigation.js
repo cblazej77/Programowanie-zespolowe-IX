@@ -24,7 +24,6 @@ const Tab = createBottomTabNavigator();
 export default function MainNavigation() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <StatusBar hidden={false} />
             <Tab.Navigator
                 initialRouteName={homeName}
                 screenOptions={({ route }) => ({

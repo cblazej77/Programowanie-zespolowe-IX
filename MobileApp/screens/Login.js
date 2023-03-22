@@ -81,6 +81,11 @@ const Login = ({navigation}) => {
                                     Zaloguj
                                 </ButtonText>
                             </StyledButton>
+                            <StyledButton onPress={handleSubmit}>
+                                <ButtonText>
+                                    Kontynuuj bez logowania
+                                </ButtonText>
+                            </StyledButton>
                             <Line />
                             <StyledButton google={true} onPress={handleSubmit}>
                                 <Fontisto name="google" color={primary} size={25}/>
@@ -121,6 +126,3 @@ const MyTextInput = ({label, icon, isPassword, hidePassword, setHidePassword, ..
 
 export default Login;
 
-/*<ChatLabel style={{ paddingLeft: 15}}>
-                <AppText>Znajdź artystów</AppText>
-            </ChatLabel>*/
