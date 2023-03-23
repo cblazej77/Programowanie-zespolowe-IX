@@ -26,25 +26,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint)
                 .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-//                  .requestMatchers("/resources/**", "/templates/**", "/static/**", "/css/**", "/fonts/**", "/static/**").permitAll()
-                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .requestMatchers("/fonts/**").permitAll()
-                    .requestMatchers("/", "/index", "/error", "/login", "/register").permitAll()
-                    .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/fonts/**").permitAll()
+                .requestMatchers("/", "/index", "/error", "/login", "/register").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                    .formLogin()
-                    .usernameParameter("email")
-                    .passwordParameter("password")
+                .formLogin()
+                .usernameParameter("email")
+                .passwordParameter("password")
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic();

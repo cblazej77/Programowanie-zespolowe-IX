@@ -20,11 +20,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
@@ -46,14 +48,17 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
-    private Collection<GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+    private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
     public void register(RegisterDto registerDto, Role role) {
-        userRepository.findByEmail(registerDto.getEmail()).ifPresent(e -> {
+
+        if (userRepository.findByEmail(registerDto.getEmail()).isPresent()) {
+            // TODO check if attributes are the same and
+            // TODO if email not confirmed resend confirmation email
             throw new IllegalStateException("Email already taken");
-        });
+        }
 
         UserEntity user = new UserEntity();
         user.setEmail(registerDto.getEmail());
@@ -65,8 +70,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         userRepository.save(user);
 
         String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15), user);
+        ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         sendConfirmationEmail(registerDto.getEmail(), registerDto.getUsername(), token);
@@ -78,4 +82,3 @@ public class CustomUserDetailsService implements UserDetailsService {
         emailService.send(email, body, "Email confirmation");
     }
 }
-
