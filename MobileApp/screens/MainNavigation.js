@@ -12,7 +12,7 @@ import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 
 import { ChatLabel, Colors } from '../components/styles';
 
-const { darkLight } = Colors
+const { secondary, darkLight } = Colors
 
 //Screen names
 const homeName = 'Strona główna';
@@ -46,8 +46,8 @@ export default function MainNavigation() {
                     },
                     headerShown: false,
                     tabBarShowLabel: false,
-                    "tabBarActiveTintColor": "#4A4E69",
-                    "tabBarInactiveTintColor": "grey",
+                    "tabBarActiveTintColor": darkLight,
+                    "tabBarInactiveTintColor": secondary,
                     "tabBarLabelStyle": {
                         "paddingBottom": 10,
                         "fontSize": 10
