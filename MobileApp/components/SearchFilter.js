@@ -18,12 +18,13 @@ const SearchFilter = ({ data, input, setInput }) => {
                                     <Text numberOfLines={1}>{item.last_message}</Text>
                                 </View>
                                 <View>
-                                    <Text style={{
+                                    <Text numberOfLines={1} style={{
+                                        width: 25,
+                                        fontSize: 10,
                                         fontWeight: "bold",
                                         backgroundColor: "#DA7676",
                                         borderRadius: 30,
                                         textAlign: "center",
-                                        paddingHorizontal: 8,
                                         paddingVertical: 1,
                                         color: "#FFF"
                                     }}>{item.unseen_messages}</Text>
@@ -35,18 +36,19 @@ const SearchFilter = ({ data, input, setInput }) => {
                     if (item.name.toLowerCase().includes(input.toLowerCase())) {
                         return (
                             <View style={{ flexDirection: "row", height: 50, justifyContent: "space-around", }}>
-                                <View style={{ width: 40, height: 40, borderRadius: 70, backgroundColor: "#CCC" }} />
+                                <View style={{ width: 40, height: 40, borderRadius: 70, backgroundColor: "#CCC", marginRight: 5 }} />
                                 <View style={{ width: "80%" }}>
                                     <Text style={{ fontWeight: "bold", fontSize: 15 }}>{item.name} {item.surname}</Text>
                                     <Text numberOfLines={1}>{item.last_message}</Text>
                                 </View>
                                 <View>
-                                    <Text style={{
+                                    <Text numberOfLines={1} style={{
+                                        width: 25,
+                                        fontSize: 10,
                                         fontWeight: "bold",
                                         backgroundColor: "#DA7676",
                                         borderRadius: 30,
                                         textAlign: "center",
-                                        paddingHorizontal: 8,
                                         paddingVertical: 1,
                                         color: "#FFF"
                                     }}>{item.unseen_messages}</Text>
