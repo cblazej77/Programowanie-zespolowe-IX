@@ -61,7 +61,7 @@ export const StyledAlert = styled.div`
   padding: 10px;
   background-color: #f44336;
   color: white;
-  margin-top: 10px;
+  margin: 5px auto 5px;
   border-radius: 5px;
 `
 
@@ -140,6 +140,8 @@ export const InputField = styled.input`
     transition: 0.3s;
   }
 `;
+
+
 export const CenterButton = styled.div`
   position: relative;
   padding-top: 15px;
@@ -172,9 +174,9 @@ export const Button = styled(Link)`
     }
     @media screen and (min-width: 540px) {
       &:hover{
+       border: 1px solid rgba(0, 0, 0, 0.5);
         transform: scale(1.05) ;
         transition: 0.3s;
-        border: 1px solid rgba(0, 0, 0, 0.5);
         box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
       }
     }
