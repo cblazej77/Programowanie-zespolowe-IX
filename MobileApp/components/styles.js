@@ -247,13 +247,13 @@ export const AppText = styled.Text`
 
 export const ProfileTextValue = styled.Text`
     color: ${darkLight};
-    fontSize: 16px;
+    fontSize: 18px;
     fontWeight: bold;
     text-align: center;
 `;
 
 export const ProfileText = styled.Text`
     color: ${darkLight};
-    fontSize: 16px;
+    fontSize: 18px;
     text-align: center;
 `;
