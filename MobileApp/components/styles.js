@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { Constants } from "expo-constants";
+import { useFonts } from '@expo-google-fonts/lexend-deca';
+
 
 //const StatusBarHeight = Constants.statusBarHeight;
 
@@ -19,6 +21,41 @@ export const Colors = {
 };
 
 const {primary, secondary, tertiary, darkLight, brand, red, green, grey} = Colors;
+
+export const HeaderText = styled.Text`
+    let [fontsLoaded] = useFonts({
+        'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
+      });
+    color: ${primary};
+    fontSize: 26px;
+    fontFamily: LexendDeca-Regular;
+`;
+
+export const RegularText = styled.Text`
+    let [fontsLoaded] = useFonts({
+        'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
+      });
+    color: ${darkLight};
+    fontSize: 16px;
+    fontFamily: LexendDeca-Regular;
+`;
+
+export const StatsText = styled.Text`
+    let [fontsLoaded] = useFonts({
+        'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
+      });
+    color: ${darkLight};
+    fontSize: 18px;
+    text-align: center;
+    fontFamily: LexendDeca-Regular;
+`;
+
+export const StatsTextBold = styled.Text`
+    color: ${darkLight};
+    fontSize: 18px;
+    fontWeight: bold;
+    text-align: center;
+`;
 
 export const StyledContainer = styled.View`
     flex: 1;
