@@ -21,3 +21,5 @@
 
 # IntelliJ
 out/
+.idea/dataSources.local.xml
+.idea/dataSources/
