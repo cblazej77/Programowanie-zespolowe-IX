@@ -1,8 +1,4 @@
 import styled from "styled-components";
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
-import { Constants } from "expo-constants";
-import { useFonts } from '@expo-google-fonts/lexend-deca';
-
 
 //const StatusBarHeight = Constants.statusBarHeight;
 
@@ -20,37 +16,36 @@ export const Colors = {
 
 };
 
-const {primary, secondary, tertiary, darkLight, brand, red, green, grey} = Colors;
+const { primary, secondary, tertiary, darkLight, brand, red, green, grey } = Colors;
 
-export const HeaderText = styled.Text`
+export const AppText = styled.Text`
     let [fontsLoaded] = useFonts({
-        'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
-      });
+     'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
+    });
+    fontFamily: LexendDeca-Regular;
+`;
+
+export const HeaderText = styled(AppText)`
     color: ${primary};
     fontSize: 26px;
-    fontFamily: LexendDeca-Regular;
 `;
 
-export const RegularText = styled.Text`
-    let [fontsLoaded] = useFonts({
-        'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
-      });
+export const RegularText = styled(AppText)`
     color: ${darkLight};
     fontSize: 16px;
-    fontFamily: LexendDeca-Regular;
 `;
 
-export const StatsText = styled.Text`
+export const StatsText = styled(AppText)`
     let [fontsLoaded] = useFonts({
         'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
-      });
+    });
+    fontFamily: LexendDeca-Regular;
     color: ${darkLight};
     fontSize: 18px;
     text-align: center;
-    fontFamily: LexendDeca-Regular;
 `;
 
-export const StatsTextBold = styled.Text`
+export const StatsTextBold = styled(AppText)`
     color: ${darkLight};
     fontSize: 18px;
     fontWeight: bold;
@@ -274,23 +269,4 @@ export const HomeTextInput = styled.TextInput`
     fontSize: 14px;
     marginRight: 10px;
     marginLeft: 5px;
-`;
-
-export const AppText = styled.Text`
-    color: ${primary};
-    fontSize: 26px;
-    fontWeight: bold;
-`;
-
-export const ProfileTextValue = styled.Text`
-    color: ${darkLight};
-    fontSize: 18px;
-    fontWeight: bold;
-    text-align: center;
-`;
-
-export const ProfileText = styled.Text`
-    color: ${darkLight};
-    fontSize: 18px;
-    text-align: center;
 `;

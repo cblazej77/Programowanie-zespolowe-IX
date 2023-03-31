@@ -1,11 +1,10 @@
-import { Header } from '@react-navigation/stack';
 import * as React from 'react';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchFilter from '../../components/SearchFilter';
-import { AppText, ChatLabel, HomeTextInput } from '../../components/styles';
+import { AppText, ChatLabel, HeaderText } from '../../components/styles';
 import { Colors } from '../../components/styles';
 
 const { primary } = Colors
@@ -183,7 +182,7 @@ function MessagesScreen({ navigation }) {
         height: 50,
         justifyContent: 'center'
       }}>
-        <AppText>Wiadomości</AppText>
+        <HeaderText>Wiadomości</HeaderText>
       </ChatLabel>
       
       <View style={{

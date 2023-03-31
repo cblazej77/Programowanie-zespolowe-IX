@@ -27,7 +27,9 @@ import {
     TextLink,
     TextLinkContent
 } from './../components/styles';
-import { View } from "react-native";
+import { SafeAreaView, View } from "react-native";
+
+import { useFonts } from '@expo-google-fonts/lexend-deca';
 
 //Colors
 const {tertiary, darkLight, primary} = Colors;

@@ -1,23 +1,17 @@
-import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import * as React from 'react';
-import { View, Text, SafeAreaView, Image, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Image, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AppText, ChatLabel, Colors, ProfileTextValue, ProfileText, HeaderText, RegularText, StatsTextBold, StatsText } from '../../components/styles';
+import { ChatLabel, Colors, HeaderText, RegularText, StatsTextBold, StatsText } from '../../components/styles';
 import Gallery from '../../components/Gallery';
 import Reviews from '../../components/Reviews';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Stars from 'react-native-stars';
-import { useCallback } from 'react';
-import { useFonts } from '@expo-google-fonts/lexend-deca';
 
 const Tab = createMaterialTopTabNavigator();
 const { primary, secondary, darkLight } = Colors;
 
 export default function ProfileScreen({ navigation }) {
-    let [fontsLoaded] = useFonts({
-        'LexendDeca-Regular': require('./../../assets/fonts/LexendDeca-Regular.ttf'),
-    });
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>

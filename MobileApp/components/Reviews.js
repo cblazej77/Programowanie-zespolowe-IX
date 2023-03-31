@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import React from 'react';
-import { Colors } from "./styles";
+import { Colors, RegularText, StatsText } from "./styles";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Stars from 'react-native-stars';
 
@@ -68,7 +68,7 @@ const Reviews = ({ data, input, setInput }) => {
                                     width: 40,
                                     borderRadius: 50,
                                 }} />
-                                <Text style={{ fontWeight: "bold", marginLeft: 10 }}>{item.name} {item.surname}</Text>
+                                <RegularText style={{ marginLeft: 10 }}>{item.name} {item.surname}</RegularText>
                             </View>
                             <Stars
                             default={item.review}
@@ -82,7 +82,7 @@ const Reviews = ({ data, input, setInput }) => {
                             emptyStar={require('./../assets/img/star-outline.png')}
                         />
                         </View>
-                        <Text numberOfLines={2} style={{ fontSize: 13, marginVertical: 5 }}>{item.review_text}</Text>
+                        <RegularText numberOfLines={2} style={{ fontSize: 13, marginVertical: 5 }}>{item.review_text}</RegularText>
                     </View>
                 )
             }}>

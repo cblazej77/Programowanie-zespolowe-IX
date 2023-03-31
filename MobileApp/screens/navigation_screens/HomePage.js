@@ -12,7 +12,9 @@ import {
     Colors,
     HomeTextInput,
     ChatLabel,
-    AppText
+    AppText,
+    StatsText,
+    RegularText
 } from './../../components/styles'
 import SearchFilter from '../../components/SearchFilter';
 
@@ -122,12 +124,10 @@ export default function HomePage({ navigation }) {
                                     flexDirection: 'row'
                                 }}>
                                     <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginLeft: 10, borderRadius: 30 }} />
-                                    <Text style={{
+                                    <StatsText style={{
                                         color: "#FFF",
-                                        fontSize: 17,
-                                        fontWeight: 'bold',
                                         marginLeft: 10
-                                    }}>{item.name}</Text>
+                                    }}>{item.name}</StatsText>
                                 </View>
                                 <View style={{
                                     backgroundColor: "#CCC",
@@ -137,7 +137,7 @@ export default function HomePage({ navigation }) {
                                 }}>
                                     <Text style={{ color: primary }}>Image not found</Text></View>
                                 <View style={{ height: '10%', justifyContent: 'center', marginLeft: 10 }}>
-                                    <Text style={{ color: "#FFF", }}>{item.opinions} opinii</Text>
+                                    <RegularText style={{ color: "#FFF", }}>{item.opinions} opinii</RegularText>
                                 </View>
                             </View>
                         )
