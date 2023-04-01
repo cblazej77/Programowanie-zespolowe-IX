@@ -14,7 +14,8 @@ import {
     ChatLabel,
     AppText,
     StatsText,
-    RegularText
+    RegularText,
+    HeaderText
 } from './../../components/styles'
 import SearchFilter from '../../components/SearchFilter';
 
@@ -121,13 +122,12 @@ export default function HomePage({ navigation }) {
                                 <View style={{
                                     height: '20%',
                                     alignItems: 'center',
-                                    flexDirection: 'row'
+                                    flexDirection: 'row',
                                 }}>
-                                    <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginLeft: 10, borderRadius: 30 }} />
-                                    <StatsText style={{
+                                    <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginHorizontal: 10, borderRadius: 30 }} />
+                                    <HeaderText numberOfLines={1} style={{
                                         color: "#FFF",
-                                        marginLeft: 10
-                                    }}>{item.name}</StatsText>
+                                    }}>{item.name}</HeaderText>
                                 </View>
                                 <View style={{
                                     backgroundColor: "#CCC",

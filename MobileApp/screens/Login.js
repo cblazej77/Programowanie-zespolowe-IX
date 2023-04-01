@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 
 //formik
 import { Formik } from "formik";
 
 //icons
-import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
+import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
 
 import {
     StyledContainer,
@@ -25,37 +25,41 @@ import {
     ExtraText,
     ExtraView,
     TextLink,
-    TextLinkContent
+    TextLinkContent,
+    HeaderText,
+    StatsText,
+    RegularText,
+    SmallText
 } from './../components/styles';
 import { SafeAreaView, View } from "react-native";
 
 import { useFonts } from '@expo-google-fonts/lexend-deca';
 
 //Colors
-const {tertiary, darkLight, primary} = Colors;
+const { tertiary, darkLight, primary, link } = Colors;
 
 //keyboard avoiding view
 import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
 
     return (
-        <KeyboardAvoidingWrapper style={{backgroundColor: {primary}}}>
+        <KeyboardAvoidingWrapper style={{ backgroundColor: { primary } }}>
             <StyledContainer>
                 <InnerContainer>
                     <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
-                    <PageTitle>Logowanie</PageTitle>
+                    <HeaderText style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
-                    initialValues={{email: '', password: ''}}
-                    onSubmit={(values) => {
-                        console.log(values);
-                        navigation.navigate("MainNavigation");
-                    }}
+                        initialValues={{ email: '', password: '' }}
+                        onSubmit={(values) => {
+                            console.log(values);
+                            navigation.navigate("MainNavigation");
+                        }}
                     >
-                        {({handleChange, handleBlur, handleSubmit, values}) => (<StyledFormArea>
-                            <MyTextInput 
-                                label = "Adres Email"
+                        {({ handleChange, handleBlur, handleSubmit, values }) => (<StyledFormArea>
+                            <MyTextInput
+                                label="Adres Email"
                                 icon="mail"
                                 placeholder="email@example.com"
                                 placeholderTextColor={'#00000088'}
@@ -64,8 +68,8 @@ const Login = ({navigation}) => {
                                 value={values.email}
                                 keyboardType="email-address"
                             />
-                            <MyTextInput 
-                                label = "Hasło"
+                            <MyTextInput
+                                label="Hasło"
                                 icon="lock"
                                 placeholder="************"
                                 placeholderTextColor={'#00000088'}
@@ -79,28 +83,28 @@ const Login = ({navigation}) => {
                             />
                             <MsgBox>...</MsgBox>
                             <StyledButton onPress={handleSubmit}>
-                                <ButtonText>
-                                    Zaloguj
-                                </ButtonText>
+                                <StatsText style={{color: primary}}>
+                                    Zaloguj się
+                                </StatsText>
                             </StyledButton>
                             <StyledButton onPress={handleSubmit}>
-                                <ButtonText>
+                                <StatsText style={{color: primary}}>
                                     Kontynuuj bez logowania
-                                </ButtonText>
+                                </StatsText>
                             </StyledButton>
                             <Line />
                             <StyledButton google={true} onPress={handleSubmit}>
-                                <Fontisto name="google" color={primary} size={25}/>
-                                <ButtonText google={true}>
-                                    Zaloguj się z Google
-                                </ButtonText>
+                                <Fontisto name="google" color={primary} size={25} />
+                                <StatsText style={{color: primary}}>
+                                    Kontunuuj z Google
+                                </StatsText>
                             </StyledButton>
                             <ExtraView>
-                                    <ExtraText>Nie masz jeszcze konta? </ExtraText>
-                                    <TextLink onPress={() => navigation.navigate("Signup")}>
-                                        <TextLinkContent>Zarejestruj się!</TextLinkContent>
-                                    </TextLink>
-                                </ExtraView>
+                                <SmallText>Nie masz jeszcze konta? </SmallText>
+                                <TextLink onPress={() => navigation.navigate("Signup")}>
+                                    <SmallText style={{color: link}}>Zarejestruj się!</SmallText>
+                                </TextLink>
+                            </ExtraView>
                         </StyledFormArea>)}
                     </Formik>
                 </InnerContainer>
@@ -109,7 +113,7 @@ const Login = ({navigation}) => {
     );
 }
 
-const MyTextInput = ({label, icon, isPassword, hidePassword, setHidePassword, ...props}) => {
+const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
     return (
         <View>
             <LeftIcon>

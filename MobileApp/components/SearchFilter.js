@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import React from 'react';
-import { RegularText, StatsText, StatsTextBold } from "./styles";
+import { RegularText, StatsText } from "./styles";
 import { Colors } from "./styles";
 
 const { darkLight, secondary } = Colors;
@@ -18,18 +18,18 @@ const SearchFilter = ({ data, input, setInput }) => {
                             <View style={{ flexDirection: "row", height: 50, justifyContent: "space-around", }}>
                                 <View style={{ width: 40, height: 40, borderRadius: 70, backgroundColor: "#CCC", marginRight: 5 }} />
                                 <View style={{ width: "80%" }}>
-                                    <StatsTextBold style={{ textAlign: "left", fontWeight: "bold", fontSize: 15 }}>{item.name} {item.surname}</StatsTextBold>
+                                    <StatsText bold={true} style={{ textAlign: "left", fontSize: 15 }}>{item.name} {item.surname}</StatsText>
                                     <RegularText style={{color: "#6b6f96", fontSize: 13}} numberOfLines={1}>{item.last_message}</RegularText>
                                 </View>
                                 <View>
-                                    <StatsTextBold numberOfLines={1} style={{
+                                    <StatsText numberOfLines={1} bold={true} style={{
                                         width: 25,
                                         fontSize: 10,
                                         backgroundColor: "#DA7676",
                                         borderRadius: 30,
                                         paddingVertical: 1,
                                         color: "#FFF"
-                                    }}>{item.unseen_messages}</StatsTextBold>
+                                    }}>{item.unseen_messages}</StatsText>
                                 </View>
                             </View>
                         )
@@ -40,20 +40,18 @@ const SearchFilter = ({ data, input, setInput }) => {
                             <View style={{ flexDirection: "row", height: 50, justifyContent: "space-around", }}>
                                 <View style={{ width: 40, height: 40, borderRadius: 70, backgroundColor: "#CCC", marginRight: 5 }} />
                                 <View style={{ width: "80%" }}>
-                                    <Text style={{ fontWeight: "bold", fontSize: 15 }}>{item.name} {item.surname}</Text>
-                                    <Text numberOfLines={1}>{item.last_message}</Text>
+                                    <StatsText bold={true} style={{ textAlign: "left", fontSize: 15 }}>{item.name} {item.surname}</StatsText>
+                                    <RegularText style={{color: "#6b6f96", fontSize: 13}} numberOfLines={1}>{item.last_message}</RegularText>
                                 </View>
                                 <View>
-                                    <Text numberOfLines={1} style={{
+                                    <StatsText numberOfLines={1} bold={true} style={{
                                         width: 25,
                                         fontSize: 10,
-                                        fontWeight: "bold",
                                         backgroundColor: "#DA7676",
                                         borderRadius: 30,
-                                        textAlign: "center",
                                         paddingVertical: 1,
                                         color: "#FFF"
-                                    }}>{item.unseen_messages}</Text>
+                                    }}>{item.unseen_messages}</StatsText>
                                 </View>
                             </View>
                         )

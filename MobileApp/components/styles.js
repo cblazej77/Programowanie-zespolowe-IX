@@ -6,18 +6,20 @@ import styled from "styled-components";
 export const Colors = {
     primary: "#F0EDEB",
     secondary: "#BEB5BC",
-    tertiary: "#000000AA",
     darkLight: "#4A4E69",
+    notificationsRed: "#DA7676",
+    tertiary: "#000000AA",
     brand: "#000FFF",
-    red: "#FF0000",
+    red: "#F00",
     green: "#47D531",
-    white: "#FFFFFF",
+    white: "#FFF",
     grey: "#00000022",
-
+    link: "#4159a3",
 };
 
 const { primary, secondary, tertiary, darkLight, brand, red, green, grey } = Colors;
 
+//text with custom font
 export const AppText = styled.Text`
     let [fontsLoaded] = useFonts({
      'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
@@ -36,20 +38,18 @@ export const RegularText = styled(AppText)`
 `;
 
 export const StatsText = styled(AppText)`
-    let [fontsLoaded] = useFonts({
-        'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
-    });
-    fontFamily: LexendDeca-Regular;
     color: ${darkLight};
     fontSize: 18px;
     text-align: center;
+
+    ${(props) => props.bold && `
+        font-weight: bold;
+    `}
 `;
 
-export const StatsTextBold = styled(AppText)`
+export const SmallText = styled(AppText)`
     color: ${darkLight};
-    fontSize: 18px;
-    fontWeight: bold;
-    text-align: center;
+    fontSize: 11px;
 `;
 
 export const StyledContainer = styled.View`
@@ -91,19 +91,6 @@ export const Avatar = styled.Image`
 export const WelcomeImage = styled.Image`
     height = 50%;
     min-width = 100%;
-`;
-
-export const PageTitle = styled.Text`
-    font-size: 30px;
-    text-align: center;
-    font-weight: bold;
-    color: ${darkLight};
-    padding: 10px;
-    padding-top: 25px;
-
-    ${(props) => props.welcome && `
-        font-size: 35px;
-    `}
 `;
 
 export const SubTitle = styled.Text`
@@ -169,7 +156,7 @@ export const StyledButton = styled.TouchableOpacity`
     ${(props) => props.google == true && `
         background-color: ${green};
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-evenly;
     `}
 `;
 

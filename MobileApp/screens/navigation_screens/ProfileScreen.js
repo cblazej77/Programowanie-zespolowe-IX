@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, SafeAreaView, Image, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ChatLabel, Colors, HeaderText, RegularText, StatsTextBold, StatsText } from '../../components/styles';
+import { ChatLabel, Colors, HeaderText, RegularText, StatsText } from '../../components/styles';
 import Gallery from '../../components/Gallery';
 import Reviews from '../../components/Reviews';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -28,7 +28,7 @@ export default function ProfileScreen({ navigation }) {
             </ChatLabel>
             <View style={{ flexDirection: "row", margin: 15, justifyContent: "space-between" }}>
                 <View style={{ height: 100, width: 100, backgroundColor: "#771967", borderRadius: 50 }} />
-                <View style={{ width: "65%", alignItems: "center", justifyContent: "space-between" }}>
+                <View style={{ width: "65%", alignItems: "center", justifyContent: "space-around" }}>
                     <Stars
                         default={3.5}
                         spacing={7}
@@ -39,18 +39,19 @@ export default function ProfileScreen({ navigation }) {
                         fullStar={require('./../../assets/img/star.png')}
                         halfStar={require('./../../assets/img/star-half.png')}
                         emptyStar={require('./../../assets/img/star-outline.png')}
+
                     />
                     <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-around" }}>
                         <View>
-                            <StatsTextBold>63</StatsTextBold>
+                            <StatsText bold={true}>63</StatsText>
                             <StatsText>Prace</StatsText>
                         </View>
                         <View>
-                            <StatsTextBold>205</StatsTextBold>
+                            <StatsText bold={true}>205</StatsText>
                             <StatsText>Opinie</StatsText>
                         </View>
                         <View>
-                            <StatsTextBold>3,5/5</StatsTextBold>
+                            <StatsText bold={true}>3,5/5</StatsText>
                             <StatsText>Ocena</StatsText>
                         </View>
                     </View>
