@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import { useAuth } from '../Auth';
+import { useNavigate } from 'react-router-dom';
 import {
     Nav,
     NavLink,
     NavMenu,
-    MainName,
+    ButtonLogout,
     NavBtnLink,
     NavItemBtn,
     NavItem,
@@ -32,6 +34,14 @@ function Navbar() {
         setButton(true);
       }
     };
+
+    const auth = useAuth()
+    const navigate = useNavigate()
+
+    const handleLogout = () =>{
+        auth.logout()
+        navigate('/')
+      }
 
     useEffect(() => {
         showButton();
@@ -67,27 +77,47 @@ function Navbar() {
                     </NavLink>
                 </NavItem>
 
-                <NavItem>
+                {!auth.user ? (
+                    <NavItem>
                     <NavLink to='/sign-in' onClick={closeMobileMenu}>
                         Logowanie
                     </NavLink>
                 </NavItem>
-
+                ):(
+                <NavItem>
+                    <ButtonLogout to='#;return false;' onClick={handleLogout} >
+                            ButtonLogout
+                    </ButtonLogout>
+                </NavItem>
+                )}
+                
+            {!auth.user ? (
+                <>
                 <NavItemBtn>
-                    {button ? (
-                        <NavBtnLink to='/sign-up'>
-                            <Button fontBig primary>
-                            Rejestracja-K
-                            </Button>
-                        </NavBtnLink>)
+                {button ? (
+                    <NavBtnLink to='/sign-up'>
+                        <Button fontBig primary>
+                        Rejestracja-K
+                        </Button>
+                    </NavBtnLink>)
                 : (
                     <NavBtnLink to='/sign-up'>
                         <Button onClick={closeMobileMenu} fontBig primary>
-                        Rejestracja-M
+                            Rejestracja-M
                         </Button>
                         </NavBtnLink>
                 )}
                 </NavItemBtn>
+                </>
+            ):(
+                <NavBtnLink>
+                    <NavBtnLink to='/account'>
+                    <Button onClick={closeMobileMenu} fontBig primary>
+                        Konto_L
+                    </Button>
+                    </NavBtnLink>
+                </NavBtnLink>
+            )}
             </NavMenu>
           </NavbarContainer>
         </Nav>

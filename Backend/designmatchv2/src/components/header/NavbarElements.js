@@ -19,6 +19,7 @@ export const NavbarContainer  = styled.div`
 `;
 
 export const Button = styled.button`
+cursor: pointer;
 background: none;
 padding: 1px 6px;
 color: rgba(255, 255, 255, 0.75);
@@ -38,6 +39,7 @@ font-size: 1.2rem;
     width: 100%;
   }
 `;
+
 
 /* tutaj height odpowiada za szerokosc na NavBaru*/
 export const Nav = styled.nav`
@@ -144,6 +146,28 @@ export const NavItemBtn = styled.li`
     width: 100%;
     height: 120px;
   }
+`;
+export const ButtonLogout = styled.button`
+cursor: pointer;
+font-size: 1.2rem;
+border: none;
+background-color: transparent;
+
+color: #fff;
+display: flex;
+align-items: center;
+padding: 0.5rem 1rem;
+height: 100%;
+@media screen and (max-width: 960px) {
+  text-align: center;
+  padding: 2rem;
+  width: 100%;
+  display: table;
+  &:hover {
+    transition: all 0.3s ease;
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  }
+}
 `;
 
 export const NavLink = styled(Link)`

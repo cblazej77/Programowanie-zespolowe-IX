@@ -14,7 +14,6 @@ export const AllPage = styled.div`
     margin-bottom: 10%;
     transform: translate(-50%, 17%);
     padding: 0 rem;
-    min-width: 350px;
     @media screen and (max-width: 960px) {
       transform: translate(-50%, 10%);
       height: 83vh;
@@ -29,15 +28,15 @@ export const StyledForm = styled.form`
     rgba(255, 255, 255, 0.35)
     );
     margin: 15px auto;
-    transform: translateY(3rem);
     border-radius: 15px;
+    transform: translateY(3rem);
     box-shadow: 0px 8px 24pxx 0 rgba(0, 0, 0, 0.3);
     min-width: 300px;
-    max-width: 400px;
+    max-width: 500px;
     padding: 24px;
     text-align: center;
     position: absolute;
-    scale: 1.3;
+    scale: 1.2;
 `
 
 export const StyledLabel = styled.label`
@@ -66,11 +65,11 @@ export const StyledAlert = styled.div`
 `
 
   export const MainName = styled.div`
-    font-size: 2.35em;
+    font-size: 2em;
     color: rgba(255,255,255, 0.75);
     font-family: "Norwesterregular";
     position: absolute;
-    transform: translateY(-1.6rem);
+    transform: translateY(-1.2rem);
     @media screen and (max-width: 960px) {
        font-size: 0px;
       }
@@ -94,12 +93,7 @@ export const StyledAlert = styled.div`
   `
 
 
-export const InputGroup = styled.div`
-  position: relative;
-  top: 15px;
-  padding-bottom: 15px;
 
-`;
 
 export const InputLabel = styled.label`
   color: #8d8d8d;
@@ -115,12 +109,12 @@ export const InputField = styled.input`
   outline: none;
   border: 1px solid #dadce0;
   font-size: 0.8rem;
+  width: 95%;
   border: none;
   border-radius: 18px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
   color: rgb(1, 1, 1);
   padding: 12px 24px;
-
   &:focus
   {
     border: 2px solid black;
@@ -139,7 +133,36 @@ export const InputField = styled.input`
     transition: 0.3s;
   }
 `;
-
+export const CenterInput = styled.div`
+display: flex;
+padding-bottom: 15px;
+height: 100%;
+position: relative;
+@media screen and (max-width: 540px) {
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+`
+export const InputGroup = styled.div`
+  position: relative;
+  top: 15px;
+  padding-bottom: 15px;
+  width: 100%;
+  @media screen and (max-width: 540px) {
+    padding-bottom: 60px;
+  }
+`;
+export const InputGroupSecond = styled.div`
+  position: relative;
+  top: 15px;
+  padding-bottom: 15px;
+  width: 100%;
+  @media screen and (max-width: 540px) {
+    position: absolute;
+    top: 65%;
+  }
+`;
+  
 
 export const CenterButton = styled.div`
   position: relative;
@@ -153,6 +176,7 @@ export const CenterButton = styled.div`
   }
 `
 
+
 export const Button = styled(Link)`
     background: transparent;
     border: none;
@@ -161,7 +185,6 @@ export const Button = styled(Link)`
     color: rgb(255, 255, 255);
     padding: 10px 15px;
     text-decoration: none;
-    margin-left: 5px;
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(2.5rem);
@@ -184,8 +207,7 @@ export const Button = styled(Link)`
 `
 
 
-
-export const LoginButton = styled(Button)`
+export const SignUpButton = styled(Button)`
 background: linear-gradient(
     to left,
     rgba(255, 255, 255, 0.1),
@@ -203,6 +225,11 @@ background: linear-gradient(
     }
     
 `
+export const DisabledButton = styled(SignUpButton)`
+color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  `
 
 export const GoogleButton = styled(Button)`
     background: transparent;
