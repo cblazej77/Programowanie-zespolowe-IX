@@ -12,7 +12,10 @@ import {
     Colors,
     HomeTextInput,
     ChatLabel,
-    AppText
+    AppText,
+    StatsText,
+    RegularText,
+    HeaderText
 } from './../../components/styles'
 import SearchFilter from '../../components/SearchFilter';
 
@@ -119,15 +122,12 @@ export default function HomePage({ navigation }) {
                                 <View style={{
                                     height: '20%',
                                     alignItems: 'center',
-                                    flexDirection: 'row'
+                                    flexDirection: 'row',
                                 }}>
-                                    <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginLeft: 10, borderRadius: 30 }} />
-                                    <Text style={{
+                                    <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginHorizontal: 10, borderRadius: 30 }} />
+                                    <HeaderText numberOfLines={1} style={{
                                         color: "#FFF",
-                                        fontSize: 17,
-                                        fontWeight: 'bold',
-                                        marginLeft: 10
-                                    }}>{item.name}</Text>
+                                    }}>{item.name}</HeaderText>
                                 </View>
                                 <View style={{
                                     backgroundColor: "#CCC",
@@ -137,7 +137,7 @@ export default function HomePage({ navigation }) {
                                 }}>
                                     <Text style={{ color: primary }}>Image not found</Text></View>
                                 <View style={{ height: '10%', justifyContent: 'center', marginLeft: 10 }}>
-                                    <Text style={{ color: "#FFF", }}>{item.opinions} opinii</Text>
+                                    <RegularText style={{ color: "#FFF", }}>{item.opinions} opinii</RegularText>
                                 </View>
                             </View>
                         )

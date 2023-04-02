@@ -5,12 +5,11 @@ import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
 
 //icons
-import {Octicons, Ionicons, Fontisto} from '@expo/vector-icons'
+import {Octicons, Ionicons} from '@expo/vector-icons'
 
 import {
     StyledContainer,
     InnerContainer,
-    PageLogo,
     PageTitle,
     StyledFormArea,
     LeftIcon,

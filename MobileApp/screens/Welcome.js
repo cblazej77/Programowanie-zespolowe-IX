@@ -11,9 +11,12 @@ import {
     Line,
     WelcomeConteiner,
     WelcomeImage,
-    Avatar
+    Avatar,
+    HeaderText,
+    Colors
 } from './../components/styles';
 
+const { darkLight } = Colors;
 
 const Welcome = () => {
     return (
@@ -22,17 +25,17 @@ const Welcome = () => {
             <InnerContainer>
                 <WelcomeImage resizeMode="cover" source={require('./../assets/img/logo.png')} />
                 <WelcomeConteiner>
-                <PageTitle welcome={true}>Witaj!</PageTitle>
-                <SubTitle welcome={true}>Jan Kowalski</SubTitle>
-                <SubTitle welcome={true}>jankowalski@gmail.com</SubTitle>
+                    <HeaderText style={{ fontSize: 35, color: darkLight }}>Witaj!</HeaderText>
+                    <SubTitle welcome={true}>Jan Kowalski</SubTitle>
+                    <SubTitle welcome={true}>jankowalski@gmail.com</SubTitle>
                     <StyledFormArea>
-                    <Avatar resizeMode="cover" source={require('./../assets/img/avatar.png')}></Avatar>
-                        
+                        <Avatar resizeMode="cover" source={require('./../assets/img/avatar.png')}></Avatar>
+
                         <Line />
-                        <StyledButton onpress={() => {}}>
+                        <StyledButton onpress={() => { }}>
                             <ButtonText>Wyloguj</ButtonText>
                         </StyledButton>
-                        
+
                     </StyledFormArea>
                 </WelcomeConteiner>
             </InnerContainer>

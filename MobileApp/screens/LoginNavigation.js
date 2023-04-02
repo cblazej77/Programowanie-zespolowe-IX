@@ -7,16 +7,21 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from './Login';
 import Signup from './Signup';
 import MainNavigation from './MainNavigation';
-import { StatusBar } from 'react-native';
+import { SafeAreaView, StatusBar, View } from 'react-native';
 
 import { Colors } from '../components/styles';
+import { useFonts } from '@expo-google-fonts/lexend-deca';
 
 const {darkLight} = Colors
 
 const Stack = createStackNavigator();
 
 const LoginNavigation = () => {
+    let [fontsLoaded] = useFonts({
+        'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
+      });
     return (
+        
         <NavigationContainer>
             <StatusBar hidden={false} backgroundColor={darkLight}/>
             <Stack.Navigator
@@ -30,6 +35,7 @@ const LoginNavigation = () => {
                 <Stack.Screen name="MainNavigation" component={MainNavigation}/>
             </Stack.Navigator>
         </NavigationContainer>
+        
     )
 }
 
