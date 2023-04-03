@@ -24,7 +24,8 @@ import {
     ExtraText,
     ExtraView,
     TextLink,
-    TextLinkContent
+    TextLinkContent,
+    HeaderText
 } from './../components/styles';
 import { View, TouchableOpacity, processColor } from "react-native";
 
@@ -61,7 +62,7 @@ const Signup = ({navigation}) => {
             <StyledContainer>
                 <StatusBar style="dark" ></StatusBar>
                 <InnerContainer>
-                    <PageTitle>Rejestracja</PageTitle>
+                    <HeaderText style={{fontSize: 30, color: darkLight, marginBottom: 30}}>Rejestracja</HeaderText>
                     
                     {show && (
                         <DateTimePicker

@@ -33,8 +33,6 @@ import {
 } from './../components/styles';
 import { SafeAreaView, View } from "react-native";
 
-import { useFonts } from '@expo-google-fonts/lexend-deca';
-
 //Colors
 const { tertiary, darkLight, primary, link } = Colors;
 
