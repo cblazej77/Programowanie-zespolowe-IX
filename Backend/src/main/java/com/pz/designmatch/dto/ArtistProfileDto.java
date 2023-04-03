@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pz.designmatch.dto.response.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
