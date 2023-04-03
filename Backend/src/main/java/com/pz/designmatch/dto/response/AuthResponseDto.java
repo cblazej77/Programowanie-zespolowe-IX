@@ -1,4 +1,4 @@
-package com.pz.designmatch.dto;
+package com.pz.designmatch.dto.response;
 
 import lombok.Data;
 

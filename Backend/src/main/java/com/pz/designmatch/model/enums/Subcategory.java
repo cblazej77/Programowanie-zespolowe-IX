@@ -1,5 +1,8 @@
 package com.pz.designmatch.model.enums;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum Subcategory {
     LOGO(Category.LOGO_AND_IDENTITY, "Logo"),
     IDENTITY(Category.LOGO_AND_IDENTITY, "Identyfikacja wizualna"),
@@ -42,8 +45,21 @@ public enum Subcategory {
         return displayName;
     }
 
-    @Override
-    public String toString() {
-        return displayName;
+    public static List<Subcategory> getSubcategoriesByCategory(Category category) {
+        return List.of(Subcategory.values()).stream().filter(subcategory -> subcategory.getCategory().equals(category)).collect(Collectors.toList());
     }
+
+    public static Subcategory fromDisplayName(String text) {
+        for (Subcategory subcategory : Subcategory.values()) {
+            if (subcategory.displayName.equalsIgnoreCase(text)) {
+                return subcategory;
+            }
+        }
+        return null;
+    }
+
+    public static List<String> getDisplayNames() {
+        return List.of(Subcategory.values()).stream().map(Subcategory::getDisplayName).collect(Collectors.toList());
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.pz.designmatch.dto;
+package com.pz.designmatch.dto.request;
 
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.Education;

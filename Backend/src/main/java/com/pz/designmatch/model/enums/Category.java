@@ -1,5 +1,8 @@
 package com.pz.designmatch.model.enums;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum Category {
     LOGO_AND_IDENTITY("Logo i identyfikacja wizualna"),
     WEB_AND_MOBILE("Strony internetowe i aplikacje mobilne"),
@@ -17,8 +20,16 @@ public enum Category {
         return displayName;
     }
 
-    @Override
-    public String toString() {
-        return displayName;
+    public static Category fromDisplayName(String displayName) {
+        for (Category category : Category.values()) {
+            if (category.displayName.equalsIgnoreCase(displayName)) {
+                return category;
+            }
+        }
+        return null;
+    }
+
+    public static List<String> getDisplayNames() {
+        return List.of(Category.values()).stream().map(Category::getDisplayName).collect(Collectors.toList());
     }
 }

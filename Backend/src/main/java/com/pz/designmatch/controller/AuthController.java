@@ -1,8 +1,8 @@
 package com.pz.designmatch.controller;
 
-import com.pz.designmatch.dto.AuthResponseDto;
-import com.pz.designmatch.dto.LoginDto;
-import com.pz.designmatch.dto.RegisterDto;
+import com.pz.designmatch.dto.response.AuthResponseDto;
+import com.pz.designmatch.dto.request.LoginDto;
+import com.pz.designmatch.dto.request.RegisterDto;
 import com.pz.designmatch.model.user.Role;
 import com.pz.designmatch.repository.RoleRepository;
 import com.pz.designmatch.repository.UserRepository;

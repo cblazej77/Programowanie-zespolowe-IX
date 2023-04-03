@@ -1,6 +1,6 @@
 package com.pz.designmatch.security;
 
-import com.pz.designmatch.dto.RegisterDto;
+import com.pz.designmatch.dto.request.RegisterDto;
 import com.pz.designmatch.model.user.ConfirmationToken;
 import com.pz.designmatch.model.user.Role;
 import com.pz.designmatch.model.user.UserEntity;

@@ -1,6 +1,6 @@
 package com.pz.designmatch.service;
 
-import com.pz.designmatch.dto.EditingAndPrintDto;
+import com.pz.designmatch.dto.request.EditingAndPrintDto;
 import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.model.user.Education;
 import com.pz.designmatch.model.user.Experience;
