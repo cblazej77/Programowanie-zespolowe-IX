@@ -31,16 +31,73 @@ import {
     RegularText,
     SmallText
 } from './../components/styles';
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, View, ActivityIndicator } from "react-native";
 
 //Colors
 const { tertiary, darkLight, primary, link } = Colors;
+
+//API client
+import axios from 'axios';
 
 //keyboard avoiding view
 import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 
 const Login = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
+    const [message, setMessage] = useState();
+    const[messageType, setMessageType] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+
+    const handleLogin = async (credentials, setSubmitting) => {
+        handleMessage(null);
+        const url = 'http://192.168.1.106:8080/api/auth/login';
+        // axios
+        // .post(url, credentials)
+        // .then((response) => {
+        //     const result = response.data;
+        //     const {message, status, data} = result;
+
+        //     if(status !== 'SUCCESS') {
+        //         handleMessage(message, status);
+        //     } else {
+        //         navigation.navigate('MainNavigation', {...data[0] });
+        //     }
+        //     setSubmitting(false);
+        // })
+        // .catch(error => {
+        //     console.log(error.JSON());
+        //     setSubmitting('false');
+        //     handleMessage("Wystąpił bład. Sprawdź swoje połączenie sieciowe i spróbuj ponownie");
+        // })
+            try{
+                const response = await axios.post(url,
+                  JSON.stringify({email, password}),
+                  {
+                  headers: { 'Content-Type': 'application/json' },
+                  }
+              );
+              console.log(response?.data);
+                  console.log(response?.accessToken);
+                  console.log(JSON.stringify(response));
+                  navigation.navigate('MainNavigation');
+              }catch(err){
+                  if (!err?.response) {
+                      console.log('No Server Response');
+                  } else if (err.response?.status === 409) {
+                      console.log('Username Taken');
+                  } else {
+                      console.log('Login Failed')
+                      console.log(err)
+                  }
+              } 
+    }
+
+    const handleMessage = (message, type = 'FAILED') => {
+        setMessage(message);
+        setMessageType(type);
+    }
 
     return (
         <KeyboardAvoidingWrapper style={{ backgroundColor: { primary } }}>
@@ -49,42 +106,49 @@ const Login = ({ navigation }) => {
                     <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
                     <HeaderText style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
-                        initialValues={{ email: '', password: '' }}
-                        onSubmit={(values) => {
-                            console.log(values);
-                            navigation.navigate("MainNavigation");
+                        initialValues={{email: '', password: ''}}
+                        onSubmit={(values, {setSubmitting}) => {
+                            if(email == '' || password == '') {
+                                handleMessage('Proszę wypełnić oba pola');
+                                setSubmitting(false);
+                            } else {
+                                handleLogin(values, setSubmitting);
+                            }
                         }}
                     >
-                        {({ handleChange, handleBlur, handleSubmit, values }) => (<StyledFormArea>
-                            <MyTextInput
-                                label="Adres Email"
+                        {({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (<StyledFormArea>
+                            <MyTextInput 
+                                label = "Adres Email"
                                 icon="mail"
                                 placeholder="email@example.com"
                                 placeholderTextColor={'#00000088'}
-                                onChangeText={handleChange('email')}
+                                onChangeText={setEmail}
                                 onBlur={handleBlur('email')}
-                                value={values.email}
+                                value={email}
                                 keyboardType="email-address"
                             />
-                            <MyTextInput
-                                label="Hasło"
+                            <MyTextInput 
+                                label = "Hasło"
                                 icon="lock"
                                 placeholder="************"
                                 placeholderTextColor={'#00000088'}
-                                onChangeText={handleChange('password')}
+                                onChangeText={setPassword}
                                 onBlur={handleBlur('password')}
-                                value={values.password}
+                                value={password}
                                 secureTextEntry={hidePassword}
                                 isPassword={true}
                                 hidePassword={hidePassword}
                                 setHidePassword={setHidePassword}
                             />
-                            <MsgBox>...</MsgBox>
-                            <StyledButton onPress={handleSubmit}>
+                            <MsgBox type={messageType}>{message}</MsgBox>
+                            {!isSubmitting && <StyledButton onPress={handleSubmit}>
                                 <StatsText style={{color: primary}}>
                                     Zaloguj się
                                 </StatsText>
-                            </StyledButton>
+                            </StyledButton>}
+                            {isSubmitting && <StyledButton disabled={true}>
+                                <ActivityIndicator size="large" color={primary} />
+                            </StyledButton>}
                             <StyledButton onPress={handleSubmit}>
                                 <StatsText style={{color: primary}}>
                                     Kontynuuj bez logowania
