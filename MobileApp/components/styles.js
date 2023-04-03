@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useFonts } from 'expo-font';
 
 //const StatusBarHeight = Constants.statusBarHeight;
 
@@ -21,10 +22,7 @@ const { primary, secondary, tertiary, darkLight, brand, red, green, grey } = Col
 
 //text with custom font
 export const AppText = styled.Text`
-    let [fontsLoaded] = useFonts({
-     'LexendDeca-Regular': require('./../assets/fonts/LexendDeca-Regular.ttf'),
-    });
-    fontFamily: LexendDeca-Regular;
+    fontFamily: 'LexendDeca-Regular';
 `;
 
 export const HeaderText = styled(AppText)`

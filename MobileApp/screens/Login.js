@@ -149,7 +149,7 @@ const Login = ({ navigation }) => {
                             {isSubmitting && <StyledButton disabled={true}>
                                 <ActivityIndicator size="large" color={primary} />
                             </StyledButton>}
-                            <StyledButton onPress={handleSubmit}>
+                            <StyledButton onPress={() => navigation.navigate("MainNavigation")}>
                                 <StatsText style={{color: primary}}>
                                     Kontynuuj bez logowania
                                 </StatsText>
