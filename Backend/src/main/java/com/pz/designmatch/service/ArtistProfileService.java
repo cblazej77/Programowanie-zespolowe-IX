@@ -29,7 +29,7 @@ public class ArtistProfileService {
     }
 
     public ArtistProfile updateArtistProfile(String username, ArtistProfileDto artistProfileDto) {
-        Optional<ArtistProfile> optionalArtistProfile = artistProfileRepository.findArtistProfileByUserUsername(username);
+        Optional<ArtistProfile> optionalArtistProfile = artistProfileRepository.findByUser_Username(username);
         if (optionalArtistProfile.isPresent()) {
             ArtistProfile existingArtistProfile = optionalArtistProfile.get();
             existingArtistProfile.setBio(artistProfileDto.getBio());
@@ -59,7 +59,7 @@ public class ArtistProfileService {
     }
 
     public ArtistProfile getArtistProfile(String username) {
-        Optional<ArtistProfile> optionalArtistProfile = artistProfileRepository.findArtistProfileByUserUsername(username);
+        Optional<ArtistProfile> optionalArtistProfile = artistProfileRepository.findByUser_Username(username);
         if (optionalArtistProfile.isPresent()) {
             return optionalArtistProfile.get();
         }
