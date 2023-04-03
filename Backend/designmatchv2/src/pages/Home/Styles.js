@@ -1,15 +1,41 @@
-import {COLORS } from './Colors';
+import {COLORS } from '../../components/Colors';
 import styled from 'styled-components';
 
 
-export const HeroContainer = styled.div`
-    display: flex;
+export const AllPage = styled.div`
     position: relative;
     height: 100vh;
+    min-width: 350px;
     justify-content: center;
     align-items: center;
+    display: contents;
+`
+
+export const HeroContainer = styled.div`
+    margin-top: 10rem;
     padding; 0 1rem;
+    @media only screen and (max-width: 1024px) {
+        margin-top: 2.5rem;
+        display: fixed;
+      }
+  
+      margin-bottom: 25vh;
 `;
+
+export const SortButton = styled.button`
+margin-left: 0;
+`
+export const SortLabel = styled.label`
+    margin-left: 0;
+    @media only screen and (max-width: 1200px) {
+    }
+`
+//>*:not(HeroContainer)
+export const Sort = styled.div`
+    margin-top: 10%;
+    border: 2px solid red;
+`
+
 export const HeroBG = styled.div`
     position: absolute;
     top: 0;

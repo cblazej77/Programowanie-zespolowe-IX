@@ -27,10 +27,10 @@ export const StyledForm = styled.form`
     rgba(255, 255, 255, 0.05),
     rgba(255, 255, 255, 0.35)
     );
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
     margin: 15px auto;
     border-radius: 15px;
     transform: translateY(3rem);
-    box-shadow: 0px 8px 24pxx 0 rgba(0, 0, 0, 0.3);
     min-width: 300px;
     max-width: 500px;
     padding: 24px;
@@ -65,7 +65,7 @@ export const StyledAlert = styled.div`
 `
 
   export const MainName = styled.div`
-    font-size: 2em;
+    font-size: 2.35em;
     color: rgba(255,255,255, 0.75);
     font-family: "Norwesterregular";
     position: absolute;
@@ -101,7 +101,7 @@ export const InputLabel = styled.label`
   top: 21px;
   left: 55px;
   background: none;
-  transform: translate(-50%, -50%);
+  transform: translate(-1.5rem, -50%);
   transition: left 0.35s, opacity 0.3s;
 `;
 

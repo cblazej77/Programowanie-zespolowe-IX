@@ -73,7 +73,7 @@ function Navbar() {
 
                 <NavItem>
                     <NavLink to='/account' onClick={closeMobileMenu}>
-                        Konto
+                        KontoTest
                     </NavLink>
                 </NavItem>
 

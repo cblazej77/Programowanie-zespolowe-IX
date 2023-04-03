@@ -1,21 +1,26 @@
 import React from 'react';
 import {
+  AllPage,
   HeroContainer,
-  HeroBG,
-  HeroContent,
-  HeroItems,
-  HeroH1,
-  HeroH2
-} from '../../components/Styles';
+  SortLabel,
+  SortButton,
+  Sort
+} from './Styles';
 
 import Cards from './Cards';
 
 
 const Home = () => {
   return (
-    <HeroContainer>
+    <>
+    <AllPage>
+        <HeroContainer>
           <Cards />
-    </HeroContainer>
+        </HeroContainer>
+
+    </AllPage>
+    </>
+    
   )
 };
 

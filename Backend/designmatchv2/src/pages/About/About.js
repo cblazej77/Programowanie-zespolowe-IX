@@ -1,19 +1,21 @@
 import React from 'react';
+import { AllPage, Top, Date, Bottom, Border, Question, Space } from './Elements';
 
 const About = () => {
   return (
-    <div
-     style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '90vh',
-        color: 'white'
-     }}
-    >
-    
-     <h1>Tutaj będą informacje o stronie</h1>
-    </div>
+    <AllPage>
+        <Border>
+        <Top>O nas!</Top>
+        <Space></Space>
+        <Question>Kim jesteśmy?</Question>     
+          <Date>Wystartowaliśmy w 2023, Designmatch jest serwisem
+                na którym można kupić różne rodzaje grafik, pojekty i obrazy
+                stworzone przez zarejestrowanych design'erów.</Date> 
+        <Question>Dlaczego my?</Question> 
+          <Date>Jeszcze nie wiem, ale wygląda to trochę jak komunikator.</Date> 
+        <Bottom>Zostań częścią przyszłości!</Bottom>
+      </Border>
+    </AllPage>
   )
 };
 

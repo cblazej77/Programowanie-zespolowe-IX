@@ -31,7 +31,7 @@ export const StyledForm = styled.form`
     margin: 15px auto;
     transform: translateY(3rem);
     border-radius: 15px;
-    box-shadow: 0px 8px 24pxx 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
     min-width: 300px;
     max-width: 400px;
     padding: 24px;
@@ -107,7 +107,7 @@ export const InputLabel = styled.label`
   top: 21px;
   left: 55px;
   background: none;
-  transform: translate(-50%, -50%);
+  transform: translate(-20%, -50%);
   transition: left 0.35s, opacity 0.3s;
 `;
 

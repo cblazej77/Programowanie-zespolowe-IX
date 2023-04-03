@@ -66,28 +66,9 @@ export const SignIn =() => {
                   console.log(err)
                   setPasswordInvalid(true);
               }
-          } 
-          /*{axios.post(
-            'http://localhost:8080/api/auth/register',
-            {
-                'email': 'jakub1@gmail.com',
-                'username': 'jakub1',
-                'password': 'password',
-                'firstname': 'Jakub',
-                'lastname': 'Kasinski'
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then((response) => {
-              console.log(response);
-            }, (error) => {
-              console.log(error);
-            });
-      }*/}
-  }
+          }
+        }
+      }
 
 /*
   const buttonEnabled = (username, password) => {
