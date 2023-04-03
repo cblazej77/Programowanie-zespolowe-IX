@@ -1,5 +1,8 @@
 package com.pz.designmatch.model.enums;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum Language {
     POLISH("Polski"),
     ENGLISH("Angielski"),
@@ -19,16 +22,16 @@ public enum Language {
         return displayName;
     }
 
-    @Override
-    public String toString() {
-        return displayName;
+    public static Language fromDisplayName(String text) {
+        for (Language language : Language.values()) {
+            if (language.displayName.equalsIgnoreCase(text)) {
+                return language;
+            }
+        }
+        return null;
     }
 
-    public String[] getLanguages() {
-        String[] languages = new String[Language.values().length];
-        for (int i = 0; i < Language.values().length; i++) {
-            languages[i] = Language.values()[i].getDisplayName();
-        }
-        return languages;
+    public static List<String> getDisplayNames() {
+        return List.of(Language.values()).stream().map(Language::getDisplayName).collect(Collectors.toList());
     }
 }
