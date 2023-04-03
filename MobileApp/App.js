@@ -9,6 +9,7 @@ import LoginNavigation from './screens/LoginNavigation';
 const App = () => {
   const [fontLoaded] = useFonts({
     'LexendDeca-Regular': require('./assets/fonts/LexendDeca-Regular.ttf'),
+    'LexendDeca-SemiBold': require('./assets/fonts/LexendDeca-SemiBold.ttf'),
   });
 
   if (!fontLoaded) {

@@ -36,11 +36,19 @@ export const AppText = styled.Text`
 export const HeaderText = styled(AppText)`
     color: ${primary};
     fontSize: 26px;
+
+    ${(props) => props.bold == true && `
+        fontFamily: 'LexendDeca-SemiBold';
+    `}
 `;
 
 export const RegularText = styled(AppText)`
     color: ${darkLight};
     fontSize: 16px;
+
+    ${(props) => props.bold == true && `
+        fontFamily: 'LexendDeca-SemiBold';
+    `}
 `;
 
 export const StatsText = styled(AppText)`
@@ -48,14 +56,18 @@ export const StatsText = styled(AppText)`
     fontSize: 18px;
     text-align: center;
 
-    ${(props) => props.bold && `
-        font-weight: bold;
+    ${(props) => props.bold == true && `
+        fontFamily: 'LexendDeca-SemiBold';
     `}
 `;
 
 export const SmallText = styled(AppText)`
     color: ${darkLight};
     fontSize: 11px;
+
+    ${(props) => props.bold == true && `
+        fontFamily: 'LexendDeca-SemiBold';
+    `}
 `;
 
 export const StyledContainer = styled.View`

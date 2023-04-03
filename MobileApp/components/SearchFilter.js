@@ -19,7 +19,7 @@ const SearchFilter = ({ data, input, setInput }) => {
                                 <View style={{ width: 40, height: 40, borderRadius: 70, backgroundColor: "#CCC", marginRight: 5 }} />
                                 <View style={{ width: "80%" }}>
                                     <StatsText bold={true} style={{ textAlign: "left", fontSize: 15 }}>{item.name} {item.surname}</StatsText>
-                                    <RegularText style={{color: "#6b6f96", fontSize: 13}} numberOfLines={1}>{item.last_message}</RegularText>
+                                    <RegularText style={{color: "#777", fontSize: 13}} numberOfLines={1}>{item.last_message}</RegularText>
                                 </View>
                                 <View>
                                     <StatsText numberOfLines={1} bold={true} style={{

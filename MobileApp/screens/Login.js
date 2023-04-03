@@ -104,7 +104,7 @@ const Login = ({ navigation }) => {
             <StyledContainer>
                 <InnerContainer>
                     <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
-                    <HeaderText style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
+                    <HeaderText bold={true} style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
                         initialValues={{email: '', password: ''}}
                         onSubmit={(values, {setSubmitting}) => {
