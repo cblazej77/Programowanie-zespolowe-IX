@@ -1,6 +1,7 @@
 import React from 'react';
 import { useFonts } from 'expo-font';
 import Chat from './screens/Chat';
+import Loading from './components/Loading';
 
 //React Navigation stack
 import LoginNavigation from './screens/LoginNavigation';
@@ -11,7 +12,10 @@ const App = () => {
   });
 
   if (!fontLoaded) {
-    return null; // tutaj można umieścić dowolny ekran ładowania
+    return (
+      //loading screen
+      <Loading />
+    );
   }
 
   return (

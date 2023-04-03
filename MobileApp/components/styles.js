@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useFonts } from 'expo-font';
 
 //const StatusBarHeight = Constants.statusBarHeight;
 
@@ -18,7 +17,16 @@ export const Colors = {
     link: "#4159a3",
 };
 
-const { primary, secondary, tertiary, darkLight, brand, red, green, grey } = Colors;
+const {
+    primary,
+    secondary,
+    tertiary,
+    darkLight,
+    brand,
+    red,
+    green,
+    grey
+} = Colors;
 
 //text with custom font
 export const AppText = styled.Text`
