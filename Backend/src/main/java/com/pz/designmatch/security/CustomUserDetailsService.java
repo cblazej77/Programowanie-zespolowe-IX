@@ -1,8 +1,8 @@
 package com.pz.designmatch.security;
 
 import com.pz.designmatch.dto.request.RegisterDto;
+import com.pz.designmatch.model.enums.Role;
 import com.pz.designmatch.model.user.ConfirmationToken;
-import com.pz.designmatch.model.user.Role;
 import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.ConfirmationTokenService;
@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
@@ -45,11 +44,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid username or password exception"));
-        return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRole()));
     }
 
-    private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    private Collection<GrantedAuthority> mapRolesToAuthorities(Role role) {
+        return Collections.singletonList(new SimpleGrantedAuthority(role.toString()));
+        //return roles.stream().map(role -> new SimpleGrantedAuthority(role.toString())).collect(Collectors.toList());
     }
 
     public void register(RegisterDto registerDto, Role role) {
@@ -66,7 +66,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setUsername(registerDto.getUsername());
         user.setFirstname(registerDto.getFirstname());
         user.setLastname(registerDto.getLastname());
-        user.setRoles(Collections.singletonList(role));
+        user.setRole(role);
         userRepository.save(user);
 
         String token = UUID.randomUUID().toString();

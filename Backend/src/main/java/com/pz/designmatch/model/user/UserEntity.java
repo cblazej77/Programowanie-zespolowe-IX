@@ -1,10 +1,10 @@
 package com.pz.designmatch.model.user;
 
+import com.pz.designmatch.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,8 +22,16 @@ public class UserEntity {
     private String password;
     private String firstname;
     private String lastname;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private List<Role> roles = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ArtistProfile artistProfile;
+
+    @PostPersist
+    public void onCreate() {
+        if (role == Role.ARTIST) {
+            ArtistProfile artistProfile = new ArtistProfile(this);
+            this.artistProfile = artistProfile;
+        }
+    }
 }

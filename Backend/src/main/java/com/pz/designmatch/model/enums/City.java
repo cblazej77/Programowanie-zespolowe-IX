@@ -2,6 +2,7 @@ package com.pz.designmatch.model.enums;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum City {
     REMOTE("Zdalnie"),
@@ -20,10 +21,6 @@ public enum City {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
     public static City fromDisplayName(String text) {
         for (City city : City.values()) {
             if (city.displayName.equalsIgnoreCase(text)) {
@@ -34,7 +31,11 @@ public enum City {
     }
 
     public static List<String> getDisplayNames() {
-        return List.of(City.values()).stream().map(City::getDisplayName).collect(Collectors.toList());
+        return Stream.of(City.values()).map(City::getDisplayName).collect(Collectors.toList());
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
 }

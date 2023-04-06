@@ -1,10 +1,9 @@
 package com.pz.designmatch.controller;
 
-import com.pz.designmatch.dto.response.AuthResponseDto;
 import com.pz.designmatch.dto.request.LoginDto;
 import com.pz.designmatch.dto.request.RegisterDto;
-import com.pz.designmatch.model.user.Role;
-import com.pz.designmatch.repository.RoleRepository;
+import com.pz.designmatch.dto.response.AuthResponseDto;
+import com.pz.designmatch.model.enums.Role;
 import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.security.CustomUserDetailsService;
 import com.pz.designmatch.security.JWTGenerator;
@@ -24,18 +23,16 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final JWTGenerator jwtGenerator;
     private final ConfirmationTokenService confirmationTokenService;
     private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-                          RoleRepository roleRepository, JWTGenerator jwtGenerator, ConfirmationTokenService confirmationTokenService,
+                          JWTGenerator jwtGenerator, ConfirmationTokenService confirmationTokenService,
                           CustomUserDetailsService customUserDetailsService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.jwtGenerator = jwtGenerator;
         this.confirmationTokenService = confirmationTokenService;
         this.customUserDetailsService = customUserDetailsService;
@@ -65,7 +62,7 @@ public class AuthController {
             return new ResponseEntity<>("This email is not valid!", HttpStatus.BAD_REQUEST);
         }
 
-        Role role = roleRepository.findByName("ARTIST").orElseThrow(() -> new RuntimeException("Role not found"));
+        Role role = Role.ARTIST;
         customUserDetailsService.register(registerDto, role);
 
         return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);

@@ -2,6 +2,7 @@ package com.pz.designmatch.model.enums;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Level {
     JUNIOR("Junior"),
@@ -11,10 +12,6 @@ public enum Level {
 
     Level(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 
     public static Level fromDisplayName(String text) {
@@ -27,6 +24,10 @@ public enum Level {
     }
 
     public static List<String> getDisplayNames() {
-        return List.of(Level.values()).stream().map(Level::getDisplayName).collect(Collectors.toList());
+        return Stream.of(Level.values()).map(Level::getDisplayName).collect(Collectors.toList());
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }

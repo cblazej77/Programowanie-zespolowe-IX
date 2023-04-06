@@ -2,6 +2,7 @@ package com.pz.designmatch.model.enums;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Tag {
     AGRICULTURE("Agrokultura"),
@@ -48,15 +49,6 @@ public enum Tag {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    @Override
-    public String toString() {
-        return displayName;
-    }
-
     public static Tag fromDisplayName(String displayName) {
         for (Tag tag : Tag.values()) {
             if (tag.displayName.equalsIgnoreCase(displayName)) {
@@ -67,6 +59,15 @@ public enum Tag {
     }
 
     public static List<String> getDisplayNames() {
-        return List.of(values()).stream().map(Tag::getDisplayName).collect(Collectors.toList());
+        return Stream.of(values()).map(Tag::getDisplayName).collect(Collectors.toList());
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    @Override
+    public String toString() {
+        return displayName;
     }
 }

@@ -47,6 +47,60 @@
     }
     ```
 
+3. W postgresie wyślij zapytanie PUT na `http://localhost:8080/api/artist/updateArtistProfile?username=jakub2`
+   
+   jako parametr `username` podaj nazwę użytkownika którego chcesz edytować
+   
+   jako body body (`start_date` i `end_date` w formacie `MM/yyyy`):
+    ```json
+   {
+   "bio": "Siema to ja michał",
+   "level": "Mid",
+   "location": [
+   "Warszawa"
+   ],
+   "skills": [
+   "Maskotka"
+   ],
+   "tags": [
+   "Fotografia"
+   ],
+   "languages": [
+   "Polski"
+   ],
+   "education": [
+   {
+   "school_name": "UMK",
+   "faculty": "STEM",
+   "field_of_study": "IT",
+   "degree": "master",
+   "start_date": "01/2001",
+   "end_date": "03/2004",
+   "description": "string"
+   }
+   ],
+   "experience": [
+   {
+   "company": "UMK",
+   "city": "Trouń",
+   "position": "Programmer",
+   "description": "programming programs",
+   "start_date": "06/2004",
+   "end_date": "01/2007"
+   }
+   ],
+   "website": "string",
+   "facebook": "string",
+   "linkedin": "string",
+   "instagram": "string",
+   "dribble": "string",
+   "pinterest": "string",
+   "twitter": "string"
+   }
+    ```
+   Żeby wydobyć z powrotem GET `http://localhost:8080/api/artist/getArtistProfile?username=jakub2`
+   Pod 'http://localhost:8080/swagger-ui' znajduje się swagger z dokumentacją API
+
 # Wersje zależności
 
 - Java 17.0.6
