@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class CategoryOptionsDto {
-    private List<CategoryDto> categoryDtos;
+    private final List<CategoryDto> categoryDtoList;
 
     @JsonCreator
-    public CategoryOptionsDto(@JsonProperty("categories") List<CategoryDto> categoryDtos) {
-        this.categoryDtos = categoryDtos;
+    public CategoryOptionsDto(@JsonProperty("categories") List<CategoryDto> categoryDtoList) {
+        this.categoryDtoList = categoryDtoList;
     }
 
     public List<CategoryDto> getCategories() {
-        return categoryDtos;
+        return categoryDtoList;
     }
 }

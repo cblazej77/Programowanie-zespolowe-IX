@@ -2,6 +2,7 @@ package com.pz.designmatch.model.enums;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Category {
     LOGO_AND_IDENTITY("Logo i identyfikacja wizualna"),
@@ -16,10 +17,6 @@ public enum Category {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
     public static Category fromDisplayName(String displayName) {
         for (Category category : Category.values()) {
             if (category.displayName.equalsIgnoreCase(displayName)) {
@@ -30,6 +27,10 @@ public enum Category {
     }
 
     public static List<String> getDisplayNames() {
-        return List.of(Category.values()).stream().map(Category::getDisplayName).collect(Collectors.toList());
+        return Stream.of(Category.values()).map(Category::getDisplayName).collect(Collectors.toList());
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }

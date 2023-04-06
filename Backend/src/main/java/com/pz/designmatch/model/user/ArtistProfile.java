@@ -18,6 +18,7 @@ public class ArtistProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
     @Column(name = "profile_image_url")
     private String profileImageUrl;
@@ -49,4 +50,8 @@ public class ArtistProfile {
     private String dribble;
     private String pinterest;
     private String twitter;
+
+    public ArtistProfile(UserEntity user) {
+        this.user = user;
+    }
 }

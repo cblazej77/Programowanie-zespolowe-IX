@@ -2,11 +2,12 @@ package com.pz.designmatch.model.enums;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum Subcategory {
     LOGO(Category.LOGO_AND_IDENTITY, "Logo"),
     IDENTITY(Category.LOGO_AND_IDENTITY, "Identyfikacja wizualna"),
-    BUISNESS_CARD(Category.LOGO_AND_IDENTITY, "Wizytówka"),
+    BUSINESS_CARD(Category.LOGO_AND_IDENTITY, "Wizytówka"),
     WEBPAGE(Category.WEB_AND_MOBILE, "Strona internetowa"),
     WORDPRESS_THEME(Category.WEB_AND_MOBILE, "Motyw WordPress"),
     ICON_OR_BUTTON(Category.WEB_AND_MOBILE, "Ikona lub przycisk"),
@@ -19,7 +20,7 @@ public enum Subcategory {
     MENU(Category.MARKETING_AND_ADVERTISEMENT, "Menu"),
     T_SHIRT(Category.CLOTHING_AND_MERCHANDISE, "T-shirt"),
     CLOTHING(Category.CLOTHING_AND_MERCHANDISE, "Inne ubrania"),
-    ACCESORY(Category.CLOTHING_AND_MERCHANDISE, "Akcesorium"),
+    ACCESSORY(Category.CLOTHING_AND_MERCHANDISE, "Akcesorium"),
     CUP(Category.CLOTHING_AND_MERCHANDISE, "Kubek"),
     STICKER(Category.CLOTHING_AND_MERCHANDISE, "Naklejka, magnes lub przypinka"),
     ILLUSTRATION(Category.ART_AND_ILLUSTRATION, "Ilustracja lub grafika"),
@@ -37,16 +38,8 @@ public enum Subcategory {
         this.displayName = displayName;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
     public static List<Subcategory> getSubcategoriesByCategory(Category category) {
-        return List.of(Subcategory.values()).stream().filter(subcategory -> subcategory.getCategory().equals(category)).collect(Collectors.toList());
+        return Stream.of(Subcategory.values()).filter(subcategory -> subcategory.getCategory().equals(category)).collect(Collectors.toList());
     }
 
     public static Subcategory fromDisplayName(String text) {
@@ -59,7 +52,15 @@ public enum Subcategory {
     }
 
     public static List<String> getDisplayNames() {
-        return List.of(Subcategory.values()).stream().map(Subcategory::getDisplayName).collect(Collectors.toList());
+        return Stream.of(Subcategory.values()).map(Subcategory::getDisplayName).collect(Collectors.toList());
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
 }
