@@ -5,15 +5,21 @@ const Variable = { size: "50%"};
 export const AllPage = styled.div`
     position: static;
     height: 100vh;
-    padding; 0 1rem;
+    padding; 0 1rem;    
+    color: white;
+
+    @media only screen and (min-width: 960px) {
     left: ${Variable.size};
     margin-right:  ${Variable.size};
     transform: translateX( ${Variable.size});
-    color: white;
+    top: 0;
+    }
 `;
 
 export const Border = styled.div`
-    margin-top: 15rem;
+    @media only screen and (min-width: 960px) {
+        margin-top: 10vh;
+    }
     background: linear-gradient(
         to left,
         rgba(255, 255, 255, 0.05),

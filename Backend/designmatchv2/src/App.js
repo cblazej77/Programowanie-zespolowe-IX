@@ -10,6 +10,7 @@ import { SignIn}  from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
 import './App.css';
 import { RequireAuth } from './components/RequireAuth';
+import UserPage from './pages/profile'
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path='/account' element={<RequireAuth> <Account /> </RequireAuth>} />
         <Route path='/sign-in' element={ <SignIn />} />
         <Route path='/sign-up' element ={ <SignUp />} />
+        <Route path='/test' element ={ <UserPage />} />
       </Routes>
     </BrowserRouter>
     </AuthProvider>

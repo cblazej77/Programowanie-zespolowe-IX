@@ -14,7 +14,7 @@ const About = () => {
         <Question>Dlaczego my?</Question> 
           <Date>Jeszcze nie wiem, ale wygląda to trochę jak komunikator.</Date> 
         <Bottom>Zostań częścią przyszłości!</Bottom>
-      </Border>
+      </Border>- ,
     </AllPage>
   )
 };

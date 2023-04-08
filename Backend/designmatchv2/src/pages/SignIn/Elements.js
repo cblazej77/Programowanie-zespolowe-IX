@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import { xIcon } from "../../assets/img/svg/SvgIcons"
 
-
 export const AllPage = styled.div`
     display: flex;
     position: relative;

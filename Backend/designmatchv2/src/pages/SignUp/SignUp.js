@@ -42,7 +42,7 @@ function LoginForm() {
   const handleRegistration = async (e) => {
     try{
       const response = await axios.post(REGISTER_URL,
-        JSON.stringify({email, username: "brak2", password, firstname: name, lastname: surname}),
+        JSON.stringify({email, username: "brak3", password, firstname: name, lastname: surname}),
         {
         headers: { 'Content-Type': 'application/json' },
         }
