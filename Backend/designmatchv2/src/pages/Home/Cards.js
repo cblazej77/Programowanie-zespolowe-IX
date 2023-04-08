@@ -1,7 +1,7 @@
 import React from 'react'
 import CardItem from './CardItem'
 import './Cards.css'
-import {Cards2, Cards__container, Sort,Sort2, SortButton, SortLabel} from './CardsElement'
+import {Cards2, CardsContainer, Sort,Sort2, SortButton, SortLabel} from './CardsElement'
 
 function Cards() {
     return (
@@ -16,7 +16,7 @@ function Cards() {
           <SortLabel>Sortuj przez: </SortLabel>
           <SortButton>Sortowanie </SortButton>
         </Sort>
-          <Cards__container>
+          <CardsContainer>
             <div className='cards__wrapper'>
               <ul className='cards__items'>
                         <CardItem 
@@ -63,7 +63,7 @@ function Cards() {
                         
                 </ul>
             </div>
-        </Cards__container>
+        </CardsContainer>
     </Cards2>
   )
 }

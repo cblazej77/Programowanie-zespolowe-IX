@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { LinearGradient } from 'expo-linear-gradient';
 
 //const StatusBarHeight = Constants.statusBarHeight;
 
@@ -7,12 +8,15 @@ export const Colors = {
     primary: "#F0EDEB",
     secondary: "#BEB5BC",
     darkLight: "#4A4E69",
+    darkLight2: "#888cab",
     notificationsRed: "#DA7676",
     tertiary: "#000000AA",
     brand: "#000FFF",
     red: "#F00",
+    black: "#1D1D1F",
     green: "#47D531",
-    white: "#FFF",
+    green2: "#3dc428",
+    white: "#F5F5F5",
     grey: "#00000022",
     link: "#4159a3",
 };
@@ -163,16 +167,10 @@ export const RightIcon = styled.TouchableOpacity`
 `;
 
 export const StyledButton = styled.TouchableOpacity`
-    padding: 15px;
-    background-color: ${darkLight};
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
-    margin-vertical: 5px;
-    height: 60px;
 
     ${(props) => props.google == true && `
-        background-color: ${green};
         flex-direction: row;
         justify-content: space-evenly;
     `}
@@ -275,4 +273,10 @@ export const HomeTextInput = styled.TextInput`
     fontSize: 14px;
     marginRight: 10px;
     marginLeft: 5px;
+`;
+
+export const LinearGradientStyle = styled(LinearGradient)`
+    marginVertical: 5px;
+    borderRadius: 5px;
+    paddingVertical: 15px;
 `;

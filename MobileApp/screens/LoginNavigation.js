@@ -11,27 +11,27 @@ import { StatusBar } from 'react-native';
 
 import { Colors } from '../components/styles';
 
-const {darkLight} = Colors
+const { darkLight, darkLight2, primary } = Colors
 
 const Stack = createStackNavigator();
 
 const LoginNavigation = () => {
     return (
-        
+
         <NavigationContainer>
-            <StatusBar hidden={false} backgroundColor={darkLight}/>
+                <StatusBar hidden={false} backgroundColor={"#000"} />
             <Stack.Navigator
                 screenOptions={{
-                    headerShown:false
+                    headerShown: false
                 }}
                 initialRouteName="Login"
             >
-                <Stack.Screen name="Login" component={Login}/>
-                <Stack.Screen name="Signup" component={Signup}/>
-                <Stack.Screen name="MainNavigation" component={MainNavigation}/>
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Signup" component={Signup} />
+                <Stack.Screen name="MainNavigation" component={MainNavigation} />
             </Stack.Navigator>
         </NavigationContainer>
-        
+
     )
 }
 

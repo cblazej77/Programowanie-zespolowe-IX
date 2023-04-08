@@ -4,7 +4,7 @@ export const Cards2 = styled.div`
 background: transparent;
 `
 
-export const Cards__container = styled.div`
+export const CardsContainer = styled.div`
 display: flex;
 flex-flow: column;
 align-items: center;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
+import { LinearGradient } from 'expo-linear-gradient';
 
 //formik
 import { Formik } from "formik";
@@ -29,12 +29,13 @@ import {
     HeaderText,
     StatsText,
     RegularText,
-    SmallText
+    SmallText,
+    LinearGradientStyle
 } from './../components/styles';
 import { SafeAreaView, View, ActivityIndicator } from "react-native";
 
 //Colors
-const { tertiary, darkLight, primary, link } = Colors;
+const { tertiary, darkLight, primary, link, darkLight2, green, green2 } = Colors;
 
 //API client
 import axios from 'axios';
@@ -45,7 +46,7 @@ import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 const Login = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [message, setMessage] = useState();
-    const[messageType, setMessageType] = useState();
+    const [messageType, setMessageType] = useState();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -71,27 +72,27 @@ const Login = ({ navigation }) => {
         //     setSubmitting('false');
         //     handleMessage("Wystąpił bład. Sprawdź swoje połączenie sieciowe i spróbuj ponownie");
         // })
-            try{
-                const response = await axios.post(url,
-                  JSON.stringify({email, password}),
-                  {
-                  headers: { 'Content-Type': 'application/json' },
-                  }
-              );
-              console.log(response?.data);
-                  console.log(response?.accessToken);
-                  console.log(JSON.stringify(response));
-                  navigation.navigate('MainNavigation');
-              }catch(err){
-                  if (!err?.response) {
-                      console.log('No Server Response');
-                  } else if (err.response?.status === 409) {
-                      console.log('Username Taken');
-                  } else {
-                      console.log('Login Failed')
-                      console.log(err)
-                  }
-              } 
+        try {
+            const response = await axios.post(url,
+                JSON.stringify({ email, password }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
+            console.log(response?.data);
+            console.log(response?.accessToken);
+            console.log(JSON.stringify(response));
+            navigation.navigate('MainNavigation');
+        } catch (err) {
+            if (!err?.response) {
+                console.log('No Server Response');
+            } else if (err.response?.status === 409) {
+                console.log('Username Taken');
+            } else {
+                console.log('Login Failed')
+                console.log(err)
+            }
+        }
     }
 
     const handleMessage = (message, type = 'FAILED') => {
@@ -106,9 +107,9 @@ const Login = ({ navigation }) => {
                     <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
                     <HeaderText bold={true} style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
-                        initialValues={{email: '', password: ''}}
-                        onSubmit={(values, {setSubmitting}) => {
-                            if(email == '' || password == '') {
+                        initialValues={{ email: '', password: '' }}
+                        onSubmit={(values, { setSubmitting }) => {
+                            if (email == '' || password == '') {
                                 handleMessage('Proszę wypełnić oba pola');
                                 setSubmitting(false);
                             } else {
@@ -116,9 +117,9 @@ const Login = ({ navigation }) => {
                             }
                         }}
                     >
-                        {({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (<StyledFormArea>
-                            <MyTextInput 
-                                label = "Adres Email"
+                        {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (<StyledFormArea>
+                            <MyTextInput
+                                label="Adres Email"
                                 icon="mail"
                                 placeholder="email@example.com"
                                 placeholderTextColor={'#00000088'}
@@ -127,8 +128,8 @@ const Login = ({ navigation }) => {
                                 value={email}
                                 keyboardType="email-address"
                             />
-                            <MyTextInput 
-                                label = "Hasło"
+                            <MyTextInput
+                                label="Hasło"
                                 icon="lock"
                                 placeholder="************"
                                 placeholderTextColor={'#00000088'}
@@ -141,30 +142,37 @@ const Login = ({ navigation }) => {
                                 setHidePassword={setHidePassword}
                             />
                             <MsgBox type={messageType}>{message}</MsgBox>
-                            {!isSubmitting && <StyledButton onPress={handleSubmit}>
-                                <StatsText style={{color: primary}}>
-                                    Zaloguj się
-                                </StatsText>
-                            </StyledButton>}
+                            {!isSubmitting &&
+                                <LinearGradientStyle colors={[darkLight2, darkLight]} >
+                                    <StyledButton onPress={handleSubmit}>
+                                        <StatsText style={{ color: primary }}>
+                                            Zaloguj się
+                                        </StatsText>
+                                    </StyledButton>
+                                </LinearGradientStyle>}
                             {isSubmitting && <StyledButton disabled={true}>
                                 <ActivityIndicator size="large" color={primary} />
                             </StyledButton>}
-                            <StyledButton onPress={() => navigation.navigate("MainNavigation")}>
-                                <StatsText style={{color: primary}}>
-                                    Kontynuuj bez logowania
-                                </StatsText>
-                            </StyledButton>
+                            <LinearGradientStyle colors={[darkLight2, darkLight]} >
+                                <StyledButton onPress={() => navigation.navigate("MainNavigation")}>
+                                    <StatsText style={{ color: primary }}>
+                                        Kontynuuj bez logowania
+                                    </StatsText>
+                                </StyledButton>
+                            </LinearGradientStyle>
                             <Line />
-                            <StyledButton google={true} onPress={handleSubmit}>
-                                <Fontisto name="google" color={primary} size={25} />
-                                <StatsText style={{color: primary}}>
-                                    Kontunuuj z Google
-                                </StatsText>
-                            </StyledButton>
+                            <LinearGradientStyle colors={[green, green2]}>
+                                <StyledButton google={true} onPress={handleSubmit}>
+                                    <Fontisto name="google" color={primary} size={25} />
+                                    <StatsText style={{ color: primary }}>
+                                        Kontunuuj z Google
+                                    </StatsText>
+                                </StyledButton>
+                            </LinearGradientStyle>
                             <ExtraView>
                                 <SmallText>Nie masz jeszcze konta? </SmallText>
                                 <TextLink onPress={() => navigation.navigate("Signup")}>
-                                    <SmallText style={{color: link}}>Zarejestruj się!</SmallText>
+                                    <SmallText style={{ color: link }}>Zarejestruj się!</SmallText>
                                 </TextLink>
                             </ExtraView>
                         </StyledFormArea>)}

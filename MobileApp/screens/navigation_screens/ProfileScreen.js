@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, SafeAreaView, Image, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Image, StyleSheet, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ChatLabel, Colors, HeaderText, RegularText, StatsText } from '../../components/styles';
 import Gallery from '../../components/Gallery';
@@ -7,6 +7,8 @@ import Reviews from '../../components/Reviews';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Stars from 'react-native-stars';
+
+import {LinearGradient} from 'expo-linear-gradient';
 
 const Tab = createMaterialTopTabNavigator();
 const { primary, secondary, darkLight } = Colors;
@@ -57,6 +59,7 @@ export default function ProfileScreen({ navigation }) {
                     </View>
                 </View>
             </View>
+
             <RegularText numberOfLines={5} style={{ marginHorizontal: 10 }}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                 sed do eiusmod tempor incididunt ut labore et dolore magna

@@ -4,10 +4,11 @@ import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchFilter from '../../components/SearchFilter';
-import { AppText, ChatLabel, HeaderText } from '../../components/styles';
+import { AppText, ChatLabel, HeaderText, LinearGradientStyle } from '../../components/styles';
 import { Colors } from '../../components/styles';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const { primary } = Colors
+const { primary, darkLight, darkLight2 } = Colors
 
 const DATA = [
   {
@@ -178,12 +179,13 @@ function MessagesScreen({ navigation }) {
   const [input, setInput] = useState("");
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: primary}}>
+      <LinearGradient colors={[darkLight, darkLight2]}>
       <ChatLabel style={{
-        height: 50,
         justifyContent: 'center'
       }}>
         <HeaderText>Wiadomości</HeaderText>
       </ChatLabel>
+      </LinearGradient>
       
       <View style={{
         flexDirection: "row",
