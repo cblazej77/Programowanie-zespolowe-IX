@@ -104,7 +104,7 @@ const Login = ({ navigation }) => {
         <KeyboardAvoidingWrapper style={{ backgroundColor: { primary } }}>
             <StyledContainer>
                 <InnerContainer>
-                    <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
+                    <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}/>
                     <HeaderText bold={true} style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
                         initialValues={{ email: '', password: '' }}
@@ -143,32 +143,26 @@ const Login = ({ navigation }) => {
                             />
                             <MsgBox type={messageType}>{message}</MsgBox>
                             {!isSubmitting &&
-                                <LinearGradientStyle colors={[darkLight2, darkLight]} >
                                     <StyledButton onPress={handleSubmit}>
                                         <StatsText style={{ color: primary }}>
                                             Zaloguj się
                                         </StatsText>
-                                    </StyledButton>
-                                </LinearGradientStyle>}
+                                    </StyledButton>}
                             {isSubmitting && <StyledButton disabled={true}>
                                 <ActivityIndicator size="large" color={primary} />
                             </StyledButton>}
-                            <LinearGradientStyle colors={[darkLight2, darkLight]} >
                                 <StyledButton onPress={() => navigation.navigate("MainNavigation")}>
                                     <StatsText style={{ color: primary }}>
                                         Kontynuuj bez logowania
                                     </StatsText>
                                 </StyledButton>
-                            </LinearGradientStyle>
                             <Line />
-                            <LinearGradientStyle colors={[green, green2]}>
                                 <StyledButton google={true} onPress={handleSubmit}>
                                     <Fontisto name="google" color={primary} size={25} />
                                     <StatsText style={{ color: primary }}>
                                         Kontunuuj z Google
                                     </StatsText>
                                 </StyledButton>
-                            </LinearGradientStyle>
                             <ExtraView>
                                 <SmallText>Nie masz jeszcze konta? </SmallText>
                                 <TextLink onPress={() => navigation.navigate("Signup")}>

@@ -29,14 +29,14 @@ export const StyledForm = styled.form`
     );
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
     margin: 15px auto;
-    border-radius: 15px;
+    border-radius: 5px;
     transform: translateY(3rem);
     min-width: 300px;
     max-width: 500px;
     padding: 24px;
     text-align: center;
     position: absolute;
-    scale: 1.2;
+    scale: 1.15;
 `
 
 export const StyledLabel = styled.label`
@@ -64,18 +64,19 @@ export const StyledAlert = styled.div`
   border-radius: 5px;
 `
 
-  export const MainName = styled.div`
+export const MainName = styled.div`
     font-size: 2.35em;
     color: rgba(255,255,255, 0.75);
     font-family: "Norwesterregular";
     position: absolute;
+    color: #555978;
     transform: translateY(-1.2rem);
     @media screen and (max-width: 960px) {
        font-size: 0px;
       }
   `
 
-  export const LogoIcon = styled(xIcon)`
+export const LogoIcon = styled(xIcon)`
   transform: translateY(-0.3rem);
   height: 80px;
   width: auto;
@@ -85,36 +86,32 @@ export const StyledAlert = styled.div`
   overflow: hidden;
   `;
 
-  export const LineForm = styled.div`
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 100%;
-    height: 2px;
-    margin: 30px auto 20px;
-  `
-
-
-
+export const LineForm = styled.div`
+  margin: 20px 0px 20px 0px;
+  width: 100%;
+  height: 1px;
+  background-color: #bbb;
+`;
 
 export const InputLabel = styled.label`
-  color: #8d8d8d;
+  color: #888;
   position: absolute;
-  top: 21px;
-  left: 55px;
+  top: 12px;
+  left: 15px;
   background: none;
-  transform: translate(-1.5rem, -50%);
-  transition: left 0.35s, opacity 0.3s;
+  font-size: 14px;
 `;
 
 export const InputField = styled.input`
   outline: none;
-  border: 1px solid #dadce0;
+  border: 0px solid #dadce0;
   font-size: 0.8rem;
-  width: 95%;
+  width: 100%;
   border: none;
-  border-radius: 18px;
-  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
   color: rgb(1, 1, 1);
   padding: 12px 24px;
+  background-color: #ddd;
   &:focus
   {
     border: 2px solid black;
@@ -157,34 +154,41 @@ export const InputGroupSecond = styled.div`
   top: 15px;
   padding-bottom: 15px;
   width: 100%;
+  margin-left: 10px;
   @media screen and (max-width: 540px) {
     position: absolute;
     top: 65%;
   }
 `;
-  
+
 
 export const CenterButton = styled.div`
-  position: relative;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  font-size: 0.8rem;
-  height: 100%;
-  @media screen and (max-width: 540px) {
-    padding-bottom: 0px;
-    padding-top: 0px;
-  }
+position: relative;
+padding-top: 15px;
+padding-bottom: 15px;
+font-size: 0.8rem;
+height: 100%;
+@media screen and (max-width: 540px) {
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
 `
 
 
 export const Button = styled(Link)`
     background: transparent;
     border: none;
-    border-radius: 18px;
+    border-radius: 5px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
     color: rgb(255, 255, 255);
     padding: 10px 15px;
     text-decoration: none;
+    background: linear-gradient(
+      to top,
+      #4A4E69,
+      #555978
+  );
+  margin: 5px 0px;
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(2.5rem);
@@ -208,13 +212,13 @@ export const Button = styled(Link)`
 
 
 export const SignUpButton = styled(Button)`
-background: linear-gradient(
-    to left,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.25)
-);
+    background: linear-gradient(
+      to top,
+      #4A4E69,
+      #555978
+    );
+    margin: 5px 0px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
-    transform: translate(-50px, 15px);
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateX(0px);
@@ -232,12 +236,17 @@ color: currentColor;
   `
 
 export const GoogleButton = styled(Button)`
-    background: transparent;
-    @media screen and (max-width: 540px) {
+  background: linear-gradient(
+    to top,
+    #3dc428,
+    #5ad946
+  );
+  margin-bottom: 15px;
+  @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(0.5rem);
       &:hover{
         transform: scale(1.05) translateY(0.5rem);
       }
-    }
+  }
 `

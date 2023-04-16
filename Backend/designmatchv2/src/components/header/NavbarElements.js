@@ -4,6 +4,8 @@ import {xIcon, threeLine, betterX} from '../../assets/img/svg/SvgIcons';
 import './HeaderFont.css';
 import {COLORS } from '../Colors';
 
+const { darkLight, darkLight2, primary } = COLORS;
+
 
 export const NavbarContainer  = styled.div`
   z-index: 1;
@@ -44,7 +46,7 @@ font-size: 1.2rem;
 /* tutaj height odpowiada za szerokosc na NavBaru*/
 export const Nav = styled.nav`
 box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.3);
-background: linear-gradient(to right,  #F0EDEB 0%, #4A4E69 75%);
+background: linear-gradient(to right,  ${darkLight} 0%, #555978 75%);
   height: 60px; 
   display: flex;
   justify-content: center;
@@ -94,7 +96,7 @@ export const NavMenu = styled.ul`
   bacground: none;
   @media screen and (max-width: 960px) {
     box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.3);
-    background: linear-gradient(to top right,  #F0EDEB 30%, #4A4E69 100%);
+    background: linear-gradient(to right,  ${darkLight} 0%, #555978 75%);
     display: flex;
     flex-direction: column;
     width: 100%;

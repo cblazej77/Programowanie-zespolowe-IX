@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import { Link } from 'react-router-dom';
-
 import { xIcon } from "../../assets/img/svg/SvgIcons"
 
 export const AllPage = styled.div`
@@ -14,6 +13,7 @@ export const AllPage = styled.div`
     transform: translate(-50%, 17%);
     padding: 0 rem;
     min-width: 350px;
+    
     @media screen and (max-width: 960px) {
       transform: translate(-50%, 10%);
       height: 83vh;
@@ -27,10 +27,11 @@ export const StyledForm = styled.form`
     rgba(255, 255, 255, 0.05),
     rgba(255, 255, 255, 0.35)
     );
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+    flex-direction: column;
     margin: 15px auto;
     transform: translateY(3rem);
-    border-radius: 15px;
-    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
     min-width: 300px;
     max-width: 400px;
     padding: 24px;
@@ -57,16 +58,14 @@ export const StyledInput = styled.input`
 `
 
 export const StyledAlert = styled.div`
-  padding: 10px;
-  background-color: #f44336;
-  color: white;
-  margin: 5px auto 5px;
-  border-radius: 5px;
+  margin-top: 5px;
+  color: #F00;
+  font-size: 12px;
 `
 
-  export const MainName = styled.div`
+export const MainName = styled.div`
     font-size: 2.35em;
-    color: rgba(255,255,255, 0.75);
+    color: #555978;
     font-family: "Norwesterregular";
     position: absolute;
     transform: translateY(-1.6rem);
@@ -75,7 +74,7 @@ export const StyledAlert = styled.div`
       }
   `
 
-  export const LogoIcon = styled(xIcon)`
+export const LogoIcon = styled(xIcon)`
   transform: translateY(-0.3rem);
   height: 80px;
   width: auto;
@@ -85,44 +84,41 @@ export const StyledAlert = styled.div`
   overflow: hidden;
   `;
 
-  export const LineForm = styled.div`
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 100%;
-    height: 2px;
-    margin: 30px auto 20px;
-  `
+export const LineForm = styled.div`
+  margin: 10px 0px 10px 0px;
+  width: 80%;
+  height: 1px;
+  background-color: #bbb;
+  `;
 
 
 export const InputGroup = styled.div`
   position: relative;
   top: 15px;
   padding-bottom: 15px;
-
 `;
 
 export const InputLabel = styled.label`
-  color: #8d8d8d;
+  color: #888;
   position: absolute;
-  top: 21px;
-  left: 55px;
   background: none;
-  transform: translate(-20%, -50%);
-  transition: left 0.35s, opacity 0.3s;
+  font-size: 14px;
+  top: 13px;
+  left: 35px;
 `;
 
 export const InputField = styled.input`
   outline: none;
-  border: 1px solid #dadce0;
+  border: 0px solid #dadce0;
   font-size: 0.8rem;
-  border: none;
-  border-radius: 18px;
-  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
   color: rgb(1, 1, 1);
   padding: 12px 24px;
+  background-color: #ddd;
 
   &:focus
   {
-    border: 2px solid black;
+    border: 1px solid #AAA;
   }
 
   &:valid + ${InputLabel}
@@ -155,12 +151,18 @@ export const CenterButton = styled.div`
 export const Button = styled(Link)`
     background: transparent;
     border: none;
-    border-radius: 18px;
+    border-radius: 5px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
     color: rgb(255, 255, 255);
-    padding: 10px 15px;
+    padding: 7px 0px;
     text-decoration: none;
-    margin-left: 5px;
+    margin: 7px 0px;
+    width: 80%;
+    background: linear-gradient(
+      to top,
+      #4A4E69,
+      #555978
+  );
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(2.5rem);
@@ -185,13 +187,9 @@ export const Button = styled(Link)`
 
 
 export const LoginButton = styled(Button)`
-background: linear-gradient(
-    to left,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.25)
-);
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
-    transform: translate(-50px, 15px);
+    margin-top: 20px;
+    font-size: 14px;
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateX(0px);
@@ -204,7 +202,13 @@ background: linear-gradient(
 `
 
 export const GoogleButton = styled(Button)`
-    background: transparent;
+    background: linear-gradient(
+      to top,
+      #3dc428,
+      #5ad946
+    );
+    font-size: 14px;
+    margin-bottom: 15px;
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(0.5rem);
