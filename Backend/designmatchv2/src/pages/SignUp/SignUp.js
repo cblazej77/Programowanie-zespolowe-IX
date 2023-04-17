@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {default as axios} from "../../api/axios"
-import { CenterInput,InputGroupSecond,  CenterButton, Button, SignUpButton, GoogleButton, LineForm, InputField, InputLabel,InputGroup, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon} from './Elements';
+import { FacebookButton, CenterInput,InputGroupSecond,  CenterButton, Button, SignUpButton, GoogleButton, LineForm, InputField, InputLabel,InputGroup, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon} from './Elements';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>{
     id: string;
@@ -84,12 +84,15 @@ function LoginForm() {
 
 
             <CenterButton>
-              <Button to='/sign-in'  type="submit">Zaloguj się</Button>
+              <Button to='/sign-in'  type="submit">Zaloguj się</Button>  
               <SignUpButton to='#;return false;' onClick={handleRegistration} type="submit" >Zarejestruj się</SignUpButton>
               {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
             </CenterButton>
             <CenterButton>
               <GoogleButton to='/' type="submit" >Kontynuuj z google</GoogleButton>
+            </CenterButton>
+            <CenterButton>
+              <FacebookButton>Kontynuuj z Facebook</FacebookButton>
             </CenterButton>
             
         </StyledForm>

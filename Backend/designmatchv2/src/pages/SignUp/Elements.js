@@ -7,7 +7,7 @@ import { xIcon } from "../../assets/img/svg/SvgIcons"
 export const AllPage = styled.div`
     display: flex;
     position: relative;
-    height: 74vh;
+    height: calc(83vh - 80px);
     justify-content: center;
     left: 50%;
     margin-right: 50%;
@@ -16,7 +16,9 @@ export const AllPage = styled.div`
     padding: 0 rem;
     @media screen and (max-width: 960px) {
       transform: translate(-50%, 10%);
-      height: 83vh;
+     }
+     @media screen and (max-width: 1544px) {
+      height: calc(100vh - 80px);
      }
 `
 
@@ -37,6 +39,9 @@ export const StyledForm = styled.form`
     text-align: center;
     position: absolute;
     scale: 1.2;
+    @media screen and (max-width: 540px) {
+      padding: 36px 24px;
+  }
 `
 
 export const StyledLabel = styled.label`
@@ -168,7 +173,7 @@ export const CenterButton = styled.div`
   position: relative;
   padding-top: 15px;
   padding-bottom: 15px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   height: 100%;
   @media screen and (max-width: 540px) {
     padding-bottom: 0px;
@@ -181,6 +186,7 @@ export const Button = styled(Link)`
     background: transparent;
     border: none;
     border-radius: 18px;
+    margin-left: 5px; 
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
     color: rgb(255, 255, 255);
     padding: 10px 15px;
@@ -198,7 +204,7 @@ export const Button = styled(Link)`
     @media screen and (min-width: 540px) {
       &:hover{
        border: 1px solid rgba(0, 0, 0, 0.5);
-        transform: scale(1.05) ;
+        transform: scale(1.05);
         transition: 0.3s;
         box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
       }
@@ -208,16 +214,16 @@ export const Button = styled(Link)`
 
 
 export const SignUpButton = styled(Button)`
-background: linear-gradient(
-    to left,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.25)
-);
+    background: linear-gradient(
+      to left,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.25)
+    );
+    margin-left: 15px; 
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
-    transform: translate(-50px, 15px);
     @media screen and (max-width: 540px) {
       display: fixed;
-      transform: translateX(0px);
+      margin-left: 5px; 
       transform: translateY(-3rem);
       &:hover{
         transform: scale(1.05) translateY(-3rem);
@@ -233,11 +239,22 @@ color: currentColor;
 
 export const GoogleButton = styled(Button)`
     background: transparent;
+    padding: 10px 22px;
     @media screen and (max-width: 540px) {
       display: fixed;
-      transform: translateY(0.5rem);
+      transform: translateY(0.7rem);
       &:hover{
-        transform: scale(1.05) translateY(0.5rem);
+        transform: scale(1.05) translateY(0.7rem);
+      }
+    }
+`
+export const FacebookButton = styled(Button)`
+    background: transparent;
+    @media screen and (max-width: 540px) {
+      display: fixed;
+      transform: translateY(1.3rem);
+      &:hover{
+        transform: scale(1.05) translateY(1.3rem);
       }
     }
 `

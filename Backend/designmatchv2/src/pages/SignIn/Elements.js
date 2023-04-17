@@ -6,7 +6,7 @@ import { xIcon } from "../../assets/img/svg/SvgIcons"
 export const AllPage = styled.div`
     display: flex;
     position: relative;
-    height: 74vh;
+    height: calc(83vh - 80px);
     justify-content: center;
     left: 50%;
     margin-right: 50%;
@@ -16,7 +16,10 @@ export const AllPage = styled.div`
     min-width: 350px;
     @media screen and (max-width: 960px) {
       transform: translate(-50%, 10%);
-      height: 83vh;
+     }
+     @media screen and (max-width: 1544px) {
+
+      height: calc(100vh - 80px);
      }
 `
 
@@ -37,6 +40,9 @@ export const StyledForm = styled.form`
     text-align: center;
     position: absolute;
     scale: 1.3;
+    @media screen and (max-width: 540px) {
+        padding: 35px 24px;
+    }
 `
 
 export const StyledLabel = styled.label`
@@ -160,7 +166,7 @@ export const Button = styled(Link)`
     color: rgb(255, 255, 255);
     padding: 10px 15px;
     text-decoration: none;
-    margin-left: 5px;
+    margin-left: 8px;
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(2.5rem);
@@ -205,11 +211,23 @@ background: linear-gradient(
 
 export const GoogleButton = styled(Button)`
     background: transparent;
+    padding: 10px 22px;
     @media screen and (max-width: 540px) {
       display: fixed;
-      transform: translateY(0.5rem);
+      transform: translateY(0.7rem);
       &:hover{
-        transform: scale(1.05) translateY(0.5rem);
+        transform: scale(1.05) translateY(0.7rem);
+      }
+    }
+`
+
+export const FacebookButton = styled(Button)`
+    background: transparent;
+    @media screen and (max-width: 540px) {
+      display: fixed;
+      transform: translateY(1.3rem);
+      &:hover{
+        transform: scale(1.05) translateY(1.3rem);
       }
     }
 `

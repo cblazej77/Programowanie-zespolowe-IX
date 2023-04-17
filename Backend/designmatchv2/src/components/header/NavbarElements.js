@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {xIcon, threeLine, betterX} from '../../assets/img/svg/SvgIcons';
+import {xIcon, threeLine, betterX, DownPointer} from '../../assets/img/svg/SvgIcons';
 import './HeaderFont.css';
 import {COLORS } from '../Colors';
 
@@ -19,6 +19,7 @@ export const NavbarContainer  = styled.div`
 `;
 
 export const Button = styled.button`
+text-align: center;
 cursor: pointer;
 background: none;
 padding: 1px 6px;
@@ -117,6 +118,13 @@ height: 60px;
 width: auto;
 color: white;
 `;
+
+export const DownPointerIcon = styled(DownPointer)`
+height: 20px;
+width: auto;
+transform: translateY(3px);
+color: white;
+`
 export const ThreeLineIcon = styled(threeLine)`
 height: 60px;
 width: auto;

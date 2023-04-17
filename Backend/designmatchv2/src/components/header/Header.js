@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useAuth } from '../Auth';
 import { useNavigate } from 'react-router-dom';
+import Dropdown from './DropDown/DropDownUser';
 import {
     Nav,
     NavLink,
@@ -16,13 +17,14 @@ import {
     NavLogoIcon,
     XIcon,
     ThreeLineIcon,
+    DownPointerIcon,
 } from './NavbarElements';
 
-import styled from 'styled-components';
 
 function Navbar() {
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
+    const [dropdown, setDropdown] = useState(false);
   
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
@@ -34,6 +36,23 @@ function Navbar() {
         setButton(true);
       }
     };
+    const onMouseEnter = () => {
+        console.log("enter");
+        if (window.innerWidth < 960) {
+          setDropdown(false);
+        } else {
+          setDropdown(true);
+        }
+      };
+    
+      const onMouseLeave = () => {
+        console.log("leave");
+        if (window.innerWidth < 960) {
+          setDropdown(false);
+        } else {
+          setDropdown(false);
+        }
+      };
 
     const auth = useAuth()
     const navigate = useNavigate()
@@ -97,7 +116,7 @@ function Navbar() {
                 {button ? (
                     <NavBtnLink to='/sign-up'>
                         <Button fontBig primary>
-                        Rejestracja-K
+                        Rejestracja
                         </Button>
                     </NavBtnLink>)
                 : (
@@ -110,13 +129,16 @@ function Navbar() {
                 </NavItemBtn>
                 </>
             ):(
+                <>
                 <NavBtnLink>
-                    <NavBtnLink to='/account'>
+                    <NavBtnLink to='/account' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                     <Button onClick={closeMobileMenu} fontBig primary>
-                        Konto_L
+                        Konto <DownPointerIcon />
                     </Button>
+                    {dropdown && <Dropdown /> }
                     </NavBtnLink>
                 </NavBtnLink>
+                </>
             )}
             </NavMenu>
           </NavbarContainer>

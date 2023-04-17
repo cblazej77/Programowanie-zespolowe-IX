@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../components/Auth';
-import {default as axios} from "../../api/axios"
-import { CenterButton, Button, LoginButton, GoogleButton, LineForm, InputField, InputLabel,InputGroup, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon} from './Elements';
+import {default as axios} from "../../api/axios";
+import { useGoogleLogin } from '@react-oauth/google';
+import { FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, InputField, InputLabel,InputGroup, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon} from './Elements';
 
 
     interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>{
@@ -69,7 +70,14 @@ export const SignIn =() => {
           }
         }
       }
-
+      const login = useGoogleLogin({
+        onSuccess: CodeResponse  => {
+          console.log(CodeResponse );
+          authApi.login("Michal", "pssw");
+          navigate(redirectPath, {replace: true});
+        },
+        flow: 'auth-code',
+      });
 /*
   const buttonEnabled = (username, password) => {
       if(username.length > 0 && password.length > 2 ) {
@@ -95,7 +103,10 @@ export const SignIn =() => {
               {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
             </CenterButton>
             <CenterButton>
-              <GoogleButton to='/' type="button" >Kontynuuj z google</GoogleButton>
+              <GoogleButton to='' type="button" onClick={ () => login()} >Kontynuuj z Google{' '}</GoogleButton>
+            </CenterButton>
+            <CenterButton>
+              <FacebookButton to='' type="button" >Kontynuuj z Facebook</FacebookButton>
             </CenterButton>
             
         </StyledForm>
