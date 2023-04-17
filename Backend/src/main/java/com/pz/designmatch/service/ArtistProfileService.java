@@ -97,7 +97,7 @@ public class ArtistProfileService {
         if (artistProfileDto.getExperience() != null) {
             Set<Experience> experienceSet = experienceRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
             experienceSet.clear();
-            educationRepository.saveAll(mapEducationDtoSetToEducationEntitySet(artistProfileDto.getEducation(), existingArtistProfile));
+            experienceRepository.saveAll(mapExperienceDtoSetToExperienceEntitySet(artistProfileDto.getExperience(), existingArtistProfile));
         }
 
         if (artistProfileDto.getWebsite() != null)
