@@ -167,17 +167,12 @@ export const RightIcon = styled.TouchableOpacity`
 `;
 
 export const StyledButton = styled.TouchableOpacity`
-    marginVertical: 5px;
-    paddingVertical: 10px;
     justify-content: center;
     align-items: center;
-    borderRadius: 6px;
-    backgroundColor: ${darkLight};
 
     ${(props) => props.google == true && `
         flex-direction: row;
         justify-content: space-evenly;
-        backgroundColor: ${green};
     `}
 `;
 
