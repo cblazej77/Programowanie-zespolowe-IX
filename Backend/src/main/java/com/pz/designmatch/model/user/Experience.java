@@ -12,7 +12,7 @@ public class Experience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_profile_id")
+    @JoinColumn(name = "artist_profile_id")
     private ArtistProfile artistProfile;
     private String company;
     private String city;

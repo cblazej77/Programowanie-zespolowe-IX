@@ -69,9 +69,7 @@ public class ArtistProfileService {
             existingArtistProfile.setLevel(Level.fromDisplayName(artistProfileDto.getLevel()));
 
         if (artistProfileDto.getLocation() != null)
-            existingArtistProfile.setLocation(artistProfileDto.getLocation().stream()
-                    .map(City::fromDisplayName)
-                    .collect(Collectors.toSet()));
+            existingArtistProfile.setLocation(City.fromDisplayName(artistProfileDto.getLocation()));
 
         if (artistProfileDto.getSkills() != null)
             existingArtistProfile.setSkills(artistProfileDto.getSkills().stream()
@@ -89,14 +87,16 @@ public class ArtistProfileService {
                     .collect(Collectors.toSet()));
 
         if (artistProfileDto.getEducation() != null) {
-            Set<Education> educationSet = educationRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
-            educationSet.clear();
+            //Set<Education> educationSet = educationRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
+            //educationSet.clear();
+            educationRepository.deleteAllByArtistProfile_Id(existingArtistProfile.getId());
             educationRepository.saveAll(mapEducationDtoSetToEducationEntitySet(artistProfileDto.getEducation(), existingArtistProfile));
         }
 
         if (artistProfileDto.getExperience() != null) {
-            Set<Experience> experienceSet = experienceRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
-            experienceSet.clear();
+            //Set<Experience> experienceSet = experienceRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
+            //experienceSet.clear();
+            experienceRepository.deleteAllByArtistProfile_Id(existingArtistProfile.getId());
             experienceRepository.saveAll(mapExperienceDtoSetToExperienceEntitySet(artistProfileDto.getExperience(), existingArtistProfile));
         }
 
@@ -141,9 +141,7 @@ public class ArtistProfileService {
         return new ArtistProfileDto(
                 artistProfile.getBio(),
                 artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
-                artistProfile.getLocation().stream()
-                        .map(City::getDisplayName)
-                        .collect(Collectors.toSet()),
+                artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
                 artistProfile.getSkills().stream()
                         .map(Subcategory::getDisplayName)
                         .collect(Collectors.toSet()),

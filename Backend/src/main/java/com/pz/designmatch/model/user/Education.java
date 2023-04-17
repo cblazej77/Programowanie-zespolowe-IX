@@ -14,7 +14,7 @@ public class Education {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_profile_id")
+    @JoinColumn(name = "artist_profile_id")
     private ArtistProfile artistProfile;
     private String schoolName;
     private String faculty;
