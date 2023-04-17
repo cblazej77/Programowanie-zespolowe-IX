@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from './Login';
 import Signup from './Signup';
 import MainNavigation from './MainNavigation';
+import HomePage from './navigation_screens/HomePage';
 import { StatusBar } from 'react-native';
 
 import { Colors } from '../components/styles';
@@ -29,6 +30,8 @@ const LoginNavigation = () => {
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="MainNavigation" component={MainNavigation} />
+                <Stack.Screen name="HomePage" component={HomePage} />
+
             </Stack.Navigator>
         </NavigationContainer>
 
