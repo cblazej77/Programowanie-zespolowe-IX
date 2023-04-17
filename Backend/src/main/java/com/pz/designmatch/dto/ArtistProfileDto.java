@@ -15,7 +15,7 @@ public class ArtistProfileDto {
     @JsonProperty("level")
     private final String level;
     @JsonProperty("location")
-    private final Set<String> location;
+    private final String location;
     @JsonProperty("skills")
     private final Set<String> skills;
     @JsonProperty("tags")
@@ -42,7 +42,7 @@ public class ArtistProfileDto {
     private final String twitter;
 
     @JsonCreator
-    public ArtistProfileDto(String bio, String level, Set<String> location, Set<String> skills, Set<String> tags,
+    public ArtistProfileDto(String bio, String level, String location, Set<String> skills, Set<String> tags,
                             Set<String> languages, Set<EducationDto> education, Set<ExperienceDto> experience,
                             String website, String facebook, String linkedin, String instagram, String dribble,
                             String pinterest, String twitter) {

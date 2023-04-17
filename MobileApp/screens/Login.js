@@ -137,7 +137,7 @@ const Login = ({ navigation }) => {
         <KeyboardAvoidingWrapper style={{ backgroundColor: { primary } }}>
             <StyledContainer>
                 <InnerContainer>
-                    <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
+                    <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}/>
                     <HeaderText bold={true} style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
                         initialValues={{ email: '', password: '' }}
@@ -176,7 +176,6 @@ const Login = ({ navigation }) => {
                             />
                             <MsgBox type={messageType}>{message}</MsgBox>
                             {!isSubmitting &&
-                                <LinearGradientStyle colors={[darkLight2, darkLight]} >
                                     <StyledButton onPress={handleSubmit}>
                                         <StatsText style={{ color: primary }}>
                                             Zaloguj się
