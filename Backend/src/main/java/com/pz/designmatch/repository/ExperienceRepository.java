@@ -9,4 +9,6 @@ public interface ExperienceRepository extends JpaRepository<Experience, Long> {
     Set<Experience> findAllByArtistProfile_User_Username(String username);
 
     Set<Experience> findAllByArtistProfile_Id(Long id);
+
+    void deleteAllByArtistProfile_Id(Long artistProfileId);
 }

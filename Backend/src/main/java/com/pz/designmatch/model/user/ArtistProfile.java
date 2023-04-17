@@ -31,9 +31,8 @@ public class ArtistProfile {
     private String bio;
     @Enumerated(EnumType.STRING)
     private Level level;
-    @ElementCollection(targetClass = City.class)
     @Enumerated(EnumType.STRING)
-    private Set<City> location;
+    private City location;
     @ElementCollection(targetClass = Subcategory.class)
     @Enumerated(EnumType.STRING)
     private Set<Subcategory> skills;
@@ -54,4 +53,8 @@ public class ArtistProfile {
     public ArtistProfile(UserEntity user) {
         this.user = user;
     }
+
+//    public Optional<Level> getLevel() {
+//        return Optional.ofNullable(level);
+//    }
 }

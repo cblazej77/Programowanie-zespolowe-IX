@@ -30,7 +30,7 @@ public class UserProfileController {
 
     @GetMapping(value = "/getUser", produces = apiVersionAccept)
     public ResponseEntity<UserDto> getAllUsers() {
-        Optional<UserEntity> user = userRepository.findById(8L);
+        Optional<UserEntity> user = userRepository.findById(1L);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }

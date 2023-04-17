@@ -69,9 +69,7 @@ public class ArtistProfileService {
             existingArtistProfile.setLevel(Level.fromDisplayName(artistProfileDto.getLevel()));
 
         if (artistProfileDto.getLocation() != null)
-            existingArtistProfile.setLocation(artistProfileDto.getLocation().stream()
-                    .map(City::fromDisplayName)
-                    .collect(Collectors.toSet()));
+            existingArtistProfile.setLocation(City.fromDisplayName(artistProfileDto.getLocation()));
 
         if (artistProfileDto.getSkills() != null)
             existingArtistProfile.setSkills(artistProfileDto.getSkills().stream()
@@ -89,15 +87,17 @@ public class ArtistProfileService {
                     .collect(Collectors.toSet()));
 
         if (artistProfileDto.getEducation() != null) {
-            Set<Education> educationSet = educationRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
-            educationSet.clear();
-            educationRepository.saveAll(mapEducationDtoSetToEducationEntitySet(artistProfileDto.getEducation()));
+            //Set<Education> educationSet = educationRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
+            //educationSet.clear();
+            educationRepository.deleteAllByArtistProfile_Id(existingArtistProfile.getId());
+            educationRepository.saveAll(mapEducationDtoSetToEducationEntitySet(artistProfileDto.getEducation(), existingArtistProfile));
         }
 
         if (artistProfileDto.getExperience() != null) {
-            Set<Experience> experienceSet = experienceRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
-            experienceSet.clear();
-            educationRepository.saveAll(mapEducationDtoSetToEducationEntitySet(artistProfileDto.getEducation()));
+            //Set<Experience> experienceSet = experienceRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
+            //experienceSet.clear();
+            experienceRepository.deleteAllByArtistProfile_Id(existingArtistProfile.getId());
+            experienceRepository.saveAll(mapExperienceDtoSetToExperienceEntitySet(artistProfileDto.getExperience(), existingArtistProfile));
         }
 
         if (artistProfileDto.getWebsite() != null)
@@ -140,10 +140,8 @@ public class ArtistProfileService {
             return null;
         return new ArtistProfileDto(
                 artistProfile.getBio(),
-                artistProfile.getLevel().getDisplayName(),
-                artistProfile.getLocation().stream()
-                        .map(City::getDisplayName)
-                        .collect(Collectors.toSet()),
+                artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
+                artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
                 artistProfile.getSkills().stream()
                         .map(Subcategory::getDisplayName)
                         .collect(Collectors.toSet()),
@@ -180,12 +178,13 @@ public class ArtistProfileService {
                 .collect(Collectors.toSet());
     }
 
-    private Set<Education> mapEducationDtoSetToEducationEntitySet(Set<EducationDto> educationDtoSet) {
+    private Set<Education> mapEducationDtoSetToEducationEntitySet(Set<EducationDto> educationDtoSet, ArtistProfile artistProfile) {
         if (educationDtoSet == null) {
             return null;
         }
         return educationDtoSet.stream()
                 .map(educationDto -> new Education(
+                        artistProfile,
                         educationDto.getSchoolName(),
                         educationDto.getFaculty(),
                         educationDto.getFieldOfStudy(),
@@ -211,12 +210,13 @@ public class ArtistProfileService {
                 .collect(Collectors.toSet());
     }
 
-    private Set<Experience> mapExperienceDtoSetToExperienceEntitySet(Set<ExperienceDto> experienceDtoSet) {
+    private Set<Experience> mapExperienceDtoSetToExperienceEntitySet(Set<ExperienceDto> experienceDtoSet, ArtistProfile artistProfile) {
         if (experienceDtoSet == null) {
             return null;
         }
         return experienceDtoSet.stream()
                 .map(experienceDto -> new Experience(
+                        artistProfile,
                         experienceDto.getCompany(),
                         experienceDto.getCity(),
                         experienceDto.getPosition(),

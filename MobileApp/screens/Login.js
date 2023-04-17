@@ -1,5 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LinearGradient } from 'expo-linear-gradient';
+//keyboard avoiding view
+import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
+//Google auth
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+//Facebook auth
+import * as AuthSession from 'expo-auth-session';
+import * as Facebook from 'expo-auth-session/providers/facebook';
+//axios API
+//import axios from "axios";
+import {default as baseURL} from "../components/AxiosAuth";
+import axios from "axios";
+
 
 //formik
 import { Formik } from "formik";
@@ -11,37 +24,30 @@ import {
     StyledContainer,
     InnerContainer,
     PageLogo,
-    PageTitle,
     StyledFormArea,
     LeftIcon,
     StyledButton,
     StyledInputLabel,
     StyledTextInput,
     RightIcon,
-    ButtonText,
     MsgBox,
     Line,
     Colors,
-    ExtraText,
     ExtraView,
     TextLink,
-    TextLinkContent,
     HeaderText,
     StatsText,
-    RegularText,
     SmallText,
     LinearGradientStyle
 } from './../components/styles';
-import { SafeAreaView, View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, StyleSheet, Image, Text  } from "react-native";
 
 //Colors
 const { tertiary, darkLight, primary, link, darkLight2, green, green2 } = Colors;
 
-//API client
-import axios from 'axios';
+//dismising the popup after successful auth
+WebBrowser.maybeCompleteAuthSession();
 
-//keyboard avoiding view
-import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 
 const Login = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -49,29 +55,70 @@ const Login = ({ navigation }) => {
     const [messageType, setMessageType] = useState();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [googleToken, setGoogleToken] = useState("");
+    const [userInfo, setUserInfo] = useState(null);
+    const [googleSubmiting, setGoogleSubmiting] = useState(false);
+    const [user, setUser] = useState(null);
 
+    const [requestG, responseG, promptAsyncG] = Google.useAuthRequest({
+        androidClientId: '37019238552-c6q0hq4kn55o6e1ahobtuvconehs243h.apps.googleusercontent.com',
+        iosClientId: '37019238552-bvqremi6rf14qlgbg8iqagg1mjndo5h0.apps.googleusercontent.com',
+        expoClientId: '37019238552-7n7e9jrdi9gcliagtqhalfq34afibh9c.apps.googleusercontent.com',
+      });
+
+      const [requestF, responseF, promptAsyncF] = Facebook.useAuthRequest({
+        clientId: "739036054553215",
+      });
+
+      if (requestF) {
+        console.log(
+          "You need to add this url to your authorized redirect urls on your Facebook app: " +
+            requestF.redirectUri
+        );
+      }
+      
+      useEffect(() => {
+        if (responseG?.type === "success") {
+          setGoogleToken(responseG.authentication.accessToken);
+          getUserInfo();
+        }
+      }, [responseG, googleToken]);
+
+      useEffect(() => {
+        if (responseF && responseF.type === "success" && responseF.authentication) {
+          (async () => {
+            const userInfoResponse = await fetch(
+              `https://graph.facebook.com/me?access_token=${responseF.authentication.accessToken}&fields=id,name,picture.type(large)`
+            );
+            const userInfo = await userInfoResponse.json();
+            setUserInfo(userInfo);
+          })();
+        }
+      }, [responseF]);
+
+      const handleGoogleLogin = async () => {
+        setGoogleSubmiting(true);
+        const succ = await promptAsync();
+        handleMessage("Google login successful", 'SUCCESS');
+        console.log(userInfo);
+        setGoogleSubmiting(false);
+        navigation.navigate('MainNavigation', userInfo);
+        console.log(userInfo);
+        
+      }
+
+      const handleFacebookLogin = async () => {
+        const result = await promptAsyncF();
+        if (result.type !== "success") {
+          alert("Uh oh, something went wrong");
+          return;
+        }
+      };
 
     const handleLogin = async (credentials, setSubmitting) => {
         handleMessage(null);
-        const url = 'http://192.168.1.106:8080/api/auth/login';
-        // axios
-        // .post(url, credentials)
-        // .then((response) => {
-        //     const result = response.data;
-        //     const {message, status, data} = result;
-
-        //     if(status !== 'SUCCESS') {
-        //         handleMessage(message, status);
-        //     } else {
-        //         navigation.navigate('MainNavigation', {...data[0] });
-        //     }
-        //     setSubmitting(false);
-        // })
-        // .catch(error => {
-        //     console.log(error.JSON());
-        //     setSubmitting('false');
-        //     handleMessage("Wystąpił bład. Sprawdź swoje połączenie sieciowe i spróbuj ponownie");
-        // })
+        const url = baseURL + '/api/auth/login';
+        console.log(url);
         try {
             const response = await axios.post(url,
                 JSON.stringify({ email, password }),
@@ -84,6 +131,8 @@ const Login = ({ navigation }) => {
             console.log(JSON.stringify(response));
             navigation.navigate('MainNavigation');
         } catch (err) {
+            handleMessage("Nie udało się zalogować", 'FAILED');
+            setSubmitting(false);
             if (!err?.response) {
                 console.log('No Server Response');
             } else if (err.response?.status === 409) {
@@ -95,6 +144,26 @@ const Login = ({ navigation }) => {
         }
     }
 
+    const getUserInfo = async () => {
+        try {
+          const response = await fetch(
+            "https://www.googleapis.com/userinfo/v2/me",
+            {
+              headers: { Authorization: `Bearer ${googleToken}` },
+            }
+          );
+    
+          const user = await response.json();
+          setUserInfo(user);
+          console.log(userInfo);
+          navigation.navigate('MainNavigation', userInfo);
+        } catch (error) {
+            console.log(error);
+          // Add your own error handler here
+        }
+      };
+
+
     const handleMessage = (message, type = 'FAILED') => {
         setMessage(message);
         setMessageType(type);
@@ -104,7 +173,7 @@ const Login = ({ navigation }) => {
         <KeyboardAvoidingWrapper style={{ backgroundColor: { primary } }}>
             <StyledContainer>
                 <InnerContainer>
-                    <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}></PageLogo>
+                    <PageLogo resizeMode="contain" source={require('./../assets/img/logo.png')}/>
                     <HeaderText bold={true} style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
                         initialValues={{ email: '', password: '' }}
@@ -143,16 +212,19 @@ const Login = ({ navigation }) => {
                             />
                             <MsgBox type={messageType}>{message}</MsgBox>
                             {!isSubmitting &&
-                                <LinearGradientStyle colors={[darkLight2, darkLight]} >
+                            <LinearGradientStyle colors={[darkLight2, darkLight]} >
                                     <StyledButton onPress={handleSubmit}>
                                         <StatsText style={{ color: primary }}>
                                             Zaloguj się
                                         </StatsText>
                                     </StyledButton>
                                 </LinearGradientStyle>}
-                            {isSubmitting && <StyledButton disabled={true}>
-                                <ActivityIndicator size="large" color={primary} />
-                            </StyledButton>}
+                            {isSubmitting && 
+                            <LinearGradientStyle colors={[darkLight2, darkLight]} >
+                                <StyledButton disabled={true}>
+                                    <ActivityIndicator size="large" color={primary} />
+                                </StyledButton>
+                            </LinearGradientStyle>}
                             <LinearGradientStyle colors={[darkLight2, darkLight]} >
                                 <StyledButton onPress={() => navigation.navigate("MainNavigation")}>
                                     <StatsText style={{ color: primary }}>
@@ -160,15 +232,34 @@ const Login = ({ navigation }) => {
                                     </StatsText>
                                 </StyledButton>
                             </LinearGradientStyle>
-                            <Line />
+                            {!googleSubmiting && userInfo === null &&
                             <LinearGradientStyle colors={[green, green2]}>
-                                <StyledButton google={true} onPress={handleSubmit}>
+                                <StyledButton google={true} disabled={!requestG} onPress={() => {
+                                    promptAsyncG();
+                                }}>
                                     <Fontisto name="google" color={primary} size={25} />
                                     <StatsText style={{ color: primary }}>
-                                        Kontunuuj z Google
+                                        Kontynuuj z Google
                                     </StatsText>
                                 </StyledButton>
-                            </LinearGradientStyle>
+                            </LinearGradientStyle>}
+                            {googleSubmiting &&
+                            <LinearGradientStyle colors={[green, green2]}>
+                                <StyledButton google={true} disabled={true}>
+                                    <ActivityIndicator size="large" color={primary} />
+                                </StyledButton>
+                            </LinearGradientStyle>}
+                            {userInfo ? (
+        <Profile userInfo={userInfo} />
+      ) : (<LinearGradientStyle colors={[darkLight, darkLight2]}>
+                                <StyledButton disabled={!requestF} onPress={() => {
+                                    handleFacebookLogin();
+                                }}>
+                                    <StatsText style={{ color: primary }}>
+                                        Kontynuuj z Facebook
+                                    </StatsText>
+                                </StyledButton>
+                            </LinearGradientStyle>)}
                             <ExtraView>
                                 <SmallText>Nie masz jeszcze konta? </SmallText>
                                 <TextLink onPress={() => navigation.navigate("Signup")}>
@@ -182,6 +273,16 @@ const Login = ({ navigation }) => {
         </KeyboardAvoidingWrapper>
     );
 }
+
+function Profile({ userInfo }) {
+    return (
+      <View style={styles.profile}>
+        <Image source={{ uri: userInfo.picture.data.url }} style={styles.image} />
+        <Text style={styles.name}>{userInfo.name}</Text>
+        <Text>ID: {userInfo.id}</Text>
+      </View>
+    );
+  }
 
 const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
     return (
@@ -199,6 +300,25 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    profile: {
+      alignItems: "center",
+    },
+    name: {
+      fontSize: 20,
+    },
+    image: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+    },
+  });
 
 export default Login;
 
