@@ -54,4 +54,8 @@ public class ArtistProfile {
     public ArtistProfile(UserEntity user) {
         this.user = user;
     }
+
+//    public Optional<Level> getLevel() {
+//        return Optional.ofNullable(level);
+//    }
 }

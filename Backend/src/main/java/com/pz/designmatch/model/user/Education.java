@@ -24,8 +24,9 @@ public class Education {
     private YearMonth endDate;
     private String description;
 
-    public Education(String schoolName, String faculty, String fieldOfStudy, String degree, YearMonth startDate,
-                     YearMonth endDate, String description) {
+    public Education(ArtistProfile artistProfile, String schoolName, String faculty, String fieldOfStudy, String degree,
+                     YearMonth startDate, YearMonth endDate, String description) {
+        this.artistProfile = artistProfile;
         this.schoolName = schoolName;
         this.faculty = faculty;
         this.fieldOfStudy = fieldOfStudy;
