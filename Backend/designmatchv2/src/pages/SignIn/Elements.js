@@ -17,10 +17,6 @@ export const AllPage = styled.div`
     @media screen and (max-width: 960px) {
       transform: translate(-50%, 10%);
      }
-     @media screen and (max-width: 1544px) {
-
-      height: calc(100vh - 80px);
-     }
 `
 
 /*zwieksza caly formularz bez loga*/
