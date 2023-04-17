@@ -176,6 +176,7 @@ const Login = ({ navigation }) => {
                             />
                             <MsgBox type={messageType}>{message}</MsgBox>
                             {!isSubmitting &&
+                            <LinearGradientStyle colors={[darkLight2, darkLight]} >
                                     <StyledButton onPress={handleSubmit}>
                                         <StatsText style={{ color: primary }}>
                                             Zaloguj się
