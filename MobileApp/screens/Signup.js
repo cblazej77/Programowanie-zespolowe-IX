@@ -70,7 +70,7 @@ const Signup = ({navigation}) => {
 
     const handleSignup = async (credentials, setSubmitting) => {
         handleMessage(null);
-        const url = 'http://192.168.1.106:8080/api/auth/register';
+        const url = 'http://192.168.1.110:8080/api/auth/register';
         // axios
         //     .post(url, credentials)
         //     .then((response) => {
