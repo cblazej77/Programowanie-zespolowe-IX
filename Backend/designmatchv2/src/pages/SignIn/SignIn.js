@@ -68,6 +68,8 @@ export const SignIn = () => {
           setPasswordInvalid(true);
         }
       }
+     } 
+    }
       const login = useGoogleLogin({
         onSuccess: CodeResponse  => {
           console.log(CodeResponse );
@@ -76,6 +78,7 @@ export const SignIn = () => {
         },
         flow: 'auth-code',
       });
+    
 /*
   const buttonEnabled = (username, password) => {
       if(username.length > 0 && password.length > 2 ) {
@@ -117,10 +120,9 @@ export const SignIn = () => {
       </StyledForm>
     </AllPage>
   );
-
+  }
   /*
             <CenterButton>
               <FacebookButton to='' type="button" >Kontynuuj z Facebook</FacebookButton>
             </CenterButton>
   */
-}
