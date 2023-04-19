@@ -11,8 +11,23 @@ function Dropdown(){
   
     const auth = useAuth()
 
+    const handleSetClick = () => {
+          setClick(false);
+      }
+
+    const handleMapClick = (item) => {
+        if(item === "handleLogOut"){
+          setClick(false);
+          auth.logout();
+          
+        }
+        else if(item === "handleSetClick"){
+          setClick(false);
+        }
+    }
     return (
-        <>
+
+         <>
         <ul
         onClick={handleClick}
         className={click ? 'dropdown-menu clicked' : 'dropdown-menu'}
@@ -23,7 +38,7 @@ function Dropdown(){
               <Link
                 className={item.cName}
                 to={item.path}
-                onClick={() => setClick(false)}
+                onClick={handleMapClick.bind(this, item.click)}
               >
                 {item.title}
               </Link>

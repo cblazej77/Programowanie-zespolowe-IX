@@ -37,7 +37,6 @@ function Navbar() {
       }
     };
     const onMouseEnter = () => {
-        console.log("enter");
         if (window.innerWidth < 960) {
           setDropdown(false);
         } else {
@@ -46,7 +45,6 @@ function Navbar() {
       };
     
       const onMouseLeave = () => {
-        console.log("leave");
         if (window.innerWidth < 960) {
           setDropdown(false);
         } else {
@@ -104,9 +102,6 @@ function Navbar() {
                 </NavItem>
                 ):(
                 <NavItem>
-                    <ButtonLogout to='#;return false;' onClick={handleLogout} >
-                            ButtonLogout
-                    </ButtonLogout>
                 </NavItem>
                 )}
                 

@@ -50,9 +50,11 @@ export const Image = styled.img`
 export const LineForm = styled.div`
   background: #CCC;
   border-radius: 100%;
+  margin: 20px 0;
   height: 1px;
   width: 100%;
 `;
+
 
 export const Button = styled(Link)`
     border: none;
@@ -91,6 +93,10 @@ export const Button = styled(Link)`
     
 `;
 
+export const SmallButton = styled(Button)`
+width: 45%;
+`
+
 export const RightWrapper = styled.div`
   margin: 0 5%;
   display: flex;
@@ -100,4 +106,40 @@ export const RightWrapper = styled.div`
   float: left;
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+`;
+
+export const AboutMe = styled.text`
+    margin: 0 50px;
+    maxlength="500"
+`
+
+export const Left = styled.div`
+  flex-basis: 50%;
+`;
+export const Right = styled(Left)`
+`;
+
+export const InfoRow = styled.div`
+  margin: 0 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%%;
+`
+
+export const InfoColumnt = styled.div`
+display: flex;
+flex-direction: column;
+flex-basis: 100%;
+flex: 1;
+`
+
+export const DataColumnt = styled(InfoColumnt)`
+    margin: 0 25px;
+  text-align: right;
+  flex: 1;
+`;
+export const RightColumn = styled(InfoColumnt)`
+  margin: 0 25px;
+  flex: 3;
 `;
