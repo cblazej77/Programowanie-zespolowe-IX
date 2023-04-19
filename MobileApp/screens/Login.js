@@ -81,6 +81,7 @@ const Login = ({ navigation }) => {
         if (responseG?.type === "success") {
           setGoogleToken(responseG.authentication.accessToken);
           getUserInfo();
+          navigation.navigate('MainNavigation', userInfo);
         }
       }, [responseG, googleToken]);
 
@@ -92,6 +93,7 @@ const Login = ({ navigation }) => {
             );
             const userInfo = await userInfoResponse.json();
             setUserInfo(userInfo);
+            navigation.navigate('MainNavigation', userInfo);
           })();
         }
       }, [responseF]);
@@ -155,8 +157,6 @@ const Login = ({ navigation }) => {
     
           const user = await response.json();
           setUserInfo(user);
-          console.log(userInfo);
-          navigation.navigate('MainNavigation', userInfo);
         } catch (error) {
             console.log(error);
           // Add your own error handler here
@@ -226,14 +226,14 @@ const Login = ({ navigation }) => {
                                 </StyledButton>
                             </LinearGradientStyle>}
                             <LinearGradientStyle colors={[darkLight2, darkLight]} >
-                                <StyledButton onPress={() => navigation.navigate("MainNavigation")}>
+                                <StyledButton onPress={() => navigation.navigate("HomePage")}>
                                     <StatsText style={{ color: primary }}>
                                         Kontynuuj bez logowania
                                     </StatsText>
                                 </StyledButton>
                             </LinearGradientStyle>
                             {!googleSubmiting && userInfo === null &&
-                            <LinearGradientStyle colors={[green, green2]}>
+                            <LinearGradientStyle colors={[darkLight2, darkLight]}>
                                 <StyledButton google={true} disabled={!requestG} onPress={() => {
                                     promptAsyncG();
                                 }}>
@@ -244,22 +244,21 @@ const Login = ({ navigation }) => {
                                 </StyledButton>
                             </LinearGradientStyle>}
                             {googleSubmiting &&
-                            <LinearGradientStyle colors={[green, green2]}>
+                            <LinearGradientStyle colors={[darkLight2, darkLight]}>
                                 <StyledButton google={true} disabled={true}>
                                     <ActivityIndicator size="large" color={primary} />
                                 </StyledButton>
                             </LinearGradientStyle>}
-                            {userInfo ? (
-        <Profile userInfo={userInfo} />
-      ) : (<LinearGradientStyle colors={[darkLight, darkLight2]}>
-                                <StyledButton disabled={!requestF} onPress={() => {
+                            <LinearGradientStyle colors={[ darkLight2, darkLight]}>
+                                <StyledButton facebook={true} disabled={!requestF} onPress={() => {
                                     handleFacebookLogin();
                                 }}>
+                                  <Fontisto name="facebook" color={primary} size={25} />
                                     <StatsText style={{ color: primary }}>
                                         Kontynuuj z Facebook
                                     </StatsText>
                                 </StyledButton>
-                            </LinearGradientStyle>)}
+                            </LinearGradientStyle>
                             <ExtraView>
                                 <SmallText>Nie masz jeszcze konta? </SmallText>
                                 <TextLink onPress={() => navigation.navigate("Signup")}>

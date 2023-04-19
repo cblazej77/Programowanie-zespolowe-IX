@@ -105,6 +105,7 @@ export const InputLabel = styled.label`
   left: 15px;
   background: none;
   font-size: 14px;
+  transition: 0.3s;
 `;
 
 export const InputField = styled.input`

@@ -3,28 +3,16 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../components/Auth';
 import { default as axios } from "../../api/axios"
 import { useGoogleLogin } from '@react-oauth/google';
-import { FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, InputField, InputLabel, InputGroup, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
+import { FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
+import InputText from '../../components/Input/InputText';
+import PasswordInput from '../../components/Input/PasswordInput';
 
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  id: string;
-  label: string;
-}
-
-const Input: React.FC<InputProps> = ({ id, label, ...rest }) => {
-  return (
-    <InputGroup >
-      <InputField style={{}} id={id} {...rest} />
-      <InputLabel htmlFor={id} > {label}</InputLabel>
-    </InputGroup>
-  );
-}
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const authApi = useAuth();
-
 
 
   const [passwordInvalid, setPasswordInvalid] = useState(false);
@@ -97,13 +85,19 @@ export const SignIn = () => {
         }
     }
   */
+
+
   return (
     <AllPage>
       <MainName >LOGOWANIE</MainName>
       <StyledForm >
-        <LogoIcon />
-        <Input required type="text" label="email@example.com" id="loginId" onChange={e => setEmail(e.target.value)} />
+      <LogoIcon />
+
+        <InputText label="email@example.com" name="login" id="loginId"/>
+        <PasswordInput label="************" name="login" id="passwordId"/>
+        {/*<Input required type="text" label="email@example.com" id="loginId" onChange={e => setEmail(e.target.value)} />
         <Input required type="password" label="************" id="passwordId" onChange={e => setPassword(e.target.value)} />
+        */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           {passwordInvalid ? <StyledAlert>Podane hasło jest nieprawidłowe.</StyledAlert> : <></>}
           <LoginButton to='' type="submit" onClick={e => handleSubmit(e)}>Zaloguj się</LoginButton>
@@ -111,8 +105,9 @@ export const SignIn = () => {
           {/*<Button to='/sign-up' type="button" >Zarejestruj się</Button>*/}
           <LineForm />
           <GoogleButton to='' type="button" onClick={ () => login()} >Kontynuuj z Google{' '}</GoogleButton>
+          <FacebookButton to='' type="button" >Kontynuuj z Facebook</FacebookButton>
           <div style={{ fontSize: 12 }}>
-            <text>Nie masz jeszcze konta? </text>
+          <small>Nie masz jeszcze konta? </small>
             <Link to='/sign-up' type="submit">Zarejestruj się!</Link>
           </div>
         </div>
@@ -120,9 +115,4 @@ export const SignIn = () => {
       </StyledForm>
     </AllPage>
   );
-  }
-  /*
-            <CenterButton>
-              <FacebookButton to='' type="button" >Kontynuuj z Facebook</FacebookButton>
-            </CenterButton>
-  */
+}
