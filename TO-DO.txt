@@ -1,9 +1,9 @@
 # TO-DO list
   backend - wysyłanie listy
-  backend - serwer autoryzujący
   web - dokończyć profil użytkownika
   mobilka - dokończyć połączenie z bazą
-  
+
+  backend - serwer autoryzujący
   web/mobilka - odbieranie listy i wyświetlanie jej
   
   all - filtrowanie
