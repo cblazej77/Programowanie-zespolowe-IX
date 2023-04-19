@@ -9,6 +9,7 @@
   all - filtrowanie
   all - zdjęcia
   all - zlecenia
+  mobilka - lokalna baza danych
   all - chat
 
 Mobilka
