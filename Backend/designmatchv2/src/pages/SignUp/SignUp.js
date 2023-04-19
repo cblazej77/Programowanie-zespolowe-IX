@@ -58,14 +58,17 @@ function LoginForm() {
           <InputText label="email:" id="emailId" onChange={e => setEmail(e.target.value)} />
           <PasswordInput label="hasło:" id="passwordId" onChange={e => setPassword(e.target.value)} />
           {/*<Button to='/sign-in' type="submit">Zaloguj się</Button>*/}
-          <SignUpButton to='#;return false;' onClick={handleRegistration} type="submit" >Zarejestruj się</SignUpButton>
-          {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
-          <LineForm />
-          <GoogleButton to='/' type="submit" >Kontynuuj z google</GoogleButton>
-          <div style={{fontSize: 14}}>
-            <text>Masz już konto? </text>
-            <Link to='/sign-in' type="submit">Zaloguj się!</Link>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <SignUpButton to='#;return false;' onClick={handleRegistration} type="submit" >Zarejestruj się</SignUpButton>
+            {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
+            <LineForm />
+            <GoogleButton to='/' type="submit" >Kontynuuj z google</GoogleButton>
+            <FacebookButton to='' type="button" >Kontynuuj z Facebook</FacebookButton>
+            <div style={{ fontSize: 14 }}>
+              <text>Masz już konto? </text>
+              <Link to='/sign-in' type="submit">Zaloguj się!</Link>
             </div>
+          </div>
         </div>
       </StyledForm>
     </AllPage>

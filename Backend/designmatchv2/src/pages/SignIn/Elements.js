@@ -107,7 +107,6 @@ export const CenterButton = styled.div`
 `;
 
 export const Button = styled(Link)`
-    background: transparent;
     border: none;
     border-radius: 5px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
@@ -116,6 +115,7 @@ export const Button = styled(Link)`
     text-decoration: none;
     margin: 8px 0px;
     width: 80%;
+    font-size: 14px;
     background: linear-gradient(
       to top,
       #4A4E69,
@@ -147,7 +147,6 @@ export const Button = styled(Link)`
 export const LoginButton = styled(Button)`
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
     margin-top: 20px;
-    font-size: 14px;
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateX(0px);
@@ -165,9 +164,6 @@ export const GoogleButton = styled(Button)`
       #3dc428,
       #5ad946
     );
-    padding: 10px 22px;
-    font-size: 14px;
-    margin-bottom: 15px;
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(0.7rem);
@@ -178,7 +174,11 @@ export const GoogleButton = styled(Button)`
 `
 
 export const FacebookButton = styled(Button)`
-    background: transparent;
+    background: linear-gradient(
+      to top,
+      #4267B2,
+      #5074be
+    );
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(1.3rem);

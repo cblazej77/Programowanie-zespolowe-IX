@@ -190,6 +190,8 @@ export const Button = styled(Link)`
     color: rgb(255, 255, 255);
     padding: 10px 15px;
     text-decoration: none;
+    width: 70%;
+    font-size: 16px;
     background: linear-gradient(
       to top,
       #4A4E69,
@@ -258,7 +260,12 @@ export const GoogleButton = styled(Button)`
     }
 `
 export const FacebookButton = styled(Button)`
-    background: transparent;
+  background: linear-gradient(
+    to top,
+    #4267B2,
+    #5074be
+  );
+  margin-bottom: 10px;
     @media screen and (max-width: 540px) {
       display: fixed;
       transform: translateY(1.3rem);
