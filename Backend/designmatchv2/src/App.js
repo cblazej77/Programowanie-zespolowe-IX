@@ -24,7 +24,7 @@ function App() {
       <Routes>
         <Route path='/'  element={ <Home />} />
         <Route path='/about' element={ <About />} />
-        <Route path='/account' element={<RequireAuth> <Account /> </RequireAuth>} />
+        <Route path='/account' element={ <RequireAuth><UserPage /> </RequireAuth> } />
         <Route path='/sign-in' element={ <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}> <SignIn /> </GoogleOAuthProvider>} />
         <Route path='/sign-up' element ={ <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}> <SignUp /> </GoogleOAuthProvider>} />
         <Route path='/test' element ={ <UserPage />} />

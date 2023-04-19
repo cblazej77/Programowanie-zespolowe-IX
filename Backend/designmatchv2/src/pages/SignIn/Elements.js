@@ -86,57 +86,13 @@ export const LogoIcon = styled(xIcon)`
   overflow: hidden;
   `;
 
+
 export const LineForm = styled.div`
   margin: 10px 0px 10px 0px;
   width: 80%;
   height: 1px;
   background-color: #bbb;
-  `;
-
-
-export const InputGroup = styled.div`
-  position: relative;
-  top: 15px;
-  padding-bottom: 15px;
 `;
-
-export const InputLabel = styled.label`
-  color: #888;
-  position: absolute;
-  background: none;
-  font-size: 14px;
-  top: 13px;
-  left: 35px;
-`;
-
-export const InputField = styled.input`
-  outline: none;
-  border: 0px solid #dadce0;
-  font-size: 0.8rem;
-  border-radius: 5px;
-  color: rgb(1, 1, 1);
-  padding: 12px 24px;
-  background-color: #ddd;
-
-  &:focus
-  {
-    border: 1px solid #AAA;
-  }
-
-  &:valid + ${InputLabel}
-  {
-    left: 200px;
-    opacity: 0;
-  }
-
-  &:focus + ${InputLabel}
-  {
-    left: 200px;
-    opacity: 0;
-    transition: 0.3s;
-  }
-`;
-
 
 export const CenterButton = styled.div`
   position: relative;
@@ -148,7 +104,7 @@ export const CenterButton = styled.div`
     padding-bottom: 0px;
     padding-top: 0px;
   }
-`
+`;
 
 export const Button = styled(Link)`
     background: transparent;
