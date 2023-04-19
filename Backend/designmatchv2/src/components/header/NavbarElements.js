@@ -61,6 +61,7 @@ background: linear-gradient(to right,  ${darkLight} 0%, #555978 75%);
 /*to odpowiada za wygląd logo pisane + ikonka*/
 export const NavLogo = styled(Link)`
   color: #fff;
+  padding-left: 20px;
   justify-self: flex-start;
   cursor: pointer;
   text-decoration: none;
