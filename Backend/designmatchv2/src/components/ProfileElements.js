@@ -16,6 +16,7 @@ export const TopSection = styled.div`
   margin-bottom: 2rem;
   height: 66%;
   display: flex;
+  position: relative;
   width: 100%;
   @media screen max-width(1000px){
     
@@ -109,8 +110,8 @@ export const RightWrapper = styled.div`
 `;
 
 export const AboutMe = styled.text`
-    margin: 0 50px;
-    maxlength="500"
+  margin: 0 50px;
+  maxlength="500"
 `
 
 export const Left = styled.div`
@@ -128,14 +129,14 @@ export const InfoRow = styled.div`
 `
 
 export const InfoColumnt = styled.div`
-display: flex;
-flex-direction: column;
-flex-basis: 100%;
-flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
 `
 
 export const DataColumnt = styled(InfoColumnt)`
-    margin: 0 25px;
+  margin: 0 25px;
   text-align: right;
   flex: 1;
 `;

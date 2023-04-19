@@ -52,31 +52,7 @@ function Navbar() {
         }
       };
 
-  const handleClick = () => setClick(!click);
-  const closeMobileMenu = () => setClick(false);
-
-  const showButton = () => {
-    if (window.innerWidth <= 960) {
-      setButton(false);
-    } else {
-      setButton(true);
-    }
-  };
-  const onMouseEnter = () => {
-    if (window.innerWidth < 960) {
-      setDropdown(false);
-    } else {
-      setDropdown(true);
-    }
-  };
-
-  const onMouseLeave = () => {
-    if (window.innerWidth < 960) {
-      setDropdown(false);
-    } else {
-      setDropdown(false);
-    }
-  };
+ 
 
   const auth = useAuth()
   const navigate = useNavigate()
@@ -119,20 +95,9 @@ function Navbar() {
                 KontoTest
               </NavLink>
             </NavItem>
-
-                {!auth.user ? (
-                    <NavItem>
-                    <NavLink to='/sign-in' onClick={closeMobileMenu}>
-                        Logowanie
-                    </NavLink>
-                </NavItem>
-                ):(
-                <NavItem>
-                </NavItem>
-                )}
                 
             {!auth.user ? (
-              <NavItem>
+              <NavItem> 
                 <NavLink to='/sign-in' onClick={closeMobileMenu}>
                   Logowanie
                 </NavLink>

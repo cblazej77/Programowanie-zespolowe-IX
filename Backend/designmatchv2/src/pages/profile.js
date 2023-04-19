@@ -128,7 +128,7 @@ const UserPage = () => {
                     <Bubble>Szycie</Bubble>
                 </BubbleWrap>
                 <text>
-                  Umiejętności:
+                  Języki:
                 </text>
                 <BubbleWrap>
                   <Bubble>Angielski</Bubble>
