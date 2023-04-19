@@ -1,4 +1,55 @@
 # TO-DO list
+  backend - wysyłanie listy
+  web - dokończyć profil użytkownika
+  mobilka - dokończyć połączenie z bazą
+
+  backend - serwer autoryzujący
+  web/mobilka - odbieranie listy i wyświetlanie jej
+  
+  all - filtrowanie
+  all - zdjęcia
+  all - zlecenia
+  mobilka - lokalna baza danych
+  all - chat
+
+Mobilka
+	-logowanie, email, google, fb
+	-rejestracja
+	-małe profile artystów
+	-okno profilu
+	-okno chatu
+
+STRONA
+	-wyswietlanie krótkiego profilu ze ZDJĘCIAMI
+	-logowanie email, google
+	-wyświetlanie profilu
+	-rejestracja
+	
+backend
+	wyświetlanie profilu(do poprawy):
+	-imie
+	-nazwisko
+	-praca
+	-opinia
+	-poziom doświadzcenia
+	-ilość opini
+	-o mnie
+	+członek od
+	-Miasto
+	-Kraj
+	-umiejętności(lista)
+	-Języki(lista)
+	-Linki [max 3 powiedzmy]
+
+	rejestracja
+	logowanie(poprawa), bez fb i googla
+	edytowanie profilu użytkownika
+	zwracanie którkiego profilu
+	
+
+
+
+
 
 Zadania do świąt:
 - przygotować repozytorium [OK]

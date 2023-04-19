@@ -12,7 +12,7 @@ public class Experience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_profile_id")
+    @JoinColumn(name = "artist_profile_id")
     private ArtistProfile artistProfile;
     private String company;
     private String city;
@@ -21,7 +21,8 @@ public class Experience {
     private YearMonth endDate;
     private String description;
 
-    public Experience(String company, String city, String position, YearMonth startDate, YearMonth endDate, String description) {
+    public Experience(ArtistProfile artistProfile, String company, String city, String position, YearMonth startDate, YearMonth endDate, String description) {
+        this.artistProfile = artistProfile;
         this.company = company;
         this.city = city;
         this.position = position;

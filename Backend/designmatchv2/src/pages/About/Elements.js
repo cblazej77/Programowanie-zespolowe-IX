@@ -4,15 +4,14 @@ const Variable = { size: "50%"};
 
 export const AllPage = styled.div`
     position: static;
-    height: 100vh;
-    padding; 0 1rem;    
+    height: calc(90vh - 80px );
+    padding: 0 1rem;    
     color: white;
-
     @media only screen and (min-width: 960px) {
-    left: ${Variable.size};
-    margin-right:  ${Variable.size};
-    transform: translateX( ${Variable.size});
-    top: 0;
+        left: ${Variable.size};
+        margin-right:  ${Variable.size};
+        transform: translateX( ${Variable.size});
+        top: 0;
     }
 `;
 

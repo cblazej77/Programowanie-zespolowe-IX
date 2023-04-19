@@ -1,5 +1,5 @@
 //Switch => Routes
-import React, {useState} from 'react';
+import React from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { AuthProvider } from './components/Auth';
 import Head from './components/header/Header';
@@ -11,6 +11,7 @@ import SignUp from './pages/SignUp/SignUp';
 import './App.css';
 import { RequireAuth } from './components/RequireAuth';
 import UserPage from './pages/profile'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
 function App() {
@@ -23,9 +24,9 @@ function App() {
       <Routes>
         <Route path='/'  element={ <Home />} />
         <Route path='/about' element={ <About />} />
-        <Route path='/account' element={<RequireAuth> <Account /> </RequireAuth>} />
-        <Route path='/sign-in' element={ <SignIn />} />
-        <Route path='/sign-up' element ={ <SignUp />} />
+        <Route path='/account' element={ <RequireAuth> <UserPage /> </RequireAuth> } />
+        <Route path='/sign-in' element={ <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}> <SignIn /> </GoogleOAuthProvider>} />
+        <Route path='/sign-up' element ={ <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}> <SignUp /> </GoogleOAuthProvider>} />
         <Route path='/test' element ={ <UserPage />} />
       </Routes>
     </BrowserRouter>

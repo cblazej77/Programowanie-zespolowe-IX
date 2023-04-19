@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {xIcon, threeLine, betterX} from '../../assets/img/svg/SvgIcons';
+import {xIcon, threeLine, betterX, DownPointer} from '../../assets/img/svg/SvgIcons';
 import './HeaderFont.css';
 import {COLORS } from '../Colors';
+
+const { darkLight, darkLight2, primary } = COLORS;
 
 
 export const NavbarContainer  = styled.div`
@@ -19,6 +21,7 @@ export const NavbarContainer  = styled.div`
 `;
 
 export const Button = styled.button`
+text-align: center;
 cursor: pointer;
 background: none;
 padding: 1px 6px;
@@ -44,7 +47,7 @@ font-size: 1.2rem;
 /* tutaj height odpowiada za szerokosc na NavBaru*/
 export const Nav = styled.nav`
 box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.3);
-background: linear-gradient(to right,  #F0EDEB 0%, #4A4E69 75%);
+background: linear-gradient(to right,  ${darkLight} 0%, #555978 75%);
   height: 60px; 
   display: flex;
   justify-content: center;
@@ -58,6 +61,7 @@ background: linear-gradient(to right,  #F0EDEB 0%, #4A4E69 75%);
 /*to odpowiada za wygląd logo pisane + ikonka*/
 export const NavLogo = styled(Link)`
   color: #fff;
+  padding-left: 20px;
   justify-self: flex-start;
   cursor: pointer;
   text-decoration: none;
@@ -94,7 +98,7 @@ export const NavMenu = styled.ul`
   bacground: none;
   @media screen and (max-width: 960px) {
     box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.3);
-    background: linear-gradient(to top right,  #F0EDEB 30%, #4A4E69 100%);
+    background: linear-gradient(to right,  ${darkLight} 0%, #555978 75%);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -117,6 +121,13 @@ height: 60px;
 width: auto;
 color: white;
 `;
+
+export const DownPointerIcon = styled(DownPointer)`
+height: 20px;
+width: auto;
+transform: translateY(3px);
+color: white;
+`
 export const ThreeLineIcon = styled(threeLine)`
 height: 60px;
 width: auto;

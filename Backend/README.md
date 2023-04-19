@@ -54,11 +54,9 @@
    jako body body (`start_date` i `end_date` w formacie `MM/yyyy`):
     ```json
    {
-   "bio": "Siema to ja michał",
+   "bio": "Siema to ja michała",
    "level": "Mid",
-   "location": [
-   "Warszawa"
-   ],
+   "location": "Warszawa",
    "skills": [
    "Maskotka"
    ],
@@ -100,6 +98,8 @@
     ```
    Żeby wydobyć z powrotem GET `http://localhost:8080/api/artist/getArtistProfile?username=jakub2`
    Pod 'http://localhost:8080/swagger-ui' znajduje się swagger z dokumentacją API
+
+   http://localhost:8080/api/artist/getShortArtistProfile?username=jakub2
 
 # Wersje zależności
 

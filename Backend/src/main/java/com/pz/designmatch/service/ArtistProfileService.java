@@ -3,6 +3,7 @@ package com.pz.designmatch.service;
 import com.pz.designmatch.dto.ArtistProfileDto;
 import com.pz.designmatch.dto.EducationDto;
 import com.pz.designmatch.dto.ExperienceDto;
+import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.model.user.Education;
@@ -12,6 +13,7 @@ import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.repository.EducationRepository;
 import com.pz.designmatch.repository.ExperienceRepository;
 import com.pz.designmatch.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,7 @@ public class ArtistProfileService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public ArtistProfileDto updateArtistProfileByUsername(String username, ArtistProfileDto artistProfileDto) {
 //        Optional<ArtistProfile> optionalArtistProfile = artistProfileRepository.findByUser_Username(username);
 //        ArtistProfile existingArtistProfile = new ArtistProfile();
@@ -69,9 +72,7 @@ public class ArtistProfileService {
             existingArtistProfile.setLevel(Level.fromDisplayName(artistProfileDto.getLevel()));
 
         if (artistProfileDto.getLocation() != null)
-            existingArtistProfile.setLocation(artistProfileDto.getLocation().stream()
-                    .map(City::fromDisplayName)
-                    .collect(Collectors.toSet()));
+            existingArtistProfile.setLocation(City.fromDisplayName(artistProfileDto.getLocation()));
 
         if (artistProfileDto.getSkills() != null)
             existingArtistProfile.setSkills(artistProfileDto.getSkills().stream()
@@ -89,15 +90,17 @@ public class ArtistProfileService {
                     .collect(Collectors.toSet()));
 
         if (artistProfileDto.getEducation() != null) {
-            Set<Education> educationSet = educationRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
-            educationSet.clear();
-            educationRepository.saveAll(mapEducationDtoSetToEducationEntitySet(artistProfileDto.getEducation()));
+            //Set<Education> educationSet = educationRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
+            //educationSet.clear();
+            educationRepository.deleteAllByArtistProfile_Id(existingArtistProfile.getId());
+            educationRepository.saveAll(mapEducationDtoSetToEducationEntitySet(artistProfileDto.getEducation(), existingArtistProfile));
         }
 
         if (artistProfileDto.getExperience() != null) {
-            Set<Experience> experienceSet = experienceRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
-            experienceSet.clear();
-            educationRepository.saveAll(mapEducationDtoSetToEducationEntitySet(artistProfileDto.getEducation()));
+            //Set<Experience> experienceSet = experienceRepository.findAllByArtistProfile_Id(existingArtistProfile.getId());
+            //experienceSet.clear();
+            experienceRepository.deleteAllByArtistProfile_Id(existingArtistProfile.getId());
+            experienceRepository.saveAll(mapExperienceDtoSetToExperienceEntitySet(artistProfileDto.getExperience(), existingArtistProfile));
         }
 
         if (artistProfileDto.getWebsite() != null)
@@ -129,6 +132,12 @@ public class ArtistProfileService {
                 .orElseThrow(() -> new RuntimeException("Artist profile not found for username: " + username));
     }
 
+    public ShortProfileDto getShortArtistProfileDtoByUsername(String username) {
+        return artistProfileRepository.findByUser_Username(username)
+                .map(this::mapToShortDto)
+                .orElseThrow(() -> new RuntimeException("Artist profile not found for username: " + username));
+    }
+
     public ArtistProfileDto getArtistProfileDtoByUsername(String username) {
         return artistProfileRepository.findByUser_Username(username)
                 .map(this::mapToDto)
@@ -140,10 +149,8 @@ public class ArtistProfileService {
             return null;
         return new ArtistProfileDto(
                 artistProfile.getBio(),
-                artistProfile.getLevel().getDisplayName(),
-                artistProfile.getLocation().stream()
-                        .map(City::getDisplayName)
-                        .collect(Collectors.toSet()),
+                artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
+                artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
                 artistProfile.getSkills().stream()
                         .map(Subcategory::getDisplayName)
                         .collect(Collectors.toSet()),
@@ -180,12 +187,13 @@ public class ArtistProfileService {
                 .collect(Collectors.toSet());
     }
 
-    private Set<Education> mapEducationDtoSetToEducationEntitySet(Set<EducationDto> educationDtoSet) {
+    private Set<Education> mapEducationDtoSetToEducationEntitySet(Set<EducationDto> educationDtoSet, ArtistProfile artistProfile) {
         if (educationDtoSet == null) {
             return null;
         }
         return educationDtoSet.stream()
                 .map(educationDto -> new Education(
+                        artistProfile,
                         educationDto.getSchoolName(),
                         educationDto.getFaculty(),
                         educationDto.getFieldOfStudy(),
@@ -211,12 +219,13 @@ public class ArtistProfileService {
                 .collect(Collectors.toSet());
     }
 
-    private Set<Experience> mapExperienceDtoSetToExperienceEntitySet(Set<ExperienceDto> experienceDtoSet) {
+    private Set<Experience> mapExperienceDtoSetToExperienceEntitySet(Set<ExperienceDto> experienceDtoSet, ArtistProfile artistProfile) {
         if (experienceDtoSet == null) {
             return null;
         }
         return experienceDtoSet.stream()
                 .map(experienceDto -> new Experience(
+                        artistProfile,
                         experienceDto.getCompany(),
                         experienceDto.getCity(),
                         experienceDto.getPosition(),
@@ -234,5 +243,20 @@ public class ArtistProfileService {
     private YearMonth deserializeYearMonth(String yearMonth) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");
         return YearMonth.parse(yearMonth, formatter);
+    }
+
+    private ShortProfileDto mapToShortDto(ArtistProfile artistProfile) {
+        if (artistProfile == null)
+            return null;
+        return new ShortProfileDto(
+                artistProfile.getUser().getFirstname(),
+                artistProfile.getUser().getLastname(),
+                artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
+                artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
+                artistProfile.getSkills().stream()
+                        .limit(2)
+                        .map(Subcategory::getDisplayName)
+                        .collect(Collectors.toSet())
+        );
     }
 }

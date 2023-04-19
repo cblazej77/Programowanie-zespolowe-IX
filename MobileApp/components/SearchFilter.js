@@ -10,7 +10,7 @@ const SearchFilter = ({ data, input, setInput }) => {
             <FlatList
                 contentContainerStyle={{ padding: 10 }}
                 data={data}
-                ItemSeparatorComponent={<View style={{ width: "100%", height: 2, backgroundColor: "#e4dfe1", marginBottom: 10 }} />}
+                //ItemSeparatorComponent={<View style={{ width: "100%", height: 0, backgroundColor: "#e4dfe1", marginBottom: 10 }} />}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item }) => {
                     if (input === "") {

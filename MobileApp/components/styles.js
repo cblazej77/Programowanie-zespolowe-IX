@@ -174,6 +174,11 @@ export const StyledButton = styled.TouchableOpacity`
         flex-direction: row;
         justify-content: space-evenly;
     `}
+
+    ${(props) => props.facebook == true && `
+        flex-direction: row;
+        justify-content: space-evenly;
+    `}
 `;
 
 export const ButtonText = styled.Text`
@@ -182,6 +187,10 @@ export const ButtonText = styled.Text`
 
     ${(props) => props.google == true && `
     padding-left: 20px;
+
+    ${(props) => props.facebook == true && `
+    padding-left: 20px;
+    `}
 `}
 `;
 
