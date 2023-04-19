@@ -3,6 +3,7 @@ package com.pz.designmatch.service;
 import com.pz.designmatch.dto.ArtistProfileDto;
 import com.pz.designmatch.dto.EducationDto;
 import com.pz.designmatch.dto.ExperienceDto;
+import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.model.user.Education;
@@ -12,6 +13,7 @@ import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.repository.EducationRepository;
 import com.pz.designmatch.repository.ExperienceRepository;
 import com.pz.designmatch.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,7 @@ public class ArtistProfileService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public ArtistProfileDto updateArtistProfileByUsername(String username, ArtistProfileDto artistProfileDto) {
 //        Optional<ArtistProfile> optionalArtistProfile = artistProfileRepository.findByUser_Username(username);
 //        ArtistProfile existingArtistProfile = new ArtistProfile();
@@ -126,6 +129,12 @@ public class ArtistProfileService {
 
     public ArtistProfile getArtistProfileEntityByUsername(String username) {
         return artistProfileRepository.findByUser_Username(username)
+                .orElseThrow(() -> new RuntimeException("Artist profile not found for username: " + username));
+    }
+
+    public ShortProfileDto getShortArtistProfileDtoByUsername(String username) {
+        return artistProfileRepository.findByUser_Username(username)
+                .map(this::mapToShortDto)
                 .orElseThrow(() -> new RuntimeException("Artist profile not found for username: " + username));
     }
 
@@ -234,5 +243,20 @@ public class ArtistProfileService {
     private YearMonth deserializeYearMonth(String yearMonth) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");
         return YearMonth.parse(yearMonth, formatter);
+    }
+
+    private ShortProfileDto mapToShortDto(ArtistProfile artistProfile) {
+        if (artistProfile == null)
+            return null;
+        return new ShortProfileDto(
+                artistProfile.getUser().getFirstname(),
+                artistProfile.getUser().getLastname(),
+                artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
+                artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
+                artistProfile.getSkills().stream()
+                        .limit(2)
+                        .map(Subcategory::getDisplayName)
+                        .collect(Collectors.toSet())
+        );
     }
 }

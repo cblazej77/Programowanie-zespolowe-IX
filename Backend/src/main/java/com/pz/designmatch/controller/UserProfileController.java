@@ -1,9 +1,11 @@
 package com.pz.designmatch.controller;
 
 import com.pz.designmatch.dto.ArtistProfileDto;
+import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.dto.response.UserDto;
 import com.pz.designmatch.exception.ArtistProfileNotFound;
 import com.pz.designmatch.model.user.UserEntity;
+import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.ArtistProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,17 @@ public class UserProfileController {
         return ResponseEntity.ok(userDto);
     }
 
+    @GetMapping(value = "/getShortArtistProfile", produces = apiVersionAccept)
+    public ResponseEntity<ShortProfileDto> getShortArtistProfileByUsername(@RequestParam String username) {
+        ShortProfileDto artistProfile = artistProfileService.getShortArtistProfileDtoByUsername(username);
+        if (artistProfile == null) {
+            throw new ArtistProfileNotFound("Artist profile not found for username: " + username);
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK.value())
+                .body(artistProfile);
+    }
+    
     @GetMapping(value = "/getArtistProfile", produces = apiVersionAccept)
     public ResponseEntity<ArtistProfileDto> getArtistProfileByUsername(@RequestParam String username) {
         ArtistProfileDto artistProfile = artistProfileService.getArtistProfileDtoByUsername(username);
