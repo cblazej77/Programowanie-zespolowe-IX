@@ -6,8 +6,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
 import InputText from '../../components/Input/InputText';
 import PasswordInput from '../../components/Input/PasswordInput';
-
-
+import logo from '../../assets/img/logo.png';
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -92,6 +91,7 @@ export const SignIn = () => {
       <MainName >LOGOWANIE</MainName>
       <StyledForm >
       <LogoIcon />
+        {/*<img style={{height: 200, marginBottom: 10}} src={logo}/>*/}
 
         <InputText label="email@example.com" name="login" id="loginId"/>
         <PasswordInput label="************" name="login" id="passwordId"/>

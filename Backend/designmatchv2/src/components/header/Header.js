@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useAuth } from '../Auth';
 import { useNavigate } from 'react-router-dom';
 import Dropdown from './DropDown/DropDownUser';
+import logo from '../../assets/img/logo.png';
 import {
     Nav,
     NavLink,
@@ -73,7 +74,7 @@ function Navbar() {
         <Nav>
           <NavbarContainer>
             <NavLogo to='/' onClick={closeMobileMenu}>
-                <NavLogoIcon />
+                {/*<img style={{height: 50}} src={logo} alt="Logo" />*/}
                 DESIGNMATCH
             </NavLogo>
            
