@@ -1,5 +1,10 @@
 package com.pz.designmatch.security;
 
+import com.pz.designmatch.service.CustomOAuth2UserService;
+import com.pz.designmatch.service.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -9,14 +14,17 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 @Configuration
@@ -28,6 +36,10 @@ public class SecurityConfig {
     public SecurityConfig(JWTAuthEntryPoint authEntryPoint) {
         this.authEntryPoint = authEntryPoint;
     }
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+    @Autowired
+    private UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,10 +62,19 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .usernameParameter("email")
-                .passwordParameter("password")
+                .passwordParameter("password").and().addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .httpBasic()
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .httpBasic();
+                .oauth2Login().loginPage("/login").userInfoEndpoint().userService(customOAuth2UserService)
+                .and()
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        FBAuth fbAuth = (FBAuth) authentication.getPrincipal();
+                        userService.processOAuthPostLogin(fbAuth.getEmail());
+                        response.sendRedirect("/list");
+                    }
+                });
 
         return http.build();
     }
