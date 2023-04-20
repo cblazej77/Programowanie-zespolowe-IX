@@ -23,8 +23,9 @@ public enum Level {
         return null;
     }
 
-    public static List<String> getDisplayNames() {
+    public static List<String> getAvailableLevels() {
         return Stream.of(Level.values()).map(Level::getDisplayName).collect(Collectors.toList());
+
     }
 
     public String getDisplayName() {
