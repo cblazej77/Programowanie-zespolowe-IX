@@ -80,7 +80,7 @@ const UserPage = () => {
         <LeftWrapper>
           <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
           <text>{name} {surname}</text>
-          <text>{job}</text>
+          <text>{get.level}</text>
           <div>
             <Rating
               allowFraction={true}
@@ -101,7 +101,7 @@ const UserPage = () => {
         </LeftWrapper>
         <RightWrapper>
           <BoldLabel >O mnie:</BoldLabel>
-          <AboutMe>{description}</AboutMe>
+          <AboutMe>{ get.bio }</AboutMe>
           <LineForm />
           <Left>
             <InfoRow>
@@ -114,7 +114,7 @@ const UserPage = () => {
               </InfoColumnt>
               <DataColumnt>
                 <text><b>20.20.2023</b></text>
-                <text><b>{city}, {country}</b></text>
+                <text><b>{get.location}, {country}</b></text>
                 <text><b>20</b></text>
                 <text><b>5</b></text>
                 <text><b>0</b></text>
@@ -128,7 +128,7 @@ const UserPage = () => {
                     <Bubble>Szycie</Bubble>
                 </BubbleWrap>
                 <text>
-                  Umiejętności:
+                  Języki:
                 </text>
                 <BubbleWrap>
                   <Bubble>Angielski</Bubble>
