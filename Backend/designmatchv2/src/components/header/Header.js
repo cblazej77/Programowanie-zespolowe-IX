@@ -52,6 +52,8 @@ function Navbar() {
         }
       };
 
+ 
+
   const auth = useAuth()
   const navigate = useNavigate()
 
@@ -90,21 +92,20 @@ function Navbar() {
 
             <NavItem>
               <NavLink to='/account' onClick={closeMobileMenu}>
-                Konto
+                KontoTest
               </NavLink>
             </NavItem>
-
-                {!auth.user ? (
-                    <NavItem>
-                    <NavLink to='/sign-in' onClick={closeMobileMenu}>
-                        Logowanie
-                    </NavLink>
-                </NavItem>
-                ):(
-                <NavItem>
-                </NavItem>
-                )}
                 
+            {!auth.user ? (
+              <NavItem> 
+                <NavLink to='/sign-in' onClick={closeMobileMenu}>
+                  Logowanie
+                </NavLink>
+              </NavItem>
+            ) : (
+              <NavItem>
+              </NavItem>
+            )}
 
             {!auth.user ? (
               <>
