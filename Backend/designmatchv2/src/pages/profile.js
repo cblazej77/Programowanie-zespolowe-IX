@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating'
-import {default as axios} from '../api/axios'
-import { RightColumn, InfoRow, InfoColumnt,DataColumnt, Right, Left, AboutMe, SmallButton, Button, Image, LeftWrapper, LineForm, ProfileImage, ProfileWrapper, RightWrapper, TopSection } from '../components/ProfileElements'
+import { default as axios } from '../api/axios'
+import { RightColumn, InfoRow, InfoColumnt, DataColumnt, Right, Left, AboutMe, SmallButton, Button, Image, LeftWrapper, LineForm, ProfileImage, ProfileWrapper, RightWrapper, TopSection } from '../components/ProfileElements'
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
 
@@ -10,7 +10,7 @@ const PROFILE_URL = '/api/artist/updateArtistProfile?username';
 
 
 
-const BubbleWrap  = styled.div`
+const BubbleWrap = styled.div`
 `;
 const Bubble = styled.p`
   padding: 8px;
@@ -30,18 +30,18 @@ const BoldLabel = styled.h3`
 //UserName/UserInfo/MessageButton
 const UserPage = () => {
   const [get, setGet] = useState(null);
-  
+
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
   const [click, setClick] = useState(true);
   const [button, setButton] = useState(true);
-  
+
   useEffect(() => {
     axios.get(PROFILE_URL + "wd").then((Response) => {
       setGet(Response.data);
-  });
-  
+    });
+
   }, []);
-  
+
 
 
   const handleClick = () => setClick(!click);
@@ -95,13 +95,13 @@ const UserPage = () => {
           <LineForm />
           <Button>Napisz wiadomość</Button>
           <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-            <SmallButton  >Napisz opinię</SmallButton>
+            <SmallButton >Napisz opinię</SmallButton>
             <SmallButton > Obserwuj</SmallButton>
           </div>
         </LeftWrapper>
         <RightWrapper>
           <BoldLabel >O mnie:</BoldLabel>
-          <AboutMe>{ get.bio }</AboutMe>
+          <AboutMe>{get.bio}</AboutMe>
           <LineForm />
           <Left>
             <InfoRow>
@@ -124,15 +124,15 @@ const UserPage = () => {
                   Umiejętności:
                 </text>
                 <BubbleWrap>
-                    <Bubble>Łowienie</Bubble>
-                    <Bubble>Szycie</Bubble>
+                  <Bubble>Łowienie</Bubble>
+                  <Bubble>Szycie</Bubble>
                 </BubbleWrap>
                 <text>
                   Języki:
                 </text>
                 <BubbleWrap>
                   <Bubble>Angielski</Bubble>
-                  <Bubble>Matematyka</Bubble>
+                  <Bubble>Hiszpański</Bubble>
                 </BubbleWrap>
                 <text>
                   Linki:
@@ -211,7 +211,7 @@ const UserPage = () => {
 
   // </ProfileWrapper>
   // );
-  
+
   /*const RightColumn = styled.div`
   border: solid black;
   display: flex;
