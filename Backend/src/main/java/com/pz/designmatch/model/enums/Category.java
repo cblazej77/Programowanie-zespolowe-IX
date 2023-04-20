@@ -1,9 +1,8 @@
 package com.pz.designmatch.model.enums;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import lombok.Getter;
 
+@Getter
 public enum Category {
     LOGO_AND_IDENTITY("Logo i identyfikacja wizualna"),
     WEB_AND_MOBILE("Strony internetowe i aplikacje mobilne"),
@@ -24,10 +23,6 @@ public enum Category {
             }
         }
         return null;
-    }
-
-    public static List<String> getDisplayNames() {
-        return Stream.of(Category.values()).map(Category::getDisplayName).collect(Collectors.toList());
     }
 
     public String getDisplayName() {

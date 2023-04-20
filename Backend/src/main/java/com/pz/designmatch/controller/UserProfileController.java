@@ -1,13 +1,14 @@
 package com.pz.designmatch.controller;
 
 import com.pz.designmatch.dto.ArtistProfileDto;
+import com.pz.designmatch.dto.response.AvailableCategoriesDto;
 import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.dto.response.UserDto;
 import com.pz.designmatch.exception.ArtistProfileNotFound;
 import com.pz.designmatch.model.user.UserEntity;
-import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.ArtistProfileService;
+import com.pz.designmatch.util.AvailableCategoriesDtoBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,6 +42,12 @@ public class UserProfileController {
 //                .status(HttpStatus.OK.value())
 //                .body(userDto);
         return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping(value = "/getAvailableCategories", produces = apiVersionAccept)
+    public ResponseEntity<AvailableCategoriesDto> getAvailableCategories() {
+        AvailableCategoriesDto categoryOptionsDto = AvailableCategoriesDtoBuilder.getAvailableCategoriesDto();
+        return ResponseEntity.ok(categoryOptionsDto);
     }
 
     @GetMapping(value = "/getShortArtistProfile", produces = apiVersionAccept)
