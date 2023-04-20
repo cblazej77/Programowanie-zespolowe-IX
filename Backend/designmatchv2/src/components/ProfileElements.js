@@ -16,7 +16,6 @@ export const TopSection = styled.div`
   margin-bottom: 2rem;
   height: 66%;
   display: flex;
-  position: relative;
   width: 100%;
   @media screen max-width(1000px){
     
