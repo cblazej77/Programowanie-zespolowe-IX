@@ -7,13 +7,20 @@ import Reviews from '../../components/Reviews';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Stars from 'react-native-stars';
+import { CredentialsContext } from '../../components/CredentialsContext';
+import { useContext } from 'react';
 
 import {LinearGradient} from 'expo-linear-gradient';
 
 const Tab = createMaterialTopTabNavigator();
 const { primary, secondary, darkLight } = Colors;
 
+
+
 export default function ProfileScreen({ navigation }) {
+
+    const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
@@ -21,7 +28,7 @@ export default function ProfileScreen({ navigation }) {
                 height: 60,
                 justifyContent: "space-between",
             }}>
-                <HeaderText numberOfLines={1} style={{ width: "90%", marginLeft: 10 }}>Piotr Nowak</HeaderText>
+                <HeaderText numberOfLines={1} style={{ width: "90%", marginLeft: 10 }}>{storedCredentials.name}</HeaderText>
                 <View style={styles.HeaderViewStyle} >
                     <TouchableOpacity >
                         <Image style={{ height: 30, width: 30 }} resizeMode="contain" source={require('./../../assets/img/3-dots.png')} />

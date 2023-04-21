@@ -1,9 +1,12 @@
 package com.pz.designmatch.model.enums;
 
+import lombok.Getter;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Getter
 public enum Subcategory {
     LOGO(Category.LOGO_AND_IDENTITY, "Logo"),
     IDENTITY(Category.LOGO_AND_IDENTITY, "Identyfikacja wizualna"),
@@ -50,17 +53,4 @@ public enum Subcategory {
         }
         return null;
     }
-
-    public static List<String> getDisplayNames() {
-        return Stream.of(Subcategory.values()).map(Subcategory::getDisplayName).collect(Collectors.toList());
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
 }

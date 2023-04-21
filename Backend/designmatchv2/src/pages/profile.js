@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Rating } from 'react-simple-star-rating'
+import { Rating } from 'react-simple-star-rating';
 import { default as axios } from '../api/axios'
 import { RightColumn, InfoRow, InfoColumnt, DataColumnt, Right, Left, AboutMe, SmallButton, Button, Image, LeftWrapper, LineForm, ProfileImage, ProfileWrapper, RightWrapper, TopSection } from '../components/ProfileElements'
+import Records from '../assets/file.json'
+
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
 
-const PROFILE_URL = '/api/artist/updateArtistProfile?username';
+const PROFILE_URL = '/api/artist/getArtistProfile?username=';
 
 
 
@@ -35,14 +37,30 @@ const UserPage = () => {
   const [click, setClick] = useState(true);
   const [button, setButton] = useState(true);
 
-  useEffect(() => {
-    axios.get(PROFILE_URL + "wd").then((Response) => {
-      setGet(Response.data);
-    });
+  const job = "";
+  //const name = 'jakub1';
+  //url: PROFILE_URL + name //długo się ładuje ponad 2 razy dłużej
+  let config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: '/api/artist/getArtistProfile?username=jakub1',
+    headers: { }
+  };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const result = await axios.request(config);
+        setGet(result.data);
+      } catch(error){
+        console.log(error);
+      }
+    };
+
+      fetchData();
   }, []);
 
-
+  
 
   const handleClick = () => setClick(!click);
 
@@ -68,19 +86,19 @@ const UserPage = () => {
 
   const reviewCount = 15;//pobrac to z bazy
   const ratingCount = 2.5;//pobrac z bazy
-  const name = "Dan";
+  const name="Jacek"
   const surname = "Hiong";
-  const job = "3d Retail Designer";
-  const city = "Toruń";
-  const country = "Polska"
+  const country = "Polska";
+  const Default = "...";
   const description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce rutrum, lorem ut maximus blandit, justo nulla suscipit magna, in pharetra nisi erat eget ligula. Praesent lacinia pretium consequat. Curabitur tincidunt feugiat ipsum ut vulputate. Maecenas ultrices, est in luctus accumsan, est justo gravida sapien, eu finibus mi nunc in lorem. Cras fringilla turpis id dolor lobortis, ut hendrerit magna placerat. Suspendisse at eros scelerisque, tristique lacus elementum, sagittis lectus. Sed libero."
   return (
+    <>{get ? ( 
     <ProfileWrapper>
       <TopSection>
         <LeftWrapper>
           <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
           <text>{name} {surname}</text>
-          <text>{get.level}</text>
+          <text> { get.level } </text>
           <div>
             <Rating
               allowFraction={true}
@@ -101,15 +119,13 @@ const UserPage = () => {
         </LeftWrapper>
         <RightWrapper>
           <BoldLabel >O mnie:</BoldLabel>
-          <AboutMe>{get.bio}</AboutMe>
+          <AboutMe>{ get.bio }</AboutMe>
           <LineForm />
           <Left>
             <InfoRow>
               <InfoColumnt>
                 <text>Członek od:</text>
                 <text>Miasto: </text>
-                <text>Obserwujący:</text>
-                <text>Obserwowani:</text>
                 <text>Prace: </text>
               </InfoColumnt>
               <DataColumnt>
@@ -124,22 +140,24 @@ const UserPage = () => {
                   Umiejętności:
                 </text>
                 <BubbleWrap>
-                  <Bubble>Łowienie</Bubble>
-                  <Bubble>Szycie</Bubble>
+                  {get.skills?.length ? (
+                    get.skills.map((skill, index) => <Bubble key={index}>{skill}</Bubble>)
+                  ) : <Bubble>{Default}</Bubble>}
                 </BubbleWrap>
                 <text>
                   Języki:
                 </text>
                 <BubbleWrap>
-                  <Bubble>Angielski</Bubble>
-                  <Bubble>Hiszpański</Bubble>
+                {get.languages?.length ? (
+                    get.languages.map((language, index) => <Bubble key={index}>{language}</Bubble>)
+                  ) : <Bubble>{Default}</Bubble>}
                 </BubbleWrap>
                 <text>
                   Linki:
                 </text>
                 <BubbleWrap>
-                  <Bubble>GitHub</Bubble>
-                  <Bubble>LinkedIn</Bubble>
+                  <Bubble>{get.website}</Bubble>
+                  <Bubble>{get.linkedin}</Bubble>
                 </BubbleWrap>
               </RightColumn>
             </InfoRow>
@@ -147,6 +165,9 @@ const UserPage = () => {
         </RightWrapper>
       </TopSection>
     </ProfileWrapper>
+    ) : (<div>Loading...</div>)}
+    </>
+   
   );
 
 

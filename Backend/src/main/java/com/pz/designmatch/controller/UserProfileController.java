@@ -1,13 +1,17 @@
 package com.pz.designmatch.controller;
 
 import com.pz.designmatch.dto.ArtistProfileDto;
+import com.pz.designmatch.dto.response.AvailableCategoriesDto;
 import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.dto.response.UserDto;
 import com.pz.designmatch.exception.ArtistProfileNotFound;
+import com.pz.designmatch.model.enums.City;
+import com.pz.designmatch.model.enums.Level;
+import com.pz.designmatch.model.enums.Tag;
 import com.pz.designmatch.model.user.UserEntity;
-import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.ArtistProfileService;
+import com.pz.designmatch.util.AvailableCategoriesDtoBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -41,6 +46,30 @@ public class UserProfileController {
 //                .status(HttpStatus.OK.value())
 //                .body(userDto);
         return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping(value = "/getAvailableCategories", produces = apiVersionAccept)
+    public ResponseEntity<AvailableCategoriesDto> getAvailableCategories() {
+        AvailableCategoriesDto categoryOptionsDto = AvailableCategoriesDtoBuilder.getAvailableCategoriesDto();
+        return ResponseEntity.ok(categoryOptionsDto);
+    }
+
+    @GetMapping(value = "/getAvailableCities", produces = apiVersionAccept)
+    public ResponseEntity<List<String>> getAvailableCities() {
+        List<String> cities = City.getAvailableCities();
+        return ResponseEntity.ok(cities);
+    }
+
+    @GetMapping(value = "/getAvailableLevels", produces = apiVersionAccept)
+    public ResponseEntity<List<String>> getAvailableLevels() {
+        List<String> levels = Level.getAvailableLevels();
+        return ResponseEntity.ok(levels);
+    }
+
+    @GetMapping(value = "/getAvailableTags", produces = apiVersionAccept)
+    public ResponseEntity<List<String>> getAvailableTags() {
+        List<String> tags = Tag.getAvailableTags();
+        return ResponseEntity.ok(tags);
     }
 
     @GetMapping(value = "/getShortArtistProfile", produces = apiVersionAccept)

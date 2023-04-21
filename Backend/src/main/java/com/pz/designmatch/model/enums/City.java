@@ -30,7 +30,7 @@ public enum City {
         return null;
     }
 
-    public static List<String> getDisplayNames() {
+    public static List<String> getAvailableCities() {
         return Stream.of(City.values()).map(City::getDisplayName).collect(Collectors.toList());
     }
 

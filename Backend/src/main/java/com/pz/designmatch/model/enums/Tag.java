@@ -58,8 +58,9 @@ public enum Tag {
         return null;
     }
 
-    public static List<String> getDisplayNames() {
+    public static List<String> getAvailableTags() {
         return Stream.of(values()).map(Tag::getDisplayName).collect(Collectors.toList());
+
     }
 
     public String getDisplayName() {
