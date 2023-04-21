@@ -13,14 +13,13 @@ import Cards from './Cards';
 const Home = () => {
   return (
     <>
-    <AllPage>
+      <AllPage>
         <HeroContainer>
           <Cards />
         </HeroContainer>
-
-    </AllPage>
+      </AllPage>
     </>
-    
+
   )
 };
 
