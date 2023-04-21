@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { StatusBar } from "expo-status-bar";
+import { LinearGradient } from 'expo-linear-gradient';
 
 //formik
 import { Formik } from "formik";
@@ -10,7 +11,6 @@ import {Octicons, Ionicons} from '@expo/vector-icons'
 import {
     StyledContainer,
     InnerContainer,
-    PageTitle,
     StyledFormArea,
     LeftIcon,
     StyledButton,
@@ -19,32 +19,28 @@ import {
     RightIcon,
     ButtonText,
     MsgBox,
-    Line,
     Colors,
     ExtraText,
     ExtraView,
     TextLink,
     TextLinkContent,
-    HeaderText
+    HeaderText,
+    LinearGradientStyle,
 } from './../components/styles';
-import { View, TouchableOpacity, processColor } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 
 //Colors
-const {brand, darkLight, primary, tertiary} = Colors;
+const {darkLight, darkLight2, primary} = Colors;
 
 //keyboard avoiding view
 import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 
 //API client
 import axios from 'axios';
-
-//Datetimepicker
-//import DateTimePicker from '@react-native-community/datetimepicker';
+import {default as baseURL} from "../components/AxiosAuth";
 
 const Signup = ({navigation}) => {
     const [hidePassword, setHidePassword] = useState(true);
-    const [show, setShow] = useState(false);
-    //const [date, setDate] = useState(new Date(2000, 0, 1));
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -53,53 +49,28 @@ const Signup = ({navigation}) => {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [password, setPassword] = useState('');
+    const [submitting, setSubmitting] = useState(false);
 
-    //Actual date of birth to be sent
-    // const [dob, setDob] = useState();
+    const sleep = ms => new Promise(
+        resolve => setTimeout(resolve, ms)
+      );
 
-    // const onChange = (event, selectedDate) => {
-    //     const currentDate = selectedDate || date;
-    //     setShow(false);
-    //     setDate(currentDate);
-    //     setDob(currentDate);
-    // }
-
-    // const showDatePicker = () => {
-    //     setShow(true);
-    // }
-
-    const handleSignup = async (credentials, setSubmitting) => {
+    const handleSignup = async () => {
         handleMessage(null);
-        const url = 'http://192.168.1.110:8080/api/auth/register';
-        // axios
-        //     .post(url, credentials)
-        //     .then((response) => {
-        //         const result = response.data;
-        //         const { message, status, data } = result;
-
-        //         if (status !== 'SUCCESS') {
-        //             handleMessage(message, status);
-        //         } else {
-        //             navigation.navigate('MainNavigation', { ...data });
-        //         }
-        //         setSubmitting(false);
-        //     })
-        //     .catch(error => {
-        //         console.log(error.JSON());
-        //         setSubmitting(false);
-        //         handleMessage("Wystąpił bład. Sprawdź swoje połączenie sieciowe i spróbuj ponownie");
-        //     });
-            try{
+        const url = baseURL + '/api/auth/register';
+            try {
+                setSubmitting(true);
                 const response = await axios.post(url,
                   JSON.stringify({email, username, password, firstname, lastname}),
                   {
                   headers: { 'Content-Type': 'application/json' },
                   }
-              );
-              console.log(response?.data);
-                  console.log(response?.accessToken);
-                  console.log(JSON.stringify(response));
-                  navigation.navigate('Login');
+                );
+                setSubmitting(false);
+                handleMessage(JSON.stringify(response?.data),'SUCCESS');
+                await sleep(1500);
+                navigation.navigate('Login');
+        
               }catch(err){
           
                   if (!err?.response) {
@@ -123,21 +94,9 @@ const Signup = ({navigation}) => {
                 <StatusBar style="dark" ></StatusBar>
                 <InnerContainer>
                     <HeaderText style={{fontSize: 30, color: darkLight, marginBottom: 30}}>Rejestracja</HeaderText>
-                    
-                    {show && (
-                        <DateTimePicker
-                            testID="dateTimePicker"
-                            value={date}
-                            mode='date'
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChange}
-                        />
-                    )}
-                    
                     <Formik
                     initialValues={{email: '', username: '', password: '', firstname: '', lastname: ''}}
-                    onSubmit={(values, {setSubmitting}) => {
+                    onSubmit={() => {
                         if(email == '' || 
                         password == '' || 
                         username == '' || 
@@ -149,15 +108,15 @@ const Signup = ({navigation}) => {
                         } else if(confirmPassword !== password) {
                             handleMessage('Hasła się nie zgadzają');
                             setSubmitting(false);
-                        } else if(password.length < 8 && confirmPassword === password) {
-                            handleMessage('Hasło musi zawierać conajmniej 8 znaków');
+                        } else if((password.length < 8 || password.length > 25) && confirmPassword === password) {
+                            handleMessage('Hasło musi zawierać między 8 a 25 znaków');
                             setSubmitting(false);
                         } else {
-                            handleSignup(values, setSubmitting);
+                            handleSignup();
                         }
                     }}
                     >
-                        {({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (<StyledFormArea>
+                        {({handleBlur, handleSubmit}) => (<StyledFormArea>
                             <MyTextInput 
                                 label = "Imie"
                                 icon="person"
@@ -186,18 +145,6 @@ const Signup = ({navigation}) => {
                                 value={email}
                                 keyboardType="email-address"
                             />
-                            {/* <MyTextInput 
-                                label = "Data urodzenia"
-                                icon="calendar"
-                                placeholder="YYYY - MM - DD"
-                                placeholderTextColor={'#00000088'}
-                                onChangeText={handleChange('dateOfBirth')}
-                                onBlur={handleBlur('dateOfBirth')}
-                                value={dob ? dob.toDateString() : ''}
-                                isDate={true}                      
-                                editable={false}
-                                showDatePicker={showDatePicker}  
-                            /> */}
                             <MyTextInput 
                                 label = "Nazwa użytkownika"
                                 icon="person"
@@ -234,12 +181,20 @@ const Signup = ({navigation}) => {
                                 setHidePassword={setHidePassword}
                             />
                             <MsgBox type={messageType}> {message} </MsgBox>
+                            {!submitting &&
+                            <LinearGradientStyle colors={[darkLight2, darkLight]}>
                             <StyledButton onPress={handleSubmit}>
                                 <ButtonText>
                                     Zarejestruj się
                                 </ButtonText>
                             </StyledButton>
-                            <Line />
+                            </LinearGradientStyle>}
+                            {submitting &&
+                            <LinearGradientStyle colors={[darkLight2, darkLight]}>
+                                <StyledButton disabled={true}>
+                                    <ActivityIndicator size="large" color={primary} />
+                                </StyledButton>
+                            </LinearGradientStyle>}
                             <ExtraView>
                                     <ExtraText>Masz już konto? </ExtraText>
                                     <TextLink onPress={() => navigation.navigate("Login")}>
@@ -254,17 +209,14 @@ const Signup = ({navigation}) => {
     );
 }
 
-const MyTextInput = ({label, icon, isPassword, hidePassword, setHidePassword, isDate, showDatePicker, ...props}) => {
+const MyTextInput = ({label, icon, isPassword, hidePassword, setHidePassword, ...props}) => {
     return (
         <View>
             <LeftIcon>
                 <Octicons name={icon} size={30} color={darkLight} />
             </LeftIcon>
             <StyledInputLabel>{label}</StyledInputLabel>
-            {!isDate && <StyledTextInput {...props} />}
-            {isDate && <TouchableOpacity onPress={showDatePicker}>
-                <StyledTextInput {...props} />
-                </TouchableOpacity>}
+            <StyledTextInput {...props} />
             {isPassword && (
                 <RightIcon onPress={() => setHidePassword(!hidePassword)}>
                     <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={darkLight} />

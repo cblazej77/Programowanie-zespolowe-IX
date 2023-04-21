@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+//import { useContext } from 'react';
 
 //Screens
 import HomePage from './navigation_screens/HomePage';
 import MessagesScreen from './navigation_screens/MessagesScreen';
 import ProfileScreen from './navigation_screens/ProfileScreen';
 
-import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 import { ChatLabel, Colors } from '../components/styles';
+//import { CredentialsContext } from '../components/CredentialsContext';
 
 const { secondary, darkLight } = Colors
 
@@ -20,6 +21,7 @@ const profileName = 'Profil';
 const messagesName = 'Wiadomości';
 
 const Tab = createBottomTabNavigator();
+//const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
 export default function MainNavigation() {
     return (

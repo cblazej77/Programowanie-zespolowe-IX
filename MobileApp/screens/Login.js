@@ -12,13 +12,14 @@ import * as Facebook from 'expo-auth-session/providers/facebook';
 //import axios from "axios";
 import {default as baseURL} from "../components/AxiosAuth";
 import axios from "axios";
-
-
 //formik
 import { Formik } from "formik";
-
+//credentials context
+import { CredentialsContext } from "../components/CredentialsContext";
 //icons
 import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
+//SecureStoring accessToken
+import * as SecureStore from 'expo-secure-store';
 
 import {
     StyledContainer,
@@ -31,7 +32,6 @@ import {
     StyledTextInput,
     RightIcon,
     MsgBox,
-    Line,
     Colors,
     ExtraView,
     TextLink,
@@ -40,10 +40,11 @@ import {
     SmallText,
     LinearGradientStyle
 } from './../components/styles';
-import { View, ActivityIndicator, StyleSheet, Image, Text  } from "react-native";
+import { View, ActivityIndicator } from "react-native";
+//import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Colors
-const { tertiary, darkLight, primary, link, darkLight2, green, green2 } = Colors;
+const {darkLight, primary, link, darkLight2, green, green2} = Colors;
 
 //dismising the popup after successful auth
 WebBrowser.maybeCompleteAuthSession();
@@ -55,10 +56,9 @@ const Login = ({ navigation }) => {
     const [messageType, setMessageType] = useState();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [googleToken, setGoogleToken] = useState("");
-    const [userInfo, setUserInfo] = useState(null);
     const [googleSubmiting, setGoogleSubmiting] = useState(false);
-    const [user, setUser] = useState(null);
+    const [facebookSubmiting, setFacebookSubmiting] = useState(false);
+//   const {storedCredentials, setStoredCredentials} = useContext(CredentialsContext);
 
     const [requestG, responseG, promptAsyncG] = Google.useAuthRequest({
         androidClientId: '37019238552-c6q0hq4kn55o6e1ahobtuvconehs243h.apps.googleusercontent.com',
@@ -76,40 +76,43 @@ const Login = ({ navigation }) => {
             requestF.redirectUri
         );
       }
+
+      async function save(key, value) {
+        await SecureStore.setItemAsync(key, value).catch((error) => {console.log(error)});
+      }
+
+      const sleep = ms => new Promise(
+        resolve => setTimeout(resolve, ms)
+      );
       
       useEffect(() => {
         if (responseG?.type === "success") {
-          setGoogleToken(responseG.authentication.accessToken);
-          getUserInfo();
-          navigation.navigate('MainNavigation', userInfo);
+            setGoogleSubmiting(false);
+            console.log(responseG.authentication.accessToken);
+            save("accessToken",JSON.stringify(responseG.authentication.accessToken));
+            navigation.navigate('MainNavigation');
         }
-      }, [responseG, googleToken]);
+      }, [responseG]);
 
       useEffect(() => {
         if (responseF && responseF.type === "success" && responseF.authentication) {
-          (async () => {
-            const userInfoResponse = await fetch(
-              `https://graph.facebook.com/me?access_token=${responseF.authentication.accessToken}&fields=id,name,picture.type(large)`
-            );
-            const userInfo = await userInfoResponse.json();
-            setUserInfo(userInfo);
-            navigation.navigate('MainNavigation', userInfo);
-          })();
-        }
+            setFacebookSubmiting(false);
+            console.log(responseF.authentication.accessToken);
+            save("accessToken",JSON.stringify(responseF.authentication.accessToken));
+            navigation.navigate('MainNavigation');
+          }
       }, [responseF]);
 
-      const handleGoogleLogin = async () => {
-        setGoogleSubmiting(true);
-        const succ = await promptAsync();
-        handleMessage("Google login successful", 'SUCCESS');
-        console.log(userInfo);
-        setGoogleSubmiting(false);
-        navigation.navigate('MainNavigation', userInfo);
-        console.log(userInfo);
-        
-      }
+    //   const handleGoogleLogin = async () => {
+    //     setGoogleSubmiting(true);
+    //     const result = await promptAsyncG();
+    //     handleMessage("Google login successful", 'SUCCESS');
+    //     setGoogleSubmiting(false);
+    //     navigation.navigate('MainNavigation', userInfo);        
+    //   }
 
       const handleFacebookLogin = async () => {
+        setFacebookSubmiting(true);
         const result = await promptAsyncF();
         if (result.type !== "success") {
           alert("Uh oh, something went wrong");
@@ -117,10 +120,9 @@ const Login = ({ navigation }) => {
         }
       };
 
-    const handleLogin = async (credentials, setSubmitting) => {
+    const handleLogin = async (setSubmitting) => {
         handleMessage(null);
         const url = baseURL + '/api/auth/login';
-        console.log(url);
         try {
             const response = await axios.post(url,
                 JSON.stringify({ email, password }),
@@ -128,9 +130,10 @@ const Login = ({ navigation }) => {
                     headers: { 'Content-Type': 'application/json' },
                 }
             );
-            console.log(response?.data);
+            //sleep(2000);
             console.log(response?.accessToken);
-            console.log(JSON.stringify(response));
+            //save("accessToken",JSON.stringify(response?.accessToken));
+            setSubmitting(false);
             navigation.navigate('MainNavigation');
         } catch (err) {
             handleMessage("Nie udało się zalogować", 'FAILED');
@@ -146,22 +149,32 @@ const Login = ({ navigation }) => {
         }
     }
 
-    const getUserInfo = async () => {
-        try {
-          const response = await fetch(
-            "https://www.googleapis.com/userinfo/v2/me",
-            {
-              headers: { Authorization: `Bearer ${googleToken}` },
-            }
-          );
+    // const persistLogin = (credentials) => {
+    //     AsyncStorage.setItem('designMatchCredentials', JSON.stringify(credentials))
+    //     .then(() => {
+    //         setStoredCredentials(credentials);
+    //     })
+    //     .catch((error) => {
+    //         console.log(error);
+    //     })
+    // }
+
+    // const getUserInfo = async () => {
+    //     try {
+    //       const response = await fetch(
+    //         "https://www.googleapis.com/userinfo/v2/me",
+    //         {
+    //           headers: { Authorization: `Bearer ${googleToken}` },
+    //         }
+    //       );
     
-          const user = await response.json();
-          setUserInfo(user);
-        } catch (error) {
-            console.log(error);
-          // Add your own error handler here
-        }
-      };
+    //       const user = await response.json();
+    //       setUserInfo(user);
+    //     } catch (error) {
+    //         console.log(error);
+    //       // Add your own error handler here
+    //     }
+    //   };
 
 
     const handleMessage = (message, type = 'FAILED') => {
@@ -177,16 +190,16 @@ const Login = ({ navigation }) => {
                     <HeaderText bold={true} style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
                         initialValues={{ email: '', password: '' }}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={({ setSubmitting }) => {
                             if (email == '' || password == '') {
                                 handleMessage('Proszę wypełnić oba pola');
                                 setSubmitting(false);
                             } else {
-                                handleLogin(values, setSubmitting);
+                                handleLogin(setSubmitting);
                             }
                         }}
                     >
-                        {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (<StyledFormArea>
+                        {({ handleChange, handleBlur, handleSubmit, isSubmitting }) => (<StyledFormArea>
                             <MyTextInput
                                 label="Adres Email"
                                 icon="mail"
@@ -226,16 +239,17 @@ const Login = ({ navigation }) => {
                                 </StyledButton>
                             </LinearGradientStyle>}
                             <LinearGradientStyle colors={[darkLight2, darkLight]} >
-                                <StyledButton onPress={() => navigation.navigate("HomePage")}>
+                                <StyledButton onPress={() => navigation.navigate("MainNavigation")}>
                                     <StatsText style={{ color: primary }}>
                                         Kontynuuj bez logowania
                                     </StatsText>
                                 </StyledButton>
                             </LinearGradientStyle>
-                            {!googleSubmiting && userInfo === null &&
-                            <LinearGradientStyle colors={[darkLight2, darkLight]}>
+                            {!googleSubmiting &&
+                            <LinearGradientStyle colors={[green, green2]}>
                                 <StyledButton google={true} disabled={!requestG} onPress={() => {
                                     promptAsyncG();
+                                    setGoogleSubmiting(true);
                                 }}>
                                     <Fontisto name="google" color={primary} size={25} />
                                     <StatsText style={{ color: primary }}>
@@ -244,21 +258,28 @@ const Login = ({ navigation }) => {
                                 </StyledButton>
                             </LinearGradientStyle>}
                             {googleSubmiting &&
-                            <LinearGradientStyle colors={[darkLight2, darkLight]}>
+                            <LinearGradientStyle colors={[green, green2]}>
                                 <StyledButton google={true} disabled={true}>
                                     <ActivityIndicator size="large" color={primary} />
                                 </StyledButton>
                             </LinearGradientStyle>}
-                            <LinearGradientStyle colors={[ darkLight2, darkLight]}>
+                            {!facebookSubmiting && 
+                            <LinearGradientStyle colors={[darkLight, darkLight2]}>
                                 <StyledButton facebook={true} disabled={!requestF} onPress={() => {
                                     handleFacebookLogin();
                                 }}>
-                                  <Fontisto name="facebook" color={primary} size={25} />
+                                    <Fontisto name="facebook" color={primary} size={25} />
                                     <StatsText style={{ color: primary }}>
                                         Kontynuuj z Facebook
                                     </StatsText>
                                 </StyledButton>
-                            </LinearGradientStyle>
+                            </LinearGradientStyle>}
+                            {facebookSubmiting &&
+                            <LinearGradientStyle colors={[darkLight2, darkLight]}>
+                                <StyledButton facebook={true} disabled={true}>
+                                    <ActivityIndicator size="large" color={primary} />
+                                </StyledButton>
+                            </LinearGradientStyle>}
                             <ExtraView>
                                 <SmallText>Nie masz jeszcze konta? </SmallText>
                                 <TextLink onPress={() => navigation.navigate("Signup")}>
@@ -272,16 +293,6 @@ const Login = ({ navigation }) => {
         </KeyboardAvoidingWrapper>
     );
 }
-
-function Profile({ userInfo }) {
-    return (
-      <View style={styles.profile}>
-        <Image source={{ uri: userInfo.picture.data.url }} style={styles.image} />
-        <Text style={styles.name}>{userInfo.name}</Text>
-        <Text>ID: {userInfo.id}</Text>
-      </View>
-    );
-  }
 
 const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
     return (
@@ -299,25 +310,6 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    profile: {
-      alignItems: "center",
-    },
-    name: {
-      fontSize: 20,
-    },
-    image: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
-    },
-  });
 
 export default Login;
 

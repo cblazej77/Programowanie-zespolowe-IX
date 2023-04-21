@@ -3,6 +3,7 @@ import React from 'react';
 //stack navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { CredentialsContext } from '../components/CredentialsContext';
 
 import Login from './Login';
 import Signup from './Signup';
@@ -18,8 +19,7 @@ const Stack = createStackNavigator();
 
 const LoginNavigation = () => {
     return (
-
-        <NavigationContainer>
+            <NavigationContainer>
                 <StatusBar hidden={false} backgroundColor={"#000"} />
             <Stack.Navigator
                 screenOptions={{
@@ -27,14 +27,13 @@ const LoginNavigation = () => {
                 }}
                 initialRouteName="Login"
             >
+                <Stack.Screen name="MainNavigation" component={MainNavigation} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Signup" component={Signup} />
-                <Stack.Screen name="MainNavigation" component={MainNavigation} />
                 <Stack.Screen name="HomePage" component={HomePage} />
 
             </Stack.Navigator>
         </NavigationContainer>
-
     )
 }
 
