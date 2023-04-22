@@ -30,7 +30,7 @@ function PasswordInput({
         ></Input>
         <LabelInput htmlFor={id}>{label}</LabelInput>
         <NotButton onClick={() => setVisible(!visible)}>
-            {visible ? <CloseEyeIcon /> : <OpenEyeIcon />}
+            {visible ? <OpenEyeIcon /> : <CloseEyeIcon />}
         </NotButton>
       </div>
       

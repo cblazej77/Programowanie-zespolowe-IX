@@ -93,8 +93,8 @@ export const SignIn = () => {
       <LogoIcon />
         {/*<img style={{height: 200, marginBottom: 10}} src={logo}/>*/}
 
-        <InputText label="email@example.com" name="login" id="loginId"/>
-        <PasswordInput label="************" name="login" id="passwordId"/>
+        <InputText label="email:" name="login" id="loginId"/>
+        <PasswordInput label="hasło:" name="login" id="passwordId"/>
         {/*<Input required type="text" label="email@example.com" id="loginId" onChange={e => setEmail(e.target.value)} />
         <Input required type="password" label="************" id="passwordId" onChange={e => setPassword(e.target.value)} />
         */}
