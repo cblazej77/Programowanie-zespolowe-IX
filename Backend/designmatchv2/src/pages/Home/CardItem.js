@@ -28,7 +28,7 @@ import { Rating } from 'react-simple-star-rating';
 
 function CardItem(props) {
   return (
-    <CardLabel>
+    <CardLabel style={{backgroundColor: props.background + ", 0.1)"}}>
       <SimpleInfoContainer>
         <CardAvatar src={props.avatar} />
         <NameText>{props.name} {props.surname}</NameText>

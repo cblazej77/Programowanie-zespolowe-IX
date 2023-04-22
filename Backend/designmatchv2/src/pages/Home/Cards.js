@@ -68,6 +68,7 @@ function Cards() {
 
       <CardsWrapper>
         <CardItem avatar="/assets/cards/person1.jpg"
+          background="rgba(99, 81, 44"
           name="Maryla"
           surname="Kwarc"
           rating={3.5}
@@ -80,6 +81,7 @@ function Cards() {
           country="PL"
           job="Graphic Designer, Illustrator, Branding, Packaging" />
         <CardItem avatar="/assets/cards/person2.jpg"
+          background="rgba(137, 26, 145"
           name="Nicolette"
           surname="Félix"
           rating={3}
@@ -91,68 +93,46 @@ function Cards() {
           city="Paris"
           country="FR"
           job="Graphic Designer, Illustrator, Branding, Packaging" />
+        <CardItem avatar="/assets/cards/person1.jpg"
+          background="rgba(23, 15, 117"
+          name="Maryla"
+          surname="Kwarc"
+          rating={3.5}
+          ratingCount={15}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+          city="Toruń"
+          country="PL"
+          job="Graphic Designer, Illustrator, Branding, Packaging" />
+        <CardItem avatar="/assets/cards/person1.jpg"
+          background="rgb(140, 91, 18"
+          name="Maryla"
+          surname="Kwarc"
+          rating={3.5}
+          ratingCount={15}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+          city="Toruń"
+          country="PL"
+          job="Graphic Designer, Illustrator, Branding, Packaging" />
+        <CardItem avatar="/assets/cards/person1.jpg"
+          background="rgba(12, 244, 122"
+          name="Maryla"
+          surname="Kwarc"
+          rating={3.5}
+          ratingCount={15}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+          city="Toruń"
+          country="PL"
+          job="Graphic Designer, Illustrator, Branding, Packaging" />
       </CardsWrapper>
-
-      {/*
-      <Sort2>
-        <SortLabel>Filtruj </SortLabel>
-        <SortButton>filtr1 </SortButton>
-        <SortButton>filtr2 </SortButton>
-        <SortButton>filtr3 </SortButton>
-      </Sort2>
-      <Sort>
-        <SortLabel>Sortuj przez: </SortLabel>
-        <SortButton>Sortowanie </SortButton>
-      </Sort>
-      <CardsContainer>
-        <div className='cards__wrapper'>
-          <ul className='cards__items'>
-            <CardItem
-              src="/assets/cards/AiPicture.jpg"
-              text="Opis..."
-              label="IA"
-
-            />
-            <CardItem
-              src="/assets/cards/duck.png"
-              text="Obrazek przedstawia kaczkę która jest żółta"
-              label="Pixel"
-
-            />
-
-            <CardItem
-              src="/assets/cards/AiPicture.jpg"
-              text="Obraz wygenerowany przez sztuczną inteligencję"
-              label="IAv4"
-
-            />
-
-          </ul>
-          <ul className='cards__items'>
-            <CardItem
-              src="/assets/cards/AiPicture.jpg"
-              text="Text jest tutaj"
-              label="IA"
-
-            />
-            <CardItem
-              src="/assets/cards/duck.png"
-              text="pixel duck"
-              label="Pixel"
-
-            />
-
-            <CardItem
-              src="/assets/cards/AiPicture.jpg"
-              text="City"
-              label="IAv7"
-
-            />
-
-          </ul>
-        </div>
-      </CardsContainer>
-  */}
     </Cards2>
   )
 }
