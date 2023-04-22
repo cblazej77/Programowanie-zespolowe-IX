@@ -12,14 +12,12 @@ export const AllPage = styled.div`
 `
 
 export const HeroContainer = styled.div`
-    margin-top: 10rem;
+    margin: 7vh 2vw 0vh 2vw;
     padding; 0 1rem;
     @media only screen and (max-width: 1024px) {
         margin-top: 2.5rem;
         display: fixed;
       }
-  
-      margin-bottom: 25vh;
 `;
 
 export const SortButton = styled.button`
