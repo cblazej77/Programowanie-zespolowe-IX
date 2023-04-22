@@ -2,6 +2,8 @@ package com.pz.designmatch.model.enums;
 
 import lombok.Getter;
 
+import java.util.Collection;
+
 @Getter
 public enum Category {
     LOGO_AND_IDENTITY("Logo i identyfikacja wizualna"),
@@ -27,5 +29,9 @@ public enum Category {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public Collection<Subcategory> getSubcategories() {
+        return Subcategory.getSubcategoriesByCategory(this);
     }
 }

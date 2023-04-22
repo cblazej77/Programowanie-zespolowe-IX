@@ -2,6 +2,7 @@ package com.pz.designmatch.artistFilter;
 
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
+import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -19,16 +20,19 @@ public class ArtistProfileSpecification {
         return (root, query, builder) -> { return root.get("location").in(city);
         };
     }
-    public static Specification<ArtistProfile> hasLanguage(List<Language> language){
-        return (root, query, builder) -> { return root.get("language").in(language);
+    public static Specification<ArtistProfile> hasLanguage(List<Language> languages){
+        return (root, query, builder) -> { Join<ArtistProfile, Language> join = root.join("languages");
+            return join.in(languages);
         };
     }
-    public static Specification<ArtistProfile> hasSubcategory(List<Subcategory> subcategory) {
-        return (root, query, builder) -> { return root.get("subcategory").in(subcategory);
+    public static Specification<ArtistProfile> hasSkills(List<Subcategory> skill) {
+        return (root, query, criteriaBuilder) -> { Join<ArtistProfile, Subcategory> join = root.join("skills");
+            return join.in(skill);
         };
     }
-    public static Specification<ArtistProfile> hasTag(List<Tag> tag){
-        return (root, query, builder) -> { return root.get("tag").in(tag);
+    public static Specification<ArtistProfile> hasTag(List<Tag> tags){
+        return (root, query, builder) -> { Join<ArtistProfile, Tag> join = root.join("tags");
+            return join.in(tags);
         };
     }
 }
