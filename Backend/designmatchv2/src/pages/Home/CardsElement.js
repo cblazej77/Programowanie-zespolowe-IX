@@ -173,8 +173,8 @@ export const CardLabel = styled.div`
     border-radius: 10px;
     display: flex;
     box-shadow: 4px 2px 10px 2px rgba(0, 0, 0, 0.2);
-    margin-bottom: 2vh;
-    margin-right: 1.5vw;
+    margin-bottom: 5vh;
+    margin-right: 1vw;
 `;
 
 export const CardAvatar = styled.img`
@@ -188,7 +188,7 @@ export const SimpleInfoContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-around;
-    width: 16vw;
+    width: 17vw;
     height: 14vw;
     margin-top: 5vh;
     flex-direction: column;
@@ -206,6 +206,6 @@ export const RatingText = styled(NameText)`
 
 export const ProjectPhoto = styled.img`
     margin: 0px 1px 0px 1px;
-    width: 16vw;
+    width: 15.5vw;
     object-fit: cover;
 `;
