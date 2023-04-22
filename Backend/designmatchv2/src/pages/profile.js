@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
 import { default as axios } from '../api/axios'
 import { RightColumn, InfoRow, InfoColumnt, DataColumnt, Right, Left, AboutMe, SmallButton, Button, Image, LeftWrapper, LineForm, ProfileImage, ProfileWrapper, RightWrapper, TopSection } from '../components/ProfileElements'
-import Records from '../assets/file.json'
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
