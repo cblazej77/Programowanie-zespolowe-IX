@@ -5,10 +5,6 @@ import { FacebookButton, CenterInput, InputGroupSecond, CenterButton, Button, Si
 import InputText from '../../components/Input/InputText';
 import PasswordInput from '../../components/Input/PasswordInput';
 
-
-
-
-
 function LoginForm() {
 
   const [email, setEmail] = useState('');
@@ -48,10 +44,10 @@ function LoginForm() {
   return (
     <AllPage>
       <MainName >REJESTRACJA</MainName>
-      <StyledForm style={{}}>
+      <StyledForm>
         <LogoIcon />
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <InputText label="imię:" id="nameId" onChange={e => setName(e.target.value)} />
             <InputText label="nazwisko:" id="surnameId" onChange={e => setSurname(e.target.value)} />
           </div>
