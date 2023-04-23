@@ -2,26 +2,46 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
 import { default as axios } from '../api/axios'
-import { RightColumn, InfoRow, InfoColumnt, DataColumnt, Right, Left, AboutMe, SmallButton, Button, Image, LeftWrapper, LineForm, ProfileImage, ProfileWrapper, RightWrapper, TopSection } from '../components/ProfileElements'
+import {
+  RightColumn,
+  InfoRow,
+  LeftColumn as LeftColumn,
+  DataColumnt,
+  Right, Left,
+  AboutMe,
+  SmallButton,
+  Button,
+  Image,
+  LeftWrapper,
+  LineForm,
+  ProfileImage,
+  ProfileWrapper,
+  RightWrapper,
+  TopSection,
+  LeftInfoRow,
+  InfoText,
+  DataText,
+  HeaderText
+} from '../components/ProfileElements'
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
 
-const PROFILE_URL = '/api/artist/getArtistProfile?username=';
-
-
+const getArtistProfileURL = '/api/artist/getArtistProfile?username=';
+const getUserURL = '/api/artist/getUser';
+const getShortArtistProfileURL = 'api/artist/getShortArtistProfile?username=';
 
 const BubbleWrap = styled.div`
 `;
 const Bubble = styled.p`
-  padding: 8px;
+  padding: 5px 10px 5px 10px;
   display: inline-flex;
   margin-right: 15px;
-
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
   font-size: 16px;
   margin-bottom: 20px;
+  margin-top: 5px;
 `;
 const BoldLabel = styled.h3`
   margin-bottom: 5px;
@@ -37,29 +57,42 @@ const UserPage = () => {
   const [button, setButton] = useState(true);
 
   const job = "";
-  //const name = 'jakub1';
-  //url: PROFILE_URL + name //długo się ładuje ponad 2 razy dłużej
-  let config = {
+  const profileName = 'jakub1';
+  // url: PROFILE_URL + name //długo się ładuje ponad 2 razy dłużej
+  let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: '/api/artist/getArtistProfile?username=jakub1',
-    headers: { }
+    url: getArtistProfileURL + profileName,
+    headers: {}
   };
+  let profileNameData = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: getShortArtistProfileURL + profileName,
+    headers: {}
+  };
+  // let userConfig = {
+  //   method: 'get',
+  //   maxBodyLength: Infinity,
+  //   url: getUserURL,
+  //   headers: {}
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
-      try{
-        const result = await axios.request(config);
-        setGet(result.data);
-      } catch(error){
+      try {
+        const result1 = await axios.request(profileData);
+        const result2 = await axios.request(profileNameData);
+        setGet(result1.data);
+      } catch (error) {
         console.log(error);
       }
     };
 
-      fetchData();
+    fetchData();
   }, []);
 
-  
+
 
   const handleClick = () => setClick(!click);
 
@@ -79,266 +112,137 @@ const UserPage = () => {
     }
   };
 
-
-
   window.addEventListener('resize', showButton);
 
-  const reviewCount = 15;//pobrac to z bazy
-  const ratingCount = 2.5;//pobrac z bazy
-  const name="Jacek"
+  const reviewCount = 15; //pobrac to z bazy
+  const ratingCount = 2.5; //pobrac z bazy
+  const name = "Jacek"
   const surname = "Hiong";
   const country = "Polska";
   const Default = "...";
   const description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce rutrum, lorem ut maximus blandit, justo nulla suscipit magna, in pharetra nisi erat eget ligula. Praesent lacinia pretium consequat. Curabitur tincidunt feugiat ipsum ut vulputate. Maecenas ultrices, est in luctus accumsan, est justo gravida sapien, eu finibus mi nunc in lorem. Cras fringilla turpis id dolor lobortis, ut hendrerit magna placerat. Suspendisse at eros scelerisque, tristique lacus elementum, sagittis lectus. Sed libero."
   return (
-    <>{get ? ( 
-    <ProfileWrapper>
-      <TopSection>
-        <LeftWrapper>
-          <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-          <text>{name} {surname}</text>
-          <text> { get.level } </text>
-          <div>
-            <Rating
-              allowFraction={true}
-              initialValue={ratingCount}
-              onClick={handleRating}
-              onPointerEnter={onPointerEnter}
-              onPointerLeave={onPointerLeave}
-              onPointerMove={onPointerMove}
-            />
-            <text>({reviewCount} opinii)</text>
-          </div>
-          <LineForm />
-          <Button>Napisz wiadomość</Button>
-          <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-            <SmallButton >Napisz opinię</SmallButton>
-            <SmallButton > Obserwuj</SmallButton>
-          </div>
-        </LeftWrapper>
-        <RightWrapper>
-          <BoldLabel >O mnie:</BoldLabel>
-          <AboutMe>{ get.bio }</AboutMe>
-          <LineForm />
-          <Left>
-            <InfoRow>
-              <InfoColumnt>
-                <text>Członek od:</text>
-                <text>Miasto: </text>
-                <text>Prace: </text>
-              </InfoColumnt>
-              <DataColumnt>
-                <text><b>20.20.2023</b></text>
-                <text><b>{get.location}, {country}</b></text>
-                <text><b>20</b></text>
-                <text><b>5</b></text>
-                <text><b>0</b></text>
-              </DataColumnt>
-              <RightColumn>
-                <text>
-                  Umiejętności:
-                </text>
-                <BubbleWrap>
-                  {get.skills?.length ? (
-                    get.skills.map((skill, index) => <Bubble key={index}>{skill}</Bubble>)
-                  ) : <Bubble>{Default}</Bubble>}
-                </BubbleWrap>
-                <text>
-                  Języki:
-                </text>
-                <BubbleWrap>
-                {get.languages?.length ? (
-                    get.languages.map((language, index) => <Bubble key={index}>{language}</Bubble>)
-                  ) : <Bubble>{Default}</Bubble>}
-                </BubbleWrap>
-                <text>
-                  Linki:
-                </text>
-                <BubbleWrap>
-                  <Bubble>{get.website}</Bubble>
-                  <Bubble>{get.linkedin}</Bubble>
-                </BubbleWrap>
-              </RightColumn>
-            </InfoRow>
-          </Left>
-        </RightWrapper>
-      </TopSection>
-    </ProfileWrapper>
+    <>{get ? (
+      <ProfileWrapper>
+        <TopSection>
+          <LeftWrapper>
+            <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
+            <text>{get.firstname} {get.lastname}</text>
+            <text> {get.level} </text>
+            <div>
+              <Rating
+                allowFraction={true}
+                initialValue={ratingCount}
+                onClick={handleRating}
+                onPointerEnter={onPointerEnter}
+                onPointerLeave={onPointerLeave}
+                onPointerMove={onPointerMove}
+              />
+              <text>({reviewCount} opinii)</text>
+            </div>
+            <LineForm />
+            <Button>Napisz wiadomość</Button>
+            <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+              <SmallButton >Napisz opinię</SmallButton>
+              <SmallButton > Obserwuj</SmallButton>
+            </div>
+          </LeftWrapper>
+          <RightWrapper>
+            <BoldLabel >O mnie:</BoldLabel>
+            <AboutMe>{description}</AboutMe>
+            <LineForm />
+            <Left>
+              <InfoRow >
+                <LeftColumn >
+                  <LeftInfoRow>
+                    <InfoText>Członek od:</InfoText>
+                    <DataText>20.20.2023</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Miejscowość:</InfoText>
+                    <DataText>{get.location}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Prace:</InfoText>
+                    <DataText>20</DataText>
+                  </LeftInfoRow>
+                  <LineForm />
+                  <HeaderText>Języki:</HeaderText>
+                  <BubbleWrap>
+                    {get.languages?.length ? (
+                      get.languages.map((language, index) => <Bubble key={index}>{language}</Bubble>)
+                    ) : <Bubble>{Default}</Bubble>}
+                  </BubbleWrap>
+                  <LineForm />
+                  <HeaderText>Umiejętności:</HeaderText>
+                  <BubbleWrap>
+                    {get.skills?.length ? (
+                      get.skills.map((skill, index) => <Bubble key={index}>{skill}</Bubble>)
+                    ) : <Bubble>{Default}</Bubble>}
+                  </BubbleWrap>
+                  <LineForm />
+                  <HeaderText>Linki:</HeaderText>
+                  <BubbleWrap>
+                    <Bubble>{get.website}</Bubble>
+                    <Bubble>{get.linkedin}</Bubble>
+                  </BubbleWrap>
+                </LeftColumn>
+                <RightColumn>
+                  <HeaderText>Wykształcenie</HeaderText>
+                  <LeftInfoRow>
+                    <InfoText>Nazwa szkoły/uczelni:</InfoText>
+                    <DataText>{get.education[0].school_name}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Wydział:</InfoText>
+                    <DataText>{get.education[0].faculty}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Kierunek:</InfoText>
+                    <DataText>{get.education[0].field_of_study}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Data rozpoczęcia:</InfoText>
+                    <DataText>{get.education[0].start_date}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Data zakończenia:</InfoText>
+                    <DataText>{get.education[0].end_date}</DataText>
+                  </LeftInfoRow>
+                  <LineForm />
+                  <HeaderText>Doświadczenie</HeaderText>
+                  <LeftInfoRow>
+                    <InfoText>Firma:</InfoText>
+                    <DataText>{get.experience[0].company}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Miasto:</InfoText>
+                    <DataText>{get.experience[0].city}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Stanowisko:</InfoText>
+                    <DataText>{get.experience[0].position}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Data rozpoczęcia:</InfoText>
+                    <DataText>{get.experience[0].start_date}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>Data zakończenia:</InfoText>
+                    <DataText>{get.experience[0].end_date}</DataText>
+                  </LeftInfoRow>
+                </RightColumn>
+              </InfoRow>
+            </Left>
+          </RightWrapper>
+        </TopSection>
+      </ProfileWrapper>
     ) : (<div>Loading...</div>)}
     </>
-   
+
   );
 
 
-  //   return (
-  //     <ProfileWrapper>
-  //       <TopSection>
-  //         <LeftWrapper>
-  //           {/* Obrazek test.jpg jest zdecydowanie za duzy[rozdzielczosc] */}
-  //           <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-  //           <UserName>{name} { surname}</UserName>
-  //           <UserInfo>{city}, {country}</UserInfo>
-  // <RatingWrapper>
-  //   {/*<RatingIcon>&#9733;</RatingIcon><RatingIcon>&#9733;</RatingIcon><RatingIcon>&#9733;</RatingIcon><RatingIcon>&#11240;</RatingIcon><RatingIcon>&#9734;</RatingIcon>*/}
-  //   <Rating
-  //     allowFraction = {true}
-  //     initialValue={ratingCount}
-  //     onClick={handleRating}
-  //     onPointerEnter={onPointerEnter}
-  //     onPointerLeave={onPointerLeave}
-  //     onPointerMove={onPointerMove}
-  //  />
-
-  // </RatingWrapper>
-  //           <label>({reviewCount} opini)</label>
-  //           <MessageButton>Wiadomość</MessageButton>
-  //           <JoinedDate>Joined: 01/01/2022</JoinedDate>
-  //         </LeftWrapper>
-  //         {click && <RightWrapper>
-  //           <BoldLabel>O mnie: </BoldLabel>
-  //           <Description>{description}</Description>
-  //           <BoldLabel>Umiejętności: </BoldLabel>
-  //           <SkillsWrap>
-  //             <Skills>Łowienie</Skills>
-  //             <Skills>Rybki</Skills>
-  //           </SkillsWrap>
-  //           <InfoWrapper>
-  //           <BoldLabel>Linki: </BoldLabel>
-  //             <Links>
-  //               <a href="#">Portfolio</a>
-  //               <a href="#">LinkedIn</a>
-  //             </Links>
-
-  //           </InfoWrapper>
-  //           <LineForm />
-  //           <BoldLabel>Języki: </BoldLabel>
-  //             <Languages> English, Spanish</Languages>
-  //             <BoldLabel>Doświadczenie zawodowe: </BoldLabel>
-
-
-  //           </RightWrapper> }
-  //   </TopSection>
-  //   <BottomSection>
-  //     {click && <>
-  //       <Project></Project>
-  //       <Project></Project>
-  //       <Project></Project>
-  //       <Project></Project>
-  //       <Project></Project>
-  //     <Project></Project> 
-  //      </>}
-  //   </BottomSection>
-
-  // </ProfileWrapper>
-  // );
-
-  /*const RightColumn = styled.div`
-  border: solid black;
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  height: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-*/
-
 };
 
-
 export default UserPage;
-
-/*
-const RatingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-`;
-
-const RatingIcon = styled.span`
-  margin-right: 5px;
-  font-size: 20px;
-`;
-const UserName = styled.h2`
-  margin-top: 20px;
-`;
-
-const UserInfo = styled.p`
-  font-size: 16px;
-  margin-bottom: 5px;
-`;
-
-const MessageButton = styled.button`
-  background-color: #008cff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  margin: 30px auto;
-  &:hover {
-    background-color: #0070c0;
-  }
-`;
-
-const Description = styled.p`
-  margin-left: 50px;
-  font-size: 16px;
-  margin-bottom: 20px;
-`;
-
-
-const InfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const JoinedDate = styled.p`
-  font-size: 16px;
-  margin-bottom: 5px;
-`;
-
-const Links = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-
-  & > a {
-    margin-right: 10px;
-    font-size: 16px;
-  }
-`;
-
-const Languages = styled.p`
-  font-size: 16px;
-`;
-
-
-const BottomSection = styled.div`
-  border: solid green;
-  display: flex;
-  flex-wrap: wrap;
-  width: 66%;
-  flex: 1;
-`;
-
-const Project = styled.div`
-  width: 300px;
-  height: 300px;
-  margin: 10px;
-  background-color: #eee;
-  border: solid black;
-`;
-
-const LeftColumn = styled.div`
-  border: solid black;
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  height: 100%;
-  border-right: 1px solid #ccc;
-  box-sizing: border-box;
-`;
-
-*/

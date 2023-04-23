@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { COLORS } from './Colors';
+
+const { darkLight } = COLORS;
 
 export const ProfileWrapper = styled.div`
   display: flex;
@@ -102,6 +105,7 @@ export const RightWrapper = styled.div`
   display: flex;
   padding: 60px;
   flex: 2;
+  height: 100vh;
   flex-direction: column;
   float: left;
   border-radius: 15px;
@@ -127,19 +131,39 @@ export const InfoRow = styled.div`
   width: 100%%;
 `
 
-export const InfoColumnt = styled.div`
+export const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   flex-basis: 100%;
-  flex: 1;
+  flex: 2;
 `
 
-export const DataColumnt = styled(InfoColumnt)`
+export const DataColumnt = styled(LeftColumn)`
   margin: 0 25px;
   text-align: right;
   flex: 1;
 `;
-export const RightColumn = styled(InfoColumnt)`
+export const RightColumn = styled(LeftColumn)`
   margin: 0 25px;
-  flex: 3;
+  flex: 2;
+`;
+
+export const InfoText = styled.text`
+  
+`;
+
+export const HeaderText = styled.text`
+    font-size: 1vw;
+    margin-bottom: 1vh;
+`;
+
+export const DataText = styled(InfoText)`
+    font-weight: bold;
+`;
+
+export const LeftInfoRow = styled.div`
+    margin-bottom: 1.5vh;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
 `;
