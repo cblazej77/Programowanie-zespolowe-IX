@@ -1,8 +1,11 @@
 package com.pz.designmatch.artistFilter;
 
+import com.pz.designmatch.controller.UserProfileController;
+import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.repository.ArtistProfileRepository;
+import com.pz.designmatch.service.ArtistProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +28,7 @@ public class artistFilterController {
     private ArtistProfileRepository artistProfileRepository;
 
     @GetMapping(value = "/filter", produces = apiVersionAccept)
-    public ResponseEntity<List<ArtistFilterDto>> filterArtists(@RequestParam(name = "level", required = false) List<Level> level,
+    public ResponseEntity<List<ShortProfileDto>> filterArtists(@RequestParam(name = "level", required = false) List<Level> level,
                                                                @RequestParam(name = "location", required = false) List<City> city,
                                                                @RequestParam(name = "category", required = false) List<Category> category,
                                                                @RequestParam(name = "language", required = false) List<Language> languages,
@@ -55,20 +58,21 @@ public class artistFilterController {
             specification = specification.and(ArtistProfileSpecification.hasTag(tags));
         }
         List<ArtistProfile> artistProfileList = artistProfileRepository.findAll(specification);
-        List<ArtistFilterDto> artistFilterDtos = new ArrayList<>();
-        for (ArtistProfile artistProfile : artistProfileList){
-            Set<String> skillsSet = artistProfile.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet());
-            Set<String> languagesSet = artistProfile.getLanguages().stream().map(Language::toString).collect(Collectors.toSet());
-            Set<String> tagsSet = artistProfile.getTags().stream().map(Tag::toString).collect(Collectors.toSet());
-            ArtistFilterDto artistFilterDto = new ArtistFilterDto(
-                    artistProfile.getLevel().toString(),
-                    artistProfile.getLocation().toString(),
-                    skillsSet,
-                    languagesSet,
-                    tagsSet
-            );
-            artistFilterDtos.add(artistFilterDto);
-        }
+//        List<ArtistFilterDto> artistFilterDtos = new ArrayList<>();
+//        for (ArtistProfile artistProfile : artistProfileList){
+//            Set<String> skillsSet = artistProfile.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet());
+//            Set<String> languagesSet = artistProfile.getLanguages().stream().map(Language::toString).collect(Collectors.toSet());
+//            Set<String> tagsSet = artistProfile.getTags().stream().map(Tag::toString).collect(Collectors.toSet());
+//            ArtistFilterDto artistFilterDto = new ArtistFilterDto(
+//                    artistProfile.getLevel().toString(),
+//                    artistProfile.getLocation().toString(),
+//                    skillsSet,
+//                    languagesSet,
+//                    tagsSet
+//            );
+//            artistFilterDtos.add(artistFilterDto);
+//        }
+        List<ShortProfileDto> artistFilterDtos = artistProfileList.stream().map(ArtistProfileService::mapToShortDto).collect(Collectors.toList());
         return ResponseEntity.ok(artistFilterDtos);
     }
 }

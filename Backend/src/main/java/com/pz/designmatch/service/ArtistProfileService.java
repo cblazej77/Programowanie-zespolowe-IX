@@ -134,7 +134,7 @@ public class ArtistProfileService {
 
     public ShortProfileDto getShortArtistProfileDtoByUsername(String username) {
         return artistProfileRepository.findByUser_Username(username)
-                .map(this::mapToShortDto)
+                .map(ArtistProfileService::mapToShortDto)
                 .orElseThrow(() -> new RuntimeException("Artist profile not found for username: " + username));
     }
 
@@ -245,7 +245,7 @@ public class ArtistProfileService {
         return YearMonth.parse(yearMonth, formatter);
     }
 
-    private ShortProfileDto mapToShortDto(ArtistProfile artistProfile) {
+    public static ShortProfileDto mapToShortDto(ArtistProfile artistProfile) {
         if (artistProfile == null)
             return null;
         return new ShortProfileDto(
