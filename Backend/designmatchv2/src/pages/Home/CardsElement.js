@@ -1,7 +1,15 @@
 import styled from 'styled-components';
 import { COLORS } from '../../components/Colors';
 
-const { darkLight, primary, grey1 } = COLORS;
+const {
+    darkLight,
+    darkLight2,
+    primary,
+    gray,
+    gray1,
+    secondary,
+    black
+} = COLORS;
 
 export const Cards2 = styled.div`
     background: transparent;
@@ -46,13 +54,28 @@ export const FilterWrapper = styled.div`
     flex: 1;
     flex-flow: column;
     width: 15vw;
-    height: auto;
+    height: 81vh;
     display: flex;
     background: ${primary};
     border-radius: 10px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-    padding: 0vh 1vw 2vh 1vw;
-
+    padding: 0vh 1vw 15vh 1vw;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        width: 0.25vw;
+      }
+    
+      &::-webkit-scrollbar-track {
+        background: ${primary};
+      }
+    
+      &::-webkit-scrollbar-thumb {
+        background: ${gray1};
+      }
+    
+      &::-webkit-scrollbar-thumb:hover {
+        background: ${darkLight};
+      }
 `;
 
 export const FilterLabel = styled.div`
@@ -66,7 +89,7 @@ export const TitleText = styled.text`
 `;
 
 export const SubtitleText = styled.text`
-    color: ${grey1};
+    color: ${gray1};
     font-size: 2.2vh;
     margin: 2.5vh 0px 1.5vh 0px;
 `;
@@ -97,7 +120,7 @@ export const CheckBoxLabel = styled.label`
 `;
 
 export const JobText = styled(SubtitleText)`
-    color: ${grey1};
+    color: ${gray1};
     font-size: 2vh;
     margin: 0vh 0px 0vh 0px;
 `;
@@ -113,9 +136,12 @@ export const CheckBoxWrapper = styled.div`
 export const Input = styled.input`
     border-radius: 10px;
     border: 0px;
-    color: ${grey1};
+    color: ${darkLight};
     font-size: 1.8vh;
     padding: 0.3vw 0.5vw 0.3vw 0.5vw;
+    ::placeholder {
+        color: ${gray1};
+    }
 `;
 
 export const SortLayout = styled.div`
@@ -125,14 +151,14 @@ export const SortLayout = styled.div`
     left: 19vw;
 `;
 
-export const SortContainer = styled.select`
+export const StyledSelect = styled.select`
     border-radius: 10px;
     border: 0px;
     font-size: 1.9vh;
     padding: 0.5vh 2vw 0.5vh 0.5vw;
-    color: ${grey1};
+    color: ${gray1};
 `;
-export const SortOption = styled.option`
+export const StyledOption = styled.option`
 `;
 
 export const CardsLabel = styled.div`
@@ -157,7 +183,7 @@ export const CardsWrapper = styled.div`
       }
     
       &::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: ${primary};
       }
     
       &::-webkit-scrollbar-thumb {
@@ -178,8 +204,8 @@ export const CardLabel = styled.div`
 `;
 
 export const CardAvatar = styled.img`
-    height: 6vw;
-    width: 6vw;
+    height: 7vw;
+    width: 7vw;
     border-radius: 100%;
     object-fit: cover;
 `;
