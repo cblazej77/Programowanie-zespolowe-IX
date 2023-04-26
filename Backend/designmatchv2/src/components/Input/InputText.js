@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { InputGroup,  Input, LabelInput } from './Elements'
 
 function InputText({
     label,
     name,
-    id
+    id,
+    value,
+    onChange
 }) {
-    const [email, setEmail] = useState("");
-    const handleClick = (e) => {
+    const [email, setEmail] = useState(value);
+
+    const handleChange = (e) => {
         setEmail(e.target.value);
-        console.log(email);
-        console.log(e.target.value);
+        onChange && onChange(e.target.value);
+          
     } 
 
   return (
@@ -21,10 +25,19 @@ function InputText({
             value={email}
             id={id}
             type="text"
-          onChange={(e) => setEmail(e.target.value)}
+            onChange={handleChange}
         ></Input>
         <LabelInput htmlFor={id}>{label}</LabelInput>
     </InputGroup>
   )
+  
+}
+
+InputText.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 };
 export default InputText;

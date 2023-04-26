@@ -1,18 +1,22 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { InputGroup, NotButton, Input, LabelInput, CloseEyeIcon, OpenEyeIcon } from './Elements'
 
 function PasswordInput({
     label,
     name,
     id,
+    value,
+    onChange
 }) {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(value);
   const [visible, setVisible] = useState(false);
 
   const handleClick = (e) => {
     setPassword(e.target.value);
-    console.log(password);
-    console.log(e.target.value);
+    if( onChange){
+      onChange(e.target.value);
+    }
   }
 
   return (
@@ -26,7 +30,7 @@ function PasswordInput({
             isWithButton
           value={password}
           type={visible ? "text" : "password"}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleClick}
         ></Input>
         <LabelInput htmlFor={id}>{label}</LabelInput>
         <NotButton onClick={() => setVisible(!visible)}>
@@ -36,5 +40,13 @@ function PasswordInput({
       
     </InputGroup>
   )
+}
+
+PasswordInput.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
 };
 export default PasswordInput;

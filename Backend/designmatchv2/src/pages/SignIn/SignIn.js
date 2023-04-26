@@ -24,13 +24,12 @@ export const SignIn = () => {
   const LOGIN_URL = '/api/auth/login';
 
   const handleSubmit = async (e) => {
-    if (password.length < minPassword && email.length != 0) {
+    if (password.length < minPassword && email.length !== 0) {
       setPasswordInvalid(true);
     } else {
       setPasswordInvalid(false);
 
       e.preventDefault();
-
       try {
         const response = await axios.post(LOGIN_URL,
           JSON.stringify({ email, password }),
@@ -65,6 +64,13 @@ export const SignIn = () => {
         },
         flow: 'auth-code',
       });
+
+      const handleEmailChange = (value) => {
+        setEmail(value);
+      }
+      const handlePasswordChange = (value) => {
+        setPassword(value);
+      }
     
 /*
   const buttonEnabled = (username, password) => {
@@ -86,6 +92,7 @@ export const SignIn = () => {
   */
 
 
+
   return (
     <AllPage>
       <MainName >LOGOWANIE</MainName>
@@ -93,8 +100,8 @@ export const SignIn = () => {
       <LogoIcon />
         {/*<img style={{height: 200, marginBottom: 10}} src={logo}/>*/}
 
-        <InputText label="email:" name="login" id="loginId"/>
-        <PasswordInput label="hasło:" name="login" id="passwordId"/>
+        <InputText label="email:" name="login" id="loginId" onChange={handleEmailChange}/>
+        <PasswordInput label="hasło:" name="login" id="passwordId" onChange = {handlePasswordChange}/>
         {/*<Input required type="text" label="email@example.com" id="loginId" onChange={e => setEmail(e.target.value)} />
         <Input required type="password" label="************" id="passwordId" onChange={e => setPassword(e.target.value)} />
         */}
