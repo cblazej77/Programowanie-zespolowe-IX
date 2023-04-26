@@ -15,188 +15,212 @@ import {
   SortLayout,
   StyledSelect,
   StyledOption,
-  CardsWrapper
+  CardsWrapper,
+  StyledOptgroup,
+  CategoryText
 } from './CardsElement'
 import axios from '../../api/axios';
+import { useMemo } from 'react';
 
 const Cards = () => {
-  const [cities, setCities] = useState(null);
-  const [tags, setTags] = useState(null);
+  const [cities, setCities] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  const citiesData = {
+  // useMemo tworzy elementy JSX tylko raz
+  const citiesData = useMemo(() => ({
     method: 'get',
     maxBodyLength: 5000,
     url: "/api/artist/getAvailableCities",
-    headers: {}
-  };
+    headers: {},
+  }), []);
 
-  const tagsData = {
+  const tagsData = useMemo(() => ({
     method: 'get',
     maxBodyLength: 5000,
     url: "/api/artist/getAvailableTags",
-    headers: {}
-  };
+    headers: {},
+  }), []);
+
+  const categoriesData = useMemo(() => ({
+    method: 'get',
+    maxBodyLength: 5000,
+    url: "/api/artist/getAvailableCategories",
+    headers: {},
+  }), []);
 
   useEffect(() => {
-    const fetchCities = async () => {
+    const fetchData = async () => {
       try {
-        const result = await axios.request(citiesData);
-        setCities(result.data);
-      } catch (error) {
-        console.error(error);
+        const [citiesResponse, tagsResponse, categoriesResponse] = await Promise.all([
+          axios.request(citiesData),
+          axios.request(tagsData),
+          axios.request(categoriesData),
+        ]);
+        setCities(citiesResponse.data);
+        setTags(tagsResponse.data);
+        setCategories(categoriesResponse.data);
+
+      } catch (err) {
+        console.error(err);
       }
     };
 
-    const fetchTags = async () => {
-      try {
-        const result = await axios.request(tagsData);
-        setTags(result.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    fetchData();
+  }, [citiesData, tagsData, categoriesData]);
 
-    if (cities && tags) {
-      const citiesList = cities.map((city, index) => (
-        <StyledOption key={index} value={city}>{city}</StyledOption>
-      ));
-      const tagsList = tags.map((tag, index) => (
-        <StyledOption key={index} value={tag}>{tag}</StyledOption>
-      ));
-      setCities(citiesList);
-      setTags(tagsList);
+  const cityOptions = useMemo(() => (
+    cities.map((city, index) => (
+      <StyledOption key={index} value={city}>{city}</StyledOption>
+    ))
+  ), [cities]);
+
+  const tagOptions = useMemo(() => (
+    tags.map((tag, index) => (
+      <StyledOption key={index} value={tag}>{tag}</StyledOption>
+    ))
+  ), [tags]);
+
+  // niżej są 2 opcje wyświetlania filtrowania kategorii
+  // tutaj jest dropbox
+  const categoryOptions = useMemo(() => {
+    if (!Array.isArray(categories.categories)) {
+      return null;
     }
 
-    fetchCities();
-    fetchTags();
-  }, []);
+    return categories.categories.map((category, indexC) => (
+      <StyledOptgroup label={category.name} key={indexC} >
+        {category.subcategories.map((subcategory, indexS) => (
+          <StyledOption key={indexS} value={subcategory}>{subcategory}</StyledOption>
+        ))}
+      </StyledOptgroup>
+    ));
+  });
 
-    
+  // a tutaj są checkboxy
+  const categoryCheckBoxes = useMemo(() => {
+    if (!Array.isArray(categories.categories)) {
+      return null;
+    }
+
+    return categories.categories.map((category, indexC) => (
+      <>
+        <CategoryText key={indexC}>{category.name}</CategoryText>
+        {category.subcategories.map((subcategory, indexS) => (
+          <CheckBoxWrapper key={indexS}>
+            <CheckBox type='checkbox' id={subcategory} />
+            <CheckBoxLabel htmlFor={subcategory} />
+            <JobText>{subcategory}</JobText>
+          </CheckBoxWrapper>
+        ))}
+
+      </>
+    ));
+  });
 
   return (
-    <>{cities && tags ? (
-      <Cards2>
-        <FilterLabel>
-          <TitleText>Filtruj</TitleText>
-          <FilterWrapper>
-            <SubtitleText>Rodzaj pracy</SubtitleText>
-            <CheckBoxWrapper>
-              <CheckBox type='checkbox' id='praca1' />
-              <CheckBoxLabel htmlFor='praca1' />
-              <JobText>{cities[0]}</JobText>
-            </CheckBoxWrapper>
-            <CheckBoxWrapper>
-              <CheckBox type='checkbox' id='praca2' />
-              <CheckBoxLabel htmlFor='praca2' />
-              <JobText>Praca 2</JobText>
-            </CheckBoxWrapper>
-            <CheckBoxWrapper>
-              <CheckBox type='checkbox' id='praca3' />
-              <CheckBoxLabel htmlFor='praca3' />
-              <JobText>Praca 3</JobText>
-            </CheckBoxWrapper>
-            <CheckBoxWrapper>
-              <CheckBox type='checkbox' id='praca4' />
-              <CheckBoxLabel htmlFor='praca4' />
-              <JobText>Praca 4</JobText>
-            </CheckBoxWrapper>
-            <SubtitleText>Skąd?</SubtitleText>
-            <StyledSelect>
-              <StyledOption value="">Wybierz lokalizację</StyledOption>
-              {cities.map((city, index) => (
-                <StyledOption key={index} value={city}>{cities[index]}</StyledOption>
-              ))}
-            </StyledSelect>
-            <SubtitleText>Języki</SubtitleText>
-            <Input placeholder='Wpisz język' />
-            <SubtitleText>Tagi</SubtitleText>
-            <StyledSelect>
-              <StyledOption value="">Wybierz tag</StyledOption>
-              {tags.map((tag, index) => (
-                <StyledOption key={index} value={tag}>{tags[index]}</StyledOption>
-              ))}
-            </StyledSelect>
-          </FilterWrapper>
-        </FilterLabel>
-        <SortLayout>
+    <Cards2>
+      <FilterLabel>
+        <TitleText>Filtruj</TitleText>
+        <FilterWrapper>
+          
+          <SubtitleText>Skąd?</SubtitleText>
           <StyledSelect>
-            <StyledOption value="">Sortuj po...</StyledOption>
-            <StyledOption value="1">najlepsza ocena</StyledOption>
-            <StyledOption value="2">najwięcej prac</StyledOption>
-            <StyledOption value="3">ostatnia aktywność</StyledOption>
+            <StyledOption value="">Wybierz lokalizację</StyledOption>
+            {cityOptions}
           </StyledSelect>
-        </SortLayout>
+          <SubtitleText>Języki</SubtitleText>
+          <Input placeholder='Wpisz język' />
+          <SubtitleText>Tagi</SubtitleText>
+          <StyledSelect>
+            <StyledOption value="">Wybierz tag</StyledOption>
+            {tagOptions}
+          </StyledSelect>
+          <SubtitleText>Kategorie</SubtitleText>
+          <StyledSelect>
+            <StyledOption value="">Wybierz kategorię</StyledOption>
+            {categoryOptions}
+          </StyledSelect>
+          {categoryCheckBoxes}
+        </FilterWrapper>
+      </FilterLabel>
+      <SortLayout>
+        <StyledSelect>
+          <StyledOption value="">Sortuj po...</StyledOption>
+          <StyledOption value="1">najlepsza ocena</StyledOption>
+          <StyledOption value="2">najwięcej prac</StyledOption>
+          <StyledOption value="3">ostatnia aktywność</StyledOption>
+        </StyledSelect>
+      </SortLayout>
 
-        <CardsWrapper>
-          <CardItem avatar="/assets/cards/person1.jpg"
-            background="rgba(99, 81, 44"
-            name="Maryla"
-            surname="Kwarc"
-            rating={3.5}
-            ratingCount={15}
-            project1="/assets/cards/design1.jpg"
-            project2="/assets/cards/design2.png"
-            project3="/assets/cards/design3.jpg"
-            project4="/assets/cards/design4.png"
-            city="Toruń"
-            country="PL"
-            job="Graphic Designer, Illustrator, Branding, Packaging" />
-          <CardItem avatar="/assets/cards/person2.jpg"
-            background="rgba(137, 26, 145"
-            name="Nicolette"
-            surname="Félix"
-            rating={3}
-            ratingCount={10}
-            project1="/assets/cards/design5.jpg"
-            project2="/assets/cards/design6.jpg"
-            project3="/assets/cards/design7.jpg"
-            project4="/assets/cards/design8.jpg"
-            city="Paris"
-            country="FR"
-            job="Graphic Designer, Illustrator, Branding, Packaging" />
-          <CardItem avatar="/assets/cards/person1.jpg"
-            background="rgba(23, 15, 117"
-            name="Maryla"
-            surname="Kwarc"
-            rating={3.5}
-            ratingCount={15}
-            project1="/assets/cards/design1.jpg"
-            project2="/assets/cards/design2.png"
-            project3="/assets/cards/design3.jpg"
-            project4="/assets/cards/design4.png"
-            city="Toruń"
-            country="PL"
-            job="Graphic Designer, Illustrator, Branding, Packaging" />
-          <CardItem avatar="/assets/cards/person1.jpg"
-            background="rgb(140, 91, 18"
-            name="Maryla"
-            surname="Kwarc"
-            rating={3.5}
-            ratingCount={15}
-            project1="/assets/cards/design1.jpg"
-            project2="/assets/cards/design2.png"
-            project3="/assets/cards/design3.jpg"
-            project4="/assets/cards/design4.png"
-            city="Toruń"
-            country="PL"
-            job="Graphic Designer, Illustrator, Branding, Packaging" />
-          <CardItem avatar="/assets/cards/person1.jpg"
-            background="rgba(12, 244, 122"
-            name="Maryla"
-            surname="Kwarc"
-            rating={3.5}
-            ratingCount={15}
-            project1="/assets/cards/design1.jpg"
-            project2="/assets/cards/design2.png"
-            project3="/assets/cards/design3.jpg"
-            project4="/assets/cards/design4.png"
-            city="Toruń"
-            country="PL"
-            job="Graphic Designer, Illustrator, Branding, Packaging" />
-        </CardsWrapper>
-      </Cards2>
-    ) : (<div>Loading...</div>)}
-    </>
+      <CardsWrapper>
+        <CardItem avatar="/assets/cards/person1.jpg"
+          background="rgba(99, 81, 44"
+          name="Maryla"
+          surname="Kwarc"
+          rating={3.5}
+          ratingCount={15}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+          city="Toruń"
+          country="PL"
+          job="Graphic Designer, Illustrator, Branding, Packaging" />
+        <CardItem avatar="/assets/cards/person2.jpg"
+          background="rgba(137, 26, 145"
+          name="Nicolette"
+          surname="Félix"
+          rating={3}
+          ratingCount={10}
+          project1="/assets/cards/design5.jpg"
+          project2="/assets/cards/design6.jpg"
+          project3="/assets/cards/design7.jpg"
+          project4="/assets/cards/design8.jpg"
+          city="Paris"
+          country="FR"
+          job="Graphic Designer, Illustrator, Branding, Packaging" />
+        <CardItem avatar="/assets/cards/person1.jpg"
+          background="rgba(23, 15, 117"
+          name="Maryla"
+          surname="Kwarc"
+          rating={3.5}
+          ratingCount={15}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+          city="Toruń"
+          country="PL"
+          job="Graphic Designer, Illustrator, Branding, Packaging" />
+        <CardItem avatar="/assets/cards/person1.jpg"
+          background="rgb(140, 91, 18"
+          name="Maryla"
+          surname="Kwarc"
+          rating={3.5}
+          ratingCount={15}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+          city="Toruń"
+          country="PL"
+          job="Graphic Designer, Illustrator, Branding, Packaging" />
+        <CardItem avatar="/assets/cards/person1.jpg"
+          background="rgba(12, 244, 122"
+          name="Maryla"
+          surname="Kwarc"
+          rating={3.5}
+          ratingCount={15}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+          city="Toruń"
+          country="PL"
+          job="Graphic Designer, Illustrator, Branding, Packaging" />
+      </CardsWrapper>
+    </Cards2>
   )
 }
 

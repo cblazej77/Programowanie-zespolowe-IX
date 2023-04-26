@@ -89,7 +89,7 @@ export const TitleText = styled.text`
 `;
 
 export const SubtitleText = styled.text`
-    color: ${gray1};
+    color: ${black};
     font-size: 2.2vh;
     margin: 2.5vh 0px 1.5vh 0px;
 `;
@@ -121,7 +121,7 @@ export const CheckBoxLabel = styled.label`
 
 export const JobText = styled(SubtitleText)`
     color: ${gray1};
-    font-size: 2vh;
+    font-size: 0.9vw;
     margin: 0vh 0px 0vh 0px;
 `;
 
@@ -158,7 +158,12 @@ export const StyledSelect = styled.select`
     padding: 0.5vh 2vw 0.5vh 0.5vw;
     color: ${gray1};
 `;
+
+//StyledOption, StyledOptgroup do stylizacji
 export const StyledOption = styled.option`
+`;
+
+export const StyledOptgroup = styled.optgroup`
 `;
 
 export const CardsLabel = styled.div`
@@ -234,4 +239,8 @@ export const ProjectPhoto = styled.img`
     margin: 0px 1px 0px 1px;
     width: 15.5vw;
     object-fit: cover;
+`;
+
+export const CategoryText = styled(SubtitleText)`
+    font-size: 1vw;
 `;
