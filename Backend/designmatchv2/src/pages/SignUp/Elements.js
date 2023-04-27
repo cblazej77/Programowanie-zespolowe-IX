@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { Link } from 'react-router-dom';
 
-import { xIcon } from "../../assets/img/svg/SvgIcons"
+import { logo } from "../../assets/img/svg/SvgIcons"
 
 
 export const AllPage = styled.div`
@@ -75,20 +75,17 @@ export const MainName = styled.div`
     font-family: "Norwesterregular";
     position: absolute;
     color: #555978;
-    transform: translateY(-1.2rem);
+    transform: translateY(-1.8rem);
     @media screen and (max-width: 960px) {
        font-size: 0px;
       }
   `
 
-export const LogoIcon = styled(xIcon)`
+  export const LogoIcon = styled(logo)`
   transform: translateY(-0.3rem);
-  height: 80px;
+  height: 200px;
   width: auto;
-  color: white;
-  border-radius: 50%;
-  border: solid 1px rgba(255, 255, 2555, 1);
-  overflow: hidden;
+  color: #555978;
   `;
 
 export const LineForm = styled.div`
@@ -189,6 +186,7 @@ export const Button = styled(Link)`
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
     color: rgb(255, 255, 255);
     padding: 10px 15px;
+    background: transparent;
     text-decoration: none;
     width: 70%;
     font-size: 16px;

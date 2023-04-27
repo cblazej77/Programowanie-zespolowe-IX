@@ -6,7 +6,7 @@ function InputText({
     label,
     name,
     id,
-    value,
+    value = '',
     onChange
 }) {
     const [email, setEmail] = useState(value);

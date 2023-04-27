@@ -3,10 +3,10 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../components/Auth';
 import { default as axios } from "../../api/axios"
 import { useGoogleLogin } from '@react-oauth/google';
-import { FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
+import { LogoIcon2, FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
 import InputText from '../../components/Input/InputText';
 import PasswordInput from '../../components/Input/PasswordInput';
-import logo from '../../assets/img/logo.png';
+import FacebookLogin from '@greatsumini/react-facebook-login';
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -97,22 +97,36 @@ export const SignIn = () => {
     <AllPage>
       <MainName >LOGOWANIE</MainName>
       <StyledForm >
-      <LogoIcon />
-        {/*<img style={{height: 200, marginBottom: 10}} src={logo}/>*/}
+      <LogoIcon2 />
 
         <InputText label="email:" name="login" id="loginId" onChange={handleEmailChange}/>
         <PasswordInput label="hasło:" name="login" id="passwordId" onChange = {handlePasswordChange}/>
-        {/*<Input required type="text" label="email@example.com" id="loginId" onChange={e => setEmail(e.target.value)} />
-        <Input required type="password" label="************" id="passwordId" onChange={e => setPassword(e.target.value)} />
-        */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           {passwordInvalid ? <StyledAlert>Podane hasło jest nieprawidłowe.</StyledAlert> : <></>}
           <LoginButton to='' type="submit" onClick={e => handleSubmit(e)}>Zaloguj się</LoginButton>
           {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
           {/*<Button to='/sign-up' type="button" >Zarejestruj się</Button>*/}
           <LineForm />
-          <GoogleButton to='' type="button" onClick={ () => login()} >Kontynuuj z Google{' '}</GoogleButton>
-          <FacebookButton to='' type="button" >Kontynuuj z Facebook</FacebookButton>
+          <GoogleButton to='#' type="button" onClick={ () => login()} >Kontynuuj z Google{' '}</GoogleButton>
+          <FacebookLogin
+  appId="739036054553215"
+  scope={email}
+  onSuccess={(response) => {
+    console.log('Login Success!', response);
+  }}
+  onFail={(error) => {
+    console.log('Login Failed!', error);
+  }}
+  onProfileSuccess={(response) => {
+    console.log('Get Profile Success!', response);
+    authApi.login(response.name, "passwordini");
+    navigate(redirectPath, {replace: true});
+    
+  }}
+  render={({ onClick }) => (
+    <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>
+  )}
+/>
           <div style={{ fontSize: 12 }}>
           <small>Nie masz jeszcze konta? </small>
             <Link to='/sign-up' type="submit">Zarejestruj się!</Link>

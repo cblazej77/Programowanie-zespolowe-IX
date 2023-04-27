@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {xIcon, threeLine, betterX, DownPointer} from '../../assets/img/svg/SvgIcons';
+import {xIcon, threeLine, betterX, DownPointer, logoHeader} from '../../assets/img/svg/SvgIcons';
 import './HeaderFont.css';
 import {COLORS } from '../Colors';
 
@@ -111,7 +111,10 @@ export const NavMenu = styled.ul`
   }
 `;
 
-export const NavLogoIcon = styled(xIcon)`
+export const NavLogoIcon = styled(logoHeader)`
+  height: 60px;
+  width: auto;
+  color: white;
   margin-right: 0.1rem;
 `;
 

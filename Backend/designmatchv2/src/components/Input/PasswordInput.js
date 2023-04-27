@@ -6,7 +6,7 @@ function PasswordInput({
     label,
     name,
     id,
-    value,
+    value = '',
     onChange
 }) {
   const [password, setPassword] = useState(value);
@@ -14,9 +14,7 @@ function PasswordInput({
 
   const handleClick = (e) => {
     setPassword(e.target.value);
-    if( onChange){
-      onChange(e.target.value);
-    }
+    onChange && onChange(e.target.value);
   }
 
   return (

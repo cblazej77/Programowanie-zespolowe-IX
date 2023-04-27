@@ -24,7 +24,6 @@ border: 0 solid #dadce0;
 font-size: 0.8rem;
 width: 100%;
 border-radius: 10px;
-border: none;
 color: rgb(1, 1, 1);
 padding: 12px 24px;
 border-bottom: 2px solid ${({value}) => value ? 'black' : 'none'};
@@ -37,6 +36,9 @@ padding-right: ${({isWithButton}) => isWithButton ? '45px' : '10px'};
 }
 &::-ms-reveal {
   display: none
+}
+&:focus{
+  border-bottom: 2px solid black;//tutaj dziala po kliknieciu, a po wpisaniu dziala wyzej
 }
 
 &:focus + ${LabelInput}
