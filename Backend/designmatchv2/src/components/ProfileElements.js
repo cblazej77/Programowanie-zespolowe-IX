@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { COLORS } from './Colors';
 
-const { darkLight } = COLORS;
+const { darkLight, gray1 } = COLORS;
 
 export const ProfileWrapper = styled.div`
   display: flex;
@@ -28,16 +28,18 @@ export const TopSection = styled.div`
 export const LeftWrapper = styled.div`
   margin: 0 5%;
   display: flex;
+  flex: 0.8;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  padding: 0vh 3vw 1vh 3vw;
   justify-content: center;
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  height: 60vh;
 `;
 
 export const ProfileImage = styled.div`
-    width: 60%;  
+    width: 20vh;  
     align-items: center;
   `;
 
@@ -58,7 +60,6 @@ export const LineForm = styled.div`
   width: 100%;
 `;
 
-
 export const Button = styled(Link)`
     border: none;
     border-radius: 10px;
@@ -67,7 +68,7 @@ export const Button = styled(Link)`
     text-decoration: none;
     margin: 8px 0px;
     padding: 7px 15px;
-    font-size: 14px;
+    font-size: 0.7vw;
     width: 100%;
     text-align: center;
     background: linear-gradient(
@@ -97,7 +98,7 @@ export const Button = styled(Link)`
 `;
 
 export const SmallButton = styled(Button)`
-width: 45%;
+  width: 45%;
 `
 
 export const RightWrapper = styled.div`
@@ -105,11 +106,12 @@ export const RightWrapper = styled.div`
   display: flex;
   padding: 60px;
   flex: 2;
-  height: 100vh;
+  height: 60vh;
   flex-direction: column;
   float: left;
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  overflow: auto;
 `;
 
 export const AboutMe = styled.text`
@@ -166,4 +168,24 @@ export const LeftInfoRow = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+`;
+
+export const NameText = styled.text`
+  color: ${darkLight};
+  font-size: 3vh;
+`;
+
+export const JobText = styled.text`
+    color: ${gray1};
+    font-size: 0.9vw;
+    margin: 0vh 0px 0vh 0px;
+    padding-top: 1vh;
+`;
+
+export const RatingWrapper = styled.div`
+    padding-top: 1vh;
+`;
+
+export const DownSection = styled.div`
+    width: 100%;
 `;

@@ -21,7 +21,11 @@ import {
   LeftInfoRow,
   InfoText,
   DataText,
-  HeaderText
+  HeaderText,
+  NameText,
+  JobText,
+  RatingWrapper,
+  DownSection
 } from '../components/ProfileElements'
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
@@ -127,10 +131,11 @@ const UserPage = () => {
         <TopSection>
           <LeftWrapper>
             <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-            <text>{get.firstname} {get.lastname}</text>
-            <text> {get.level} </text>
-            <div>
+            <NameText>Tomasz Nowak</NameText>
+            <JobText> {get.level} </JobText>
+            <RatingWrapper>
               <Rating
+                size="3.5vh"
                 allowFraction={true}
                 initialValue={ratingCount}
                 onClick={handleRating}
@@ -138,8 +143,8 @@ const UserPage = () => {
                 onPointerLeave={onPointerLeave}
                 onPointerMove={onPointerMove}
               />
-              <text>({reviewCount} opinii)</text>
-            </div>
+              <JobText>({reviewCount} opinii)</JobText>
+            </RatingWrapper>
             <LineForm />
             <Button>Napisz wiadomość</Button>
             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
@@ -236,6 +241,9 @@ const UserPage = () => {
             </Left>
           </RightWrapper>
         </TopSection>
+        <DownSection>
+          
+        </DownSection>
       </ProfileWrapper>
     ) : (<div>Loading...</div>)}
     </>
