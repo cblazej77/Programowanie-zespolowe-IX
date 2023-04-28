@@ -7,12 +7,18 @@ import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.service.ArtistProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,12 +34,14 @@ public class artistFilterController {
     private ArtistProfileRepository artistProfileRepository;
 
     @GetMapping(value = "/filter", produces = apiVersionAccept)
-    public ResponseEntity<List<ShortProfileDto>> filterArtists(@RequestParam(name = "level", required = false) List<Level> level,
+    public ResponseEntity<Page<ShortProfileDto>> filterArtists(@RequestParam(name = "level", required = false) List<Level> level,
                                                                @RequestParam(name = "location", required = false) List<City> city,
                                                                @RequestParam(name = "category", required = false) List<Category> category,
                                                                @RequestParam(name = "language", required = false) List<Language> languages,
                                                                @RequestParam(name = "subcategory", required = false) List<Subcategory> subcategory,
-                                                               @RequestParam(name = "tags", required = false) List<Tag> tags) {
+                                                               @RequestParam(name = "tags", required = false) List<Tag> tags,
+                                                               @RequestParam(defaultValue = "0", name = "page") int page,
+                                                               @RequestParam(defaultValue = "2", name = "size") int size) {
         Specification<ArtistProfile> specification = Specification.where(null);
         if (level != null && !level.isEmpty()) {
             specification = specification.and(ArtistProfileSpecification.hasLevel(level));
@@ -57,7 +65,7 @@ public class artistFilterController {
         if (tags != null && !tags.isEmpty()) {
             specification = specification.and(ArtistProfileSpecification.hasTag(tags));
         }
-        List<ArtistProfile> artistProfileList = artistProfileRepository.findAll(specification);
+        //List<ArtistProfile> artistProfileList = artistProfileRepository.findAll(specification);
 //        List<ArtistFilterDto> artistFilterDtos = new ArrayList<>();
 //        for (ArtistProfile artistProfile : artistProfileList){
 //            Set<String> skillsSet = artistProfile.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet());
@@ -72,7 +80,11 @@ public class artistFilterController {
 //            );
 //            artistFilterDtos.add(artistFilterDto);
 //        }
-        List<ShortProfileDto> artistFilterDtos = artistProfileList.stream().map(ArtistProfileService::mapToShortDto).collect(Collectors.toList());
+
+        Pageable paging = PageRequest.of(page, size);
+        Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, paging);
+        //Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, PageRequest.of(0, 2));
+        Page<ShortProfileDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToShortDto);
         return ResponseEntity.ok(artistFilterDtos);
     }
 }
