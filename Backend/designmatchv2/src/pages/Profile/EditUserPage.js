@@ -177,7 +177,7 @@ const EditUserPage = () => {
       }
     };
     fetchData();
-  }, [categoriesData, choseLevel]);
+  }, []);
 
   const levelOptions = useMemo(() => (
     choseLevel.map((choseLevel, index) => (
