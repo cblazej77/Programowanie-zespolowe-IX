@@ -4,7 +4,7 @@ import { closeEye, openEye } from "../../assets/img/svg/SvgIcons";
 export const LabelInput = styled.label`
   position: absolute;
   background: none;
-  font-size: 1.8vh;
+  font-size: 1.3rem;
   top: 10px;
   left: 25px;
   transition: 0.3s;

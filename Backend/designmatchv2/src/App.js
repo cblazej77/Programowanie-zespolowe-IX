@@ -12,6 +12,9 @@ import './App.css';
 import { RequireAuth } from './components/RequireAuth';
 import UserPage from './pages/profile'
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import LoadingPage from './pages/LoadingPage';
+import EditUserPage from './pages/Profile/EditUserPage';
+import Modal from './components/ModalA';
 
 
 function App() {
@@ -27,7 +30,9 @@ function App() {
         <Route path='/account' element={ <RequireAuth> <UserPage /> </RequireAuth> } />
         <Route path='/sign-in' element={ <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}> <SignIn /> </GoogleOAuthProvider>} />
         <Route path='/sign-up' element ={ <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}> <SignUp /> </GoogleOAuthProvider>} />
-        <Route path='/test' element ={ <UserPage />} />
+        <Route path='/accountEdit' element={ <RequireAuth> <EditUserPage /> </RequireAuth> } />
+        <Route path='/test' element ={ <EditUserPage />} />
+        <Route path='/1' element ={ <Modal />} />
       </Routes>
     </BrowserRouter>
     </AuthProvider>

@@ -21,11 +21,13 @@ import {
 } from './CardsElement'
 import axios from '../../api/axios';
 import { useMemo } from 'react';
+import LoadingPage from '../LoadingPage';
 
 const Cards = () => {
   const [cities, setCities] = useState([]);
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [getData, setGetData] = useState(null);
 
   // useMemo tworzy elementy JSX tylko raz
   const citiesData = useMemo(() => ({
@@ -60,9 +62,10 @@ const Cards = () => {
         setCities(citiesResponse.data);
         setTags(tagsResponse.data);
         setCategories(categoriesResponse.data);
-
+        setGetData("Get all date");
       } catch (err) {
         console.error(err);
+        setGetData(null);
       }
     };
 
@@ -152,7 +155,7 @@ const Cards = () => {
           <StyledOption value="3">ostatnia aktywność</StyledOption>
         </StyledSelect>
       </SortLayout>
-
+      {getData ? (
       <CardsWrapper>
         <CardItem avatar="/assets/cards/person1.jpg"
           background="rgba(99, 81, 44"
@@ -220,6 +223,16 @@ const Cards = () => {
           country="PL"
           job="Graphic Designer, Illustrator, Branding, Packaging" />
       </CardsWrapper>
+    ) : (
+        <LoadingPage /> //test tego albo
+        /*
+        <CardsWrapper> //tego nie wiem co lepsze
+          <CardItem />
+          <CardItem />
+          <CardItem />
+        </CardsWrapper>
+        */
+    )}
     </Cards2>
   )
 }

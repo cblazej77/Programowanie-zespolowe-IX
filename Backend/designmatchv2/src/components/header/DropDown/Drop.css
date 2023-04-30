@@ -9,10 +9,13 @@
     list-style: none;
     text-align: start;
   }
+
+  .dropdown-menu li:last-child{
+    border-radius: 0 0 10px 10px;
+  }
   
   .dropdown-menu li {
     background: #555978 75%;
-    border-radius: 0 0 10px 10px;
     cursor: pointer;
   }
   

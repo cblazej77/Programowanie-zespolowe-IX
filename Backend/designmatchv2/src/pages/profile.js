@@ -27,13 +27,13 @@ import {
   RatingWrapper,
   DownSection
 } from '../components/ProfileElements'
+import LoadingPage from './LoadingPage';
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
-
-const getArtistProfileURL = '/api/artist/getArtistProfile?username=';
-const getUserURL = '/api/artist/getUser';
-const getShortArtistProfileURL = 'api/artist/getShortArtistProfile?username=';
+const getArtistProfileURL = process.env.REACT_APP_GET_ARTIST_PROFILE;
+const getUserURL = process.env.REACT_APP_GET_USER;
+const getShortArtistProfileURL = process.env.REACT_APP_GET_SHORT_ARTIST_PROFILE;
 
 const BubbleWrap = styled.div`
 `;
@@ -62,7 +62,6 @@ const UserPage = () => {
 
   const job = "";
   const profileName = 'jakub1';
-  // url: PROFILE_URL + name //długo się ładuje ponad 2 razy dłużej
   let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
@@ -75,12 +74,6 @@ const UserPage = () => {
     url: getShortArtistProfileURL + profileName,
     headers: {}
   };
-  // let userConfig = {
-  //   method: 'get',
-  //   maxBodyLength: Infinity,
-  //   url: getUserURL,
-  //   headers: {}
-  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,11 +113,7 @@ const UserPage = () => {
 
   const reviewCount = 15; //pobrac to z bazy
   const ratingCount = 2.5; //pobrac z bazy
-  const name = "Jacek"
-  const surname = "Hiong";
-  const country = "Polska";
   const Default = "...";
-  const description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce rutrum, lorem ut maximus blandit, justo nulla suscipit magna, in pharetra nisi erat eget ligula. Praesent lacinia pretium consequat. Curabitur tincidunt feugiat ipsum ut vulputate. Maecenas ultrices, est in luctus accumsan, est justo gravida sapien, eu finibus mi nunc in lorem. Cras fringilla turpis id dolor lobortis, ut hendrerit magna placerat. Suspendisse at eros scelerisque, tristique lacus elementum, sagittis lectus. Sed libero."
   return (
     <>{get ? (
       <ProfileWrapper>
@@ -154,7 +143,7 @@ const UserPage = () => {
           </LeftWrapper>
           <RightWrapper>
             <BoldLabel >O mnie:</BoldLabel>
-            <AboutMe>{description}</AboutMe>
+            <AboutMe>{get.bio}</AboutMe>
             <LineForm />
             <Left>
               <InfoRow >
@@ -245,7 +234,7 @@ const UserPage = () => {
           
         </DownSection>
       </ProfileWrapper>
-    ) : (<div>Loading...</div>)}
+    ) : (<LoadingPage />)}
     </>
 
   );
