@@ -109,15 +109,6 @@ export const SmallButton = styled(Button)`
   width: 45%;
 `
 
-export const BoldLabel = styled.h3`
-  margin-bottom: 5px; 
-`;
-
-export const AboutMe = styled.text`
-  margin: 0 50px;
-  maxlength="500"
-`
-
 export const Left = styled.div`
   flex-basis: 50%;
   padding-top: 2rem;
@@ -144,12 +135,6 @@ export const LeftColumn = styled.div`
   @media screen and (max-width: 960px) {
     margin: 2rem 0 0 0;
   }
-`
-
-export const DataColumnt = styled(LeftColumn)`
-  margin: 0 25px;
-  text-align: right;
-  flex: 1;
 `;
 
 export const RightColumn = styled(LeftColumn)`
@@ -192,10 +177,6 @@ export const JobText = styled.text`
     margin-top: 0.2rem;
 `;
 
-export const RatingText = styled(JobText)`
-  font-size: 0.9rem;
-`;
-
 export const RatingWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -208,15 +189,8 @@ export const DownSection = styled.div`
     width: 100%;
 `;
 
-export const GuestButtons = styled.div`
-    display: none;
-    flex-direction: column;
-    width: 100%;
-`;
-
-export const OwnerButtons = styled.div`
-    display: flex;
-    width: 100%;
+export const BubbleWrap = styled.div`
+  padding-top: 1rem;
 `;
 
 export const  Bubble = styled.p`
@@ -230,6 +204,32 @@ export const  Bubble = styled.p`
   margin-top: 5px;
 `;
 
-export const BubbleWrap = styled.div`
-  padding-top: 1rem;
+export const BoldLabel = styled.h3`
+  margin-bottom: 5px; 
+`;
+
+export const GuestButtons = styled.div`
+    display: none;
+    flex-direction: column;
+    width: 100%;
+`;
+
+export const OwnerButtons = styled.div`
+    display: flex;
+    width: 100%;
+`;
+
+export const AboutMe = styled.text`
+  margin: 0 50px;
+  maxlength="500"
+`;
+
+export const DataColumnt = styled(LeftColumn)`
+  margin: 0 25px;
+  text-align: right;
+  flex: 1;
+`;
+
+export const RatingText = styled(JobText)`
+  font-size: 0.9rem;
 `;
