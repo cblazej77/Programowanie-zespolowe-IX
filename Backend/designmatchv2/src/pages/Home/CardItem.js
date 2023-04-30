@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CardAvatar, CardLabel, NameText, ProjectPhoto, RatingText, SimpleInfoContainer } from './CardsElement';
+import { CardAvatar, CardLabel, CategoryText, DetailedInfoContainer, FirstPhoto, NameText, ProjectPhoto, RatingText, SimpleInfoContainer } from './CardsElement';
 import { Rating } from 'react-simple-star-rating';
 
 // function CardItem(props) {
@@ -37,7 +37,12 @@ function CardItem(props) {
         <RatingText>({props.ratingCount} opinii)</RatingText>
         </div>
       </SimpleInfoContainer>
-      <ProjectPhoto src={props.project1}/>
+      <DetailedInfoContainer>
+        <CategoryText>
+          Hej
+        </CategoryText>
+      </DetailedInfoContainer>
+      <FirstPhoto src={props.project1}/>
       <ProjectPhoto src={props.project2}/>
       <ProjectPhoto src={props.project3}/>
       <ProjectPhoto src={props.project4}/>

@@ -5,7 +5,6 @@ import { default as axios } from '../../api/axios';
 import { COLORS } from '../../components/Colors';
 import Modal from '../../components/Modal';
 
-
 import {
   RightColumn,
   InfoRow,

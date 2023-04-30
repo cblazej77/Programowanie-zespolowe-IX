@@ -25,7 +25,11 @@ import {
   NameText,
   JobText,
   RatingWrapper,
-  DownSection
+  DownSection,
+  RatingText,
+  BoldLabel,
+  BubbleWrap,
+  Bubble
 } from '../components/ProfileElements'
 import LoadingPage from './LoadingPage';
 
@@ -34,23 +38,6 @@ const SecondScreen = 1000;
 const getArtistProfileURL = process.env.REACT_APP_GET_ARTIST_PROFILE;
 const getUserURL = process.env.REACT_APP_GET_USER;
 const getShortArtistProfileURL = process.env.REACT_APP_GET_SHORT_ARTIST_PROFILE;
-
-const BubbleWrap = styled.div`
-`;
-const Bubble = styled.p`
-  padding: 5px 10px 5px 10px;
-  display: inline-flex;
-  margin-right: 15px;
-  border-radius: 15px;
-  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
-  font-size: 16px;
-  margin-bottom: 20px;
-  margin-top: 5px;
-`;
-const BoldLabel = styled.h3`
-  margin-bottom: 5px;
-`
-
 
 //UserName/UserInfo/MessageButton
 const UserPage = () => {
@@ -120,11 +107,11 @@ const UserPage = () => {
         <TopSection>
           <LeftWrapper>
             <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-            <NameText>Tomasz Nowak</NameText>
             <JobText> {get.level} </JobText>
+            <NameText>Tomasz Nowak</NameText>
             <RatingWrapper>
               <Rating
-                size="3.5vh"
+                size="2rem"
                 allowFraction={true}
                 initialValue={ratingCount}
                 onClick={handleRating}
@@ -132,7 +119,7 @@ const UserPage = () => {
                 onPointerLeave={onPointerLeave}
                 onPointerMove={onPointerMove}
               />
-              <JobText>({reviewCount} opinii)</JobText>
+              <RatingText>({reviewCount} opinii)</RatingText>
             </RatingWrapper>
             <LineForm />
             <Button>Napisz wiadomość</Button>
@@ -144,8 +131,9 @@ const UserPage = () => {
           <RightWrapper>
             <BoldLabel >O mnie:</BoldLabel>
             <AboutMe>{get.bio}</AboutMe>
-            <LineForm />
+            
             <Left>
+            <LineForm />
               <InfoRow >
                 <LeftColumn >
                   <LeftInfoRow>
@@ -161,21 +149,21 @@ const UserPage = () => {
                     <DataText>20</DataText>
                   </LeftInfoRow>
                   <LineForm />
-                  <HeaderText>Języki:</HeaderText>
+                  <InfoText>Języki:</InfoText>
                   <BubbleWrap>
                     {get.languages?.length ? (
                       get.languages.map((language, index) => <Bubble key={index}>{language}</Bubble>)
                     ) : <Bubble>{Default}</Bubble>}
                   </BubbleWrap>
                   <LineForm />
-                  <HeaderText>Umiejętności:</HeaderText>
+                  <InfoText>Umiejętności:</InfoText>
                   <BubbleWrap>
                     {get.skills?.length ? (
                       get.skills.map((skill, index) => <Bubble key={index}>{skill}</Bubble>)
                     ) : <Bubble>{Default}</Bubble>}
                   </BubbleWrap>
                   <LineForm />
-                  <HeaderText>Linki:</HeaderText>
+                  <InfoText>Linki:</InfoText>
                   <BubbleWrap>
                     <Bubble>{get.website}</Bubble>
                     <Bubble>{get.linkedin}</Bubble>
