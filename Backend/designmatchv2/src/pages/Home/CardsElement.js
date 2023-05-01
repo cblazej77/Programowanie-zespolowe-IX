@@ -16,20 +16,20 @@ export const Cards2 = styled.div`
 `
 
 export const CardsContainer = styled.div`
-display: flex;
-flex-flow: column;
-align-items: center;
-max-width: 1120px;
-width: 90%;
-margin: 0 auto;
-`
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    max-width: 1120px;
+    width: 90%;
+    margin: 0 auto;
+`;
 
 export const SortLabel = styled.div`
 `;
 
 export const SortButton = styled.button`
     margin-left: 10px;
-`
+`;
 
 //>*:not(HeroContainer)
 export const Sort = styled.div`
@@ -53,16 +53,16 @@ export const Sort2 = styled.div`
 export const FilterWrapper = styled.div`
     flex: 1;
     flex-flow: column;
-    width: 15vw;
-    height: 81vh;
+    width: 17rem;
+    height: 80vh;
     display: flex;
     background: ${primary};
     border-radius: 10px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-    padding: 0vh 1vw 15vh 1vw;
-    overflow-y: scroll;
+    padding: 0vh 1rem 10rem 1rem;
+    overflow-y: auto;
     &::-webkit-scrollbar {
-        width: 0.25vw;
+        width: 0.25rem;
       }
     
       &::-webkit-scrollbar-track {
@@ -80,18 +80,20 @@ export const FilterWrapper = styled.div`
 
 export const FilterLabel = styled.div`
     position: fixed;
-    top: 13vh;
+    @media screen and (max-width: 960px) {
+        display: none;
+    }
 `;
 
 export const TitleText = styled.text`
     color: ${darkLight};
-    font-size: 4vh;
+    font-size: 2.2rem;
 `;
 
 export const SubtitleText = styled.text`
     color: ${black};
-    font-size: 2.2vh;
-    margin: 2.5vh 0px 1.5vh 0px;
+    font-size: 1.2rem;
+    margin: 1.8rem 0 0.8rem 0;
 `;
 
 export const CheckBox = styled.input`
@@ -100,9 +102,9 @@ export const CheckBox = styled.input`
 
 export const CheckBoxLabel = styled.label`
     display: inline-block;
-    margin-right: 1vw;
-    width: 2vh;
-    height: 2vh;
+    margin-right: 1rem;
+    width: 1.1rem;
+    height: 1.1rem;
     border-radius: 50%;
     background: #fff;
     border: 2px solid ${darkLight};
@@ -119,15 +121,23 @@ export const CheckBoxLabel = styled.label`
     }
 `;
 
+// do zmiany
 export const JobText = styled(SubtitleText)`
     color: ${gray1};
-    font-size: 0.9vw;
-    margin: 0vh 0px 0vh 0px;
+    font-size: 1rem;
+    margin: 0;
+    cursor: default;
+    &:hover {
+        color: ${darkLight};
+    }
+    ${CheckBox}:checked + & {
+        color: ${darkLight};
+    }
 `;
 
 export const CheckBoxWrapper = styled.div`
     flex-flow: row;
-    margin-bottom: 1vh;
+    margin-bottom: 0.7rem;
     flex-shrink: 0;
     align-items: center;
     display: flex;
@@ -137,25 +147,22 @@ export const Input = styled.input`
     border-radius: 10px;
     border: 0px;
     color: ${darkLight};
-    font-size: 1.8vh;
-    padding: 0.3vw 0.5vw 0.3vw 0.5vw;
+    font-size: 1rem;
+    padding: 0.2rem 1rem 0.2rem 0.5rem;
     ::placeholder {
         color: ${gray1};
     }
 `;
 
 export const SortLayout = styled.div`
-    position: fixed;
     width: 75vw;
-    top: 14vh;
-    left: 19vw;
 `;
 
 export const StyledSelect = styled.select`
     border-radius: 10px;
     border: 0px;
-    font-size: 1.9vh;
-    padding: 0.5vh 2vw 0.5vh 0.5vw;
+    font-size: 1rem;
+    padding: 0.2rem 1rem 0.2rem 0.5rem;
     color: ${gray1};
 `;
 
@@ -176,13 +183,11 @@ export const CardsLabel = styled.div`
 `;
 
 export const CardsWrapper = styled.div`
-    position: fixed;
-    padding-top: 1vh;
-    top: 18vh;
-    right: 0;
-    bottom: 0;
     width: 81vw;
-    overflow-y: scroll;
+    height: 82vh;
+    padding-top: 1.3rem;
+    padding-bottom: 10rem;
+    overflow: auto;
     &::-webkit-scrollbar {
         width: 0.5vw;
       }
@@ -254,7 +259,7 @@ export const CardAvatar = styled.img`
 
 export const NameText = styled(JobText)`
     color: ${darkLight};
-    font-size: 1.5vw;
+    font-size: 1.5rem;
 `;
 
 export const RatingText = styled(NameText)`
@@ -263,6 +268,10 @@ export const RatingText = styled(NameText)`
 `;
 
 export const CategoryText = styled(SubtitleText)`
-    font-size: 1vw;
+    font-size: 1.2rem;
 `;
 
+export const RightLabel = styled.div`
+    position: fixed;
+    left: 21rem;
+`;
