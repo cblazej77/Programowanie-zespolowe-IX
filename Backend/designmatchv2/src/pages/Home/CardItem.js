@@ -3,29 +3,6 @@ import { Link } from 'react-router-dom';
 import { CardAvatar, CardLabel, CategoryText, DetailedInfoContainer, FirstPhoto, NameText, ProjectPhoto, RatingText, SimpleInfoContainer } from './CardsElement';
 import { Rating } from 'react-simple-star-rating';
 
-// function CardItem(props) {
-//     return (
-//       <>
-//         <li className='cards__item'>
-//           <Link className='cards__item__link' to={props.path}>
-//             <figure className='cards__item__pic-wrap' data-category={props.label}>
-//               <img
-//                 className='cards__item__img'
-//                 alt='Image'
-//                 src={props.src}
-//               />
-//             </figure>
-//             <div className='cards__item__info'>
-//               <h5 className='cards__item__text'>{props.text}</h5>
-//             </div>
-//           </Link>
-//         </li>
-//       </>
-//     );
-//   }
-
-// export default CardItem;
-
 function CardItem(props) {
   return (
     <CardLabel style={{backgroundColor: props.background + ", 0.1)"}}>
@@ -39,7 +16,7 @@ function CardItem(props) {
       </SimpleInfoContainer>
       <DetailedInfoContainer>
         <CategoryText>
-          Hej
+          info
         </CategoryText>
       </DetailedInfoContainer>
       <FirstPhoto src={props.project1}/>
