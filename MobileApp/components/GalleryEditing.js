@@ -45,7 +45,7 @@ const DATA_images = [
 
 ];
 
-const Gallery = ({ data, input, setInput }) => {
+const GalleryEditing = ({ data, input, setInput }) => {
     return (
         <FlatList
             style={{ margin: 2 }}
@@ -69,6 +69,6 @@ const Gallery = ({ data, input, setInput }) => {
     )
 }
 
-export default Gallery
+export default GalleryEditing
 
 const styles = StyleSheet.create({})

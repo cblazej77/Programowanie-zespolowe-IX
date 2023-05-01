@@ -6,7 +6,6 @@ import KeyboardAvoidingWrapper from "../components/KeyboardAvoidingWrapper";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 //Facebook auth
-import * as AuthSession from 'expo-auth-session';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 //axios API
 //import axios from "axios";
@@ -14,8 +13,6 @@ import {default as baseURL} from "../components/AxiosAuth";
 import axios from "axios";
 //formik
 import { Formik } from "formik";
-//credentials context
-import { CredentialsContext } from "../components/CredentialsContext";
 //icons
 import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
 //SecureStoring accessToken
@@ -58,7 +55,7 @@ const Login = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [googleSubmiting, setGoogleSubmiting] = useState(false);
     const [facebookSubmiting, setFacebookSubmiting] = useState(false);
-//   const {storedCredentials, setStoredCredentials} = useContext(CredentialsContext);
+    const [submitting, setSubmitting] = useState(false);
 
     const [requestG, responseG, promptAsyncG] = Google.useAuthRequest({
         androidClientId: '37019238552-c6q0hq4kn55o6e1ahobtuvconehs243h.apps.googleusercontent.com',
@@ -120,7 +117,40 @@ const Login = ({ navigation }) => {
         }
       };
 
-    const handleLogin = async (setSubmitting) => {
+      async function getUser() {
+        const url = baseURL + '/api/artist/getUser';
+        try {
+            const response = await axios.get(url);
+            return JSON.stringify(response.data);
+        } catch (err) {
+            if (!err?.response) {
+                console.log('No Server Response');
+                console.log(err);
+            } else if (err.response?.status === 409) {
+                console.log('Username Taken');
+                console.log(err);
+            } else {
+                console.log('Login Failed');
+                console.log(err);
+            }
+        }
+    }
+
+      async function login() {
+        const response = await handleLogin();
+        setSubmitting(false);
+        if(response) {
+            save("accessToken", response);
+            const user = await getUser();
+            save("user", user);
+            navigation.navigate('MainNavigation');
+            setEmail("");
+            setPassword("");
+            handleMessage("");
+        }
+      }
+
+    const handleLogin = async () => {
         handleMessage(null);
         const url = baseURL + '/api/auth/login';
         try {
@@ -130,18 +160,16 @@ const Login = ({ navigation }) => {
                     headers: { 'Content-Type': 'application/json' },
                 }
             );
-            //sleep(2000);
-            console.log(response?.accessToken);
-            //save("accessToken",JSON.stringify(response?.accessToken));
-            setSubmitting(false);
-            navigation.navigate('MainNavigation');
+            handleMessage("Zalogowano pomyślnie",'SUCCESS');
+            return JSON.stringify(response.data.accessToken);
         } catch (err) {
             handleMessage("Nie udało się zalogować", 'FAILED');
             setSubmitting(false);
             if (!err?.response) {
-                console.log('No Server Response');
+                console.log('Brak odpowiedzi serwera');
+                console.log(err)
             } else if (err.response?.status === 409) {
-                console.log('Username Taken');
+                console.log(err)
             } else {
                 console.log('Login Failed')
                 console.log(err)
@@ -190,12 +218,13 @@ const Login = ({ navigation }) => {
                     <HeaderText bold={true} style={{ color: darkLight, marginVertical: 10 }}>Logowanie</HeaderText>
                     <Formik
                         initialValues={{ email: '', password: '' }}
-                        onSubmit={({ setSubmitting }) => {
+                        onSubmit={() => {
                             if (email == '' || password == '') {
                                 handleMessage('Proszę wypełnić oba pola');
                                 setSubmitting(false);
                             } else {
-                                handleLogin(setSubmitting);
+                                setSubmitting(true);
+                                login();
                             }
                         }}
                     >
@@ -224,7 +253,7 @@ const Login = ({ navigation }) => {
                                 setHidePassword={setHidePassword}
                             />
                             <MsgBox type={messageType}>{message}</MsgBox>
-                            {!isSubmitting &&
+                            {!submitting &&
                             <LinearGradientStyle colors={[darkLight2, darkLight]} >
                                     <StyledButton onPress={handleSubmit}>
                                         <StatsText style={{ color: primary }}>
@@ -232,7 +261,7 @@ const Login = ({ navigation }) => {
                                         </StatsText>
                                     </StyledButton>
                                 </LinearGradientStyle>}
-                            {isSubmitting && 
+                            {submitting && 
                             <LinearGradientStyle colors={[darkLight2, darkLight]} >
                                 <StyledButton disabled={true}>
                                     <ActivityIndicator size="large" color={primary} />
@@ -264,7 +293,7 @@ const Login = ({ navigation }) => {
                                 </StyledButton>
                             </LinearGradientStyle>}
                             {!facebookSubmiting && 
-                            <LinearGradientStyle colors={[darkLight, darkLight2]}>
+                            <LinearGradientStyle colors={[darkLight2, darkLight]}>
                                 <StyledButton facebook={true} disabled={!requestF} onPress={() => {
                                     handleFacebookLogin();
                                 }}>

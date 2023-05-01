@@ -67,19 +67,22 @@ const Signup = ({navigation}) => {
                   }
                 );
                 setSubmitting(false);
-                handleMessage(JSON.stringify(response?.data),'SUCCESS');
+                handleMessage("Zarejestrowano użytkownika, proszę potwierdź email przed zalogowaniem",'SUCCESS');
                 await sleep(1500);
                 navigation.navigate('Login');
         
               }catch(err){
-          
+                setSubmitting(false);
                   if (!err?.response) {
                       console.log('No Server Response');
+                      handleMessage("No Server Response",'FAILED');
                   } else if (err.response?.status === 409) {
                       console.log('Username Taken');
+                      handleMessage("Username Taken",'FAILED');
                   } else {
-                      console.log('Registration Failed')
-                      console.log(err)
+                      console.log('Registration Failed');
+                      console.log(err);
+                      handleMessage("Registation Failed" + err,'FAILED');
                   }
               } 
     };

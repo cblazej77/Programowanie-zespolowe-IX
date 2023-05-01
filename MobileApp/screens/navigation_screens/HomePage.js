@@ -76,7 +76,12 @@ export default function HomePage({ navigation }) {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
-            
+            <ChatLabel style={{
+                height: 60,
+                justifyContent: "center",
+            }}>
+                <HeaderText>Przeglądaj designer'ów</HeaderText>
+            </ChatLabel>
             <HomeLabel>
                 <HomeIconButton onPress={() => alert('Filtrowanie')} activeOpacity={0.5}>
                     <ChatImage style={{ tintColor: '#A9A9A9', width: '50%', marginLeft: 10 }} resizeMode="contain" source={require('./../../assets/img/filter.png')} />
@@ -175,7 +180,6 @@ export default function HomePage({ navigation }) {
                 }}
                 ListFooterComponent={<View style={{ height: 20 }}></View>}
             />
-
         </SafeAreaView>
 
     );
