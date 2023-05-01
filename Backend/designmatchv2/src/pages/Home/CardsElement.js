@@ -184,8 +184,10 @@ export const CardsLabel = styled.div`
 
 export const CardsWrapper = styled.div`
     width: 81vw;
-    padding-top: 1rem;
-    overflow-y: scroll;
+    height: 82vh;
+    padding-top: 1.3rem;
+    padding-bottom: 10rem;
+    overflow: auto;
     &::-webkit-scrollbar {
         width: 0.5vw;
       }
