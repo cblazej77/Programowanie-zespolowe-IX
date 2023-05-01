@@ -51,8 +51,21 @@ const ModalWrapper = styled.div`
 const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
-  line-height: 1.8;
+  line-height: 1.8px;
   color: #141414;
+   @media screen and (max-width: 960px) {
+    line-height: 2px;
+  }
+`;
+const ButtonClose = styled.button`
+cursor: pointer;
+position: absolute;
+top: 20px;
+right: 20px;
+width: 32px;
+height: 32px;
+padding: 0;
+z-index: 10;
 `;
 
 const Modal = ({showModal, setShowModal, URL}) => {
@@ -67,6 +80,7 @@ const closeModal = e => {
       setShowModal(false);
     }
   };
+
   const keyPress = useCallback(
     e => {
       if (e.key === 'Escape' && showModal) {
@@ -94,10 +108,17 @@ const closeModal = e => {
         console.log(error);
       }
     };
-      fetchData();
-      document.removeEventListener('keydown', keyPress);
-      return () => document.removeEventListener('keydown', keyPress);
-}, [categoriesData, keyPress]);
+
+    fetchData();
+}, [categories]);
+
+useEffect(
+  () => {
+    document.addEventListener('keydown', keyPress);
+    return () => document.removeEventListener('keydown', keyPress);
+  },
+  [keyPress]
+);
 
   const categoryCheckBoxes = useMemo(() => {
     if (!Array.isArray(categories.categories)) {
@@ -126,6 +147,7 @@ const closeModal = e => {
                 <ModalWrapper showModal={showModal}>
                     <ModalContent>
                         {categoryCheckBoxes}
+                        <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
                     </ModalContent>
                 </ModalWrapper >
             </Background>

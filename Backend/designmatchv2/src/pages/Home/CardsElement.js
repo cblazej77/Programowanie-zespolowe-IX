@@ -117,12 +117,19 @@ export const CheckBoxLabel = styled.label`
     ${CheckBox}:focus + & {
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
     }
+    @media screen and (max-width: 960px) {
+        width: 3vh;
+        height: 3vh;
+        }
 `;
 
 export const JobText = styled(SubtitleText)`
     color: ${gray1};
-    font-size: 0.9vw;
+    font-size: 1.5rem;
     margin: 0vh 0px 0vh 0px;
+     @media screen and (max-width: 960px) {
+        font-size: 3vw;
+        }
 `;
 
 export const CheckBoxWrapper = styled.div`
@@ -263,6 +270,10 @@ export const RatingText = styled(NameText)`
 `;
 
 export const CategoryText = styled(SubtitleText)`
-    font-size: 1vw;
+    font-size: 2rem;
+    @media screen and (max-width: 960px) {
+    font-size: 3vw;
+    }
+
 `;
 

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { default as axios } from '../../api/axios';
 import { COLORS } from '../../components/Colors';
 import Modal from '../../components/Modal';
+import ModalLinks from '../../components/ModalLinks';
 
 import {
   RightColumn,
@@ -105,10 +106,15 @@ const EditUserPage = () => {
   const [height, setHeight] = useState("20px");
   //popUp
   const[showModal, setShowModal] = useState(false);
+  const[showModalLinks, setShowModalLinks] = useState(false);
 
   const openModal = () =>{
       setShowModal(prev => !prev);
   }
+
+  const openModalLinks = () =>{
+    setShowModalLinks(prev => !prev);
+}
 
   //edycja profilu
   const [bio, setBio] = useState("");
@@ -246,6 +252,7 @@ const EditUserPage = () => {
     
     <>
     <Modal showModal={showModal} setShowModal={setShowModal} />
+    <ModalLinks showModal={showModalLinks} setShowModal={setShowModalLinks} />
     {get ? (
       <ProfileWrapper>
         <TopSection>
@@ -259,7 +266,7 @@ const EditUserPage = () => {
             <StyledSelect>
              {levelOptions}
            </StyledSelect>
-            {!showModal && <RatingWrapper>
+            {(!showModal && !showModalLinks) && <RatingWrapper>
               <Rating
                 size="3.5vh"
                 readonly={true}
@@ -284,7 +291,7 @@ const EditUserPage = () => {
               <InfoRow >
                 <LeftColumn >
                   <LeftInfoRow>
-                    <InfoText>Członek odd:</InfoText>
+                    <InfoText>Członek od:</InfoText>
                     <DataTextArena value = {date} onChange={(e) => hanldeDate(e)} />
                   </LeftInfoRow>
                   <LeftInfoRow>
@@ -309,7 +316,7 @@ const EditUserPage = () => {
                   <LineForm />
                   <LeftInfoRow>
                     <HeaderText>Umiejętności:</HeaderText>
-                    <ButtonEdit onClick={openModal}>Edytuj</ButtonEdit>
+                    <ButtonEdit onClick={ openModal }>Edytuj</ButtonEdit>
                   </LeftInfoRow>
                   
                   <BubbleWrap>
@@ -320,7 +327,7 @@ const EditUserPage = () => {
                   <LineForm />
                   <LeftInfoRow>
                     <HeaderText>Linki:</HeaderText>
-                    <ButtonEdit>Edytuj</ButtonEdit>
+                    <ButtonEdit onClick = { openModalLinks }>Edytuj</ButtonEdit>
                   </LeftInfoRow>
                   <BubbleWrap>
                     <Bubble>{get.website}</Bubble>
@@ -382,7 +389,7 @@ const EditUserPage = () => {
             </Left>
           </RightWrapper>
         </TopSection>
-        {!showModal && <ButtonSave>ZAPISZ</ButtonSave>}
+        {(!showModal && !showModalLinks) && <ButtonSave>ZAPISZ</ButtonSave>}
         <DownSection>
           
         </DownSection>
