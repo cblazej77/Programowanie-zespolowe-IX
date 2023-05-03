@@ -11,14 +11,14 @@ import {
   JobText,
   Input,
   FilterLabel,
-  SortLayout,
   StyledSelect,
   StyledOption,
   CardsWrapper,
   StyledOptgroup,
   CategoryText,
-  RightWrapper,
-  RightLabel
+  RightLabel,
+  TopSection,
+  Button,
 } from './CardsElement'
 import axios from '../../api/axios';
 import { useMemo } from 'react';
@@ -150,38 +150,39 @@ const Cards = () => {
 
       {getData ? (
         <RightLabel>
-            <StyledSelect>
+          <TopSection>
+            <Button>Filtruj</Button>
+             <StyledSelect>
               <StyledOption value="">Sortuj po...</StyledOption>
               <StyledOption value="1">najlepsza ocena</StyledOption>
               <StyledOption value="2">najwięcej prac</StyledOption>
               <StyledOption value="3">ostatnia aktywność</StyledOption>
             </StyledSelect>
+          </TopSection>
           <CardsWrapper>
             <CardItem avatar="/assets/cards/person1.jpg"
               background="rgba(99, 81, 44"
               name="Maryla"
               surname="Kwarc"
               rating={3.5}
-              ratingCount={15}
+              ratingCount={12}
               project1="/assets/cards/design1.jpg"
               project2="/assets/cards/design2.png"
               project3="/assets/cards/design3.jpg"
               project4="/assets/cards/design4.png"
               city="Toruń"
-              country="PL"
               job="Graphic Designer, Illustrator, Branding, Packaging" />
             <CardItem avatar="/assets/cards/person2.jpg"
               background="rgba(137, 26, 145"
               name="Nicolette"
               surname="Félix"
-              rating={3}
+              rating={4}
               ratingCount={10}
               project1="/assets/cards/design5.jpg"
               project2="/assets/cards/design6.jpg"
               project3="/assets/cards/design7.jpg"
               project4="/assets/cards/design8.jpg"
               city="Paris"
-              country="FR"
               job="Graphic Designer, Illustrator, Branding, Packaging" />
             <CardItem avatar="/assets/cards/person1.jpg"
               background="rgba(23, 15, 117"
@@ -194,7 +195,6 @@ const Cards = () => {
               project3="/assets/cards/design3.jpg"
               project4="/assets/cards/design4.png"
               city="Toruń"
-              country="PL"
               job="Graphic Designer, Illustrator, Branding, Packaging" />
             <CardItem avatar="/assets/cards/person1.jpg"
               background="rgb(140, 91, 18"
@@ -220,7 +220,6 @@ const Cards = () => {
               project3="/assets/cards/design3.jpg"
               project4="/assets/cards/design4.png"
               city="Toruń"
-              country="PL"
               job="Graphic Designer, Illustrator, Branding, Packaging" />
           </CardsWrapper>
         </RightLabel>

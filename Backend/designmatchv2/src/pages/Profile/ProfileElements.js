@@ -163,7 +163,7 @@ export const LeftInfoRow = styled.div`
     flex-direction: row;
 `;
 
-export const NameText = styled.text`
+export const NameText = styled.textarea`
   color: ${darkLight};
   font-size: 2rem;
   padding-bottom: 0.5rem;
