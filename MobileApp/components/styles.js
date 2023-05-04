@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export const Colors = {
     primary: "#F0EDEB",
     secondary: "#BEB5BC",
+    secondary1: "#dfdfe5",
     darkLight: "#4A4E69",
     darkLight2: "#888cab",
     notificationsRed: "#DA7676",

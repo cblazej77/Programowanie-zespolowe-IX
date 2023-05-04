@@ -196,67 +196,6 @@ const Cards = () => {
           </TopSection>
           <CardsWrapper>
             {filteredCards}
-            {/* <CardItem avatar="/assets/cards/person1.jpg"
-              background="rgba(99, 81, 44"
-              name="Maryla"
-              surname="Kwarc"
-              rating={3.5}
-              ratingCount={12}
-              project1="/assets/cards/design1.jpg"
-              project2="/assets/cards/design2.png"
-              project3="/assets/cards/design3.jpg"
-              project4="/assets/cards/design4.png"
-              city="Toruń"
-              job="Graphic Designer, Illustrator, Branding, Packaging" />
-            <CardItem avatar="/assets/cards/person2.jpg"
-              background="rgba(137, 26, 145"
-              name="Nicolette"
-              surname="Félix"
-              rating={4}
-              ratingCount={10}
-              project1="/assets/cards/design5.jpg"
-              project2="/assets/cards/design6.jpg"
-              project3="/assets/cards/design7.jpg"
-              project4="/assets/cards/design8.jpg"
-              city="Paris"
-              job="Graphic Designer, Illustrator, Branding, Packaging" />
-            <CardItem avatar="/assets/cards/person1.jpg"
-              background="rgba(23, 15, 117"
-              name="Maryla"
-              surname="Kwarc"
-              rating={3.5}
-              ratingCount={15}
-              project1="/assets/cards/design1.jpg"
-              project2="/assets/cards/design2.png"
-              project3="/assets/cards/design3.jpg"
-              project4="/assets/cards/design4.png"
-              city="Toruń"
-              job="Graphic Designer, Illustrator, Branding, Packaging" />
-            <CardItem avatar="/assets/cards/person1.jpg"
-              background="rgb(140, 91, 18"
-              name="Maryla"
-              surname="Kwarc"
-              rating={3.5}
-              ratingCount={15}
-              project1="/assets/cards/design1.jpg"
-              project2="/assets/cards/design2.png"
-              project3="/assets/cards/design3.jpg"
-              project4="/assets/cards/design4.png"
-              city="Toruń"
-              country="PL"
-              job="Graphic Designer, Illustrator, Branding, Packaging" />
-            <CardItem avatar="/assets/cards/person1.jpg"
-              background="rgba(12, 244, 122"
-              name="Maryla"
-              surname="Kwarc"
-              rating={3.5}
-              ratingCount={15}
-              project1="/assets/cards/design1.jpg"
-              project2="/assets/cards/design2.png"
-              project3="/assets/cards/design3.jpg"
-              project4="/assets/cards/design4.png"
-              city="Toruń"
-              job="Graphic Designer, Illustrator, Branding, Packaging" /> */}
           </CardsWrapper>
         </RightLabel>
 
