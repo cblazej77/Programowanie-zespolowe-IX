@@ -9,6 +9,7 @@ const {
     gray,
     gray1,
     secondary,
+    secondary1,
     black
 } = COLORS;
 
@@ -307,6 +308,7 @@ export const CardLabel = styled.div`
     position: relative;
     height: 17rem;
     width: 95%;
+    background: ${secondary1};
     &:hover > ${FirstPhoto} {
         transition: opacity 0.4s ease-out;
         opacity: 0.1;
@@ -327,6 +329,10 @@ export const CardAvatar = styled.img`
     object-fit: cover;
 `;
 
+export const LevelText = styled(JobText)`
+    color: ${gray1};
+`;
+
 export const NameText = styled(JobText)`
     color: ${darkLight};
     font-size: 1.5rem;
@@ -337,8 +343,20 @@ export const RatingText = styled(NameText)`
     margin-left: 0.2rem;
 `;
 
-export const CategoryText = styled(SubtitleText)`
+export const CategoryHeaderText = styled(SubtitleText)`
+    font-size: 1.5rem;  
+    margin: 1rem 0 0.5rem 0;
+`;
+
+export const CategoryText = styled.text`
+    font-size: 1.3rem;
+    color: ${gray1};
+`;
+
+export const CityText = styled.text`
     font-size: 1.2rem;
+    color: ${darkLight};
+    font-weight: bold;
 `;
 
 export const RightLabel = styled.div`
@@ -378,8 +396,4 @@ export const Button = styled(Link)`
     @media screen and (max-width: 960px) {
         display: flex;
     }
-`;
-
-export const CityText = styled.text`
-    font-size: 1.5rem;
 `;
