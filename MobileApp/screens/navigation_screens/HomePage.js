@@ -20,6 +20,7 @@ import {
 import SearchFilter from '../../components/SearchFilter';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
+import {default as baseURL} from '../../components/AxiosAuth';
 import axios from "axios";
 import CardItem from '../../components/CardItem';
 
@@ -39,7 +40,7 @@ export default function HomePage({ navigation }) {
     const filteredData = useMemo(() => ({
         method: 'get',
         maxBodyLength: Infinity,
-        url: "/artist/filter?level=&location=&category=&language=&subcategory=&tags=&page=0&size=10",
+        url: baseURL + "/artist/filter?level=&location=&category=&language=&subcategory=&tags=&page=0&size=10",
     }), []);
 
     useEffect(() => {
@@ -49,6 +50,7 @@ export default function HomePage({ navigation }) {
                     axios.request(filteredData),
                 ]);
                 setFiltered(filteredResponse.data);
+                console.log(filteredResponse.data);
             } catch (err) {
                 console.error(err);
             }

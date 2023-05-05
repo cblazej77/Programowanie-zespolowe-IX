@@ -35,16 +35,18 @@ export default function ProfileScreen({ navigation }) {
     const [userInfo, setUserInfo] = useState('');
     const [editing, setEditing] = useState(false);
 
+    const changeEditingState = (state) => {
+        setEditing(state);
+    }
+
     async function getAccessToken() {
         const t = await getValueFor("accessToken");
         setToken(t);
-        console.log(t);
     }
 
     async function getUserInfo() {
         const u = await getValueFor("user");
         setUserInfo(JSON.parse(u));
-        console.log(u);
     }
 
     useEffect(() => {
