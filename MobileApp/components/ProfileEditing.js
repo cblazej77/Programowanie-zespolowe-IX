@@ -24,8 +24,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectDropdown from 'react-native-select-dropdown';
 import ProfileScreen from '../screens/navigation_screens/ProfileScreen';
 import Modal from 'react-native-modal';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const { darkLight, link, black, primary } = Colors;
+const { darkLight, grey, black, primary } = Colors;
 
 const generateBoxShadowStyle = (
   xOffset,
@@ -65,6 +66,8 @@ const ProfileEditing = ({ navigation }) => {
   const [availableTags, setAvailableTags] = useState('');
   const [availableCategories, setAvailableCategories] = useState('');
   const [availableSkills, setAvailableSkills] = useState([]);
+  const [availableLevels, setAvailableLevels] = useState([]);
+  const [availableLocations, setAvailableLocations] = useState([]);
   const [tagsModalVisible, setTagsModalVisible] = useState(false);
   const [skillsModalVisible, setSkillsModalVisible] = useState(false);
   //Hooks for temp values when editing
@@ -209,11 +212,11 @@ const ProfileEditing = ({ navigation }) => {
     setTagsToAdd(tagsToAdd.filter((t) => t !== tag));
   }
 
-  function handleAddSkillToAdd(skill) {
+  function handleAddSkillsToAdd(skill) {
     setSkillsToAdd((skillsToAdd) => [...skillsToAdd, skill]);
   }
 
-  function handleDeleteSkillToAdd(skill) {
+  function handleDeleteSkillsToAdd(skill) {
     setSkillsToAdd(skillsToAdd.filter((s) => s !== skill));
   }
 
@@ -266,7 +269,6 @@ const ProfileEditing = ({ navigation }) => {
     handleClearSkills();
     handleClearTags();
     handleClearTagsToAdd();
-    handleClearAvailableSkills();
     handleClearSkillsToAdd();
     setBio('');
     setLevel('');
@@ -402,6 +404,46 @@ const ProfileEditing = ({ navigation }) => {
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
+      url: baseURL + '/api/artist/getAvailableLevels',
+      headers: {},
+    };
+
+    const fetchData = async () => {
+      try {
+        const result = await axios.request(config);
+        setAvailableLevels(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: baseURL + '/api/artist/getAvailableCities',
+      headers: {},
+    };
+
+    const fetchData = async () => {
+      try {
+        const result = await axios.request(config);
+        setAvailableLocations(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
       url: baseURL + '/api/artist/getAvailableCategories',
       headers: {},
     };
@@ -409,8 +451,7 @@ const ProfileEditing = ({ navigation }) => {
     const fetchData = async () => {
       try {
         const result = await axios.request(config);
-        //console.log("Wynik get'a" + result.data);
-        //console.log(result.data[0].subcategories);
+        handleClearAvailableSkills();
         setAvailableCategories(result.data);
       } catch (error) {
         console.log(error);
@@ -471,14 +512,10 @@ const ProfileEditing = ({ navigation }) => {
   useEffect(() => {
     if(availableCategories) {
         for(let i = 0; i < availableCategories.categories.length; ++i) {
-            console.log(availableCategories.categories.length);
-            console.log("categories: " + availableCategories.categories);
             for(let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
-                console.log("subcategories: " + availableCategories.categories[i].subcategories[j]);
                 handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
             }
         }
-        console.log("avaiableSkills: " + availableSkills);
     }
   }, [availableCategories]);
 
@@ -751,12 +788,12 @@ const ProfileEditing = ({ navigation }) => {
   function ListAvailableSkills() {
     if (availableSkills) {
       const available = availableSkills.filter((item) => {
-        if (!tags.includes(item)) return item;
+        if (!skills.includes(item)) return item;
       });
       const list = available.map((item, id) => (
         <Pressable onPress={() => {
-            if(skillsToAdd.includes(item)) {handleDeleteSkillToAdd(item)}
-            else {handleAddSkillToAdd(item)}
+            if(skillsToAdd.includes(item)) {handleDeleteSkillsToAdd(item)}
+            else {handleAddSkillsToAdd(item)}
             }} key={id}>
           <ModalBubble
             style={[{ width: item.size, marginRight: 5, flexDirection: 'row', alignItems: 'center' }, styles.boxShadow]}
@@ -949,6 +986,34 @@ const ProfileEditing = ({ navigation }) => {
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Line style={{ width: '90%' }} />
             </View>
+          </View>
+          <View style={{flexDirection: 'row', margin: 10, justifyContent: 'center', alignItems: 'center'}}>
+          <AppText style={[styles.ListHeader, {fontSize: 14}]}>Poziom:</AppText>
+          <SelectDropdown data={availableLevels}
+                            onSelect={(selectedItem, index) => {
+                                setLevel(selectedItem);
+                            }}
+                            defaultButtonText={level}
+                            buttonStyle={{width: 90, height: 30, borderWidth: 2, borderColor: grey, borderRadius: 12}}
+                            buttonTextStyle={{fontSize: 14}}
+                            renderDropdownIcon={isOpened => {
+                                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={black} size={12} />;
+                                }}
+                            dropdownIconPosition={'right'}
+            />
+            <AppText style={[styles.ListHeader, {fontSize: 14}]}>Lokalizacja:</AppText>
+          <SelectDropdown data={availableLocations}
+                            onSelect={(selectedItem, index) => {
+                                setLocation(selectedItem);
+                            }}
+                            defaultButtonText={location}
+                            buttonTextStyle={{fontSize: 14}}
+                            buttonStyle={{width: 120, height: 30, borderWidth: 2, borderColor: grey, borderRadius: 12}}
+                            renderDropdownIcon={isOpened => {
+                                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={black} size={12} />;
+                                }}
+                            dropdownIconPosition={'right'}
+            />
           </View>
           <View style={{ width: '100%', flexDirection: 'column', justifyContent: 'space-around', margin: 10 }}>
             <AppText style={{ fontSize: 19, color: black }}>Umiejętności:</AppText>
