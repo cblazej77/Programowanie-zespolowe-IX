@@ -345,6 +345,8 @@ export const Bubble = styled.View`
     marginBottom: 10px;
     marginTop: 10px;
     align-items: center;
+
+    
 `;
 
 export const ModalBubble = styled.View`

@@ -85,7 +85,6 @@ const Login = ({ navigation }) => {
       useEffect(() => {
         if (responseG?.type === "success") {
             setGoogleSubmiting(false);
-            console.log(responseG.authentication.accessToken);
             save("accessToken",JSON.stringify(responseG.authentication.accessToken));
             navigation.navigate('MainNavigation');
         }
@@ -94,7 +93,6 @@ const Login = ({ navigation }) => {
       useEffect(() => {
         if (responseF && responseF.type === "success" && responseF.authentication) {
             setFacebookSubmiting(false);
-            console.log(responseF.authentication.accessToken);
             save("accessToken",JSON.stringify(responseF.authentication.accessToken));
             navigation.navigate('MainNavigation');
           }
