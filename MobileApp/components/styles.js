@@ -7,7 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export const Colors = {
     primary: "#F0EDEB",
     secondary: "#BEB5BC",
-    secondary1: "#dfdfe5",
+    secondary1: "#ded9dd",
     darkLight: "#4A4E69",
     darkLight2: "#888cab",
     notificationsRed: "#DA7676",
@@ -23,11 +23,10 @@ export const Colors = {
     checked: "#CCCCFF",
 };
 
-
-
 const {
     primary,
     secondary,
+    secondary1,
     tertiary,
     darkLight,
     brand,
@@ -361,4 +360,16 @@ export const ModalBubble = styled.View`
         fontSize: 18px;
         background-color: ${checked}
     `}
+`;
+
+export const LineForm = styled.View`
+    width: 100%;
+    height: 1px;
+    marginVertical: 5px;
+    backgroundColor: ${grey};
+`;
+
+export const DropDownInfoText = styled(AppText)`
+    font-size: 23px;
+    color: ${darkLight};
 `;
