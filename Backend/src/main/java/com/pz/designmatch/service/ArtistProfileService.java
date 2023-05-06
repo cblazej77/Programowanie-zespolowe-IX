@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -258,5 +259,11 @@ public class ArtistProfileService {
                         .map(Subcategory::getDisplayName)
                         .collect(Collectors.toSet())
         );
+    }
+
+    public List<String> getAllUsernames() {
+        return artistProfileRepository.findAll().stream()
+                .map(artistProfile -> artistProfile.getUser().getUsername())
+                .collect(Collectors.toList());
     }
 }

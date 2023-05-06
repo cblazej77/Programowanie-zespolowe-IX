@@ -6,6 +6,7 @@ import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.dto.response.UserDto;
 import com.pz.designmatch.exception.ArtistProfileNotFound;
 import com.pz.designmatch.model.enums.City;
+import com.pz.designmatch.model.enums.Language;
 import com.pz.designmatch.model.enums.Level;
 import com.pz.designmatch.model.enums.Tag;
 import com.pz.designmatch.model.user.UserEntity;
@@ -70,6 +71,18 @@ public class UserProfileController {
     public ResponseEntity<List<String>> getAvailableTags() {
         List<String> tags = Tag.getAvailableTags();
         return ResponseEntity.ok(tags);
+    }
+
+    @GetMapping(value = "/getAvailableLanguages", produces = apiVersionAccept)
+    public ResponseEntity<List<String>> getAvailableLanguages() {
+        List<String> languages = Language.getAvailableLanguages();
+        return ResponseEntity.ok(languages);
+    }
+
+    @GetMapping(value = "/getAllUsernames", produces = apiVersionAccept)
+    public ResponseEntity<List<String>> getAllUsernames() {
+        List<String> usernames = artistProfileService.getAllUsernames();
+        return ResponseEntity.ok(usernames);
     }
 
     @GetMapping(value = "/getShortArtistProfile", produces = apiVersionAccept)
