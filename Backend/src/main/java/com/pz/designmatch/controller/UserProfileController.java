@@ -38,7 +38,7 @@ public class UserProfileController {
 
     @GetMapping(value = "/getUser", produces = apiVersionAccept)
     public ResponseEntity<UserDto> getAllUsers() {
-        Optional<UserEntity> user = userRepository.findById(1L);
+        Optional<UserEntity> user = userRepository.findById(2L);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -131,8 +131,8 @@ public class UserProfileController {
 
     private UserDto mapUserEntityToDto(UserEntity userEntity) {
         return new UserDto(
-                userEntity.getUsername(),
                 userEntity.getEmail(),
+                userEntity.getUsername(),
                 userEntity.getFirstname(),
                 userEntity.getLastname());
     }
