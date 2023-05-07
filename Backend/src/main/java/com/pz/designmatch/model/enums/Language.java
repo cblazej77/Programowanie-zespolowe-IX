@@ -28,7 +28,7 @@ public enum Language {
         return null;
     }
 
-    public static List<String> getDisplayNames() {
+    public static List<String> getAvailableLanguages() {
         return Stream.of(Language.values()).map(Language::getDisplayName).collect(Collectors.toList());
     }
 
