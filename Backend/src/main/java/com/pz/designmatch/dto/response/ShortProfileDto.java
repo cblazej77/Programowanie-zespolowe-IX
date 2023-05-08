@@ -10,6 +10,8 @@ import java.util.Set;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ShortProfileDto {
+    @JsonProperty
+    private final String username;
     @JsonProperty("firstname")
     private final String firstname;
     @JsonProperty("lastname")
@@ -22,7 +24,8 @@ public class ShortProfileDto {
     private final Set<String> skills;
 
     @JsonCreator
-    public ShortProfileDto(String firstname, String lastname, String city, String level, Set<String> skills) {
+    public ShortProfileDto(String username, String firstname, String lastname, String city, String level, Set<String> skills) {
+        this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.city = city;
