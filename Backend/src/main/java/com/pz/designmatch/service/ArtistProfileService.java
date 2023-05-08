@@ -250,6 +250,7 @@ public class ArtistProfileService {
         if (artistProfile == null)
             return null;
         return new ShortProfileDto(
+                artistProfile.getUser().getUsername(),
                 artistProfile.getUser().getFirstname(),
                 artistProfile.getUser().getLastname(),
                 artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
