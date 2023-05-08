@@ -8,7 +8,6 @@ import {
     Modal,
     TouchableOpacity,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -40,6 +39,7 @@ const { primary, secondary, darkLight, white, grey, black } = Colors;
 export default function HomePage({ navigation }) {
     const [cities, setCities] = useState([]);
     const [tags, setTags] = useState([]);
+    const [languages, setLanguages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [input, setInput] = useState("");
@@ -65,6 +65,13 @@ export default function HomePage({ navigation }) {
         headers: {},
     }), []);
 
+    const languagesData = useMemo(() => ({
+        method: 'get',
+        maxBodyLength: 5000,
+        url: BASE_URL + "/api/artist/getAvailableLanguages",
+        headers: {},
+    }), []);
+
     const categoriesData = useMemo(() => ({
         method: 'get',
         maxBodyLength: 5000,
@@ -81,15 +88,17 @@ export default function HomePage({ navigation }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [citiesResponse, tagsResponse, categoriesResponse, filteredResponse] = await Promise.all([
+                const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, filteredResponse] = await Promise.all([
                     axios.request(citiesData),
                     axios.request(tagsData),
                     axios.request(categoriesData),
+                    axios.request(languagesData),
                     axios.request(filteredData),
                 ]);
                 setCities(citiesResponse.data);
                 setTags(tagsResponse.data);
                 setCategories(categoriesResponse.data);
+                setLanguages(languagesResponse.data);
                 setFiltered(filteredResponse.data);
             } catch (err) {
                 console.error(err);
@@ -97,7 +106,7 @@ export default function HomePage({ navigation }) {
         };
 
         fetchData();
-    }, [citiesData, tagsData, categoriesData, filteredData]);
+    }, [citiesData, tagsData, categoriesData, languagesData, filteredData]);
 
     const categoryOptions = useMemo(() => {
         if (!Array.isArray(categories.categories)) {
@@ -238,7 +247,7 @@ export default function HomePage({ navigation }) {
                             <View style={styles.ModalFilterViewStyle}>
                                 <DropDownInfoText>Języki</DropDownInfoText>
                                 <SelectDropdown
-                                    data={cities}
+                                    data={languages}
                                     defaultValueByIndex={0}
                                     onSelect={(selectedItem, index) => {
                                         console.log(selectedItem, index);

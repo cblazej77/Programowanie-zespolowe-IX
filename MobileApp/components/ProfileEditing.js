@@ -25,8 +25,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectDropdown from 'react-native-select-dropdown';
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 
-const { darkLight, grey, black, primary } = Colors;
+const { darkLight, grey, black, primary, red } = Colors;
 
 const generateBoxShadowStyle = (
   xOffset,
@@ -57,7 +58,7 @@ async function getValueFor(key) {
   return result;
 }
 
-const ProfileEditing = ({ navigation: {goBack} }) => {
+const ProfileEditing = ({ navigation: { goBack } }) => {
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
   const [refreshing, setRefreshing] = useState(false);
@@ -99,6 +100,11 @@ const ProfileEditing = ({ navigation: {goBack} }) => {
     setMessage(message);
     setMessageType(type);
   };
+
+  function datePatternValidation(date) {
+    const regex = new RegExp(/^(0?[1-9]|1[0-2])[\/](19|20)$/);
+    return regex.test(date);
+  }
 
   //funcions handling setState for temp values
   function handleAddEducationElement(
@@ -274,43 +280,68 @@ const ProfileEditing = ({ navigation: {goBack} }) => {
   }
 
   async function updateArtistProfile() {
-    const education = educationList;
-    const experience = experienceList;
-    education.map((item) => {
+    let education = educationList;
+    let experience = experienceList;
+    let status = true;
+    education.map((item, index) => {
       delete item.id;
     });
-    experience.map((item) => {
+    experience.map((item, index) => {
       delete item.id;
     });
-    const response = await axios.put(
-      baseURL + '/api/artist/updateArtistProfile',
-      {
-        bio: bio,
-        level: level,
-        location: location,
-        skills: skills,
-        tags: tags,
-        languages: languages,
-        education: education,
-        experience: experience,
-        website: website,
-        facebook: facebook,
-        linkedin: linkedin,
-        instagram: instagram,
-        dribble: dribble,
-        pinterest: pinterest,
-        twitter: twitter,
-      },
-      {
-        params: { username: userInfo.username },
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-      },
-    ).catch((error) => {
-      handleMessage("Wystąpił błąd", 'FAILED');
-      console.log(error);
-    });
-    if(response.status = 200) {
-      handleMessage("Zapisano zmiany!", 'SUCCESS');
+    for (let i = 0; i < education.length; ++i) {
+      if (
+        !moment(education[i].start_date, 'MM/YYYY').isValid() ||
+        !moment(education[i].end_date, 'MM/YYYY').isValid()
+      ) {
+        handleMessage('Niepoprawny zapis daty!', 'FAILED');
+        status = false;
+      }
+    }
+    for (let i = 0; i < experience.length; ++i) {
+      if (
+        !moment(experience[i].start_date, 'MM/YYYY').isValid() ||
+        !moment(experience[i].end_date, 'MM/YYYY').isValid()
+      ) {
+        handleMessage('Niepoprawny zapis daty!', 'FAILED');
+        status = false;
+      }
+    }
+    if (status) {
+      const response = await axios
+        .put(
+          baseURL + '/api/artist/updateArtistProfile',
+          {
+            bio: bio,
+            level: level,
+            location: location,
+            skills: skills,
+            tags: tags,
+            languages: languages,
+            education: education,
+            experience: experience,
+            website: website,
+            facebook: facebook,
+            linkedin: linkedin,
+            instagram: instagram,
+            dribble: dribble,
+            pinterest: pinterest,
+            twitter: twitter,
+          },
+          {
+            params: { username: userInfo.username },
+            headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          },
+        )
+        .catch((error) => {
+          handleMessage('Wystąpił błąd', 'FAILED');
+          console.log(error);
+        });
+      if ((response.status = 200)) {
+        handleMessage('Zapisano zmiany!', 'SUCCESS');
+        experience = null;
+        education = null;
+      }
     }
   }
 
@@ -377,87 +408,35 @@ const ProfileEditing = ({ navigation: {goBack} }) => {
   }, [userInfo]);
 
   useEffect(() => {
-    let config = {
+    let configTag = {
       method: 'get',
       maxBodyLength: Infinity,
       url: baseURL + '/api/artist/getAvailableTags',
       headers: {},
     };
 
-    const fetchData = async () => {
-      try {
-        const result = await axios.request(config);
-        setAvailableTags(result.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableLanguages',
-      headers: {},
-    };
-
-    const fetchData = async () => {
-      try {
-        const result = await axios.request(config);
-        setAvailableLanguages(result.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableLevels',
-      headers: {},
-    };
-
-    const fetchData = async () => {
-      try {
-        const result = await axios.request(config);
-        setAvailableLevels(result.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    let config = {
+    let configCities = {
       method: 'get',
       maxBodyLength: Infinity,
       url: baseURL + '/api/artist/getAvailableCities',
       headers: {},
     };
 
-    const fetchData = async () => {
-      try {
-        const result = await axios.request(config);
-        setAvailableLocations(result.data);
-      } catch (error) {
-        console.log(error);
-      }
+    let configLevels = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: baseURL + '/api/artist/getAvailableLevels',
+      headers: {},
     };
 
-    fetchData();
-  }, []);
+    let configLanguages = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: baseURL + '/api/artist/getAvailableLanguages',
+      headers: {},
+    };
 
-  useEffect(() => {
-    let config = {
+    let configCategories = {
       method: 'get',
       maxBodyLength: Infinity,
       url: baseURL + '/api/artist/getAvailableCategories',
@@ -466,9 +445,21 @@ const ProfileEditing = ({ navigation: {goBack} }) => {
 
     const fetchData = async () => {
       try {
-        const result = await axios.request(config);
+        const [citiesResponse, tagsResponse, categoriesResponse, levelsResponse, languagesResponse] = await Promise.all(
+          [
+            axios.request(configCities),
+            axios.request(configTag),
+            axios.request(configCategories),
+            axios.request(configLevels),
+            axios.request(configLanguages),
+          ],
+        );
+        setAvailableTags(tagsResponse.data);
+        setAvailableLanguages(languagesResponse.data);
+        setAvailableLocations(citiesResponse.data);
+        setAvailableLevels(levelsResponse.data);
         handleClearAvailableSkills();
-        setAvailableCategories(result.data);
+        setAvailableCategories(categoriesResponse.data);
       } catch (error) {
         console.log(error);
       }
@@ -476,6 +467,87 @@ const ProfileEditing = ({ navigation: {goBack} }) => {
 
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   let config = {
+  //     method: 'get',
+  //     maxBodyLength: Infinity,
+  //     url: baseURL + '/api/artist/getAvailableLanguages',
+  //     headers: {},
+  //   };
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await axios.request(config);
+  //       setAvailableLanguages(result.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   let config = {
+  //     method: 'get',
+  //     maxBodyLength: Infinity,
+  //     url: baseURL + '/api/artist/getAvailableLevels',
+  //     headers: {},
+  //   };
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await axios.request(config);
+  //       setAvailableLevels(result.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   let config = {
+  //     method: 'get',
+  //     maxBodyLength: Infinity,
+  //     url: baseURL + '/api/artist/getAvailableCities',
+  //     headers: {},
+  //   };
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await axios.request(config);
+  //       setAvailableLocations(result.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   let config = {
+  //     method: 'get',
+  //     maxBodyLength: Infinity,
+  //     url: baseURL + '/api/artist/getAvailableCategories',
+  //     headers: {},
+  //   };
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await axios.request(config);
+  //       handleClearAvailableSkills();
+  //       setAvailableCategories(result.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     if (artistProfile) {
@@ -596,19 +668,19 @@ const ProfileEditing = ({ navigation: {goBack} }) => {
               <AppText>{'Od: '}</AppText>
               <AppTextInput
                 maxLength={7}
-                style={{ flexWrap: 'wrap', width: '20%' }}
+                style={{ flexWrap: 'wrap', width: '65%' }}
                 defaultValue={item.start_date}
                 onChangeText={(newText) => {
                   item.start_date = newText;
                 }}
-                placeholder="Wpisz datę rozpoczęcia w formacie MM/YYYY"
+                placeholder="Wpisz datę w formacie MM/YYYY"
               />
             </View>
             <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }}>
               <AppText>{'Do: '}</AppText>
               <AppTextInput
                 maxLength={7}
-                style={{ flexWrap: 'wrap', width: '20%' }}
+                style={{ flexWrap: 'wrap', width: '65%' }}
                 defaultValue={item.end_date}
                 onChangeText={(newText) => {
                   item.end_date = newText;
@@ -721,7 +793,7 @@ const ProfileEditing = ({ navigation: {goBack} }) => {
               <AppText>{'Od: '}</AppText>
               <AppTextInput
                 maxLength={7}
-                style={{ flexWrap: 'wrap', width: '20%' }}
+                style={{ flexWrap: 'wrap', width: '65%' }}
                 defaultValue={item.start_date}
                 onChangeText={(newText) => {
                   item.start_date = newText;
@@ -733,7 +805,7 @@ const ProfileEditing = ({ navigation: {goBack} }) => {
               <AppText>{'Do: '}</AppText>
               <AppTextInput
                 maxLength={7}
-                style={{ flexWrap: 'wrap', width: '20%' }}
+                style={{ flexWrap: 'wrap', width: '65%' }}
                 defaultValue={item.end_date}
                 onChangeText={(newText) => {
                   item.end_date = newText;
