@@ -1,85 +1,156 @@
 import * as React from 'react';
-import { View, SafeAreaView, Image, StyleSheet, Text } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, SafeAreaView, Image, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ChatLabel, Colors, HeaderText, RegularText, StatsText } from '../../components/styles';
+import { ChatLabel, Colors, HeaderText } from '../../components/styles';
 import Gallery from '../../components/Gallery';
+import GalleryEditing from '../../components/GalleryEditing';
 import Reviews from '../../components/Reviews';
+import Profile from '../../components/Profile';
+import ProfileEditing from '../../components/ProfileEditing';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Stars from 'react-native-stars';
-import { CredentialsContext } from '../../components/CredentialsContext';
-import { useContext } from 'react';
+//SecureStoring accessToken
+import * as SecureStore from 'expo-secure-store';
+import Loading from '../../components/Loading';
+import SelectDropdown from 'react-native-select-dropdown';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {LinearGradient} from 'expo-linear-gradient';
 
 const Tab = createMaterialTopTabNavigator();
-const { primary, secondary, darkLight } = Colors;
+const { primary, secondary, darkLight, link, black } = Colors;
 
-
+async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    if (!result) {
+      alert("Nie uzyskano danych z klucza: " + key);
+    }
+    return result;
+  }
+  
 
 export default function ProfileScreen({ navigation }) {
 
-    const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+    const [token, setToken] = useState('');
+    const [userInfo, setUserInfo] = useState('');
+    const [editing, setEditing] = useState(false);
+
+    const changeEditingState = (state) => {
+        setEditing(state);
+    }
+
+    async function getAccessToken() {
+        const t = await getValueFor("accessToken");
+        setToken(t);
+    }
+
+    async function getUserInfo() {
+        const u = await getValueFor("user");
+        setUserInfo(JSON.parse(u));
+    }
+
+    useEffect(() => {
+        getAccessToken();
+        getUserInfo();
+      }, []);
+
+    async function save(key, value) {
+        await SecureStore.setItemAsync(key, value).catch((error) => {console.log(error)});
+    }
+
+    async function logout() {
+        save("accessToken", "");
+        save("user","");
+        navigation.navigate('Login');
+    }
 
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
+        <>{userInfo ? (
+        <SafeAreaView style={{ flex: 1, backgroundColor: primary }}> 
             <ChatLabel style={{
                 height: 60,
                 justifyContent: "space-between",
             }}>
-                <HeaderText numberOfLines={1} style={{ width: "90%", marginLeft: 10 }}>{storedCredentials.name}</HeaderText>
-                <View style={styles.HeaderViewStyle} >
-                    <TouchableOpacity >
-                        <Image style={{ height: 30, width: 30 }} resizeMode="contain" source={require('./../../assets/img/3-dots.png')} />
-                    </TouchableOpacity>
+                <HeaderText numberOfLines={1} style={{ width: "75%", marginLeft: 10 }}>{userInfo.firstname + " " + userInfo.lastname}</HeaderText>
+                <View style={[styles.HeaderViewStyle, {width: "20%"}]} >
+                    {editing ? (
+                        <SelectDropdown data={["Opuść"]}
+                            onSelect={(selectedItem, index) => {
+                                if(selectedItem === "Opuść") {
+                                    setEditing(false);   
+                                }
+                            }}
+                            defaultButtonText=" "
+                            buttonStyle={{width: 80,backgroundColor: darkLight}}
+                            renderDropdownIcon={isOpened => {
+                                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={primary} size={18} />;
+                                }}
+                            dropdownIconPosition={'right'}
+                            dropdownStyle={styles.dropdown1DropdownStyle}
+                            rowStyle={styles.dropdown1RowStyle}
+                            rowTextStyle={styles.dropdown1RowTxtStyle}
+                            buttonTextAfterSelection={(selectedItem, index) => { return "";}}
+                        ></SelectDropdown>) 
+                    : (
+                        <SelectDropdown data={["Wyloguj","Edytuj"]}
+                            onSelect={(selectedItem, index) => {
+                                if(selectedItem === "Wyloguj") {
+                                    logout();
+                                } else if(selectedItem ==="Edytuj") {
+                                    setEditing(true);
+                                }
+                            }}
+                            defaultButtonText=" "
+                            buttonStyle={{width: 80,backgroundColor: darkLight}}
+                            renderDropdownIcon={isOpened => {
+                                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={primary} size={18} />;
+                                }}
+                            dropdownIconPosition={'right'}
+                            dropdownStyle={styles.dropdown1DropdownStyle}
+                            rowStyle={styles.dropdown1RowStyle}
+                            rowTextStyle={styles.dropdown1RowTxtStyle}
+                            buttonTextAfterSelection={(selectedItem, index) => { return "";}}
+                        ></SelectDropdown>)}
                 </View>
             </ChatLabel>
-            <View style={{ flexDirection: "row", margin: 15, justifyContent: "space-between" }}>
-                <View style={{ height: 100, width: 100, backgroundColor: "#771967", borderRadius: 50 }} />
-                <View style={{ width: "65%", alignItems: "center", justifyContent: "space-around" }}>
-                    <Stars
-                        default={3.5}
-                        spacing={7}
-                        count={5}
-                        starSize={30}
-                        half={true}
-                        disabled={true}
-                        fullStar={require('./../../assets/img/star.png')}
-                        halfStar={require('./../../assets/img/star-half.png')}
-                        emptyStar={require('./../../assets/img/star-outline.png')}
-
-                    />
-                    <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-around" }}>
-                        <View>
-                            <StatsText bold={true}>63</StatsText>
-                            <StatsText>Prace</StatsText>
-                        </View>
-                        <View>
-                            <StatsText bold={true}>205</StatsText>
-                            <StatsText>Opinie</StatsText>
-                        </View>
-                        <View>
-                            <StatsText bold={true}>3,5/5</StatsText>
-                            <StatsText>Ocena</StatsText>
-                        </View>
-                    </View>
-                </View>
-            </View>
-
-            <RegularText numberOfLines={5} style={{ marginHorizontal: 10 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Lorem ipsum dolor sit amet.
-            </RegularText>
-            <Tab.Navigator
-                initialRouteName="Gallery"
+            {editing ? (
+                <Tab.Navigator
+                initialRouteName="ProfileEditing"
                 screenOptions={{
                     tabBarIndicatorStyle: { backgroundColor: darkLight },
-                    tabBarStyle: { backgroundColor: primary, marginTop: 30 },
+                    tabBarStyle: { backgroundColor: primary, marginTop: 0 },
                 }}>
+                <Tab.Screen options={{
+                    title: ({ color, focused }) => {
+                        return <Ionicons size={25} name={focused ? 'person' : 'person-outline'}
+                            color={focused ? darkLight : secondary} />
+                    }
+                }}
+                    name="ProfileEditing" component={ProfileEditing} />
+                <Tab.Screen
+                    options={{
+                        title: ({ color, focused }) => {
+                            return <Ionicons size={25} name={focused ? 'images' : 'images-outline'}
+                                color={focused ? darkLight : secondary} />
+                        }
+                    }}
+                    name="GalleryEditing" component={GalleryEditing} />
+            </Tab.Navigator>
+            ) 
+            :   (<Tab.Navigator
+                initialRouteName="Profile"
+                screenOptions={{
+                    tabBarIndicatorStyle: { backgroundColor: darkLight },
+                    tabBarStyle: { backgroundColor: primary, marginTop: 0 },
+                }}>
+                <Tab.Screen options={{
+                    title: ({ color, focused }) => {
+                        return <Ionicons size={25} name={focused ? 'person' : 'person-outline'}
+                            color={focused ? darkLight : secondary} />
+                    }
+                }}
+                    name="Profile" component={Profile} />
                 <Tab.Screen
                     options={{
                         title: ({ color, focused }) => {
@@ -96,8 +167,10 @@ export default function ProfileScreen({ navigation }) {
                     }
                 }}
                     name="Reviews" component={Reviews} />
-            </Tab.Navigator>
-        </SafeAreaView>
+            </Tab.Navigator>)}
+        </SafeAreaView>) : (
+            <Loading />
+        ) }</>
     );
 
 } const styles = StyleSheet.create({
@@ -123,5 +196,32 @@ export default function ProfileScreen({ navigation }) {
         width: "50%",
         alignItems: "center",
         borderBottomWidth: 3,
+    },
+    ListHeader: {
+        fontSize: 19,
+        color: black,
+        marginHorizontal: 10,
+    },
+    ListElement: {
+        color: black,
+        marginHorizontal: 10,
+    },
+    About: {
+        fontFamily: 'LexendDeca-SemiBold',
+        fontSize: 22,
+        marginHorizontal: 10,
+        color: black,
+    },
+    dropdown1DropdownStyle: {
+        backgroundColor: '#EFEFEF',
+        width: 150
+    },
+    dropdown1RowStyle: {
+        backgroundColor: '#EFEFEF',
+        borderBottomColor: '#C5C5C5',
+        width: 150
+    },
+    dropdown1RowTxtStyle: {
+        color: '#444', textAlign: 'left'
     },
 });

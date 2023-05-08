@@ -54,6 +54,7 @@ const Reviews = ({ data, input, setInput }) => {
         <FlatList
             style={{ margin: 2 }}
             data={DATA_reviews}
+            nestedScrollEnabled={true}
             keyExtractor={(item, index) => index}
             contentContainerStyle={{ padding: 5 }}
             ItemSeparatorComponent={<View style={{ width: "100%", height: 1, backgroundColor: "#e4dfe1", marginVertical: 5 }} />}

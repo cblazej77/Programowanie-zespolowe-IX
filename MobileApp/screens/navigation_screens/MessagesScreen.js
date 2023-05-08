@@ -181,6 +181,7 @@ function MessagesScreen({ navigation }) {
     <SafeAreaView style={{flex: 1, backgroundColor: primary}}>
       <LinearGradient colors={[darkLight, darkLight2]}>
       <ChatLabel style={{
+        height: 60,
         justifyContent: 'center'
       }}>
         <HeaderText>Wiadomości</HeaderText>

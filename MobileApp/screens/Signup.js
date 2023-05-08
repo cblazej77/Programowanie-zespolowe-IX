@@ -51,6 +51,21 @@ const Signup = ({navigation}) => {
     const [password, setPassword] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
+    function passwordPatternValidation(password) {
+        const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$');
+        return regex.test(password);
+      }
+    
+      function emailPatternValidation(email) {
+        const regex = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
+        return regex.test(email);
+      }
+    
+    function namesPatternValidation(name) {
+        const regex = new RegExp("^([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$");
+        return regex.test(name);
+    }
+
     const sleep = ms => new Promise(
         resolve => setTimeout(resolve, ms)
       );
@@ -67,19 +82,21 @@ const Signup = ({navigation}) => {
                   }
                 );
                 setSubmitting(false);
-                handleMessage(JSON.stringify(response?.data),'SUCCESS');
+                handleMessage("Zarejestrowano użytkownika, proszę potwierdź email przed zalogowaniem",'SUCCESS');
                 await sleep(1500);
                 navigation.navigate('Login');
         
               }catch(err){
-          
+                setSubmitting(false);
+                handleMessage("Błąd podczas rejestracji: kod " + err.response.status,'FAILED');
                   if (!err?.response) {
                       console.log('No Server Response');
+                      
                   } else if (err.response?.status === 409) {
                       console.log('Username Taken');
                   } else {
-                      console.log('Registration Failed')
-                      console.log(err)
+                      console.log('Registration Failed');
+                      console.log(err);
                   }
               } 
     };
@@ -108,8 +125,17 @@ const Signup = ({navigation}) => {
                         } else if(confirmPassword !== password) {
                             handleMessage('Hasła się nie zgadzają');
                             setSubmitting(false);
-                        } else if((password.length < 8 || password.length > 25) && confirmPassword === password) {
-                            handleMessage('Hasło musi zawierać między 8 a 25 znaków');
+                        } else if(!namesPatternValidation(firstname) || !namesPatternValidation(lastname)) {
+                            handleMessage('Wpisano niedozwolone znaki w imieniu lub nazwisku', 'FAILED');
+                            setSubmitting(false);
+                        } else if(!namesPatternValidation(username)) {
+                            handleMessage('Wpisano niedozwolone znaki w nazwie użytkownika', 'FAILED');
+                            setSubmitting(false);
+                        } else if(!emailPatternValidation(email)) {
+                            handleMessage('Wpisano email w nieprawidłowym formacie', 'FAILED');
+                            setSubmitting(false);
+                        } else if(!passwordPatternValidation(password) && confirmPassword === password) {
+                            handleMessage('Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki.','FAILED');
                             setSubmitting(false);
                         } else {
                             handleSignup();

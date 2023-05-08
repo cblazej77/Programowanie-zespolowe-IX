@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from '../../components/Colors';
+import { Link } from 'react-router-dom';
 
 const {
     darkLight,
@@ -8,11 +9,15 @@ const {
     gray,
     gray1,
     secondary,
+    secondary1,
     black
 } = COLORS;
 
 export const Cards2 = styled.div`
     background: transparent;
+    @media screen and (max-width: 960px) {
+        display: flex;
+    }
 `
 
 export const CardsContainer = styled.div`
@@ -190,9 +195,11 @@ export const CardsLabel = styled.div`
 `;
 
 export const CardsWrapper = styled.div`
-    width: 81vw;
-    padding-top: 1rem;
-    overflow-y: scroll;
+    width: 100%;
+    height: 82vh;
+    padding-top: 1.3rem;
+    padding-bottom: 10rem;
+    overflow: auto;
     &::-webkit-scrollbar {
         width: 0.5vw;
       }
@@ -212,30 +219,91 @@ export const CardsWrapper = styled.div`
 
 export const ProjectPhoto = styled.img`
     margin: 0px 1px 0px 1px;
-    width: 15.5vw;
+    width: 20%;
     object-fit: cover;
+    @media screen and (max-width: 1600px) {
+        width: 25%;
+    }
+    @media screen and (max-width: 1400px) {
+        width: 33.34%;
+    }
+    @media screen and (max-width: 1280px) {
+        width: 50%;
+    }
 `;
 
 export const FirstPhoto = styled(ProjectPhoto)`
+    margin-left: 20%;
+    @media screen and (max-width: 1600px) {
+        margin-left: 25%;
+    }
+    @media screen and (max-width: 1400px) {
+        margin-left: 33.34%;
+    }
+    @media screen and (max-width: 1280px) {
+        margin-left: 50%;
+    }
+`;
+
+export const SecondPhoto = styled(ProjectPhoto)`
+    @media screen and (max-width: 1280px) {
+        display: none;
+    }
+`;
+
+export const ThirdPhoto = styled(ProjectPhoto)`
+    @media screen and (max-width: 1400px) {
+        display: none;
+    }
+`;
+
+export const FourthPhoto = styled(ProjectPhoto)`
+    @media screen and (max-width: 1600px) {
+        display: none;
+    }
 `;
 
 export const SimpleInfoContainer = styled.div`
+    position: absolute;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    width: 17vw;
-    height: 14vw;
-    margin-top: 5vh;
+    width: 20%;
+    height: 100%;
+    padding: 1rem 1rem 1rem 1rem;
     flex-direction: column;
+    @media screen and (max-width: 1600px) {
+        width: 25%;
+    }
+    @media screen and (max-width: 1400px) {
+        width: 33.34%;
+    }
+    @media screen and (max-width: 1280px) {
+        width: 50%;
+    }
 `;
 
 export const DetailedInfoContainer = styled(SimpleInfoContainer)`
     position: absolute;
-    left: 17vw;
+    left: 20%;
     margin: 0px;
-    width: 15.5vw;
-    height: 16vw;
+    width: 20%;
+    height: 100%;
     opacity: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    @media screen and (max-width: 1600px) {
+        left: 25%;
+        width: 25%;
+    }
+    @media screen and (max-width: 1400px) {
+        left: 33.34%;
+        width: 33.34%;
+    }
+    @media screen and (max-width: 1280px) {
+        left: 50%;
+        width: 50%;
+    }
 `;
 
 export const CardLabel = styled.div`
@@ -245,6 +313,9 @@ export const CardLabel = styled.div`
     margin-bottom: 5vh;
     margin-right: 1vw;
     position: relative;
+    height: 17rem;
+    width: 95%;
+    background: ${secondary1};
     &:hover > ${FirstPhoto} {
         transition: opacity 0.4s ease-out;
         opacity: 0.1;
@@ -253,13 +324,20 @@ export const CardLabel = styled.div`
         transition: opacity 0.4s ease-out;
         opacity: 1;
     }
+    @media screen and (max-width: 960px) {
+        width: 95%;
+    }
 `;
 
 export const CardAvatar = styled.img`
-    height: 7vw;
-    width: 7vw;
+    height: 8rem;
+    width: 8rem;
     border-radius: 100%;
     object-fit: cover;
+`;
+
+export const LevelText = styled(JobText)`
+    color: ${gray1};
 `;
 
 export const NameText = styled(JobText)`
@@ -268,19 +346,61 @@ export const NameText = styled(JobText)`
 `;
 
 export const RatingText = styled(NameText)`
-    font-size: 0.8vw;
-    margin-left: 0.2vw;
+    font-size: 0.9rem;
+    margin-left: 0.2rem;
 `;
 
-export const CategoryText = styled(SubtitleText)`
-    font-size: 2rem;
-    @media screen and (max-width: 960px) {
-    font-size: 3vw;
-    }
+export const CategoryHeaderText = styled(SubtitleText)`
+    font-size: 1.5rem;  
+    margin: 1rem 0 0.5rem 0;
+`;
 
+export const CategoryText = styled.text`
+    font-size: 1.3rem;
+    color: ${gray1};
+`;
+
+export const CityText = styled.text`
+    font-size: 1.2rem;
+    color: ${darkLight};
+    font-weight: bold;
 `;
 
 export const RightLabel = styled.div`
     position: fixed;
     left: 21rem;
+    right: 0px;
+    @media screen and (max-width: 960px) {
+        display: flex;
+        flex-direction: column;
+        left: 0;
+        justify-content: center;
+        align-items: flex-start;
+        padding-left: 5vw; 
+    }
+`;
+
+export const TopSection = styled.div`
+    display: flex;
+`;
+
+export const Button = styled(Link)`
+    display: none;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    text-decoration: none;
+    padding: 0.2rem 1rem;
+    margin-right: 1rem;
+    font-size: 1rem;
+    background: linear-gradient(
+      to top,
+      #4A4E69,
+      #555978
+    );
+    @media screen and (max-width: 960px) {
+        display: flex;
+    }
 `;

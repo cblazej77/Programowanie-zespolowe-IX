@@ -1,10 +1,18 @@
 import * as React from 'react';
-import { View, Text, TextInput, StatusBar, Dimensions, StyleSheet, ScrollView, Image, FlatList, SafeAreaView } from 'react-native';
+import {
+    View,
+    Dimensions,
+    StyleSheet,
+    ScrollView,
+    SafeAreaView,
+    Modal,
+    TouchableOpacity,
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
     HomeLabel,
     HomeIconButton,
@@ -15,72 +23,281 @@ import {
     AppText,
     StatsText,
     RegularText,
-    HeaderText
+    HeaderText,
+    LineForm,
+    DropDownInfoText
 } from './../../components/styles'
 import SearchFilter from '../../components/SearchFilter';
+import { useMemo } from 'react';
+import { useEffect } from 'react';
+import BASE_URL, { default as baseURL } from '../../components/AxiosAuth';
+import axios from "axios";
+import CardItem from '../../components/CardItem';
 
 const { width } = Dimensions.get('window');
-const { primary, secondary, darkLight } = Colors;
-
-const DATA = [
-    {
-        id: "1",
-        name: "Cyprian Woźniak",
-        opinions: 27,
-    },
-    {
-        id: "2",
-        name: "Norbert Krawczyk",
-        opinions: 108,
-    },
-    {
-        id: "3",
-        name: "Blanka Szulc",
-        opinions: 79,
-    },
-    {
-        id: "4",
-        name: "Iza Mazur",
-        opinions: 165,
-    },
-    {
-        id: "5",
-        name: "Piotr Baran",
-        opinions: 250,
-    },
-    {
-        id: "6",
-        name: "Joachim Kołodziej",
-        opinions: 93,
-    },
-    {
-        id: "7",
-        name: "Blanka Krajewska",
-        opinions: 183,
-    },
-    {
-        id: "8",
-        name: "Elżbieta Makowska",
-        opinions: 204,
-    },
-];
+const { primary, secondary, darkLight, white, grey, black } = Colors;
 
 export default function HomePage({ navigation }) {
+    const [cities, setCities] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [filtered, setFiltered] = useState([]);
+    const [input, setInput] = useState("");
+    const [showModal, setShowModal] = useState(false);
+
     const sort = [
         'ocena: najwyższa',
         'ocena: najniższa',
         'ostatnia aktywność'
     ]
 
-    const [input, setInput] = useState("");
+    const citiesData = useMemo(() => ({
+        method: 'get',
+        maxBodyLength: 5000,
+        url: BASE_URL + "/api/artist/getAvailableCities",
+        headers: {},
+    }), []);
+
+    const tagsData = useMemo(() => ({
+        method: 'get',
+        maxBodyLength: 5000,
+        url: BASE_URL + "/api/artist/getAvailableTags",
+        headers: {},
+    }), []);
+
+    const categoriesData = useMemo(() => ({
+        method: 'get',
+        maxBodyLength: 5000,
+        url: BASE_URL + "/api/artist/getAvailableCategories",
+        headers: {},
+    }), []);
+
+    const filteredData = useMemo(() => ({
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: BASE_URL + "/artist/filter?level=&location=&category=&language=&subcategory=&tags=&page=0&size=10",
+    }), []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [citiesResponse, tagsResponse, categoriesResponse, filteredResponse] = await Promise.all([
+                    axios.request(citiesData),
+                    axios.request(tagsData),
+                    axios.request(categoriesData),
+                    axios.request(filteredData),
+                ]);
+                setCities(citiesResponse.data);
+                setTags(tagsResponse.data);
+                setCategories(categoriesResponse.data);
+                setFiltered(filteredResponse.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchData();
+    }, [citiesData, tagsData, categoriesData, filteredData]);
+
+    const categoryOptions = useMemo(() => {
+        if (!Array.isArray(categories.categories)) {
+            return null;
+        }
+
+        return (
+            <SelectDropdown
+                data={categories.categories.map(category => category.name)}
+                defaultValueByIndex={0}
+                onSelect={(selectedItem, index) => {
+                    console.log(selectedItem, index);
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                }}
+                rowTextForSelection={(item, index) => {
+                    return item;
+                }}
+                buttonStyle={styles.ModalDropdownButtonStyle}
+                buttonTextStyle={styles.ModalDropdownButtonTextStyle}
+                renderDropdownIcon={isOpened => {
+                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
+                }}
+                dropdownIconPosition={'right'}
+                dropdownStyle={styles.ModalDropDownStyle1}
+                rowStyle={styles.ModalDropdownRowStyle}
+                rowTextStyle={styles.ModalDropdownRowTextStyle}
+            />
+        );
+    })
+
+    const subcategoryOptions = useMemo(() => {
+        if (!Array.isArray(categories.categories)) {
+            return null;
+        }
+
+        return (
+            <SelectDropdown
+                data={categories.categories.flatMap(category => category.subcategories)}
+                defaultValueByIndex={0}
+                onSelect={(selectedItem, index) => {
+                    console.log(selectedItem, index);
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                }}
+                rowTextForSelection={(item, index) => {
+                    return item;
+                }}
+                buttonStyle={styles.ModalDropdownButtonStyle}
+                buttonTextStyle={styles.ModalDropdownButtonTextStyle}
+                renderDropdownIcon={isOpened => {
+                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
+                }}
+                dropdownIconPosition={'right'}
+                dropdownStyle={styles.ModalDropDownStyle1}
+                rowStyle={styles.ModalDropdownRowStyle}
+                rowTextStyle={styles.ModalDropdownRowTextStyle}
+            />
+        );
+    })
+
+    const filteredCards = useMemo(() => {
+        if (!Array.isArray(filtered.content)) {
+            return null;
+        }
+
+        return filtered.content.map((filter, indexF) => (
+            <CardItem key={indexF}
+                avatar="/assets/cards/person1.jpg"
+                name={filter.firstname}
+                surname={filter.lastname}
+                level={filter.level}
+                rating={3.5}
+                ratingCount={12}
+                city={filter.city}
+                skills={filter.skills}
+                project1="/assets/cards/design1.jpg"
+                project2="/assets/cards/design2.png"
+                project3="/assets/cards/design3.jpg"
+                project4="/assets/cards/design4.png"
+            />
+        ));
+    });
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
-            
+            <ChatLabel style={{
+                height: 60,
+                justifyContent: "center",
+            }}>
+                <HeaderText>Przeglądaj designer'ów</HeaderText>
+            </ChatLabel>
             <HomeLabel>
-                <HomeIconButton onPress={() => alert('Filtrowanie')} activeOpacity={0.5}>
+                <HomeIconButton onPress={() => setShowModal(true)} activeOpacity={0.5}>
                     <ChatImage style={{ tintColor: '#A9A9A9', width: '50%', marginLeft: 10 }} resizeMode="contain" source={require('./../../assets/img/filter.png')} />
                 </HomeIconButton>
+                <Modal
+                    visible={showModal}
+                    transparent={true}
+                    animationType="slide"
+                    onRequestClose={() => setShowModal(false)}
+                >
+                    <View style={styles.ModalStyle}>
+                        <View style={styles.ModalViewStyle}>
+                            <TouchableOpacity onPress={() => setShowModal(false)} style={{ width: '100%' }}>
+                                <View style={{ alignItems: 'center' }}>
+                                    <Icon name="angle-down" size={35} color={darkLight} />
+                                </View>
+                            </TouchableOpacity>
+                            <LineForm />
+                            <View style={styles.ModalFilterViewStyle}>
+                                <DropDownInfoText>Skąd?</DropDownInfoText>
+                                <SelectDropdown
+                                    data={cities}
+                                    defaultValueByIndex={0}
+                                    onSelect={(selectedItem, index) => {
+                                        console.log(selectedItem, index);
+                                    }}
+                                    buttonTextAfterSelection={(selectedItem, index) => {
+                                        return selectedItem;
+                                    }}
+                                    rowTextForSelection={(item, index) => {
+                                        return item;
+                                    }}
+                                    buttonStyle={styles.ModalDropdownButtonStyle}
+                                    buttonTextStyle={styles.ModalDropdownButtonTextStyle}
+                                    renderDropdownIcon={isOpened => {
+                                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
+                                    }}
+                                    dropdownIconPosition={'right'}
+                                    dropdownStyle={styles.ModalDropDownStyle1}
+                                    rowStyle={styles.ModalDropdownRowStyle}
+                                    rowTextStyle={styles.ModalDropdownRowTextStyle}
+                                />
+                            </View>
+                            <View style={styles.ModalFilterViewStyle}>
+                                <DropDownInfoText>Języki</DropDownInfoText>
+                                <SelectDropdown
+                                    data={cities}
+                                    defaultValueByIndex={0}
+                                    onSelect={(selectedItem, index) => {
+                                        console.log(selectedItem, index);
+                                    }}
+                                    buttonTextAfterSelection={(selectedItem, index) => {
+                                        return selectedItem;
+                                    }}
+                                    rowTextForSelection={(item, index) => {
+                                        return item;
+                                    }}
+                                    buttonStyle={styles.ModalDropdownButtonStyle}
+                                    buttonTextStyle={styles.ModalDropdownButtonTextStyle}
+                                    renderDropdownIcon={isOpened => {
+                                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
+                                    }}
+                                    dropdownIconPosition={'right'}
+                                    dropdownStyle={styles.ModalDropDownStyle1}
+                                    rowStyle={styles.ModalDropdownRowStyle}
+                                    rowTextStyle={styles.ModalDropdownRowTextStyle}
+                                />
+                            </View>
+                            <View style={styles.ModalFilterViewStyle}>
+                                <DropDownInfoText>Tagi</DropDownInfoText>
+                                <SelectDropdown
+                                    data={tags}
+                                    defaultValueByIndex={0}
+                                    onSelect={(selectedItem, index) => {
+                                        console.log(selectedItem, index);
+                                    }}
+                                    buttonTextAfterSelection={(selectedItem, index) => {
+                                        return selectedItem;
+                                    }}
+                                    rowTextForSelection={(item, index) => {
+                                        return item;
+                                    }}
+                                    buttonStyle={styles.ModalDropdownButtonStyle}
+                                    buttonTextStyle={styles.ModalDropdownButtonTextStyle}
+                                    renderDropdownIcon={isOpened => {
+                                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
+                                    }}
+                                    dropdownIconPosition={'right'}
+                                    dropdownStyle={styles.ModalDropDownStyle1}
+                                    rowStyle={styles.ModalDropdownRowStyle}
+                                    rowTextStyle={styles.ModalDropdownRowTextStyle}
+                                />
+                            </View>
+                            <View style={styles.ModalFilterViewStyle}>
+                                <DropDownInfoText>Kategorie</DropDownInfoText>
+                                {categoryOptions}
+                            </View>
+                            <View style={styles.ModalFilterViewStyle}>
+                                <DropDownInfoText>Podkategorie</DropDownInfoText>
+                                {subcategoryOptions}
+                            </View>
+                        </View>
+                    </View>
+
+                </Modal>
+
                 <SelectDropdown
                     data={sort}
                     defaultValueByIndex={0}
@@ -111,71 +328,11 @@ export default function HomePage({ navigation }) {
                     placeholder="szukaj"
                 />
             </HomeLabel>
-            <FlatList contentContainerStyle={{ alignItems: 'center' }}
-                data={DATA}
-                keyExtractor={(item, index) => index}
-                ListHeaderComponent={<View style={{ height: 20 }}></View>}
-                renderItem={({ item }) => {
-                    if (input === "") {
-                        return (
-                            <View style={styles.PostStyle}>
-                                <View style={{
-                                    height: '20%',
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                }}>
-                                    <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginHorizontal: 10, borderRadius: 30 }} />
-                                    <HeaderText numberOfLines={1} style={{
-                                        color: "#FFF",
-                                    }}>{item.name}</HeaderText>
-                                </View>
-                                <View style={{
-                                    backgroundColor: "#CCC",
-                                    height: "70%",
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}>
-                                    <Text style={{ color: primary }}>Image not found</Text></View>
-                                <View style={{ height: '10%', justifyContent: 'center', marginLeft: 10 }}>
-                                    <RegularText style={{ color: "#FFF", }}>{item.opinions} opinii</RegularText>
-                                </View>
-                            </View>
-                        )
-                    }
-
-                    if (item.name.toLowerCase().includes(input.toLowerCase())) {
-                        return (
-                            <View style={styles.PostStyle}>
-                                <View style={{
-                                    height: '20%',
-                                    alignItems: 'center',
-                                    flexDirection: 'row'
-                                }}>
-                                    <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginLeft: 10, borderRadius: 30 }} />
-                                    <Text style={{
-                                        color: "#FFF",
-                                        fontSize: 17,
-                                        fontWeight: 'bold',
-                                        marginLeft: 10
-                                    }}>{item.name}</Text>
-                                </View>
-                                <View style={{
-                                    backgroundColor: "#CCC",
-                                    height: "70%",
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}>
-                                    <Text style={{ color: primary }}>Image not found</Text></View>
-                                <View style={{ height: '10%', justifyContent: 'center', marginLeft: 10 }}>
-                                    <Text style={{ color: "#FFF", }}>{item.opinions} opinii</Text>
-                                </View>
-                            </View>
-                        )
-                    }
-                }}
-                ListFooterComponent={<View style={{ height: 20 }}></View>}
-            />
-
+            <View>
+                <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+                    {filteredCards}
+                </ScrollView>
+            </View>
         </SafeAreaView>
 
     );
@@ -204,21 +361,55 @@ const styles = StyleSheet.create({
     DropDownStyle1: {
         backgroundColor: primary,
         borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20
+        borderBottomRightRadius: 20,
     },
-    PostStyle: {
-        backgroundColor: secondary,
-        height: 350,
-        minWidth: "90%",
-        maxWidth: "90%",
-        marginBottom: 15,
-        borderRadius: 5,
+    ModalStyle: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: '#00000080',
+    },
+    ModalViewStyle: {
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        width: '100%',
+        height: '85%',
+        backgroundColor: white,
+        overflow: 'hidden',
+        padding: 10,
+    },
+    ModalDropdownButtonStyle: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 30,
+        height: 40,
+    },
+    ModalDropdownButtonTextStyle: {
+        fontSize: 16,
+        color: black,
+        fontFamily: 'LexendDeca-VariableFont_wght',
+        textAlign: 'left'
+    },
+    ModalDropdownRowStyle: {
+        backfroundColor: '#D6D6D6',
+    },
+    ModalDropdownRowTextStyle: {
+        fontSize: 16,
+        fontFamily: 'LexendDeca-VariableFont_wght',
+        color: black,
+        textAlign: 'left',
+    },
+    ModalDropDownStyle1: {
+        backgroundColor: primary,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+    ModalFilterViewStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginVertical: 20,
     }
 });
-
-/*
-nagłówek Homepage
-<ChatLabel style={{ paddingLeft: 15}}>
-    <AppText>Znajdź artystów</AppText>
-</ChatLabel>
-*/

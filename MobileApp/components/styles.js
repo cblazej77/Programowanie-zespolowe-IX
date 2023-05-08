@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export const Colors = {
     primary: "#F0EDEB",
     secondary: "#BEB5BC",
+    secondary1: "#ded9dd",
     darkLight: "#4A4E69",
     darkLight2: "#888cab",
     notificationsRed: "#DA7676",
@@ -19,22 +20,33 @@ export const Colors = {
     white: "#F5F5F5",
     grey: "#00000022",
     link: "#4159a3",
+    checked: "#CCCCFF",
 };
 
 const {
     primary,
     secondary,
+    secondary1,
     tertiary,
     darkLight,
     brand,
     red,
     green,
-    grey
+    grey,
+    checked,
 } = Colors;
 
 //text with custom font
 export const AppText = styled.Text`
-    fontFamily: 'LexendDeca-Regular';
+    fontFamily: 'LexendDeca-VariableFont_wght';
+`;
+
+export const AppTextInput = styled.TextInput`
+    fontFamily: 'LexendDeca-VariableFont_wght';
+    borderWidth: 1px;
+    borderColor: ${grey}
+    borderRadius: 12px;
+    padding: 7px 8px 7px 8px;
 `;
 
 export const HeaderText = styled(AppText)`
@@ -46,7 +58,25 @@ export const HeaderText = styled(AppText)`
     `}
 `;
 
+export const HeaderTextInput = styled(AppTextInput)`
+    color: ${primary};
+    fontSize: 26px;
+
+    ${(props) => props.bold == true && `
+        fontFamily: 'LexendDeca-SemiBold';
+    `}
+`;
+
 export const RegularText = styled(AppText)`
+    color: ${darkLight};
+    fontSize: 16px;
+
+    ${(props) => props.bold == true && `
+        fontFamily: 'LexendDeca-SemiBold';
+    `}
+`;
+
+export const RegularTextInput = styled(AppTextInput)`
     color: ${darkLight};
     fontSize: 16px;
 
@@ -65,7 +95,26 @@ export const StatsText = styled(AppText)`
     `}
 `;
 
+export const StatsTextInput = styled(AppTextInput)`
+    color: ${darkLight};
+    fontSize: 18px;
+    text-align: center;
+
+    ${(props) => props.bold == true && `
+        fontFamily: 'LexendDeca-SemiBold';
+    `}
+`;
+
 export const SmallText = styled(AppText)`
+    color: ${darkLight};
+    fontSize: 11px;
+
+    ${(props) => props.bold == true && `
+        fontFamily: 'LexendDeca-SemiBold';
+    `}
+`;
+
+export const SmallTextInput = styled(AppTextInput)`
     color: ${darkLight};
     fontSize: 11px;
 
@@ -105,9 +154,7 @@ export const Avatar = styled.Image`
     margin: auto;
     border-radius: 50px;
     border-width: 2px;
-    border-color: ${secondary};
-    margin-bottom: 10px;
-    margin-top: 10px;
+    border-color: ${darkLight};
 `;
 
 export const WelcomeImage = styled.Image`
@@ -288,4 +335,41 @@ export const LinearGradientStyle = styled(LinearGradient)`
     marginVertical: 5px;
     borderRadius: 5px;
     paddingVertical: 15px;
+`;
+
+export const Bubble = styled.View`
+    padding: 7px 10px 7px 10px;
+    border-radius: 15px;
+    fontSize: 16px;
+    marginBottom: 10px;
+    marginTop: 10px;
+    align-items: center;
+
+    
+`;
+
+export const ModalBubble = styled.View`
+    padding: 7px 10px 7px 10px;
+    border-radius: 15px;
+    fontSize: 16px;
+    marginBottom: 10px;
+    marginTop: 10px;
+    align-items: center;
+
+    ${(props) => props.checked == true && `
+        fontSize: 18px;
+        background-color: ${checked}
+    `}
+`;
+
+export const LineForm = styled.View`
+    width: 100%;
+    height: 1px;
+    marginVertical: 5px;
+    backgroundColor: ${grey};
+`;
+
+export const DropDownInfoText = styled(AppText)`
+    font-size: 23px;
+    color: ${darkLight};
 `;
