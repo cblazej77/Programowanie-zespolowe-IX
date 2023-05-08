@@ -11,7 +11,7 @@ import axios from "axios";
 import Loading from '../components/Loading';
 import Hyperlink from 'react-native-hyperlink';
 
-const { darkLight, link, black } = Colors;
+const { darkLight, link, black, primary } = Colors;
 
 const generateBoxShadowStyle = (  
     xOffset,  
@@ -123,7 +123,7 @@ async function getValueFor(key) {
             <View style={styles.ListElement} key={id}>
                 <AppText>{"Nazwa firmy: " + item.company}</AppText>
                 <AppText>{"Miasto: " + item.city}</AppText>
-                <AppText>{"Stanowski: " + item.position}</AppText>
+                <AppText>{"Stanowsko: " + item.position}</AppText>
                 <AppText>{"Opis obowiązków: " + item.description}</AppText>
                 <AppText>{"Od: " + item.start_date}</AppText>
                 <AppText>{"Do: " + item.end_date}</AppText>
@@ -216,7 +216,7 @@ async function getValueFor(key) {
 
     return (
         <>{artistProfile ? (
-            <ScrollView nestedScrollEnabled={true} style={{ flex: 1}} height={300}> 
+            <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary}} height={300}> 
             <View style={{ flexDirection: "row", margin: 15, justifyContent: "space-between" }}>
                 <Avatar resizeMode="contain" source={require('../assets/img/avatar.png')}></Avatar>
                 <View style={{ width: "65%", alignItems: "center", justifyContent: "space-around" }}>

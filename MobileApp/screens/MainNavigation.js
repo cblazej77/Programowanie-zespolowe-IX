@@ -21,7 +21,6 @@ const profileName = 'Profil';
 const messagesName = 'Wiadomości';
 
 const Tab = createBottomTabNavigator();
-//const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
 export default function MainNavigation() {
     return (

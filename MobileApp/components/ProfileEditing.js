@@ -12,6 +12,7 @@ import {
   RegularTextInput,
   AppTextInput,
   ModalBubble,
+  MsgBox,
 } from './styles';
 import Stars from 'react-native-stars';
 //SecureStoring accessToken
@@ -22,7 +23,6 @@ import Loading from './Loading';
 import { Button } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectDropdown from 'react-native-select-dropdown';
-import ProfileScreen from '../screens/navigation_screens/ProfileScreen';
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -57,19 +57,24 @@ async function getValueFor(key) {
   return result;
 }
 
-const ProfileEditing = ({ navigation }) => {
+const ProfileEditing = ({ navigation: {goBack} }) => {
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
+  const [refreshing, setRefreshing] = useState(false);
   const [token, setToken] = useState('');
   const [userInfo, setUserInfo] = useState('');
   const [artistProfile, setArtistProfile] = useState('');
   const [availableTags, setAvailableTags] = useState('');
   const [availableCategories, setAvailableCategories] = useState('');
   const [availableSkills, setAvailableSkills] = useState([]);
+  const [availableLanguages, setAvailableLanguages] = useState('');
   const [availableLevels, setAvailableLevels] = useState([]);
   const [availableLocations, setAvailableLocations] = useState([]);
   const [tagsModalVisible, setTagsModalVisible] = useState(false);
   const [skillsModalVisible, setSkillsModalVisible] = useState(false);
+  const [languagesModalVisible, setLanguagesModalVisible] = useState(false);
+  const [message, setMessage] = useState();
+  const [messageType, setMessageType] = useState();
   //Hooks for temp values when editing
   const [bio, setBio] = useState('');
   const [level, setLevel] = useState('');
@@ -88,6 +93,12 @@ const ProfileEditing = ({ navigation }) => {
   const [languages, setLanguages] = useState([]);
   const [tagsToAdd, setTagsToAdd] = useState([]);
   const [skillsToAdd, setSkillsToAdd] = useState([]);
+  const [languagesToAdd, setLanguagesToAdd] = useState([]);
+
+  const handleMessage = (message, type = 'FAILED') => {
+    setMessage(message);
+    setMessageType(type);
+  };
 
   //funcions handling setState for temp values
   function handleAddEducationElement(
@@ -115,32 +126,6 @@ const ProfileEditing = ({ navigation }) => {
     ]);
   }
 
-  function handleChangeEducationElement(
-    id,
-    school_name,
-    faculty,
-    field_of_study,
-    degree,
-    start_date,
-    end_date,
-    description,
-  ) {
-    setEducationList(
-      educationList.map((e) => {
-        if (e.id === id) {
-          e.school_name = school_name;
-          e.faculty = faculty;
-          e.field_of_study = field_of_study;
-          e.degree = degree;
-          e.start_date = start_date;
-          e.end_date = end_date;
-          e.description = description;
-        }
-        return e;
-      }),
-    );
-  }
-
   function handleDeleteEducationElement(id) {
     setEducationList(educationList.filter((e) => e.id !== id));
   }
@@ -158,22 +143,6 @@ const ProfileEditing = ({ navigation }) => {
         end_date: end_date,
       },
     ]);
-  }
-
-  function handleChangeExperienceElement(id, company, city, position, description, start_date, end_date) {
-    setExperienceList(
-      experienceList.map((e) => {
-        if (e.id === id) {
-          e.company = company;
-          e.city = city;
-          e.position = position;
-          e.start_date = start_date;
-          e.end_date = end_date;
-          e.description = description;
-        }
-        return e;
-      }),
-    );
   }
 
   function handleDeleteExperienceElement(id) {
@@ -212,6 +181,14 @@ const ProfileEditing = ({ navigation }) => {
     setTagsToAdd(tagsToAdd.filter((t) => t !== tag));
   }
 
+  function handleAddLanguagesToAdd(language) {
+    setLanguagesToAdd((languagesToAdd) => [...languagesToAdd, language]);
+  }
+
+  function handleDeleteLanguagesToAdd(language) {
+    setLanguagesToAdd(languagesToAdd.filter((l) => l !== language));
+  }
+
   function handleAddSkillsToAdd(skill) {
     setSkillsToAdd((skillsToAdd) => [...skillsToAdd, skill]);
   }
@@ -227,7 +204,6 @@ const ProfileEditing = ({ navigation }) => {
   function handleDeleteAvailableSkills(skill) {
     setAvailableSkills(availableSkills.filter((s) => s !== skill));
   }
-
 
   //funkcje czyszczace
   function handleClearEducationList() {
@@ -254,6 +230,10 @@ const ProfileEditing = ({ navigation }) => {
     setTagsToAdd([]);
   }
 
+  function handleClearLanguagesToAdd() {
+    setLanguagesToAdd([]);
+  }
+
   function handleClearSkillsToAdd() {
     setSkillsToAdd([]);
   }
@@ -268,6 +248,7 @@ const ProfileEditing = ({ navigation }) => {
     handleClearLanguages();
     handleClearSkills();
     handleClearTags();
+    handleClearLanguagesToAdd();
     handleClearTagsToAdd();
     handleClearSkillsToAdd();
     setBio('');
@@ -293,10 +274,12 @@ const ProfileEditing = ({ navigation }) => {
   }
 
   async function updateArtistProfile() {
-    educationList.map((item) => {
+    const education = educationList;
+    const experience = experienceList;
+    education.map((item) => {
       delete item.id;
     });
-    experienceList.map((item) => {
+    experience.map((item) => {
       delete item.id;
     });
     const response = await axios.put(
@@ -308,8 +291,8 @@ const ProfileEditing = ({ navigation }) => {
         skills: skills,
         tags: tags,
         languages: languages,
-        education: educationList,
-        experience: experienceList,
+        education: education,
+        experience: experience,
         website: website,
         facebook: facebook,
         linkedin: linkedin,
@@ -322,7 +305,13 @@ const ProfileEditing = ({ navigation }) => {
         params: { username: userInfo.username },
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
       },
-    );
+    ).catch((error) => {
+      handleMessage("Wystąpił błąd", 'FAILED');
+      console.log(error);
+    });
+    if(response.status = 200) {
+      handleMessage("Zapisano zmiany!", 'SUCCESS');
+    }
   }
 
   function getIdOfLastEducationElement() {
@@ -340,17 +329,24 @@ const ProfileEditing = ({ navigation }) => {
   }
 
   function addTags() {
-    for(let i = 0; i < tagsToAdd.length; ++i) {
-        handleAddTag(tagsToAdd[i]);
+    for (let i = 0; i < tagsToAdd.length; ++i) {
+      handleAddTag(tagsToAdd[i]);
     }
     handleClearTagsToAdd();
   }
 
   function addSkills() {
-    for(let i = 0; i < skillsToAdd.length; ++i) {
-        handleAddSkill(skillsToAdd[i]);
+    for (let i = 0; i < skillsToAdd.length; ++i) {
+      handleAddSkill(skillsToAdd[i]);
     }
     handleClearSkillsToAdd();
+  }
+
+  function addLanguages() {
+    for (let i = 0; i < languagesToAdd.length; ++i) {
+      handleAddLanguage(languagesToAdd[i]);
+    }
+    handleClearLanguagesToAdd();
   }
 
   useEffect(() => {
@@ -392,6 +388,26 @@ const ProfileEditing = ({ navigation }) => {
       try {
         const result = await axios.request(config);
         setAvailableTags(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: baseURL + '/api/artist/getAvailableLanguages',
+      headers: {},
+    };
+
+    const fetchData = async () => {
+      try {
+        const result = await axios.request(config);
+        setAvailableLanguages(result.data);
       } catch (error) {
         console.log(error);
       }
@@ -510,12 +526,12 @@ const ProfileEditing = ({ navigation }) => {
   }, [artistProfile]);
 
   useEffect(() => {
-    if(availableCategories) {
-        for(let i = 0; i < availableCategories.categories.length; ++i) {
-            for(let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
-                handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
-            }
+    if (availableCategories) {
+      for (let i = 0; i < availableCategories.categories.length; ++i) {
+        for (let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
+          handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
         }
+      }
     }
   }, [availableCategories]);
 
@@ -791,10 +807,16 @@ const ProfileEditing = ({ navigation }) => {
         if (!skills.includes(item)) return item;
       });
       const list = available.map((item, id) => (
-        <Pressable onPress={() => {
-            if(skillsToAdd.includes(item)) {handleDeleteSkillsToAdd(item)}
-            else {handleAddSkillsToAdd(item)}
-            }} key={id}>
+        <Pressable
+          onPress={() => {
+            if (skillsToAdd.includes(item)) {
+              handleDeleteSkillsToAdd(item);
+            } else {
+              handleAddSkillsToAdd(item);
+            }
+          }}
+          key={id}
+        >
           <ModalBubble
             style={[{ width: item.size, marginRight: 5, flexDirection: 'row', alignItems: 'center' }, styles.boxShadow]}
             key={id}
@@ -826,7 +848,7 @@ const ProfileEditing = ({ navigation }) => {
       return (
         <>
           {list}
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setLanguagesModalVisible(true)}>
             <Bubble style={[{ marginRight: 5, flexDirection: 'row', alignItems: 'center' }, styles.boxShadow]}>
               <Ionicons size={16} name={'add'} color="#A9A9A9" style={{ marginTop: 3 }} />
               <AppText>Dodaj</AppText>
@@ -834,6 +856,37 @@ const ProfileEditing = ({ navigation }) => {
           </TouchableOpacity>
         </>
       );
+    } else {
+      return <View></View>;
+    }
+  }
+
+  function ListAvailableLanguages() {
+    if (availableLanguages) {
+      const available = availableLanguages.filter((item) => {
+        if (!languages.includes(item)) return item;
+      });
+      const list = available.map((item, id) => (
+        <Pressable
+          onPress={() => {
+            if (languagesToAdd.includes(item)) {
+              handleDeleteLanguagesToAdd(item);
+            } else {
+              handleAddLanguagesToAdd(item);
+            }
+          }}
+          key={id}
+        >
+          <ModalBubble
+            style={[{ width: item.size, marginRight: 5, flexDirection: 'row', alignItems: 'center' }, styles.boxShadow]}
+            key={id}
+            checked={languagesToAdd.includes(item)}
+          >
+            <AppText style={{ marginRight: 2 }}>{item}</AppText>
+          </ModalBubble>
+        </Pressable>
+      ));
+      return <>{list}</>;
     } else {
       return <View></View>;
     }
@@ -874,10 +927,16 @@ const ProfileEditing = ({ navigation }) => {
         if (!tags.includes(item)) return item;
       });
       const list = available.map((item, id) => (
-        <Pressable onPress={() => {
-            if(tagsToAdd.includes(item)) {handleDeleteTagsToAdd(item)}
-            else {handleAddTagsToAdd(item)}
-            }} key={id}>
+        <Pressable
+          onPress={() => {
+            if (tagsToAdd.includes(item)) {
+              handleDeleteTagsToAdd(item);
+            } else {
+              handleAddTagsToAdd(item);
+            }
+          }}
+          key={id}
+        >
           <ModalBubble
             style={[{ width: item.size, marginRight: 5, flexDirection: 'row', alignItems: 'center' }, styles.boxShadow]}
             key={id}
@@ -929,7 +988,7 @@ const ProfileEditing = ({ navigation }) => {
   return (
     <>
       {artistProfile ? (
-        <ScrollView nestedScrollEnabled={true} style={{ flex: 1 }} height={300}>
+        <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
             <Avatar resizeMode="contain" source={require('../assets/img/avatar.png')}></Avatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
@@ -987,32 +1046,34 @@ const ProfileEditing = ({ navigation }) => {
               <Line style={{ width: '90%' }} />
             </View>
           </View>
-          <View style={{flexDirection: 'row', margin: 10, justifyContent: 'center', alignItems: 'center'}}>
-          <AppText style={[styles.ListHeader, {fontSize: 14}]}>Poziom:</AppText>
-          <SelectDropdown data={availableLevels}
-                            onSelect={(selectedItem, index) => {
-                                setLevel(selectedItem);
-                            }}
-                            defaultButtonText={level}
-                            buttonStyle={{width: 90, height: 30, borderWidth: 2, borderColor: grey, borderRadius: 12}}
-                            buttonTextStyle={{fontSize: 14}}
-                            renderDropdownIcon={isOpened => {
-                                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={black} size={12} />;
-                                }}
-                            dropdownIconPosition={'right'}
+          <View style={{ flexDirection: 'row', margin: 10, justifyContent: 'flex-start', alignItems: 'center' }}>
+            <AppText style={[styles.ListHeader, { fontSize: 14 }]}>Poziom:</AppText>
+            <SelectDropdown
+              data={availableLevels}
+              onSelect={(selectedItem, index) => {
+                setLevel(selectedItem);
+              }}
+              defaultButtonText={level}
+              buttonStyle={{ width: 90, height: 30, borderWidth: 2, borderColor: grey, borderRadius: 12 }}
+              buttonTextStyle={{ fontSize: 14 }}
+              renderDropdownIcon={(isOpened) => {
+                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={black} size={12} />;
+              }}
+              dropdownIconPosition={'right'}
             />
-            <AppText style={[styles.ListHeader, {fontSize: 14}]}>Lokalizacja:</AppText>
-          <SelectDropdown data={availableLocations}
-                            onSelect={(selectedItem, index) => {
-                                setLocation(selectedItem);
-                            }}
-                            defaultButtonText={location}
-                            buttonTextStyle={{fontSize: 14}}
-                            buttonStyle={{width: 120, height: 30, borderWidth: 2, borderColor: grey, borderRadius: 12}}
-                            renderDropdownIcon={isOpened => {
-                                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={black} size={12} />;
-                                }}
-                            dropdownIconPosition={'right'}
+            <AppText style={[styles.ListHeader, { fontSize: 14 }]}>Lokalizacja:</AppText>
+            <SelectDropdown
+              data={availableLocations}
+              onSelect={(selectedItem, index) => {
+                setLocation(selectedItem);
+              }}
+              defaultButtonText={location}
+              buttonTextStyle={{ fontSize: 14 }}
+              buttonStyle={{ width: 120, height: 30, borderWidth: 2, borderColor: grey, borderRadius: 12 }}
+              renderDropdownIcon={(isOpened) => {
+                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={black} size={12} />;
+              }}
+              dropdownIconPosition={'right'}
             />
           </View>
           <View style={{ width: '100%', flexDirection: 'column', justifyContent: 'space-around', margin: 10 }}>
@@ -1031,33 +1092,35 @@ const ProfileEditing = ({ navigation }) => {
                 <View style={[styles.centeredView]}>
                   <View style={styles.modalView}>
                     {ListAvailableSkills()}
-                    <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                    <Pressable
-                      onPress={() => {
-                        addSkills();
-                        setSkillsModalVisible(false); }}
-                      style={({ pressed }) => [
-                        {
-                          backgroundColor: pressed ? 'lightgrey' : darkLight,
-                        },
-                        styles.ModalButton,
-                      ]}
-                    >
-                      <AppText style={{ color: 'white' }}>Zapisz</AppText>
-                    </Pressable>
-                    <Pressable
-                      onPress={() => {
-                        handleClearSkillsToAdd();
-                        setSkillsModalVisible(false); }}
-                      style={({ pressed }) => [
-                        {
-                          backgroundColor: pressed ? 'lightgrey' : darkLight,
-                        },
-                        styles.ModalButton,
-                      ]}
-                    >
-                      <AppText style={{ color: 'white' }}>Odrzuć</AppText>
-                    </Pressable>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                      <Pressable
+                        onPress={() => {
+                          addSkills();
+                          setSkillsModalVisible(false);
+                        }}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                          },
+                          styles.ModalButton,
+                        ]}
+                      >
+                        <AppText style={{ color: 'white' }}>Zapisz</AppText>
+                      </Pressable>
+                      <Pressable
+                        onPress={() => {
+                          handleClearSkillsToAdd();
+                          setSkillsModalVisible(false);
+                        }}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                          },
+                          styles.ModalButton,
+                        ]}
+                      >
+                        <AppText style={{ color: 'white' }}>Odrzuć</AppText>
+                      </Pressable>
                     </View>
                   </View>
                 </View>
@@ -1065,6 +1128,53 @@ const ProfileEditing = ({ navigation }) => {
             </Modal>
             <AppText style={{ fontSize: 19, color: black }}>Języki:</AppText>
             <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap' }}>{ListLanguages()}</View>
+            <Modal
+              isVisible={languagesModalVisible}
+              onBackdropPress={() => setLanguagesModalVisible(false)}
+              onSwipeComplete={() => setLanguagesModalVisible(false)}
+              swipeDirection="left"
+              animationInTiming={500}
+              animationOutTiming={500}
+              hideModalContentWhileAnimating={true}
+            >
+              <ScrollView style={{ maxHeight: '90%', margin: 10 }}>
+                <View style={[styles.centeredView]}>
+                  <View style={styles.modalView}>
+                    {ListAvailableLanguages()}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                      <Pressable
+                        onPress={() => {
+                          addLanguages();
+                          setLanguagesModalVisible(false);
+                        }}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                          },
+                          styles.ModalButton,
+                        ]}
+                      >
+                        <AppText style={{ color: 'white' }}>Zapisz</AppText>
+                      </Pressable>
+                      <Pressable
+                        onPress={() => {
+                          handleClearLanguagesToAdd();
+                          setLanguagesModalVisible(false);
+                        }}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                          },
+                          styles.ModalButton,
+                        ]}
+                      >
+                        <AppText style={{ color: 'white' }}>Odrzuć</AppText>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </ScrollView>
+            </Modal>
             <AppText style={{ fontSize: 19, color: black }}>Tagi:</AppText>
             <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap' }}>{ListTags()}</View>
             <Modal
@@ -1080,33 +1190,35 @@ const ProfileEditing = ({ navigation }) => {
                 <View style={[styles.centeredView]}>
                   <View style={styles.modalView}>
                     {ListAvailableTags()}
-                    <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-                    <Pressable
-                      onPress={() => {
-                        addTags();
-                        setTagsModalVisible(false); }}
-                      style={({ pressed }) => [
-                        {
-                          backgroundColor: pressed ? 'lightgrey' : darkLight,
-                        },
-                        styles.ModalButton,
-                      ]}
-                    >
-                      <AppText style={{ color: 'white' }}>Zapisz</AppText>
-                    </Pressable>
-                    <Pressable
-                      onPress={() => {
-                        handleClearTagsToAdd();
-                        setTagsModalVisible(false); }}
-                      style={({ pressed }) => [
-                        {
-                          backgroundColor: pressed ? 'lightgrey' : darkLight,
-                        },
-                        styles.ModalButton,
-                      ]}
-                    >
-                      <AppText style={{ color: 'white' }}>Odrzuć</AppText>
-                    </Pressable>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                      <Pressable
+                        onPress={() => {
+                          addTags();
+                          setTagsModalVisible(false);
+                        }}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                          },
+                          styles.ModalButton,
+                        ]}
+                      >
+                        <AppText style={{ color: 'white' }}>Zapisz</AppText>
+                      </Pressable>
+                      <Pressable
+                        onPress={() => {
+                          handleClearTagsToAdd();
+                          setTagsModalVisible(false);
+                        }}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                          },
+                          styles.ModalButton,
+                        ]}
+                      >
+                        <AppText style={{ color: 'white' }}>Odrzuć</AppText>
+                      </Pressable>
                     </View>
                   </View>
                 </View>
@@ -1117,26 +1229,19 @@ const ProfileEditing = ({ navigation }) => {
           </View>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: 'column',
               justifyContent: 'space-evenly',
               alignItems: 'center',
               alignContent: 'center',
               marginBottom: 15,
             }}
           >
+            <MsgBox type={messageType}>{message}</MsgBox>
             <Button
               onPress={() => {
                 updateArtistProfile();
-                clear();
               }}
               title="Zapisz"
-              color={darkLight}
-            ></Button>
-            <Button
-              onPress={() => {
-                clear();
-              }}
-              title="Odrzuć"
               color={darkLight}
             ></Button>
           </View>

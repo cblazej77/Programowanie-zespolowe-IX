@@ -3,7 +3,6 @@ import React from 'react';
 //stack navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { CredentialsContext } from '../components/CredentialsContext';
 
 import Login from './Login';
 import Signup from './Signup';

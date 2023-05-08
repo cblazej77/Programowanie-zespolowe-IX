@@ -75,14 +75,10 @@ export default function ProfileScreen({ navigation }) {
                 <HeaderText numberOfLines={1} style={{ width: "75%", marginLeft: 10 }}>{userInfo.firstname + " " + userInfo.lastname}</HeaderText>
                 <View style={[styles.HeaderViewStyle, {width: "20%"}]} >
                     {editing ? (
-                        <SelectDropdown data={["Zapisz","Odrzuć"]}
+                        <SelectDropdown data={["Opuść"]}
                             onSelect={(selectedItem, index) => {
-                                if(selectedItem === "Zapisz") {
-                                    
-                                    setEditing(false);
-                                } else if(selectedItem ==="Odrzuć") {
-                                    
-                                    setEditing(false);
+                                if(selectedItem === "Opuść") {
+                                    setEditing(false);   
                                 }
                             }}
                             defaultButtonText=" "
