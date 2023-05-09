@@ -4,6 +4,9 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { Colors } from './styles';
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Pressable } from 'react-native';
+import { Touchable } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { primary, secondary1, darkLight, gray1, grey } = Colors;
 
@@ -35,20 +38,30 @@ function CardItem(props) {
       <View style={styles.SimpleInfoContainer}>
         <Image style={styles.Avatar} resizeMode="cover" source={require('./../assets/img/avatar1.png')} />
         <AppText style={{ color: gray1 }}>{props.level}</AppText>
-        <RegularText style={{ fontSize: 20, marginTop: 10 }}>
-          {props.name} {props.surname}
-        </RegularText>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('ArtistScreen', {
+              username: props.username,
+              firstname: props.name,
+              lastname: props.surname,
+            });
+          }}
+        >
+          <RegularText style={{ fontSize: 20, marginTop: 10 }}>
+            {props.name} {props.surname}
+          </RegularText>
+        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
           <Stars
             default={props.rating}
             count={5}
             // podana wielkość nic nie zmienia
-            starSize={50} 
+            starSize={50}
             half={false}
             disabled={true}
-            fullStar={<Icon name={'star'} style={[styles.Star]}/>}
-            halfStar={<Icon name={'star-half'} style={[styles.Star]}/>}
-            emptyStar={<Icon name={'star'} style={[styles.Star, { color: grey }]}/>}
+            fullStar={<Icon name={'star'} style={[styles.Star]} />}
+            halfStar={<Icon name={'star-half'} style={[styles.Star]} />}
+            emptyStar={<Icon name={'star'} style={[styles.Star, { color: grey }]} />}
           />
           <AppText style={{ color: darkLight, fontSize: 12, marginLeft: 5 }}>({props.ratingCount} opinii)</AppText>
         </View>
@@ -89,7 +102,7 @@ const styles = StyleSheet.create({
     color: '#ffe234',
     fontSize: 20,
     textShadowColor: grey,
-    textShadowOffset: {width: 1, height: 1},
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
   },
 });
