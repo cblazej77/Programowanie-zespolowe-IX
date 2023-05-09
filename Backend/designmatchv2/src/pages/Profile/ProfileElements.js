@@ -37,7 +37,7 @@ export const LeftWrapper = styled.div`
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
   font-size: 0.9vw;
-  height: 30rem;
+  height: 35rem;
   width: 30rem;
   @media screen and (max-width: 960px) {
     width: 85vw;
@@ -50,7 +50,7 @@ export const RightWrapper = styled.div`
   margin-left: 1.5vw;
   display: flex;
   padding: 60px;
-  height: 30rem;
+  height: 35rem;
   width: 55rem;
   flex-direction: column;
   border-radius: 15px;
@@ -165,8 +165,13 @@ export const LeftInfoRow = styled.div`
 
 export const NameText = styled.textarea`
   color: ${darkLight};
+  width: 50%;
+  height: 3rem;
+  resize: none;
+  overflow: hidden;
   font-size: 2rem;
   padding-bottom: 0.5rem;
+  padding-right: 50px;
 `;
 
 export const JobText = styled.text`
@@ -209,7 +214,6 @@ export const BoldLabel = styled.h3`
 export const DataTextArena = styled.textarea`
     display: flex;
     text-align: right;
-    width: 50%;
     font-weight: bold;
     resize: none;
     overflow: hidden;

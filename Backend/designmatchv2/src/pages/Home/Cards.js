@@ -26,6 +26,7 @@ import LoadingPage from '../LoadingPage';
 
 const Cards = () => {
   const [cities, setCities] = useState([]);
+  const [languages, setLanguages] = useState([]);
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -37,11 +38,17 @@ const Cards = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [citiesResponse, tagsResponse, categoriesResponse, filteredResponse] = await Promise.all([
+        const [citiesResponse, languagesResponse, tagsResponse, categoriesResponse, filteredResponse] = await Promise.all([
           axios.request({
             method: 'get',
             maxBodyLength: 5000,
             url: "/api/artist/getAvailableCities",
+            headers: {},
+          }),
+          axios.request({
+            method: 'get',
+            maxBodyLength: 5000,
+            url: "/api/artist/getAvailableLanguages",
             headers: {},
           }),
           axios.request({
@@ -63,6 +70,7 @@ const Cards = () => {
           }),
         ]);
         setCities(citiesResponse.data);
+        setLanguages(languagesResponse.data);
         setTags(tagsResponse.data);
         setCategories(categoriesResponse.data);
         setFiltered(filteredResponse.data);
@@ -107,6 +115,12 @@ const Cards = () => {
       );
     })
   ), [cities]);
+
+  const languageOptions = useMemo(() => (
+    languages.map((language, index) => (
+      <StyledOption key={index} value={language}>{language}</StyledOption>
+    ))
+  ), [tags]);
 
   const tagOptions = useMemo(() => (
     tags.map((tag, index) => (
@@ -197,7 +211,10 @@ const Cards = () => {
             {cityOptions}
           </StyledSelect>
           <SubtitleText>Języki</SubtitleText>
-          <Input placeholder='Wpisz język' />
+          <StyledSelect onChange={handleCityChange}>
+            <StyledOption value="">Wybierz język</StyledOption>
+            {languageOptions}
+          </StyledSelect>
           <SubtitleText>Tagi</SubtitleText>
           <StyledSelect onChange={handleTagChange}>
             <StyledOption value="">Wybierz tag</StyledOption>
