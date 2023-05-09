@@ -199,7 +199,7 @@ public class ArtistProfileService {
                         education.getFieldOfStudy(),
                         education.getDegree(),
                         education.getStartDate(),
-                        education.getStartDate(),
+                        education.getEndDate(),
                         education.getDescription()))
                 .collect(Collectors.toSet());
     }

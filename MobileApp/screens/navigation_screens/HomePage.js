@@ -344,8 +344,8 @@ export default function HomePage({ navigation }) {
           placeholder="szukaj"
         />
       </HomeLabel>
-      <View>
-        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>{filteredCards}</ScrollView>
+      <View style={{ height: '86.5%' }}>
+        <ScrollView contentContainerStyle={{ alignItems: 'center', marginTop: 5 }}>{filteredCards}</ScrollView>
       </View>
     </SafeAreaView>
   );
