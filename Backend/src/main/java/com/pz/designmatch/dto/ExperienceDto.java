@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.YearMonthDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.YearMonthSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 public class ExperienceDto {
@@ -19,22 +21,17 @@ public class ExperienceDto {
     private final String city;
     @JsonProperty("position")
     private final String position;
+    @JsonProperty("start_date")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate startDate;
+    @JsonProperty("end_date")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate endDate;
     @JsonProperty("description")
     private final String description;
-    @JsonSerialize(using = YearMonthSerializer.class)
-    @JsonDeserialize(using = YearMonthDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/yyyy")
-    @JsonProperty("start_date")
-    private YearMonth startDate;
-    @JsonSerialize(using = YearMonthSerializer.class)
-    @JsonDeserialize(using = YearMonthDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/yyyy")
-    @JsonProperty("end_date")
-    private YearMonth endDate;
 
     @JsonCreator
-    public ExperienceDto(String company, String city, String position, YearMonth startDate, YearMonth endDate,
-                         String description) {
+    public ExperienceDto(String company, String city, String position, LocalDate startDate, LocalDate endDate, String description) {
         this.company = company;
         this.city = city;
         this.position = position;

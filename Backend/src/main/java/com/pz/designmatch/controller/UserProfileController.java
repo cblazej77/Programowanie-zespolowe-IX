@@ -95,7 +95,7 @@ public class UserProfileController {
                 .status(HttpStatus.OK.value())
                 .body(artistProfile);
     }
-    
+
     @GetMapping(value = "/getArtistProfile", produces = apiVersionAccept)
     public ResponseEntity<ArtistProfileDto> getArtistProfileByUsername(@RequestParam String username) {
         ArtistProfileDto artistProfile = artistProfileService.getArtistProfileDtoByUsername(username);

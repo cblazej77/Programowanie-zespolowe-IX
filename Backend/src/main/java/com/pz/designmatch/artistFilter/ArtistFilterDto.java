@@ -1,10 +1,7 @@
 package com.pz.designmatch.artistFilter;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pz.designmatch.model.enums.Language;
-import com.pz.designmatch.model.enums.Subcategory;
 import lombok.Getter;
 
 import java.util.Set;

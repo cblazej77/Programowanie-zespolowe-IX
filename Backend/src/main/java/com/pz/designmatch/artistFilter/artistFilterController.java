@@ -1,6 +1,5 @@
 package com.pz.designmatch.artistFilter;
 
-import com.pz.designmatch.controller.UserProfileController;
 import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
@@ -9,29 +8,27 @@ import com.pz.designmatch.service.ArtistProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/artist")
 public class artistFilterController {
     public static final String apiVersionAccept = "application/json";
-    @Autowired
-    private ArtistProfileRepository artistProfileRepository;
+    private final ArtistProfileRepository artistProfileRepository;
+
+    public artistFilterController(ArtistProfileRepository artistProfileRepository) {
+        this.artistProfileRepository = artistProfileRepository;
+    }
 
     @GetMapping(value = "/filter", produces = apiVersionAccept)
     public ResponseEntity<Page<ShortProfileDto>> filterArtists(@RequestParam(name = "level", required = false) List<Level> level,
@@ -46,10 +43,10 @@ public class artistFilterController {
         if (level != null && !level.isEmpty()) {
             specification = specification.and(ArtistProfileSpecification.hasLevel(level));
         }
-        if (city != null && !city.isEmpty()){
+        if (city != null && !city.isEmpty()) {
             specification = specification.and(ArtistProfileSpecification.hasCity(city));
         }
-        if(category != null && !category.isEmpty()){
+        if (category != null && !category.isEmpty()) {
             List<Subcategory> subcategoryList = category.stream()
                     .flatMap(c -> Arrays.stream(Subcategory.values())
                             .filter(s -> s.getCategory() == c))

@@ -9,29 +9,34 @@ import java.util.List;
 
 public class ArtistProfileSpecification {
     public static Specification<ArtistProfile> hasLevel(List<Level> level) {
-        return(root, query, builder) -> { return root.get("level").in(level);
-        };
+        return (root, query, builder) -> root.get("level").in(level);
     }
+
     public static Specification<ArtistProfile> hasCategory(List<Category> category) {
-        return (root, query, builder) -> { return root.get("category").in(category);
-        };
+        return (root, query, builder) -> root.get("category").in(category);
     }
+
     public static Specification<ArtistProfile> hasCity(List<City> city) {
-        return (root, query, builder) -> { return root.get("location").in(city);
-        };
+        return (root, query, builder) -> root.get("location").in(city);
     }
-    public static Specification<ArtistProfile> hasLanguage(List<Language> languages){
-        return (root, query, builder) -> { Join<ArtistProfile, Language> join = root.join("languages");
+
+    public static Specification<ArtistProfile> hasLanguage(List<Language> languages) {
+        return (root, query, builder) -> {
+            Join<ArtistProfile, Language> join = root.join("languages");
             return join.in(languages);
         };
     }
+
     public static Specification<ArtistProfile> hasSkills(List<Subcategory> skill) {
-        return (root, query, criteriaBuilder) -> { Join<ArtistProfile, Subcategory> join = root.join("skills");
+        return (root, query, criteriaBuilder) -> {
+            Join<ArtistProfile, Subcategory> join = root.join("skills");
             return join.in(skill);
         };
     }
-    public static Specification<ArtistProfile> hasTag(List<Tag> tags){
-        return (root, query, builder) -> { Join<ArtistProfile, Tag> join = root.join("tags");
+
+    public static Specification<ArtistProfile> hasTag(List<Tag> tags) {
+        return (root, query, builder) -> {
+            Join<ArtistProfile, Tag> join = root.join("tags");
             return join.in(tags);
         };
     }
