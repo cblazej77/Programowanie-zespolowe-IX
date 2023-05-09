@@ -25,8 +25,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectDropdown from 'react-native-select-dropdown';
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
-
 const { darkLight, grey, black, primary, red } = Colors;
 
 const generateBoxShadowStyle = (
@@ -76,6 +76,11 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   const [languagesModalVisible, setLanguagesModalVisible] = useState(false);
   const [message, setMessage] = useState();
   const [messageType, setMessageType] = useState();
+  const [showStartEdu, setShowStartEdu] = useState(false);
+  const [showStartExp, setShowStartExp] = useState(false);
+  const [showEndEdu, setShowEndEdu] = useState(false);
+  const [showEndExp, setShowEndExp] = useState(false);
+  const [itemID, setItemID] = useState();
   //Hooks for temp values when editing
   const [bio, setBio] = useState('');
   const [level, setLevel] = useState('');
@@ -282,66 +287,46 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   async function updateArtistProfile() {
     let education = educationList;
     let experience = experienceList;
-    let status = true;
+
     education.map((item, index) => {
       delete item.id;
     });
     experience.map((item, index) => {
       delete item.id;
     });
-    for (let i = 0; i < education.length; ++i) {
-      if (
-        !moment(education[i].start_date, 'MM/YYYY').isValid() ||
-        !moment(education[i].end_date, 'MM/YYYY').isValid()
-      ) {
-        handleMessage('Niepoprawny zapis daty!', 'FAILED');
-        status = false;
-      }
-    }
-    for (let i = 0; i < experience.length; ++i) {
-      if (
-        !moment(experience[i].start_date, 'MM/YYYY').isValid() ||
-        !moment(experience[i].end_date, 'MM/YYYY').isValid()
-      ) {
-        handleMessage('Niepoprawny zapis daty!', 'FAILED');
-        status = false;
-      }
-    }
-    if (status) {
-      const response = await axios
-        .put(
-          baseURL + '/api/artist/updateArtistProfile',
-          {
-            bio: bio,
-            level: level,
-            location: location,
-            skills: skills,
-            tags: tags,
-            languages: languages,
-            education: education,
-            experience: experience,
-            website: website,
-            facebook: facebook,
-            linkedin: linkedin,
-            instagram: instagram,
-            dribble: dribble,
-            pinterest: pinterest,
-            twitter: twitter,
-          },
-          {
-            params: { username: userInfo.username },
-            headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-          },
-        )
-        .catch((error) => {
-          handleMessage('Wystąpił błąd', 'FAILED');
-          console.log(error);
-        });
-      if ((response.status = 200)) {
-        handleMessage('Zapisano zmiany!', 'SUCCESS');
-        experience = null;
-        education = null;
-      }
+    const response = await axios
+      .put(
+        baseURL + '/api/artist/updateArtistProfile',
+        {
+          bio: bio,
+          level: level,
+          location: location,
+          skills: skills,
+          tags: tags,
+          languages: languages,
+          education: education,
+          experience: experience,
+          website: website,
+          facebook: facebook,
+          linkedin: linkedin,
+          instagram: instagram,
+          dribble: dribble,
+          pinterest: pinterest,
+          twitter: twitter,
+        },
+        {
+          params: { username: userInfo.username },
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        },
+      )
+      .catch((error) => {
+        handleMessage('Wystąpił błąd', 'FAILED');
+        console.log(error);
+      });
+    if ((response.status = 200)) {
+      handleMessage('Zapisano zmiany!', 'SUCCESS');
+      experience = null;
+      education = null;
     }
   }
 
@@ -664,29 +649,51 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
                 placeholder="Wpisz stopień"
               />
             </View>
-            <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }}>
+            <View flexDirection="row" alignItems="center" style={{ marginBottom: 20, marginTop: 10 }}>
               <AppText>{'Od: '}</AppText>
-              <AppTextInput
-                maxLength={7}
-                style={{ flexWrap: 'wrap', width: '65%' }}
-                defaultValue={item.start_date}
-                onChangeText={(newText) => {
-                  item.start_date = newText;
+              <TouchableOpacity
+                onPress={() => {
+                  setItemID(item.id);
+                  setShowStartEdu(true);
                 }}
-                placeholder="Wpisz datę w formacie MM/YYYY"
-              />
+              >
+                <AppText style={{ fontSize: 16, marginLeft: 5 }}>{item.start_date}</AppText>
+              </TouchableOpacity>
+
+              {showStartEdu && item.id === itemID && (
+                <DateTimePicker
+                  testID="startDateTimePicker"
+                  value={new Date(moment(item.start_date, 'DD-MM-YYYY'))}
+                  mode="date"
+                  onChange={(event, newdate) => {
+                    item.start_date = moment(newdate).format('DD/MM/YYYY');
+                    setShowStartEdu(false);
+                  }}
+                />
+              )}
             </View>
-            <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }}>
+            <View flexDirection="row" alignItems="center" style={{ marginBottom: 20 }}>
               <AppText>{'Do: '}</AppText>
-              <AppTextInput
-                maxLength={7}
-                style={{ flexWrap: 'wrap', width: '65%' }}
-                defaultValue={item.end_date}
-                onChangeText={(newText) => {
-                  item.end_date = newText;
+              <TouchableOpacity
+                onPress={() => {
+                  setItemID(item.id);
+                  setShowEndEdu(true);
                 }}
-                placeholder="Wpisz datę rozpoczęcia w formacie MM/YYYY"
-              />
+              >
+                <AppText style={{ fontSize: 16, marginLeft: 5 }}>{item.end_date}</AppText>
+              </TouchableOpacity>
+
+              {showEndEdu && item.id === itemID && (
+                <DateTimePicker
+                  testID="startDateTimePicker"
+                  value={new Date(moment(item.end_date, 'DD-MM-YYYY'))}
+                  mode="date"
+                  onChange={(event, newdate) => {
+                    item.end_date = moment(newdate).format('DD/MM/YYYY');
+                    setShowEndEdu(false);
+                  }}
+                />
+              )}
             </View>
             <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }}>
               <AppText>{'Opis: '}</AppText>
@@ -791,27 +798,49 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
             </View>
             <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }}>
               <AppText>{'Od: '}</AppText>
-              <AppTextInput
-                maxLength={7}
-                style={{ flexWrap: 'wrap', width: '65%' }}
-                defaultValue={item.start_date}
-                onChangeText={(newText) => {
-                  item.start_date = newText;
+              <TouchableOpacity
+                onPress={() => {
+                  setItemID(item.id);
+                  setShowStartExp(true);
                 }}
-                placeholder="Wpisz datę rozpoczęcia w formacie MM/YYYY"
-              />
+              >
+                <AppText style={{ fontSize: 16, marginLeft: 5 }}>{item.start_date}</AppText>
+              </TouchableOpacity>
+
+              {showStartExp && item.id === itemID && (
+                <DateTimePicker
+                  testID="startDateTimePicker"
+                  value={new Date(moment(item.start_date, 'DD-MM-YYYY'))}
+                  mode="date"
+                  onChange={(event, newdate) => {
+                    item.start_date = moment(newdate).format('DD/MM/yyyy');
+                    setShowStartExp(false);
+                  }}
+                />
+              )}
             </View>
             <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }}>
               <AppText>{'Do: '}</AppText>
-              <AppTextInput
-                maxLength={7}
-                style={{ flexWrap: 'wrap', width: '65%' }}
-                defaultValue={item.end_date}
-                onChangeText={(newText) => {
-                  item.end_date = newText;
+              <TouchableOpacity
+                onPress={() => {
+                  setItemID(item.id);
+                  setShowEndExp(true);
                 }}
-                placeholder="Wpisz datę rozpoczęcia w formacie MM/YYYY"
-              />
+              >
+                <AppText style={{ fontSize: 16, marginLeft: 5 }}>{item.end_date}</AppText>
+              </TouchableOpacity>
+
+              {showEndExp && item.id === itemID && (
+                <DateTimePicker
+                  testID="startDateTimePicker"
+                  value={new Date(moment(item.end_date, 'DD-MM-YYYY'))}
+                  mode="date"
+                  onChange={(event, newdate) => {
+                    item.end_date = moment(newdate).format('DD/MM/yyyy');
+                    setShowEndExp(false);
+                  }}
+                />
+              )}
             </View>
             <View style={{ alignItems: 'center' }}>
               <TouchableOpacity onPress={() => handleDeleteExperienceElement(item.id)}>
