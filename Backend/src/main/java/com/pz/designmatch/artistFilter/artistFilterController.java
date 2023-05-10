@@ -1,5 +1,6 @@
 package com.pz.designmatch.artistFilter;
 
+import com.pz.designmatch.controller.UserProfileController;
 import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
@@ -8,63 +9,108 @@ import com.pz.designmatch.service.ArtistProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/artist")
 public class artistFilterController {
     public static final String apiVersionAccept = "application/json";
-    private final ArtistProfileRepository artistProfileRepository;
+    @Autowired
+    private ArtistProfileRepository artistProfileRepository;
 
-    public artistFilterController(ArtistProfileRepository artistProfileRepository) {
-        this.artistProfileRepository = artistProfileRepository;
-    }
-
-    @GetMapping(value = "/filter", produces = apiVersionAccept)
-    public ResponseEntity<Page<ShortProfileDto>> filterArtists(@RequestParam(name = "level", required = false) List<Level> level,
-                                                               @RequestParam(name = "location", required = false) List<City> city,
-                                                               @RequestParam(name = "category", required = false) List<Category> category,
-                                                               @RequestParam(name = "language", required = false) List<Language> languages,
-                                                               @RequestParam(name = "subcategory", required = false) List<Subcategory> subcategory,
-                                                               @RequestParam(name = "tags", required = false) List<Tag> tags,
+    @PostMapping(value = "/filter", produces = apiVersionAccept, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<ArtistFilterDto>> filterArtists(@RequestBody ArtistFilterDto request,
                                                                @RequestParam(defaultValue = "0", name = "page") int page,
                                                                @RequestParam(defaultValue = "2", name = "size") int size) {
         Specification<ArtistProfile> specification = Specification.where(null);
-        if (level != null && !level.isEmpty()) {
-            specification = specification.and(ArtistProfileSpecification.hasLevel(level));
+        if (request.getLevel() != null && !request.getLevel().isEmpty()) {
+            List<Level> levelList = new ArrayList<>();
+            for (String level : request.getLevel()) {
+                Level level1 = Level.fromDisplayName(level);
+                if (level1 != null) {
+                    levelList.add(level1);
+                } else {
+                    System.out.println("Error value: " + level);
+                }
+            }
+            specification = specification.and(ArtistProfileSpecification.hasLevel(levelList));
         }
-        if (city != null && !city.isEmpty()) {
-            specification = specification.and(ArtistProfileSpecification.hasCity(city));
+        if (request.getCity() != null && !request.getCity().isEmpty()) {
+            List<City> cityList = new ArrayList<>();
+            for (String city : request.getCity()) {
+                City city1 = City.fromDisplayName(city);
+                if (city1 != null) {
+                    cityList.add(city1);
+                } else {
+                    System.out.println("Error value: " + city);
+                }
+            }
+            specification = specification.and(ArtistProfileSpecification.hasCity(cityList));
         }
-        if (category != null && !category.isEmpty()) {
-            List<Subcategory> subcategoryList = category.stream()
-                    .flatMap(c -> Arrays.stream(Subcategory.values())
-                            .filter(s -> s.getCategory() == c))
-                    .collect(Collectors.toList());
+        if (request.getSkills() != null && !request.getSkills().isEmpty()) {
+            List<Subcategory> subcategoryList = new ArrayList<>();
+            for (String skill : request.getSkills()) {
+                Subcategory subcategory = Subcategory.fromDisplayName(skill);
+                if (subcategory != null) {
+                    subcategoryList.add(subcategory);
+                } else {
+                    System.out.println("Error value: " + skill);
+                }
+            }
             specification = specification.and(ArtistProfileSpecification.hasSkills(subcategoryList));
         }
-        if (languages != null && !languages.isEmpty()) {
-            specification = specification.and(ArtistProfileSpecification.hasLanguage(languages));
+        if (request.getLanguages() != null && !request.getLanguages().isEmpty()) {
+            List<Language> languageList = new ArrayList<>();
+            for (String language : request.getLanguages()) {
+                Language lang = Language.fromDisplayName(language);
+                if (lang != null) {
+                    languageList.add(lang);
+                } else {
+                    System.out.println("Error value: " + language);
+                }
+            }
+            specification = specification.and(ArtistProfileSpecification.hasLanguage(languageList));
         }
-        if (subcategory != null && !subcategory.isEmpty()) {
-            specification = specification.and(ArtistProfileSpecification.hasSkills(subcategory));
+        if (request.getTags() != null && !request.getTags().isEmpty()) {
+            List<Tag> tagList = new ArrayList<>();
+            for (String tag : request.getTags()) {
+                Tag tag1 = Tag.fromDisplayName(tag);
+                if (tag1 != null) {
+                    tagList.add(tag1);
+                } else {
+                    System.out.println("Error value: " + tag);
+                }
+            }
+            specification = specification.and(ArtistProfileSpecification.hasTag(tagList));
         }
-        if (tags != null && !tags.isEmpty()) {
-            specification = specification.and(ArtistProfileSpecification.hasTag(tags));
-        }
-        //List<ArtistProfile> artistProfileList = artistProfileRepository.findAll(specification);
-//        List<ArtistFilterDto> artistFilterDtos = new ArrayList<>();
-//        for (ArtistProfile artistProfile : artistProfileList){
+        Pageable paging = PageRequest.of(page, size);
+        Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, paging);
+        //Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToArtistDto);
+        Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ap -> new ArtistFilterDto(
+                ap.getLevel().stream().map(Level::toString).collect(Collectors.toSet()),
+                ap.getLocation().stream().map(City::toString).collect(Collectors.toSet()),
+                ap.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet()),
+                ap.getLanguages().stream().map(Language::toString).collect(Collectors.toSet()),
+                ap.getTags().stream().map(Tag::toString).collect(Collectors.toSet())
+        ));
+        //Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToShortDto);
+        return ResponseEntity.ok(artistFilterDtos);
+    }
+}
+
+
+   // List<ArtistFilterDto> artistFilterDtos = new ArrayList<>();
+//        for (ArtistProfile artistProfile : artistProfilePage){
 //            Set<String> skillsSet = artistProfile.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet());
 //            Set<String> languagesSet = artistProfile.getLanguages().stream().map(Language::toString).collect(Collectors.toSet());
 //            Set<String> tagsSet = artistProfile.getTags().stream().map(Tag::toString).collect(Collectors.toSet());
@@ -76,13 +122,5 @@ public class artistFilterController {
 //                    tagsSet
 //            );
 //            artistFilterDtos.add(artistFilterDto);
-//        }
-
-        Pageable paging = PageRequest.of(page, size);
-        Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, paging);
-        //Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, PageRequest.of(0, 2));
-        Page<ShortProfileDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToShortDto);
-        return ResponseEntity.ok(artistFilterDtos);
-    }
-}
+//        }}
 
