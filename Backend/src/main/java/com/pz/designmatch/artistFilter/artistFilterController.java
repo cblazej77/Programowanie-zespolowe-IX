@@ -1,25 +1,21 @@
 package com.pz.designmatch.artistFilter;
 
-import com.pz.designmatch.controller.UserProfileController;
-import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.repository.ArtistProfileRepository;
-import com.pz.designmatch.service.ArtistProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/artist")
@@ -97,8 +93,8 @@ public class artistFilterController {
         Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, paging);
         //Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToArtistDto);
         Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ap -> new ArtistFilterDto(
-                ap.getLevel().stream().map(Level::toString).collect(Collectors.toSet()),
-                ap.getLocation().stream().map(City::toString).collect(Collectors.toSet()),
+                Stream.of(ap.getLevel().toString()).collect(Collectors.toSet()),
+                Stream.of(ap.getLocation().toString()).collect(Collectors.toSet()),
                 ap.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet()),
                 ap.getLanguages().stream().map(Language::toString).collect(Collectors.toSet()),
                 ap.getTags().stream().map(Tag::toString).collect(Collectors.toSet())
@@ -109,7 +105,7 @@ public class artistFilterController {
 }
 
 
-   // List<ArtistFilterDto> artistFilterDtos = new ArrayList<>();
+// List<ArtistFilterDto> artistFilterDtos = new ArrayList<>();
 //        for (ArtistProfile artistProfile : artistProfilePage){
 //            Set<String> skillsSet = artistProfile.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet());
 //            Set<String> languagesSet = artistProfile.getLanguages().stream().map(Language::toString).collect(Collectors.toSet());

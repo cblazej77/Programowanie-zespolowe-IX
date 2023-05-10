@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pz.designmatch.model.enums.Language;
-import com.pz.designmatch.model.enums.Subcategory;
 import lombok.Getter;
 
 import java.util.Set;
@@ -40,18 +38,22 @@ public class ArtistFilterDto {
     public Set<String> getLevel() {
         return level;
     }
+
     @JsonGetter("city")
     public Set<String> getCity() {
         return city;
     }
+
     @JsonGetter("skills")
     public Set<String> getSkills() {
         return skills;
     }
+
     @JsonGetter("languages")
     public Set<String> getLanguages() {
         return languages;
     }
+
     @JsonGetter("tags")
     public Set<String> getTags() {
         return tags;
