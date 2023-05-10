@@ -93,7 +93,7 @@ public class artistFilterController {
         }
         Pageable paging = PageRequest.of(page, size);
         Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, paging);
-        Page<ShortProfileDto> shortProfileDtos = artistProfilePage.map(ArtistProfileService::mapToShortDto);
+        Page<ShortProfileDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToShortDto);
         //Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToArtistDto);
 //        Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ap -> new ArtistFilterDto(
 //                Stream.of(ap.getLevel().toString()).collect(Collectors.toSet()),
