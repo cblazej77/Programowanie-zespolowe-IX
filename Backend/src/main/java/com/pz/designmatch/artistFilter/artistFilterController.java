@@ -65,7 +65,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + skill);
                 }
             }
-            specification = specification.or(ArtistProfileSpecification.hasSkills(subcategoryList));
+            specification = specification.and(ArtistProfileSpecification.hasSkills(subcategoryList));
         }
         if (request.getLanguages() != null && !request.getLanguages().isEmpty()) {
             List<Language> languageList = new ArrayList<>();
@@ -77,7 +77,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + language);
                 }
             }
-            specification = specification.or(ArtistProfileSpecification.hasLanguage(languageList));
+            specification = specification.and(ArtistProfileSpecification.hasLanguage(languageList));
         }
         if (request.getTags() != null && !request.getTags().isEmpty()) {
             List<Tag> tagList = new ArrayList<>();
@@ -89,7 +89,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + tag);
                 }
             }
-            specification = specification.or(ArtistProfileSpecification.hasTag(tagList));
+            specification = specification.and(ArtistProfileSpecification.hasTag(tagList));
         }
         Pageable paging = PageRequest.of(page, size);
         Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, paging);
