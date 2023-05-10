@@ -39,7 +39,7 @@ public class ArtistFilterDto {
         return level;
     }
 
-    @JsonGetter("city")
+    @JsonGetter("location")
     public Set<String> getCity() {
         return city;
     }

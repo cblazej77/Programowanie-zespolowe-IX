@@ -27,7 +27,7 @@ public class artistFilterController {
     @PostMapping(value = "/filter", produces = apiVersionAccept, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<ArtistFilterDto>> filterArtists(@RequestBody ArtistFilterDto request,
                                                                @RequestParam(defaultValue = "0", name = "page") int page,
-                                                               @RequestParam(defaultValue = "2", name = "size") int size) {
+                                                               @RequestParam(defaultValue = "10", name = "size") int size) {
         Specification<ArtistProfile> specification = Specification.where(null);
         if (request.getLevel() != null && !request.getLevel().isEmpty()) {
             List<Level> levelList = new ArrayList<>();
@@ -39,7 +39,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + level);
                 }
             }
-            specification = specification.and(ArtistProfileSpecification.hasLevel(levelList));
+            specification = specification.or(ArtistProfileSpecification.hasLevel(levelList));
         }
         if (request.getCity() != null && !request.getCity().isEmpty()) {
             List<City> cityList = new ArrayList<>();
@@ -51,7 +51,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + city);
                 }
             }
-            specification = specification.and(ArtistProfileSpecification.hasCity(cityList));
+            specification = specification.or(ArtistProfileSpecification.hasCity(cityList));
         }
         if (request.getSkills() != null && !request.getSkills().isEmpty()) {
             List<Subcategory> subcategoryList = new ArrayList<>();
@@ -63,7 +63,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + skill);
                 }
             }
-            specification = specification.and(ArtistProfileSpecification.hasSkills(subcategoryList));
+            specification = specification.or(ArtistProfileSpecification.hasSkills(subcategoryList));
         }
         if (request.getLanguages() != null && !request.getLanguages().isEmpty()) {
             List<Language> languageList = new ArrayList<>();
@@ -75,7 +75,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + language);
                 }
             }
-            specification = specification.and(ArtistProfileSpecification.hasLanguage(languageList));
+            specification = specification.or(ArtistProfileSpecification.hasLanguage(languageList));
         }
         if (request.getTags() != null && !request.getTags().isEmpty()) {
             List<Tag> tagList = new ArrayList<>();
@@ -87,7 +87,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + tag);
                 }
             }
-            specification = specification.and(ArtistProfileSpecification.hasTag(tagList));
+            specification = specification.or(ArtistProfileSpecification.hasTag(tagList));
         }
         Pageable paging = PageRequest.of(page, size);
         Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, paging);
@@ -103,20 +103,4 @@ public class artistFilterController {
         return ResponseEntity.ok(artistFilterDtos);
     }
 }
-
-
-// List<ArtistFilterDto> artistFilterDtos = new ArrayList<>();
-//        for (ArtistProfile artistProfile : artistProfilePage){
-//            Set<String> skillsSet = artistProfile.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet());
-//            Set<String> languagesSet = artistProfile.getLanguages().stream().map(Language::toString).collect(Collectors.toSet());
-//            Set<String> tagsSet = artistProfile.getTags().stream().map(Tag::toString).collect(Collectors.toSet());
-//            ArtistFilterDto artistFilterDto = new ArtistFilterDto(
-//                    artistProfile.getLevel().toString(),
-//                    artistProfile.getLocation().toString(),
-//                    skillsSet,
-//                    languagesSet,
-//                    tagsSet
-//            );
-//            artistFilterDtos.add(artistFilterDto);
-//        }}
 
