@@ -17,12 +17,15 @@ public class CompanyProfile {
     @OneToOne
     private UserEntity user;
     private String name;
+    private String description;
     @Column(name = "profile_image_url")
     private String profileImageUrl;
     @Column(name = "profile_banner_url")
     private String profileBannerUrl;
+    private String NIP;
     private String website;
     private String facebook;
     private String linkedin;
     private String twitter;
+    private String instagram;
 }
