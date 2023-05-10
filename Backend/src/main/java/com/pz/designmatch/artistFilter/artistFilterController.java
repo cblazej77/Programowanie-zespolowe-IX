@@ -1,8 +1,10 @@
 package com.pz.designmatch.artistFilter;
 
+import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.repository.ArtistProfileRepository;
+import com.pz.designmatch.service.ArtistProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +27,7 @@ public class artistFilterController {
     private ArtistProfileRepository artistProfileRepository;
 
     @PostMapping(value = "/filter", produces = apiVersionAccept, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<ArtistFilterDto>> filterArtists(@RequestBody ArtistFilterDto request,
+    public ResponseEntity<Page<ShortProfileDto>> filterArtists(@RequestBody ArtistFilterDto request,
                                                                @RequestParam(defaultValue = "0", name = "page") int page,
                                                                @RequestParam(defaultValue = "10", name = "size") int size) {
         Specification<ArtistProfile> specification = Specification.where(null);
@@ -91,14 +93,15 @@ public class artistFilterController {
         }
         Pageable paging = PageRequest.of(page, size);
         Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, paging);
+        Page<ShortProfileDto> shortProfileDtos = artistProfilePage.map(ArtistProfileService::mapToShortDto);
         //Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToArtistDto);
-        Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ap -> new ArtistFilterDto(
-                Stream.of(ap.getLevel().toString()).collect(Collectors.toSet()),
-                Stream.of(ap.getLocation().toString()).collect(Collectors.toSet()),
-                ap.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet()),
-                ap.getLanguages().stream().map(Language::toString).collect(Collectors.toSet()),
-                ap.getTags().stream().map(Tag::toString).collect(Collectors.toSet())
-        ));
+//        Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ap -> new ArtistFilterDto(
+//                Stream.of(ap.getLevel().toString()).collect(Collectors.toSet()),
+//                Stream.of(ap.getLocation().toString()).collect(Collectors.toSet()),
+//                ap.getSkills().stream().map(Subcategory::toString).collect(Collectors.toSet()),
+//                ap.getLanguages().stream().map(Language::toString).collect(Collectors.toSet()),
+//                ap.getTags().stream().map(Tag::toString).collect(Collectors.toSet())
+//        ));
         //Page<ArtistFilterDto> artistFilterDtos = artistProfilePage.map(ArtistProfileService::mapToShortDto);
         return ResponseEntity.ok(artistFilterDtos);
     }
