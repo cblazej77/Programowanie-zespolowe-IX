@@ -207,6 +207,21 @@ export const  Bubble = styled.p`
   margin-top: 5px;
 `;
 
+export const  ModalBubble = styled.p`
+  padding: 5px 10px 5px 10px;
+  display: inline-flex;
+  margin-right: 15px;
+  border-radius: 15px;
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  ${(props) => props.checked === true && `
+        fontSize: 18px;
+        background-color: red;
+    `}
+`;
+
 export const BoldLabel = styled.h3`
   margin-bottom: 5px; 
 `;

@@ -122,6 +122,7 @@ const EditUserPage = () => {
   const [surname, setSurname] = useState("");
   const [city, setCity] = useState("");
   const [date, setDate] = useState("20.07.2001");//nie siciaga z bazy
+  const [education, setEducation] = useState([]);
 
   const [click, setClick] = useState(true);
   const [button, setButton] = useState(true);
@@ -252,7 +253,7 @@ const EditUserPage = () => {
     
     <>
     <Modal showModal={showModal} setShowModal={setShowModal} />
-    <ModalLinks showModal={showModalLinks} setShowModal={setShowModalLinks} />
+    <ModalLinks showModal={showModalLinks} setShowModal={setShowModalLinks} /> 
     {get ? (
       <ProfileWrapper>
         <TopSection>
@@ -337,7 +338,6 @@ const EditUserPage = () => {
                 <RightColumn>
                 <LeftInfoRow>
                     <HeaderText>Wykształcenie:</HeaderText>
-                    <ButtonEdit>Edytuj</ButtonEdit>
                   </LeftInfoRow>
                   <LeftInfoRow>
                     <InfoText>Nazwa szkoły/uczelni:</InfoText>

@@ -110,7 +110,7 @@ const closeModal = e => {
     };
 
     fetchData();
-}, [categories]);
+}, [categoriesData]);
 
 useEffect(
   () => {
