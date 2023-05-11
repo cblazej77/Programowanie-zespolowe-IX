@@ -49,8 +49,8 @@ public class ArtistProfileService {
                 artistProfile.getUser().getUsername(),
                 artistProfile.getUser().getFirstname(),
                 artistProfile.getUser().getLastname(),
-                artistProfile.getLocation().getDisplayName(),
-                artistProfile.getLevel().getDisplayName(),
+                artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : "",
+                artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : "",
                 artistProfile.getSkills().stream()
                         .limit(2)
                         .map(Skill::getDisplayName)
