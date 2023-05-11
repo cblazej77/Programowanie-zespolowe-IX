@@ -225,7 +225,7 @@ const Cards = () => {
             <StyledOption value="">Wybierz kategorię</StyledOption>
             {categoryOptions}
           </StyledSelect>
-          {/* {categoryCheckBoxes} */}
+          {categoryCheckBoxes}
         </FilterWrapper>
       </FilterLabel>
 
