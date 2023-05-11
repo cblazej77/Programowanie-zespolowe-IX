@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Colors, RegularText, StatsText, AppText, Avatar, Bubble, Line } from '../components/styles';
+import { Colors, RegularText, StatsText, AppText, Avatar, Bubble, Line } from '../../components/styles';
 import Stars from 'react-native-stars';
 //SecureStoring accessToken
 import * as SecureStore from 'expo-secure-store';
-import { default as baseURL } from '../components/AxiosAuth';
+import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
-import Loading from '../components/Loading';
+import Loading from '../../components/Loading';
 import Hyperlink from 'react-native-hyperlink';
 
 const { darkLight, link, black, primary } = Colors;
@@ -42,12 +42,12 @@ async function getValueFor(key) {
   return result;
 }
 
-const Profile = ({ navigation }) => {
+const ArtistProfile = ({ route, navigation }) => {
   const [token, setToken] = useState('');
-  const [userInfo, setUserInfo] = useState('');
   const [artistProfile, setArtistProfile] = useState('');
   const [isExperienceShown, setIsExperienceShown] = useState(false);
   const [isEducationShown, setIsEducationShown] = useState(false);
+  const username = route.params.username;
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
@@ -59,23 +59,16 @@ const Profile = ({ navigation }) => {
     console.log(t);
   }
 
-  async function getUserInfo() {
-    const u = await getValueFor('user');
-    setUserInfo(JSON.parse(u));
-    console.log(u);
-  }
-
   useEffect(() => {
     getAccessToken();
-    getUserInfo();
   }, []);
 
   useEffect(() => {
-    if (userInfo) {
+    if (username) {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: baseURL + '/api/artist/getArtistProfile?username=' + userInfo.username,
+        url: baseURL + '/api/artist/getArtistProfile?username=' + username,
         headers: {},
       };
 
@@ -92,7 +85,7 @@ const Profile = ({ navigation }) => {
 
       fetchData();
     }
-  }, [userInfo]);
+  }, [username]);
 
   function ListEducation() {
     if (artistProfile.education) {
@@ -213,7 +206,7 @@ const Profile = ({ navigation }) => {
       {artistProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-            <Avatar resizeMode="contain" source={require('../assets/img/avatar1.png')}></Avatar>
+            <Avatar resizeMode="contain" source={require('../../assets/img/avatar1.png')}></Avatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
               <Stars
                 default={3.5}
@@ -222,9 +215,9 @@ const Profile = ({ navigation }) => {
                 starSize={30}
                 half={true}
                 disabled={true}
-                fullStar={require('../assets/img/star.png')}
-                halfStar={require('../assets/img/star-half.png')}
-                emptyStar={require('../assets/img/star-outline.png')}
+                fullStar={require('../../assets/img/star.png')}
+                halfStar={require('../../assets/img/star-half.png')}
+                emptyStar={require('../../assets/img/star-outline.png')}
               />
               <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around' }}>
                 <View>
@@ -241,6 +234,39 @@ const Profile = ({ navigation }) => {
                 </View>
               </View>
             </View>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignContent: 'center',
+              justifyContent: 'space-evenly',
+            }}
+          >
+            <Pressable
+              onPress={() => {
+                navigation.navigate('Chat');
+              }}
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? 'lightgrey' : darkLight,
+                },
+                styles.ModalButton,
+              ]}
+            >
+              <AppText style={{ color: primary }}>Napisz wiadomość</AppText>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? 'lightgrey' : darkLight,
+                },
+                styles.ModalButton,
+              ]}
+            >
+              <AppText style={{ color: primary }}>Napisz opinię</AppText>
+            </Pressable>
           </View>
           <AppText style={styles.About}>O mnie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
@@ -301,7 +327,7 @@ const Profile = ({ navigation }) => {
   );
 };
 
-export default Profile;
+export default ArtistProfile;
 
 const styles = StyleSheet.create({
   HeaderViewStyle: {
@@ -331,5 +357,15 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginHorizontal: 10,
     color: black,
+  },
+  ModalButton: {
+    padding: 7,
+    borderRadius: 15,
+    fontSize: 16,
+    marginBottom: 10,
+    marginTop: 10,
+    alignItems: 'center',
+    marginRight: 5,
+    flexDirection: 'row',
   },
 });

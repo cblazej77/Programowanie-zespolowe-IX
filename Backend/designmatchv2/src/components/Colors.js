@@ -6,7 +6,7 @@ export const COLORS = {
     darkLight: "#4A4E69",
     darkLight2: "#888cab",
     brand: "#000FFF",
-    red: "#FF0000",
+    red: "#DA7676",
     green: "#47D531",
     white: "#F5F5F5",
     black: "#1D1D1F",

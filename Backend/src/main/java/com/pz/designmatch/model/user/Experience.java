@@ -1,11 +1,16 @@
 package com.pz.designmatch.model.user;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 
 @Entity
+@Setter
+@Getter
 @NoArgsConstructor
 public class Experience {
     @Id
@@ -17,11 +22,13 @@ public class Experience {
     private String company;
     private String city;
     private String position;
-    private YearMonth startDate;
-    private YearMonth endDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate startDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate endDate;
     private String description;
 
-    public Experience(ArtistProfile artistProfile, String company, String city, String position, YearMonth startDate, YearMonth endDate, String description) {
+    public Experience(ArtistProfile artistProfile, String company, String city, String position, LocalDate startDate, LocalDate endDate, String description) {
         this.artistProfile = artistProfile;
         this.company = company;
         this.city = city;
@@ -29,37 +36,5 @@ public class Experience {
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public ArtistProfile getArtistProfile() {
-        return artistProfile;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public YearMonth getStartDate() {
-        return startDate;
-    }
-
-    public YearMonth getEndDate() {
-        return endDate;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

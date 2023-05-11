@@ -245,19 +245,31 @@ export const FirstPhoto = styled(ProjectPhoto)`
     }
 `;
 
-export const SecondPhoto = styled(ProjectPhoto)`
+export const SecondPhoto = styled(ProjectPhoto)` 
+    transition: transform 0.3s ease;
+    &:hover {
+        transform: scale(1.05);
+    }
     @media screen and (max-width: 1280px) {
         display: none;
     }
 `;
 
 export const ThirdPhoto = styled(ProjectPhoto)`
+transition: transform 0.3s ease;
+    &:hover {
+        transform: scale(1.05);
+    }    
     @media screen and (max-width: 1400px) {
         display: none;
     }
 `;
 
 export const FourthPhoto = styled(ProjectPhoto)`
+    transition: transform 0.3s ease;
+    &:hover {
+        transform: scale(1.05);
+    }
     @media screen and (max-width: 1600px) {
         display: none;
     }
@@ -316,13 +328,16 @@ export const CardLabel = styled.div`
     height: 17rem;
     width: 95%;
     background: ${secondary1};
-    &:hover > ${FirstPhoto} {
-        transition: opacity 0.4s ease-out;
-        opacity: 0.1;
-    }
-    &:hover > ${DetailedInfoContainer} {
-        transition: opacity 0.4s ease-out;
-        opacity: 1;
+    @media screen and (min-width: 960px) {
+        &:hover > ${FirstPhoto} {
+            transition: opacity 0.4s ease-out;
+            opacity: 0.1;
+        }
+        &:hover > ${DetailedInfoContainer} {
+            transition: opacity 0.4s ease-out;
+            opacity: 1;
+            transform: scale(1.05);
+        }
     }
     @media screen and (max-width: 960px) {
         width: 95%;

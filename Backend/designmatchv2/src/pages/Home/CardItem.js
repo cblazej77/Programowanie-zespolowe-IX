@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   CardAvatar,
   CardLabel,
@@ -11,13 +11,12 @@ import {
   FourthPhoto,
   LevelText,
   NameText,
-  ProjectPhoto,
   RatingText,
   SecondPhoto,
   SimpleInfoContainer,
-  ThirdPhoto
-} from './CardsElement';
-import { Rating } from 'react-simple-star-rating';
+  ThirdPhoto,
+} from "./CardsElement";
+import { Rating } from "react-simple-star-rating";
 
 function CardItem(props) {
   return (
@@ -25,9 +24,16 @@ function CardItem(props) {
       <SimpleInfoContainer>
         <CardAvatar src={props.avatar} />
         <LevelText>{props.level}</LevelText>
-        <NameText>{props.name} {props.surname}</NameText>
+        <NameText>
+          {props.name} {props.surname}
+        </NameText>
         <div>
-          <Rating initialValue={props.rating} readonly={true} precision={0.5} size="1.6rem" />
+          <Rating
+            initialValue={props.rating}
+            readonly={true}
+            precision={0.5}
+            size="1.6rem"
+          />
           <RatingText>({props.ratingCount} opinii)</RatingText>
         </div>
       </SimpleInfoContainer>

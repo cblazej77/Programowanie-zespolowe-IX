@@ -1,5 +1,6 @@
 package com.pz.designmatch.service;
 
+import com.pz.designmatch.artistFilter.ArtistFilterDto;
 import com.pz.designmatch.dto.ArtistProfileDto;
 import com.pz.designmatch.dto.EducationDto;
 import com.pz.designmatch.dto.ExperienceDto;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -40,6 +42,34 @@ public class ArtistProfileService {
         this.userRepository = userRepository;
     }
 
+    public static ShortProfileDto mapToShortDto(ArtistProfile artistProfile) {
+        if (artistProfile == null)
+            return null;
+        return new ShortProfileDto(
+                artistProfile.getUser().getUsername(),
+                artistProfile.getUser().getFirstname(),
+                artistProfile.getUser().getLastname(),
+                artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
+                artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
+                artistProfile.getSkills().stream()
+                        .limit(2)
+                        .map(Subcategory::getDisplayName)
+                        .collect(Collectors.toSet())
+        );
+    }
+
+    public static ArtistFilterDto mapToArtistDto(ArtistProfile artistProfile) {
+        if (artistProfile == null)
+            return null;
+        return new ArtistFilterDto(
+                artistProfile.getLocation() != null ? Collections.singleton(artistProfile.getLocation().getDisplayName()) : null,
+                artistProfile.getLevel() != null ? Collections.singleton(artistProfile.getLevel().getDisplayName()) : null,
+                artistProfile.getSkills().stream().limit(2).map(Subcategory::getDisplayName).collect(Collectors.toSet()),
+                artistProfile.getLanguages().stream().limit(2).map(Language::getDisplayName).collect(Collectors.toSet()),
+                artistProfile.getTags().stream().limit(2).map(Tag::getDisplayName).collect(Collectors.toSet())
+        );
+    }
+
     @Transactional
     public ArtistProfileDto updateArtistProfileByUsername(String username, ArtistProfileDto artistProfileDto) {
 //        Optional<ArtistProfile> optionalArtistProfile = artistProfileRepository.findByUser_Username(username);
@@ -58,7 +88,7 @@ public class ArtistProfileService {
         if (user.isEmpty())
             throw new RuntimeException("This user doesn't exist: " + username);
         Optional<ArtistProfile> optionalArtistProfile = artistProfileRepository.findByUser_Username(username);
-        if (optionalArtistProfile.isEmpty()){
+        if (optionalArtistProfile.isEmpty()) {
             ArtistProfile newArtistProfile = new ArtistProfile();
             newArtistProfile.setUser(user.get());
             artistProfileRepository.save(newArtistProfile);
@@ -244,22 +274,6 @@ public class ArtistProfileService {
     private YearMonth deserializeYearMonth(String yearMonth) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");
         return YearMonth.parse(yearMonth, formatter);
-    }
-
-    public static ShortProfileDto mapToShortDto(ArtistProfile artistProfile) {
-        if (artistProfile == null)
-            return null;
-        return new ShortProfileDto(
-                artistProfile.getUser().getUsername(),
-                artistProfile.getUser().getFirstname(),
-                artistProfile.getUser().getLastname(),
-                artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
-                artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
-                artistProfile.getSkills().stream()
-                        .limit(2)
-                        .map(Subcategory::getDisplayName)
-                        .collect(Collectors.toSet())
-        );
     }
 
     public List<String> getAllUsernames() {

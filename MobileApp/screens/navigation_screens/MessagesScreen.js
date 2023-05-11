@@ -8,107 +8,118 @@ import { AppText, ChatLabel, HeaderText, LinearGradientStyle } from '../../compo
 import { Colors } from '../../components/styles';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const { primary, darkLight, darkLight2 } = Colors
+const { primary, darkLight, darkLight2 } = Colors;
 
 const DATA = [
   {
-    id: "1",
-    name: "Piotr",
-    surname: "Baran",
+    id: '1',
+    username: '',
+    name: 'Piotr',
+    surname: 'Baran',
     unseen_messages: 0,
     last_message_date: Date(2023, 3, 22),
-    last_message: "Ale zajmę się tym."
+    last_message: 'Ale zajmę się tym.',
   },
   {
-    id: "2",
-    name: "Tyberiusz",
-    surname: "Kowal",
+    id: '2',
+    username: '',
+    name: 'Tyberiusz',
+    surname: 'Kowal',
     unseen_messages: 0,
     last_message_date: Date(2023, 2, 12),
-    last_message: "Niestety nie mam w piątek czasu. Czy odpowiada Panu za tydzień? Ewentualnie mogę zrobić więcej."
+    last_message: 'Niestety nie mam w piątek czasu. Czy odpowiada Panu za tydzień? Ewentualnie mogę zrobić więcej.',
   },
   {
-    id: "3",
-    name: "Igor",
-    surname: "Nowak",
+    id: '3',
+    username: '',
+    name: 'Igor',
+    surname: 'Nowak',
     unseen_messages: 10,
     last_message_date: Date(2023, 12, 15),
-    last_message: "Zadzwonię do Pana jutro."
+    last_message: 'Zadzwonię do Pana jutro.',
   },
   {
-    id: "4",
-    name: "Miranda",
-    surname: "Duda",
+    id: '4',
+    username: '',
+    name: 'Miranda',
+    surname: 'Duda',
     unseen_messages: 0,
     last_message_date: Date(2022, 4, 21),
-    last_message: "Ok?"
+    last_message: 'Ok?',
   },
   {
-    id: "5",
-    name: "Ryszard",
-    surname: "Szulc",
+    id: '5',
+    username: '',
+    name: 'Ryszard',
+    surname: 'Szulc',
     unseen_messages: 0,
     last_message_date: Date(2023, 9, 29),
-    last_message: "Hej"
+    last_message: 'Hej',
   },
   {
-    id: "6",
-    name: "Hektor",
-    surname: "Lipiński",
+    id: '6',
+    username: '',
+    name: 'Hektor',
+    surname: 'Lipiński',
     unseen_messages: 2,
     last_message_date: Date(2023, 9, 3),
-    last_message: "Niestety nie"
+    last_message: 'Niestety nie',
   },
   {
-    id: "7",
-    name: "Hubert",
-    surname: "Jędrzejewski",
+    id: '7',
+    username: '',
+    name: 'Hubert',
+    surname: 'Jędrzejewski',
     unseen_messages: 8,
     last_message_date: Date(2022, 7, 4),
-    last_message: "Oczywiście"
+    last_message: 'Oczywiście',
   },
   {
-    id: "8",
-    name: "Iwon",
-    surname: "Gajewski",
+    id: '8',
+    username: '',
+    name: 'Iwon',
+    surname: 'Gajewski',
     unseen_messages: 4,
     last_message_date: Date(2022, 9, 19),
-    last_message: "Jasne"
+    last_message: 'Jasne',
   },
   {
-    id: "9",
-    name: "Matylda",
-    surname: "Kamińska",
+    id: '9',
+    username: '',
+    name: 'Matylda',
+    surname: 'Kamińska',
     unseen_messages: 3,
     last_message_date: Date(2023, 3, 13),
-    last_message: "Okej"
+    last_message: 'Okej',
   },
   {
-    id: "10",
-    name: "Adam",
-    surname: "Jarosz",
+    id: '10',
+    username: '',
+    name: 'Adam',
+    surname: 'Jarosz',
     unseen_messages: 1,
     last_message_date: Date(2022, 12, 12),
-    last_message: "Nie"
+    last_message: 'Nie',
   },
   {
-    id: "11",
-    name: "Gerwazy",
-    surname: "Majewski",
+    id: '11',
+    username: '',
+    name: 'Gerwazy',
+    surname: 'Majewski',
     unseen_messages: 10,
     last_message_date: Date(2022, 4, 15),
-    last_message: "Tak jest"
+    last_message: 'Tak jest',
   },
   {
-    id: "12",
-    name: "Jakub",
-    surname: "Kowalski",
+    id: '12',
+    username: '',
+    name: 'Jakub',
+    surname: 'Kowalski',
     unseen_messages: 0,
     last_message_date: Date(2022, 1, 7),
-    last_message: "Ok?"
+    last_message: 'Ok?',
   },
 ];
-
 
 // const Item = ({ title }) => {
 //   return (
@@ -176,33 +187,36 @@ const DATA = [
 // });
 
 function MessagesScreen({ navigation }) {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: primary}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
       <LinearGradient colors={[darkLight, darkLight2]}>
-      <ChatLabel style={{
-        height: 60,
-        justifyContent: 'center'
-      }}>
-        <HeaderText>Wiadomości</HeaderText>
-      </ChatLabel>
+        <ChatLabel
+          style={{
+            height: 60,
+            justifyContent: 'center',
+          }}
+        >
+          <HeaderText>Wiadomości</HeaderText>
+        </ChatLabel>
       </LinearGradient>
-      
-      <View style={{
-        flexDirection: "row",
-        justifyContent: "center",
-      }}>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}
+      >
         <TextInput
-        value={input}
-        onChangeText={(text) => setInput(text)}
-        backgroundColor={'#FFFFFF'}
-        placeholderTextColor={'#D6D6D6'}
-        placeholder="szukaj"
-        style={styles.TextInputStyle}
-      />
+          value={input}
+          onChangeText={(text) => setInput(text)}
+          backgroundColor={'#FFFFFF'}
+          placeholderTextColor={'#D6D6D6'}
+          placeholder="szukaj"
+          style={styles.TextInputStyle}
+        />
       </View>
-      <SearchFilter data={DATA} input={input} setInput={setInput} />
-      
+      <SearchFilter data={DATA} input={input} setInput={setInput} navigation={navigation} />
     </SafeAreaView>
   );
 }
@@ -210,11 +224,11 @@ function MessagesScreen({ navigation }) {
 export default MessagesScreen;
 
 const styles = StyleSheet.create({
-  TextInputStyle: { 
-    width: "90%",
+  TextInputStyle: {
+    width: '90%',
     margin: 15,
     borderRadius: 40,
     height: 25,
-    paddingLeft: 10
+    paddingLeft: 10,
   },
 });

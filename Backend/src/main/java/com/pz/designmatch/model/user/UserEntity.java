@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Entity
@@ -30,8 +28,7 @@ public class UserEntity {
     @PostPersist
     public void onCreate() {
         if (role == Role.ARTIST) {
-            ArtistProfile artistProfile = new ArtistProfile(this);
-            this.artistProfile = artistProfile;
+            this.artistProfile = new ArtistProfile(this);
         }
     }
 }

@@ -1,12 +1,15 @@
 package com.pz.designmatch.model.user;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 
 @Entity
+@Getter
 @Setter
 @NoArgsConstructor
 public class Education {
@@ -20,12 +23,14 @@ public class Education {
     private String faculty;
     private String fieldOfStudy;
     private String degree;
-    private YearMonth startDate;
-    private YearMonth endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
     private String description;
 
     public Education(ArtistProfile artistProfile, String schoolName, String faculty, String fieldOfStudy, String degree,
-                     YearMonth startDate, YearMonth endDate, String description) {
+                     LocalDate startDate, LocalDate endDate, String description) {
         this.artistProfile = artistProfile;
         this.schoolName = schoolName;
         this.faculty = faculty;
@@ -34,41 +39,5 @@ public class Education {
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public ArtistProfile getArtistProfile() {
-        return artistProfile;
-    }
-
-    public String getSchoolName() {
-        return schoolName;
-    }
-
-    public String getFaculty() {
-        return faculty;
-    }
-
-    public String getFieldOfStudy() {
-        return fieldOfStudy;
-    }
-
-    public String getDegree() {
-        return degree;
-    }
-
-    public YearMonth getStartDate() {
-        return startDate;
-    }
-
-    public YearMonth getEndDate() {
-        return endDate;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }
