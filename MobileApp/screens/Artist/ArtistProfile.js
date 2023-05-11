@@ -11,7 +11,7 @@ import axios from 'axios';
 import Loading from '../../components/Loading';
 import Hyperlink from 'react-native-hyperlink';
 
-const { darkLight, link, black, primary, white } = Colors;
+const { darkLight, link, black, primary } = Colors;
 
 const generateBoxShadowStyle = (
   xOffset,
@@ -255,7 +255,7 @@ const ArtistProfile = ({ route, navigation }) => {
                 styles.ModalButton,
               ]}
             >
-              <AppText style={{ color: white }}>Napisz wiadomość</AppText>
+              <AppText style={{ color: primary }}>Napisz wiadomość</AppText>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
@@ -265,7 +265,7 @@ const ArtistProfile = ({ route, navigation }) => {
                 styles.ModalButton,
               ]}
             >
-              <AppText style={{ color: white }}>Napisz opinię</AppText>
+              <AppText style={{ color: primary }}>Napisz opinię</AppText>
             </Pressable>
           </View>
           <AppText style={styles.About}>O mnie:</AppText>

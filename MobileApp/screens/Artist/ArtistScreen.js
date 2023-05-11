@@ -55,7 +55,14 @@ export default function ArtistScreen({ route, navigation }) {
               justifyContent: 'space-between',
             }}
           >
-            <HeaderText numberOfLines={1} style={{ width: '75%', marginLeft: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Ionicons name="arrow-back" size={38} style={{ color: primary, marginLeft: 5 }} />
+            </TouchableOpacity>
+            <HeaderText numberOfLines={1} style={{ width: '85%' }}>
               {route.params.firstname + ' ' + route.params.lastname}
             </HeaderText>
           </ChatLabel>
