@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Rating } from "react-simple-star-rating";
 import styled from "styled-components";
 import { default as axios } from "../../api/axios";
 import { COLORS } from "../../components/Colors";
 import Modal from "../../components/Modal";
-
+import ModalLinks from '../../components/ModalLinks';
 import {
   RightColumn,
   InfoRow,
-  LeftColumn as LeftColumn,
+  LeftColumn,
   Left,
-  SmallButton,
-  Button,
   Image,
   LeftWrapper,
   LineForm,
@@ -25,12 +23,15 @@ import {
   HeaderText,
   NameText,
   JobText,
-  RatingWrapper,
   DownSection,
   BubbleWrap,
   Bubble,
-  BoldLabel,
   DataTextArena,
+  InputInfoText,
+  LevelSelect,
+  LevelContainer,
+  StyledTextarea,
+  SmallInput,
 } from "./ProfileElements";
 import LoadingPage from "../LoadingPage";
 
@@ -39,9 +40,7 @@ import {
   CheckBoxWrapper,
   CheckBox,
   CategoryText,
-  StyledOptgroup,
   StyledOption,
-  StyledSelect,
 } from "../Home/CardsElement";
 
 const { secondary } = COLORS;
@@ -53,7 +52,6 @@ const getUserURL = process.env.REACT_APP_GET_USER;
 const getShortArtistProfileURL = process.env.REACT_APP_GET_SHORT_ARTIST_PROFILE;
 
 const AboutMe = styled.textarea`
-  margin: 0px 50px;
   height: ${(props) => props.hag};
   resize: none;
   overflow: auto;
@@ -62,10 +60,17 @@ const AboutMe = styled.textarea`
   zindex: 10;
 `;
 
+const AboutInput = styled(StyledTextarea)`
+  min-height: 15rem;
+  font-size: 1.2rem;
+  overflow-y: auto;
+  white-space: normal;
+`;
+
 const Nawias = styled.p`
-  border: 1px solid red;
   margin: auto 15px auto auto;
 `;
+
 const ButtonSave = styled.button`
   padding: 20px 50px;
   font-size: 1.2rem;
@@ -102,11 +107,16 @@ const EditUserPage = () => {
   const [get, setGet] = useState(null);
   const [height, setHeight] = useState("20px");
   //popUp
-  const [showModal, setShowModal] = useState(false);
+  const[showModal, setShowModal] = useState(false);
+  const[showModalLinks, setShowModalLinks] = useState(false);
 
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
+
+  const openModalLinks = () =>{
+    setShowModalLinks(prev => !prev);
+}
 
   //edycja profilu
   const [bio, setBio] = useState("");
@@ -140,6 +150,7 @@ const EditUserPage = () => {
     url: getArtistProfileURL + profileName,
     headers: {},
   };
+
   let profileNameData = {
     method: "get",
     maxBodyLength: Infinity,
@@ -257,7 +268,21 @@ const EditUserPage = () => {
               <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>
                 Zmień zdjęcie(ND)
               </ButtonEdit>
-              <div>
+              <InputInfoText>Imię:</InputInfoText>
+              <NameText
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <InputInfoText>Nazwisko:</InputInfoText>
+              <NameText
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
+              />
+              <InputInfoText>Poziom doświadczenia:</InputInfoText>
+              <LevelContainer>
+                <LevelSelect>{levelOptions}</LevelSelect>
+              </LevelContainer>
+              {/* <NameContainer>
                 <NameText
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -266,7 +291,7 @@ const EditUserPage = () => {
                   value={surname}
                   onChange={(e) => setSurname(e.target.value)}
                 />
-              </div>
+              </NameContainer>
               <StyledSelect>{levelOptions}</StyledSelect>
               {!showModal && (
                 <RatingWrapper>
@@ -290,17 +315,17 @@ const EditUserPage = () => {
               >
                 <SmallButton>Napisz opinię</SmallButton>
                 <SmallButton> Obserwuj</SmallButton>
-              </div>
+              </div> */}
             </LeftWrapper>
             <RightWrapper>
-              <BoldLabel>O mnie: </BoldLabel>
-              <AboutMe
+              <InputInfoText>O mnie: </InputInfoText>
+              <AboutInput
                 hag={height}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 maxLength={maxChars}
                 onKeyDown={(e) => handleKeyDown(e)}
-              ></AboutMe>
+              />
               <Nawias>
                 ({chars}/{maxChars})
               </Nawias>
@@ -308,24 +333,16 @@ const EditUserPage = () => {
               <Left>
                 <InfoRow>
                   <LeftColumn>
-                    <LeftInfoRow>
-                      <InfoText>Członek odd:</InfoText>
-                      <DataTextArena
-                        value={date}
-                        onChange={(e) => hanldeDate(e)}
-                      />
-                    </LeftInfoRow>
-                    <LeftInfoRow>
-                      <InfoText>Miejscowość:</InfoText>
-                      <DataTextArena
+                    <InputInfoText>Członek od:</InputInfoText>
+                    <SmallInput
+                      value={date}
+                      onChange={(e) => hanldeDate(e)}
+                    />
+                      <InputInfoText>Miejscowość:</InputInfoText>
+                      <SmallInput
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                       />
-                    </LeftInfoRow>
-                    <LeftInfoRow>
-                      <InfoText>Prace:</InfoText>
-                      <DataText>20</DataText>
-                    </LeftInfoRow>
                     <LineForm />
                     <LeftInfoRow>
                       <HeaderText>Języki:</HeaderText>

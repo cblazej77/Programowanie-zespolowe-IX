@@ -374,3 +374,8 @@ export const DropDownInfoText = styled(AppText)`
     font-size: 23px;
     color: ${darkLight};
 `;
+
+export const DropDownSubcategoryText = styled(AppText)`
+    font-size: 20px;
+    color: ${darkLight};
+`;

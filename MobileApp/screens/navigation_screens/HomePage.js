@@ -17,13 +17,15 @@ import {
   HeaderText,
   LineForm,
   DropDownInfoText,
+  DropDownSubcategoryText,
 } from './../../components/styles';
 import SearchFilter from '../../components/SearchFilter';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
-import BASE_URL, { default as baseURL } from '../../components/AxiosAuth';
+import BASE_URL from '../../components/AxiosAuth';
 import axios from 'axios';
 import CardItem from '../../components/CardItem';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 const { width } = Dimensions.get('window');
 const { primary, secondary, darkLight, white, grey, black } = Colors;
@@ -33,11 +35,46 @@ export default function HomePage({ navigation }) {
   const [tags, setTags] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [levels, setLevels] = useState([]);
+  const [levelsFiltr, setLevelsFiltr] = useState([]);
+  const [citiesFiltr, setCitiesFiltr] = useState([]);
+  const [tagsFiltr, setTagsFiltr] = useState([]);
+  const [languagesFiltr, setLanguagesFiltr] = useState([]);
+  const [categoriesFiltr, setCategoriesFiltr] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [input, setInput] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showLevels, setShowLevels] = useState(false);
+  const [showLanguages, setShowLanguages] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
+  const [showTags, setShowTags] = useState(false);
+  const [showLocations, setShowLocations] = useState(false);
 
   const sort = ['ocena: najwyższa', 'ocena: najniższa', 'ostatnia aktywność'];
+
+  // function handleAddCategories(skill) {
+  //   setCategories((categories) => [...categories, skill]);
+  // }
+
+  function handleAddTagsFiltr(filtr) {
+    setTagsFiltr((tagsFiltr) => [...tagsFiltr, filtr]);
+  }
+
+  function handleAddLanguagesFiltr(filtr) {
+    setLanguagesFiltr((languagesFiltr) => [...languagesFiltr, filtr]);
+  }
+
+  function handleAddCategoriesFiltr(filtr) {
+    setCategoriesFiltr((categoriesFiltr) => [...categoriesFiltr, filtr]);
+  }
+
+  function handleAddCitiesFiltr(filtr) {
+    setCitiesFiltr((citiesFiltr) => [...citiesFiltr, filtr]);
+  }
+
+  function handleAddLevelsFiltr(filtr) {
+    setLevelsFiltr((levelsFiltr) => [...levelsFiltr, filtr]);
+  }
 
   const citiesData = useMemo(
     () => ({
@@ -69,6 +106,16 @@ export default function HomePage({ navigation }) {
     [],
   );
 
+  const levelsData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: BASE_URL + '/api/artist/getAvailableLevels',
+      headers: {},
+    }),
+    [],
+  );
+
   const categoriesData = useMemo(
     () => ({
       method: 'get',
@@ -81,9 +128,9 @@ export default function HomePage({ navigation }) {
 
   const filteredData = useMemo(
     () => ({
-      method: 'get',
+      method: 'post',
       maxBodyLength: Infinity,
-      url: BASE_URL + '/artist/filter?level=&location=&category=&language=&subcategory=&tags=&page=0&size=10',
+      url: BASE_URL + '/artist/filter?page=0&size=10',
     }),
     [],
   );
@@ -91,87 +138,146 @@ export default function HomePage({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, filteredResponse] =
-          await Promise.all([
+        const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
+          [
             axios.request(citiesData),
             axios.request(tagsData),
             axios.request(categoriesData),
             axios.request(languagesData),
-            axios.request(filteredData),
-          ]);
+            axios.request(levelsData),
+          ],
+        );
         setCities(citiesResponse.data);
         setTags(tagsResponse.data);
-        setCategories(categoriesResponse.data);
+        setLevels(levelsResponse.data);
         setLanguages(languagesResponse.data);
-        setFiltered(filteredResponse.data);
+        setCategories(categoriesResponse.data);
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchData();
-  }, [citiesData, tagsData, categoriesData, languagesData, filteredData]);
+  }, [citiesData, tagsData, categoriesData, languagesData, levelsData]);
 
-  const categoryOptions = useMemo(() => {
+  const categoriesList = useMemo(() => {
     if (!Array.isArray(categories.categories)) {
       return null;
     }
 
-    return (
-      <SelectDropdown
-        data={categories.categories.map((category) => category.name)}
-        defaultValueByIndex={0}
-        onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
-        }}
-        buttonTextAfterSelection={(selectedItem, index) => {
-          return selectedItem;
-        }}
-        rowTextForSelection={(item, index) => {
-          return item;
-        }}
-        buttonStyle={styles.ModalDropdownButtonStyle}
-        buttonTextStyle={styles.ModalDropdownButtonTextStyle}
-        renderDropdownIcon={(isOpened) => {
-          return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
-        }}
-        dropdownIconPosition={'right'}
-        dropdownStyle={styles.ModalDropDownStyle1}
-        rowStyle={styles.ModalDropdownRowStyle}
-        rowTextStyle={styles.ModalDropdownRowTextStyle}
-      />
-    );
+    const list = categories.categories.map((category, indexC) => (
+      <View key={indexC}>
+        <DropDownSubcategoryText>{category.name}</DropDownSubcategoryText>
+        {category.subcategories.map((subcategory, indexS) => (
+          <View style={{ padding: 5 }} key={indexS}>
+            <BouncyCheckbox
+              size={25}
+              fillColor={darkLight}
+              unfillColor={primary}
+              text={subcategory}
+              iconStyle={{ borderColor: darkLight }}
+              innerIconStyle={{ borderWidth: 1 }}
+              textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
+              onPress={(isChecked) => {}}
+            ></BouncyCheckbox>
+          </View>
+        ))}
+      </View>
+    ));
+
+    return <View style={{ marginLeft: 45, padding: 10 }}>{list}</View>;
   });
 
-  const subcategoryOptions = useMemo(() => {
-    if (!Array.isArray(categories.categories)) {
+  const levelsList = useMemo(() => {
+    if (!levels) {
       return null;
     }
 
-    return (
-      <SelectDropdown
-        data={categories.categories.flatMap((category) => category.subcategories)}
-        defaultValueByIndex={0}
-        onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
-        }}
-        buttonTextAfterSelection={(selectedItem, index) => {
-          return selectedItem;
-        }}
-        rowTextForSelection={(item, index) => {
-          return item;
-        }}
-        buttonStyle={styles.ModalDropdownButtonStyle}
-        buttonTextStyle={styles.ModalDropdownButtonTextStyle}
-        renderDropdownIcon={(isOpened) => {
-          return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
-        }}
-        dropdownIconPosition={'right'}
-        dropdownStyle={styles.ModalDropDownStyle1}
-        rowStyle={styles.ModalDropdownRowStyle}
-        rowTextStyle={styles.ModalDropdownRowTextStyle}
-      />
-    );
+    const list = levels.map((item, index) => (
+      <View style={{ padding: 5 }} key={index}>
+        <BouncyCheckbox
+          size={25}
+          fillColor={darkLight}
+          unfillColor={primary}
+          text={item}
+          iconStyle={{ borderColor: darkLight }}
+          innerIconStyle={{ borderWidth: 1 }}
+          textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
+          onPress={(isChecked) => {}}
+        ></BouncyCheckbox>
+      </View>
+    ));
+
+    return <View style={{ marginLeft: 45, padding: 10 }}>{list}</View>;
+  });
+
+  const locationsList = useMemo(() => {
+    if (!cities) {
+      return null;
+    }
+
+    const list = cities.map((item, index) => (
+      <View style={{ padding: 5 }} key={index}>
+        <BouncyCheckbox
+          size={25}
+          fillColor={darkLight}
+          unfillColor={primary}
+          text={item}
+          iconStyle={{ borderColor: darkLight }}
+          innerIconStyle={{ borderWidth: 1 }}
+          textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
+          onPress={(isChecked) => {}}
+        ></BouncyCheckbox>
+      </View>
+    ));
+
+    return <View style={{ marginLeft: 45, padding: 10 }}>{list}</View>;
+  });
+
+  const languagesList = useMemo(() => {
+    if (!languages) {
+      return null;
+    }
+
+    const list = languages.map((item, index) => (
+      <View style={{ padding: 5 }} key={index}>
+        <BouncyCheckbox
+          size={25}
+          fillColor={darkLight}
+          unfillColor={primary}
+          text={item}
+          iconStyle={{ borderColor: darkLight }}
+          innerIconStyle={{ borderWidth: 1 }}
+          textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
+          onPress={(isChecked) => {}}
+        ></BouncyCheckbox>
+      </View>
+    ));
+
+    return <View style={{ marginLeft: 45, padding: 10 }}>{list}</View>;
+  });
+
+  const tagsList = useMemo(() => {
+    if (!tags) {
+      return null;
+    }
+
+    const list = tags.map((item, index) => (
+      <View style={{ padding: 5 }} key={index}>
+        <BouncyCheckbox
+          size={25}
+          fillColor={darkLight}
+          unfillColor={primary}
+          text={item}
+          iconStyle={{ borderColor: darkLight }}
+          innerIconStyle={{ borderWidth: 1 }}
+          textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
+          onPress={(isChecked) => {}}
+        ></BouncyCheckbox>
+      </View>
+    ));
+
+    return <View style={{ marginLeft: 45, padding: 10 }}>{list}</View>;
   });
 
   const filteredCards = useMemo(() => {
@@ -227,89 +333,108 @@ export default function HomePage({ navigation }) {
                 </View>
               </TouchableOpacity>
               <LineForm />
-              <View style={styles.ModalFilterViewStyle}>
-                <DropDownInfoText>Skąd?</DropDownInfoText>
-                <SelectDropdown
-                  data={cities}
-                  defaultValueByIndex={0}
-                  onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index);
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    return item;
-                  }}
-                  buttonStyle={styles.ModalDropdownButtonStyle}
-                  buttonTextStyle={styles.ModalDropdownButtonTextStyle}
-                  renderDropdownIcon={(isOpened) => {
-                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
-                  }}
-                  dropdownIconPosition={'right'}
-                  dropdownStyle={styles.ModalDropDownStyle1}
-                  rowStyle={styles.ModalDropdownRowStyle}
-                  rowTextStyle={styles.ModalDropdownRowTextStyle}
-                />
-              </View>
-              <View style={styles.ModalFilterViewStyle}>
-                <DropDownInfoText>Języki</DropDownInfoText>
-                <SelectDropdown
-                  data={languages}
-                  defaultValueByIndex={0}
-                  onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index);
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    return item;
-                  }}
-                  buttonStyle={styles.ModalDropdownButtonStyle}
-                  buttonTextStyle={styles.ModalDropdownButtonTextStyle}
-                  renderDropdownIcon={(isOpened) => {
-                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
-                  }}
-                  dropdownIconPosition={'right'}
-                  dropdownStyle={styles.ModalDropDownStyle1}
-                  rowStyle={styles.ModalDropdownRowStyle}
-                  rowTextStyle={styles.ModalDropdownRowTextStyle}
-                />
-              </View>
-              <View style={styles.ModalFilterViewStyle}>
-                <DropDownInfoText>Tagi</DropDownInfoText>
-                <SelectDropdown
-                  data={tags}
-                  defaultValueByIndex={0}
-                  onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index);
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    return item;
-                  }}
-                  buttonStyle={styles.ModalDropdownButtonStyle}
-                  buttonTextStyle={styles.ModalDropdownButtonTextStyle}
-                  renderDropdownIcon={(isOpened) => {
-                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
-                  }}
-                  dropdownIconPosition={'right'}
-                  dropdownStyle={styles.ModalDropDownStyle1}
-                  rowStyle={styles.ModalDropdownRowStyle}
-                  rowTextStyle={styles.ModalDropdownRowTextStyle}
-                />
-              </View>
-              <View style={styles.ModalFilterViewStyle}>
-                <DropDownInfoText>Kategorie</DropDownInfoText>
-                {categoryOptions}
-              </View>
-              <View style={styles.ModalFilterViewStyle}>
-                <DropDownInfoText>Podkategorie</DropDownInfoText>
-                {subcategoryOptions}
-              </View>
+              <ScrollView style={{ maxWidth: '95%', width: '90%' }}>
+                <View style={styles.ModalFilterViewStyle}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <DropDownInfoText style={{ marginRight: 15 }}>Poziomy:</DropDownInfoText>
+                    <TouchableOpacity
+                      style={{ width: '60%' }}
+                      onPress={() => {
+                        setShowLevels(!showLevels);
+                      }}
+                    >
+                      <FontAwesome name={showLevels ? 'chevron-down' : 'chevron-left'} color={'#A9A9A9'} size={18} />
+                    </TouchableOpacity>
+                  </View>
+
+                  {showLevels ? levelsList : <></>}
+                </View>
+                <View style={styles.ModalFilterViewStyle}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <DropDownInfoText style={{ marginRight: 15 }}>Skąd:</DropDownInfoText>
+                    <TouchableOpacity
+                      style={{ width: '60%' }}
+                      onPress={() => {
+                        setShowLocations(!showLocations);
+                      }}
+                    >
+                      <FontAwesome name={showLocations ? 'chevron-down' : 'chevron-left'} color={'#A9A9A9'} size={18} />
+                    </TouchableOpacity>
+                  </View>
+                  {showLocations ? locationsList : <></>}
+                </View>
+                <View style={styles.ModalFilterViewStyle}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <DropDownInfoText style={{ marginRight: 15 }}>Języki:</DropDownInfoText>
+                    <TouchableOpacity
+                      style={{ width: '60%' }}
+                      onPress={() => {
+                        setShowLanguages(!showLanguages);
+                      }}
+                    >
+                      <FontAwesome name={showLanguages ? 'chevron-down' : 'chevron-left'} color={'#A9A9A9'} size={18} />
+                    </TouchableOpacity>
+                  </View>
+                  {showLanguages ? languagesList : <></>}
+                </View>
+                <View style={styles.ModalFilterViewStyle}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <DropDownInfoText style={{ marginRight: 15 }}>Języki:</DropDownInfoText>
+                    <TouchableOpacity
+                      style={{ width: '60%' }}
+                      onPress={() => {
+                        setShowTags(!showTags);
+                      }}
+                    >
+                      <FontAwesome name={showTags ? 'chevron-down' : 'chevron-left'} color={'#A9A9A9'} size={18} />
+                    </TouchableOpacity>
+                  </View>
+                  {showTags ? tagsList : <></>}
+                </View>
+                <View style={styles.ModalFilterViewStyle}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'baseline',
+                    }}
+                  >
+                    <DropDownInfoText style={{ marginRight: 15 }}>Umiejętności:</DropDownInfoText>
+                    <TouchableOpacity
+                      style={{ width: '60%' }}
+                      onPress={() => {
+                        setShowCategories(!showCategories);
+                      }}
+                    >
+                      <FontAwesome
+                        name={showCategories ? 'chevron-down' : 'chevron-left'}
+                        color={'#A9A9A9'}
+                        size={18}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  {showCategories ? categoriesList : <></>}
+                </View>
+              </ScrollView>
             </View>
           </View>
         </Modal>
@@ -419,8 +544,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
   },
   ModalFilterViewStyle: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     width: '100%',
     marginVertical: 20,

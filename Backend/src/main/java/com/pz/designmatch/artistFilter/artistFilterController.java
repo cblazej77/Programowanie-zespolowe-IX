@@ -41,7 +41,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + level);
                 }
             }
-            specification = specification.or(ArtistProfileSpecification.hasLevel(levelList));
+            specification = specification.and(ArtistProfileSpecification.hasLevel(levelList));
         }
         if (request.getCity() != null && !request.getCity().isEmpty()) {
             List<City> cityList = new ArrayList<>();
@@ -53,7 +53,7 @@ public class artistFilterController {
                     System.out.println("Error value: " + city);
                 }
             }
-            specification = specification.or(ArtistProfileSpecification.hasCity(cityList));
+            specification = specification.and(ArtistProfileSpecification.hasCity(cityList));
         }
         if (request.getSkills() != null && !request.getSkills().isEmpty()) {
             List<Subcategory> subcategoryList = new ArrayList<>();

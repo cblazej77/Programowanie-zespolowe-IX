@@ -124,12 +124,16 @@ export const CheckBoxLabel = styled.label`
     ${CheckBox}:focus + & {
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
     }
+    @media screen and (max-width: 960px) {
+        width: 3vh;
+        height: 3vh;
+        }
 `;
 
 // do zmiany
 export const JobText = styled(SubtitleText)`
     color: ${gray1};
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin: 0;
     cursor: default;
     &:hover {
@@ -138,6 +142,9 @@ export const JobText = styled(SubtitleText)`
     ${CheckBox}:checked + & {
         color: ${darkLight};
     }
+     @media screen and (max-width: 960px) {
+        font-size: 3vw;
+        }
 `;
 
 export const CheckBoxWrapper = styled.div`
