@@ -7,13 +7,13 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class CategoryDto {
+public class SkillsCategoryDto {
     private final String name;
-    private final List<String> subcategory;
+    private final List<String> skills;
 
     @JsonCreator
-    public CategoryDto(@JsonProperty String name, @JsonProperty("subcategories") List<String> subcategory) {
+    public SkillsCategoryDto(@JsonProperty String name, @JsonProperty("subcategories") List<String> skills) {
         this.name = name;
-        this.subcategory = subcategory;
+        this.skills = skills;
     }
 }

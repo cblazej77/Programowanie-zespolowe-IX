@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.Collection;
 
 @Getter
-public enum Category {
+public enum SkillsCategory {
     LOGO_AND_IDENTITY("Logo i identyfikacja wizualna"),
     WEB_AND_MOBILE("Strony internetowe i aplikacje mobilne"),
     MARKETING_AND_ADVERTISEMENT("Marketing i reklama"),
@@ -14,14 +14,14 @@ public enum Category {
     PACKAGING_AND_LABELS("Opakowania i etykiety");
     private final String displayName;
 
-    Category(String displayName) {
+    SkillsCategory(String displayName) {
         this.displayName = displayName;
     }
 
-    public static Category fromDisplayName(String displayName) {
-        for (Category category : Category.values()) {
-            if (category.displayName.equalsIgnoreCase(displayName)) {
-                return category;
+    public static SkillsCategory fromDisplayName(String displayName) {
+        for (SkillsCategory skillsCategory : SkillsCategory.values()) {
+            if (skillsCategory.displayName.equalsIgnoreCase(displayName)) {
+                return skillsCategory;
             }
         }
         return null;
@@ -31,7 +31,7 @@ public enum Category {
         return displayName;
     }
 
-    public Collection<Subcategory> getSubcategories() {
-        return Subcategory.getSubcategoriesByCategory(this);
+    public Collection<Skill> getSkills() {
+        return Skill.getSkillsByCategory(this);
     }
 }

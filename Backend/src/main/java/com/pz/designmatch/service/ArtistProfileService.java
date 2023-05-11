@@ -53,7 +53,7 @@ public class ArtistProfileService {
                 artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
                 artistProfile.getSkills().stream()
                         .limit(2)
-                        .map(Subcategory::getDisplayName)
+                        .map(Skill::getDisplayName)
                         .collect(Collectors.toSet())
         );
     }
@@ -64,7 +64,7 @@ public class ArtistProfileService {
         return new ArtistFilterDto(
                 artistProfile.getLocation() != null ? Collections.singleton(artistProfile.getLocation().getDisplayName()) : null,
                 artistProfile.getLevel() != null ? Collections.singleton(artistProfile.getLevel().getDisplayName()) : null,
-                artistProfile.getSkills().stream().limit(2).map(Subcategory::getDisplayName).collect(Collectors.toSet()),
+                artistProfile.getSkills().stream().limit(2).map(Skill::getDisplayName).collect(Collectors.toSet()),
                 artistProfile.getLanguages().stream().limit(2).map(Language::getDisplayName).collect(Collectors.toSet()),
                 artistProfile.getTags().stream().limit(2).map(Tag::getDisplayName).collect(Collectors.toSet())
         );
@@ -107,7 +107,7 @@ public class ArtistProfileService {
 
         if (artistProfileDto.getSkills() != null)
             existingArtistProfile.setSkills(artistProfileDto.getSkills().stream()
-                    .map(Subcategory::fromDisplayName)
+                    .map(Skill::fromDisplayName)
                     .collect(Collectors.toSet()));
 
         if (artistProfileDto.getTags() != null)
@@ -183,7 +183,7 @@ public class ArtistProfileService {
                 artistProfile.getLevel() != null ? artistProfile.getLevel().getDisplayName() : null,
                 artistProfile.getLocation() != null ? artistProfile.getLocation().getDisplayName() : null,
                 artistProfile.getSkills().stream()
-                        .map(Subcategory::getDisplayName)
+                        .map(Skill::getDisplayName)
                         .collect(Collectors.toSet()),
                 artistProfile.getTags().stream()
                         .map(Tag::getDisplayName)

@@ -12,8 +12,8 @@ public class ArtistProfileSpecification {
         return (root, query, builder) -> root.get("level").in(level);
     }
 
-    public static Specification<ArtistProfile> hasCategory(List<Category> category) {
-        return (root, query, builder) -> root.get("category").in(category);
+    public static Specification<ArtistProfile> hasCategory(List<SkillsCategory> skillsCategory) {
+        return (root, query, builder) -> root.get("category").in(skillsCategory);
     }
 
     public static Specification<ArtistProfile> hasCity(List<City> city) {
@@ -27,9 +27,9 @@ public class ArtistProfileSpecification {
         };
     }
 
-    public static Specification<ArtistProfile> hasSkills(List<Subcategory> skill) {
+    public static Specification<ArtistProfile> hasSkills(List<Skill> skill) {
         return (root, query, criteriaBuilder) -> {
-            Join<ArtistProfile, Subcategory> join = root.join("skills");
+            Join<ArtistProfile, Skill> join = root.join("skills");
             return join.in(skill);
         };
     }

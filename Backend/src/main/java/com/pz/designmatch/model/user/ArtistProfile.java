@@ -33,9 +33,9 @@ public class ArtistProfile {
     private Level level;
     @Enumerated(EnumType.STRING)
     private City location;
-    @ElementCollection(targetClass = Subcategory.class)
+    @ElementCollection(targetClass = Skill.class)
     @Enumerated(EnumType.STRING)
-    private Set<Subcategory> skills;
+    private Set<Skill> skills;
     @ElementCollection(targetClass = Tag.class)
     @Enumerated(EnumType.STRING)
     private Set<Tag> tags;

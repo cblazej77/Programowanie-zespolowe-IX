@@ -1,9 +1,9 @@
 package com.pz.designmatch.util;
 
-import com.pz.designmatch.dto.response.AvailableCategoriesDto;
-import com.pz.designmatch.dto.response.CategoryDto;
-import com.pz.designmatch.model.enums.Category;
-import com.pz.designmatch.model.enums.Subcategory;
+import com.pz.designmatch.dto.response.AvailableSkillsCategoriesDto;
+import com.pz.designmatch.dto.response.SkillsCategoryDto;
+import com.pz.designmatch.model.enums.SkillsCategory;
+import com.pz.designmatch.model.enums.Skill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,20 +11,20 @@ import java.util.stream.Collectors;
 
 public class AvailableCategoriesDtoBuilder {
 
-    public static AvailableCategoriesDto getAvailableCategoriesDto() {
-        List<CategoryDto> categoryDtoList = new ArrayList<>();
-        List<Category> categories = List.of(Category.values());
-        List<Subcategory> subcategories = List.of(Subcategory.values());
+    public static AvailableSkillsCategoriesDto getAvailableCategoriesDto() {
+        List<SkillsCategoryDto> skillsCategoryDtoList = new ArrayList<>();
+        List<SkillsCategory> categories = List.of(SkillsCategory.values());
+        List<Skill> skills = List.of(Skill.values());
 
-        for (Category category : categories) {
-            List<String> subcategoryNames = subcategories.stream()
-                    .filter(subcategory -> subcategory.getCategory().equals(category))
-                    .map(Subcategory::getDisplayName)
+        for (SkillsCategory skillsCategory : categories) {
+            List<String> skillsNames = skills.stream()
+                    .filter(skill -> skill.getSkillsCategory().equals(skillsCategory))
+                    .map(Skill::getDisplayName)
                     .collect(Collectors.toList());
 
-            categoryDtoList.add(new CategoryDto(category.getDisplayName(), subcategoryNames));
+            skillsCategoryDtoList.add(new SkillsCategoryDto(skillsCategory.getDisplayName(), skillsNames));
         }
 
-        return new AvailableCategoriesDto(categoryDtoList);
+        return new AvailableSkillsCategoriesDto(skillsCategoryDtoList);
     }
 }

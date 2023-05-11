@@ -33,9 +33,9 @@ public class Commission {
     @ElementCollection(targetClass = City.class)
     @Enumerated(EnumType.STRING)
     private Set<City> location;
-    @ElementCollection(targetClass = Subcategory.class)
+    @ElementCollection(targetClass = Skill.class)
     @Enumerated(EnumType.STRING)
-    private Set<Subcategory> skills;
+    private Set<Skill> skills;
     @ElementCollection(targetClass = Tag.class)
     @Enumerated(EnumType.STRING)
     private Set<Tag> tags;

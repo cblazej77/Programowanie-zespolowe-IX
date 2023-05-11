@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/artist")
@@ -56,16 +54,16 @@ public class artistFilterController {
             specification = specification.and(ArtistProfileSpecification.hasCity(cityList));
         }
         if (request.getSkills() != null && !request.getSkills().isEmpty()) {
-            List<Subcategory> subcategoryList = new ArrayList<>();
-            for (String skill : request.getSkills()) {
-                Subcategory subcategory = Subcategory.fromDisplayName(skill);
-                if (subcategory != null) {
-                    subcategoryList.add(subcategory);
+            List<Skill> skillList = new ArrayList<>();
+            for (String skillName : request.getSkills()) {
+                Skill skill = Skill.fromDisplayName(skillName);
+                if (skill != null) {
+                    skillList.add(skill);
                 } else {
-                    System.out.println("Error value: " + skill);
+                    System.out.println("Error value: " + skillName);
                 }
             }
-            specification = specification.and(ArtistProfileSpecification.hasSkills(subcategoryList));
+            specification = specification.and(ArtistProfileSpecification.hasSkills(skillList));
         }
         if (request.getLanguages() != null && !request.getLanguages().isEmpty()) {
             List<Language> languageList = new ArrayList<>();

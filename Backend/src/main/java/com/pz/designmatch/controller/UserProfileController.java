@@ -1,7 +1,7 @@
 package com.pz.designmatch.controller;
 
 import com.pz.designmatch.dto.ArtistProfileDto;
-import com.pz.designmatch.dto.response.AvailableCategoriesDto;
+import com.pz.designmatch.dto.response.AvailableSkillsCategoriesDto;
 import com.pz.designmatch.dto.response.ShortProfileDto;
 import com.pz.designmatch.dto.response.UserDto;
 import com.pz.designmatch.exception.ArtistProfileNotFound;
@@ -50,8 +50,8 @@ public class UserProfileController {
     }
 
     @GetMapping(value = "/getAvailableCategories", produces = apiVersionAccept)
-    public ResponseEntity<AvailableCategoriesDto> getAvailableCategories() {
-        AvailableCategoriesDto categoryOptionsDto = AvailableCategoriesDtoBuilder.getAvailableCategoriesDto();
+    public ResponseEntity<AvailableSkillsCategoriesDto> getAvailableCategories() {
+        AvailableSkillsCategoriesDto categoryOptionsDto = AvailableCategoriesDtoBuilder.getAvailableCategoriesDto();
         return ResponseEntity.ok(categoryOptionsDto);
     }
 
