@@ -31,7 +31,7 @@ public class commissionDto {
     @JsonProperty("publishedAT")
     private ZonedDateTime publishedAT = ZonedDateTime.now();
     @JsonProperty("level")
-    private String level;
+    private Set<String> level;
     @JsonProperty("location")
     private Set<String> location;
     @JsonProperty("skills")
@@ -45,7 +45,7 @@ public class commissionDto {
 
     @JsonCreator
     public commissionDto(String title, String description, ZonedDateTime deadline, ZonedDateTime completedAT,
-                         ZonedDateTime publishedAT, UserEntity contractor, UserEntity client, String level, Set<String> location, Set<String> skills,
+                         ZonedDateTime publishedAT, UserEntity contractor, UserEntity client, Set<String> level, Set<String> location, Set<String> skills,
                          Set<String> tags, Set<String> languages) {
         //this.contractor = contractor;
         //this.client = client;
@@ -80,7 +80,7 @@ public class commissionDto {
         return publishedAT;
     }
     @JsonGetter("level")
-    public String getLevel() {
+    public Set<String> getLevel() {
         return level;
     }
     @JsonGetter("location")

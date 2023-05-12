@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -28,11 +29,12 @@ public class Commission {
     private UserEntity contractor;
     private String title;
     private String description;
-    private ZonedDateTime commissionedAt = ZonedDateTime.now();
+    private ZonedDateTime commissionedAt;
     private ZonedDateTime deadline;
     private ZonedDateTime completedAt;
+    @ElementCollection(targetClass = Level.class)
     @Enumerated(EnumType.STRING)
-    private Level level;
+    private Set<Level> level;
     @ElementCollection(targetClass = City.class)
     @Enumerated(EnumType.STRING)
     private Set<City> location;
