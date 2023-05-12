@@ -33,8 +33,6 @@ import {
   StyledTextarea,
   SmallInput,
 } from "./ProfileElements";
-import LoadingPage from "../LoadingPage";
-
 import {
   CheckBoxLabel,
   CheckBoxWrapper,
@@ -42,6 +40,7 @@ import {
   CategoryText,
   StyledOption,
 } from "../Home/CardsElement";
+import LoadingPage from "../LoadingPage";
 
 const { secondary } = COLORS;
 

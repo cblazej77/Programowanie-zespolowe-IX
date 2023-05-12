@@ -73,10 +73,17 @@ export const DMWrapper = styled.div`
   background: ${primary};
   border-radius: 10px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+  @media screen and (max-width: 960px) {
+    right: 1vw;
+    width: calc(100% - 2vw);
+    
+  }
 `;
 
 export const DMHeaderContainer = styled.div`
-  padding: 0.5rem 0 0 0.5rem;
+  display: flex;  
+  padding: 0.5rem 0 0.5rem 1rem;
+  align-items: center;
   width: 100%;
 `;
 
@@ -94,8 +101,26 @@ export const LineForm = styled.div`
 `;
 
 export const DMMessagesContainer = styled.div`
-  height: calc(100% - 8.5rem);
+  height: calc(100% - 10rem);
   width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${primary};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${gray1};
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${darkLight};
+  }
 `;
 
 export const DMInputContainter = styled.div`
@@ -130,7 +155,7 @@ export const Avatar = styled.img`
 export const BasicInfoContainer = styled.div`
   padding: 0 0.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   width: 15rem;
   flex-direction: column;
 `;
@@ -151,15 +176,44 @@ export const DetailedInfoContainer = styled.div`
   align-items: flex-end;
   width: 3rem;
   flex-direction: column;
+  font-size: 0.9rem;
 `;
 
 export const Notification = styled.span`
   background: ${red};
   color: ${white};
   border-radius: 15px;
-  padding: 0rem 0.5rem;
-  width: 2rem;
+  padding: 0.15rem 0.5rem;
   display: flex;
   justify-content: center;
 `;
 
+export const SenderContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+`;
+
+export const SenderDM = styled.span`
+  background: ${darkLight};
+  color: ${white};
+  border-radius: 15px;
+  padding: 0.25rem 0.8rem;
+  margin: 0.07rem 0;
+  max-width: 45%;
+`;
+
+export const ReceiverContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0.5rem;
+`;
+
+export const ReceiverDM = styled.span`
+  background: ${white};
+  color: ${darkLight};
+  border-radius: 15px;
+  padding: 0.25rem 0.8rem;
+  margin: 0.07rem 0;
+  max-width: 45%;
+`;

@@ -19,7 +19,7 @@ import {
   RightLabel,
   TopSection,
   Button,
-} from './CardsElement'
+} from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
 import LoadingPage from '../LoadingPage';
