@@ -1,5 +1,6 @@
 package com.pz.designmatch.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.UserEntity;
 import jakarta.persistence.*;
@@ -7,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity
@@ -25,9 +28,9 @@ public class Commission {
     private UserEntity contractor;
     private String title;
     private String description;
-    private LocalDateTime commissionedAt;
-    private LocalDateTime deadline;
-    private LocalDateTime completedAt;
+    private ZonedDateTime commissionedAt = ZonedDateTime.now();
+    private ZonedDateTime deadline;
+    private ZonedDateTime completedAt;
     @Enumerated(EnumType.STRING)
     private Level level;
     @ElementCollection(targetClass = City.class)
