@@ -41,7 +41,7 @@ import { View, ActivityIndicator } from 'react-native';
 //import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //Colors
-const { darkLight, primary, link, darkLight2, green, green2 } = Colors;
+const { darkLight, primary, link, darkLight2, green, green2, facebook1, facebook2 } = Colors;
 
 //dismising the popup after successful auth
 WebBrowser.maybeCompleteAuthSession();
@@ -284,7 +284,7 @@ const Login = ({ navigation }) => {
                   </LinearGradientStyle>
                 )}
                 {!facebookSubmiting && (
-                  <LinearGradientStyle colors={[darkLight2, darkLight]}>
+                  <LinearGradientStyle colors={[facebook1, facebook2]}>
                     <StyledButton
                       facebook={true}
                       disabled={!requestF}

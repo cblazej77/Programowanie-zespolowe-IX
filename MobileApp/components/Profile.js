@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { View, StyleSheet, Linking } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Colors, RegularText, StatsText, AppText, Avatar, Bubble, Line } from '../components/styles';
 import Stars from 'react-native-stars';
@@ -9,7 +9,7 @@ import * as SecureStore from 'expo-secure-store';
 import { default as baseURL } from '../components/AxiosAuth';
 import axios from 'axios';
 import Loading from '../components/Loading';
-import Hyperlink from 'react-native-hyperlink';
+import { Fontisto } from '@expo/vector-icons';
 
 const { darkLight, link, black, primary } = Colors;
 
@@ -64,6 +64,27 @@ const Profile = ({ navigation }) => {
     setUserInfo(JSON.parse(u));
     console.log(u);
   }
+
+  const OpenLinkElement = ({ link, children1, children2, color }) => {
+    const handlePress = useCallback(async () => {
+      const supported = await Linking.canOpenURL('https://' + link);
+
+      if (supported) {
+        await Linking.openURL('https://' + link);
+      } else {
+        Alert.alert(`Nie można otworzyć takiego URL'a: https://${link}`);
+      }
+    }, [link]);
+
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+          <AppText style={{fontSize: 18, marginRight: 15}}>{children1}</AppText>
+        <TouchableOpacity onPress={handlePress}>
+          <Fontisto name={children2} color={color} size={22} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   useEffect(() => {
     getAccessToken();
@@ -171,6 +192,7 @@ const Profile = ({ navigation }) => {
   function ListLinks() {
     if (artistProfile) {
       const links = [
+        { id: 0, data: artistProfile.dribble },
         { id: 1, data: artistProfile.facebook },
         { id: 2, data: artistProfile.instagram },
         { id: 3, data: artistProfile.linkedin },
@@ -178,13 +200,27 @@ const Profile = ({ navigation }) => {
         { id: 5, data: artistProfile.twitter },
         { id: 6, data: artistProfile.website },
       ];
-      const avaiable = links.filter((item) => item.data !== 'string' && item !== null);
+      const names = [
+        { enum: 'dribbble', name: 'Dribbble', color: '#EA4C89' },
+        { enum: 'facebook', name: 'Facebook', color: '#4267B2' },
+        { enum: 'instagram', name: 'Instagram', color: '#C13584' },
+        { enum: 'linkedin', name: 'LinkedIn', color: '#0072b1' },
+        { enum: 'pinterest', name: 'Pinterest', color: '#E60023' },
+        { enum: 'twitter', name: 'Twitter', color: '#00acee' },
+        { enum: 'earth', name: 'Własna strona', color: darkLight },
+      ];
+      const avaiable = links.filter((item) => {
+        if(item.data !== 'string' && item !== null && item.data !== '' && typeof item.data !== 'undefined') {
+          return item;
+        }});
       const list = avaiable.map((item) => (
-        <Hyperlink linkDefault={true} key={item.id}>
-          <TouchableOpacity>
-            <AppText style={{ color: link, marginBottom: 5 }}>{item.data}</AppText>
-          </TouchableOpacity>
-        </Hyperlink>
+        <OpenLinkElement
+          key={item.id}
+          link={item.data}
+          color={names[item.id].color}
+          children2={names[item.id].enum}
+          children1={names[item.id].name}
+        />
       ));
       return <View style={styles.ListElement}>{list}</View>;
     } else {

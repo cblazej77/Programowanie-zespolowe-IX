@@ -19,7 +19,7 @@ import {
   DropDownInfoText,
   DropDownSubcategoryText,
 } from './../../components/styles';
-import SearchFilter from '../../components/SearchFilter';
+import {HomeSearchFilter} from '../../components/SearchFilter';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
 import BASE_URL from '../../components/AxiosAuth';
@@ -76,6 +76,34 @@ export default function HomePage({ navigation }) {
     setLevelsFiltr((levelsFiltr) => [...levelsFiltr, filtr]);
   }
 
+  function handleDeleteTagsFiltr(item) {
+    setTagsFiltr(tagsFiltr.filter((i) => i !== item));
+  }
+
+  function handleDeleteLanguagesFiltr(item) {
+    setLanguagesFiltr(languagesFiltr.filter((i) => i !== item));
+  }
+
+  function handleDeleteLevelsFiltr(item) {
+    setLevelsFiltr(levelsFiltr.filter((i) => i !== item));
+  }
+
+  function handleDeleteCitiesFiltr(item) {
+    setCitiesFiltr(citiesFiltr.filter((i) => i !== item));
+  }
+
+  function handleDeleteCategoriesFiltr(item) {
+    setCategoriesFiltr(categoriesFiltr.filter((i) => i !== item));
+  }
+
+  function clearFilters() {
+    setLevelsFiltr([]);
+    setLanguagesFiltr([]);
+    setCitiesFiltr([]);
+    setCategoriesFiltr([]);
+    setTagsFiltr([]);
+  }
+
   const citiesData = useMemo(
     () => ({
       method: 'get',
@@ -126,14 +154,38 @@ export default function HomePage({ navigation }) {
     [],
   );
 
-  const filteredData = useMemo(
-    () => ({
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: BASE_URL + '/artist/filter?page=0&size=10',
-    }),
-    [],
-  );
+  useEffect(() => {
+    const filter = async () => {
+      try {
+        const response = await axios
+          .post(
+            BASE_URL + '/artist/filter',
+            {
+              level: levelsFiltr,
+              location: citiesFiltr,
+              skills: categoriesFiltr,
+              languages: languagesFiltr,
+              tags: tagsFiltr,
+            },
+            {
+              params: { page: 0, size: 10 },
+              headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+            },
+          )
+          .catch((error) => {
+            console.log(error);
+          });
+        if ((response.status = 200)) {
+          setFiltered(response.data);
+          console.log(response.status);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    filter();
+  }, [levelsFiltr, categoriesFiltr, languagesFiltr, citiesFiltr, tagsFiltr]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -174,11 +226,12 @@ export default function HomePage({ navigation }) {
               size={25}
               fillColor={darkLight}
               unfillColor={primary}
+              isChecked={categoriesFiltr.includes(subcategory)}
               text={subcategory}
               iconStyle={{ borderColor: darkLight }}
               innerIconStyle={{ borderWidth: 1 }}
               textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-              onPress={(isChecked) => {}}
+              onPress={(isChecked) => {isChecked ? handleAddCategoriesFiltr(subcategory) : handleDeleteCategoriesFiltr(subcategory)}}
             ></BouncyCheckbox>
           </View>
         ))}
@@ -199,11 +252,12 @@ export default function HomePage({ navigation }) {
           size={25}
           fillColor={darkLight}
           unfillColor={primary}
+          isChecked={levelsFiltr.includes(item)}
           text={item}
           iconStyle={{ borderColor: darkLight }}
           innerIconStyle={{ borderWidth: 1 }}
           textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-          onPress={(isChecked) => {}}
+          onPress={(isChecked) => {isChecked ? handleAddLevelsFiltr(item) : handleDeleteLevelsFiltr(item)}}
         ></BouncyCheckbox>
       </View>
     ));
@@ -222,11 +276,12 @@ export default function HomePage({ navigation }) {
           size={25}
           fillColor={darkLight}
           unfillColor={primary}
+          isChecked={citiesFiltr.includes(item)}
           text={item}
           iconStyle={{ borderColor: darkLight }}
           innerIconStyle={{ borderWidth: 1 }}
           textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-          onPress={(isChecked) => {}}
+          onPress={(isChecked) => {isChecked ? handleAddCitiesFiltr(item) : handleDeleteCitiesFiltr(item)}}
         ></BouncyCheckbox>
       </View>
     ));
@@ -245,11 +300,12 @@ export default function HomePage({ navigation }) {
           size={25}
           fillColor={darkLight}
           unfillColor={primary}
+          isChecked={languagesFiltr.includes(item)}
           text={item}
           iconStyle={{ borderColor: darkLight }}
           innerIconStyle={{ borderWidth: 1 }}
           textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-          onPress={(isChecked) => {}}
+          onPress={(isChecked) => {isChecked ? handleAddLanguagesFiltr(item) : handleDeleteLanguagesFiltr(item)}}
         ></BouncyCheckbox>
       </View>
     ));
@@ -268,11 +324,12 @@ export default function HomePage({ navigation }) {
           size={25}
           fillColor={darkLight}
           unfillColor={primary}
+          isChecked={tagsFiltr.includes(item)}
           text={item}
           iconStyle={{ borderColor: darkLight }}
           innerIconStyle={{ borderWidth: 1 }}
           textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-          onPress={(isChecked) => {}}
+          onPress={(isChecked) => {isChecked ? handleAddTagsFiltr(item) : handleDeleteTagsFiltr(item)}}
         ></BouncyCheckbox>
       </View>
     ));
@@ -285,25 +342,27 @@ export default function HomePage({ navigation }) {
       return null;
     }
 
-    return filtered.content.map((filter, indexF) => (
-      <CardItem
-        key={indexF}
-        avatar="/assets/cards/person1.jpg"
-        name={filter.firstname}
-        surname={filter.lastname}
-        username={filter.username}
-        navigation={navigation}
-        level={filter.level}
-        rating={3.5}
-        ratingCount={12}
-        city={filter.city}
-        skills={filter.skills}
-        project1="/assets/cards/design1.jpg"
-        project2="/assets/cards/design2.png"
-        project3="/assets/cards/design3.jpg"
-        project4="/assets/cards/design4.png"
-      />
-    ));
+    return <HomeSearchFilter data={filtered.content} input={input} setInput={setInput} navigation={navigation}/>;
+
+    // return filtered.content.map((filter, indexF) => (
+    //   <CardItem
+    //     key={indexF}
+    //     avatar="/assets/cards/person1.jpg"
+    //     name={filter.firstname}
+    //     surname={filter.lastname}
+    //     username={filter.username}
+    //     navigation={navigation}
+    //     level={filter.level}
+    //     rating={3.5}
+    //     ratingCount={12}
+    //     city={filter.city}
+    //     skills={filter.skills}
+    //     project1="/assets/cards/design1.jpg"
+    //     project2="/assets/cards/design2.png"
+    //     project3="/assets/cards/design3.jpg"
+    //     project4="/assets/cards/design4.png"
+    //   />
+    // ));
   });
 
   return (
@@ -333,7 +392,12 @@ export default function HomePage({ navigation }) {
                 </View>
               </TouchableOpacity>
               <LineForm />
-              <ScrollView style={{ maxWidth: '95%', width: '90%' }}>
+              <TouchableOpacity onPress={() => {clearFilters()}}>
+                <View style={styles.ModalButton}>
+                  <AppText style={{color: white}}>Wyczyść filtry</AppText>
+                </View>
+              </TouchableOpacity>
+              <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
                 <View style={styles.ModalFilterViewStyle}>
                   <View
                     style={{
@@ -341,15 +405,14 @@ export default function HomePage({ navigation }) {
                       alignItems: 'baseline',
                     }}
                   >
-                    <DropDownInfoText style={{ marginRight: 15 }}>Poziomy:</DropDownInfoText>
                     <TouchableOpacity
-                      style={{ width: '60%' }}
                       onPress={() => {
                         setShowLevels(!showLevels);
                       }}
                     >
-                      <FontAwesome name={showLevels ? 'chevron-down' : 'chevron-left'} color={'#A9A9A9'} size={18} />
+                      <FontAwesome name={showLevels ? 'chevron-down' : 'chevron-right'} color={'#A9A9A9'} size={18} />
                     </TouchableOpacity>
+                    <DropDownInfoText style={{ marginLeft: 15 }}>Poziomy:</DropDownInfoText>
                   </View>
 
                   {showLevels ? levelsList : <></>}
@@ -361,15 +424,18 @@ export default function HomePage({ navigation }) {
                       alignItems: 'baseline',
                     }}
                   >
-                    <DropDownInfoText style={{ marginRight: 15 }}>Skąd:</DropDownInfoText>
                     <TouchableOpacity
-                      style={{ width: '60%' }}
                       onPress={() => {
                         setShowLocations(!showLocations);
                       }}
                     >
-                      <FontAwesome name={showLocations ? 'chevron-down' : 'chevron-left'} color={'#A9A9A9'} size={18} />
+                      <FontAwesome
+                        name={showLocations ? 'chevron-down' : 'chevron-right'}
+                        color={'#A9A9A9'}
+                        size={18}
+                      />
                     </TouchableOpacity>
+                    <DropDownInfoText style={{ marginLeft: 15 }}>Skąd:</DropDownInfoText>
                   </View>
                   {showLocations ? locationsList : <></>}
                 </View>
@@ -380,15 +446,18 @@ export default function HomePage({ navigation }) {
                       alignItems: 'baseline',
                     }}
                   >
-                    <DropDownInfoText style={{ marginRight: 15 }}>Języki:</DropDownInfoText>
                     <TouchableOpacity
-                      style={{ width: '60%' }}
                       onPress={() => {
                         setShowLanguages(!showLanguages);
                       }}
                     >
-                      <FontAwesome name={showLanguages ? 'chevron-down' : 'chevron-left'} color={'#A9A9A9'} size={18} />
+                      <FontAwesome
+                        name={showLanguages ? 'chevron-down' : 'chevron-right'}
+                        color={'#A9A9A9'}
+                        size={18}
+                      />
                     </TouchableOpacity>
+                    <DropDownInfoText style={{ marginLeft: 15 }}>Języki:</DropDownInfoText>
                   </View>
                   {showLanguages ? languagesList : <></>}
                 </View>
@@ -399,15 +468,14 @@ export default function HomePage({ navigation }) {
                       alignItems: 'baseline',
                     }}
                   >
-                    <DropDownInfoText style={{ marginRight: 15 }}>Języki:</DropDownInfoText>
                     <TouchableOpacity
-                      style={{ width: '60%' }}
                       onPress={() => {
                         setShowTags(!showTags);
                       }}
                     >
-                      <FontAwesome name={showTags ? 'chevron-down' : 'chevron-left'} color={'#A9A9A9'} size={18} />
+                      <FontAwesome name={showTags ? 'chevron-down' : 'chevron-right'} color={'#A9A9A9'} size={18} />
                     </TouchableOpacity>
+                    <DropDownInfoText style={{ marginLeft: 15 }}>Tagi:</DropDownInfoText>
                   </View>
                   {showTags ? tagsList : <></>}
                 </View>
@@ -418,19 +486,18 @@ export default function HomePage({ navigation }) {
                       alignItems: 'baseline',
                     }}
                   >
-                    <DropDownInfoText style={{ marginRight: 15 }}>Umiejętności:</DropDownInfoText>
                     <TouchableOpacity
-                      style={{ width: '60%' }}
                       onPress={() => {
                         setShowCategories(!showCategories);
                       }}
                     >
                       <FontAwesome
-                        name={showCategories ? 'chevron-down' : 'chevron-left'}
+                        name={showCategories ? 'chevron-down' : 'chevron-right'}
                         color={'#A9A9A9'}
                         size={18}
                       />
                     </TouchableOpacity>
+                    <DropDownInfoText style={{ marginLeft: 15 }}>Umiejętności:</DropDownInfoText>
                   </View>
                   {showCategories ? categoriesList : <></>}
                 </View>
@@ -549,5 +616,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     marginVertical: 20,
+  },
+  ModalButton: {
+    padding: 7,
+    borderRadius: 15,
+    fontSize: 16,
+    marginBottom: 10,
+    marginTop: 10,
+    alignItems: 'center',
+    marginRight: 5,
+    flexDirection: 'row',
+    backgroundColor: darkLight,
+    padding: 10,
   },
 });

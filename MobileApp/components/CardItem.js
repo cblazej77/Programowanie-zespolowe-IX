@@ -1,14 +1,12 @@
 import React from 'react';
-import { AppText, HeaderText, RegularText } from './styles';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { AppText, RegularText } from './styles';
+import { Image, StyleSheet, View } from 'react-native';
 import { Colors } from './styles';
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Pressable } from 'react-native';
-import { Touchable } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const { primary, secondary1, darkLight, gray1, grey } = Colors;
+const { secondary1, darkLight, gray1, grey } = Colors;
 
 function CardItem(props) {
   return (
@@ -77,7 +75,6 @@ const styles = StyleSheet.create({
   PostStyle: {
     flexDirection: 'row',
     backgroundColor: secondary1,
-    height: 220,
     width: '95%',
     marginBottom: 30,
     borderRadius: 5,

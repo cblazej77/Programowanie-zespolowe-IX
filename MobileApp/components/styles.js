@@ -22,6 +22,8 @@ export const Colors = {
     gray1: "#777",
     link: "#4159a3",
     checked: "#CCCCFF",
+    facebook1: "#426782",
+    facebook2: "#5074be",
 };
 
 const {

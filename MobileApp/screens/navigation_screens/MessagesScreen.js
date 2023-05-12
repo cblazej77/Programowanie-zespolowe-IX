@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SearchFilter from '../../components/SearchFilter';
+import {MessagesSearchFilter} from '../../components/SearchFilter';
 import { AppText, ChatLabel, HeaderText, LinearGradientStyle } from '../../components/styles';
 import { Colors } from '../../components/styles';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -216,7 +216,7 @@ function MessagesScreen({ navigation }) {
           style={styles.TextInputStyle}
         />
       </View>
-      <SearchFilter data={DATA} input={input} setInput={setInput} navigation={navigation} />
+      <MessagesSearchFilter data={DATA} input={input} setInput={setInput} navigation={navigation} />
     </SafeAreaView>
   );
 }
