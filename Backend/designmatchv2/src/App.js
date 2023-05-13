@@ -14,7 +14,6 @@ import UserPage from './pages/profile'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoadingPage from './pages/LoadingPage';
 import EditUserPageMobile from "./pages/Profile/EditUserPageMobile";
-import EditUserPage from './pages/Profile/EditUserPage';
 import Modal from "./components/ModalA";
 import Chat from "./pages/Chat/Chat";
 import EditUserPage from './pages/Profile/EditUserPage';
