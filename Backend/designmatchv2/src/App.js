@@ -14,6 +14,7 @@ import UserPage from './pages/profile'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoadingPage from './pages/LoadingPage';
 import EditUserPageMobile from "./pages/Profile/EditUserPageMobile";
+import EditUserPage from './pages/Profile/EditUserPage';
 import Modal from "./components/ModalA";
 import Chat from "./pages/Chat/Chat";
 
@@ -41,14 +42,12 @@ function App() {
             path="/accountEdit"
             element={
               <RequireAuth>
-                {" "}
-                <EditUserPage />{" "}
-              </RequireAuth>
-            }
+               <EditUserPageMobile />
+              </RequireAuth> }
           />
           <Route path="/test" element={<EditUserPageMobile />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/1" element={<Modal />} />
+          <Route path="/1" element={<EditUserPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

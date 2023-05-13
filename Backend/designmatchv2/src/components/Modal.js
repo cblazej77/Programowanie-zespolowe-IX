@@ -1,6 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import { COLORS } from './Colors';
 import axios from '../api/axios';
 
 import { CheckBoxLabel,
@@ -68,12 +67,11 @@ padding: 0;
 z-index: 10;
 `;
 
-const Modal = ({showModal, setShowModal, URL}) => {
+const Modal = ({showModal, setShowModal }) => {
     const modalRef = useRef();
 
 
 const [categories, setCategories] = useState([]);
-const [userCategories, setUserCategories] = useState([]);
 
 const closeModal = e => {
     if (modalRef.current === e.target) {

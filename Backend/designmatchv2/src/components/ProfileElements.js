@@ -164,6 +164,22 @@ export const LeftInfoRow = styled.div`
     justify-content: space-between;
     flex-direction: row;
 `;
+export const BubbleLinks = styled.a.attrs(props => ({
+  target: '_blank',
+  rel: 'noopener',
+  href: props.href.startsWith('http://') || props.href.startsWith('https://')
+  ? props.href : `https://${props.href}`
+}))`
+
+ padding: 5px 10px 5px 10px;
+  display: inline-flex;
+  margin-right: 15px;
+  border-radius: 15px;
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+`
 
 export const NameText = styled.text`
   color: ${darkLight};

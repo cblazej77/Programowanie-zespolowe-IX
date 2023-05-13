@@ -1,7 +1,7 @@
 export const MenuItems = [
     {
         title: "Edytuj profil",
-        path: "/",
+        path: "/accountEdit",
         cName: 'dropdown-link',
         click: 'handleSetClick'
     },

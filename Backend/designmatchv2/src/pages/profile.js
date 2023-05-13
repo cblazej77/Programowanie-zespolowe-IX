@@ -29,7 +29,8 @@ import {
   RatingText,
   BoldLabel,
   BubbleWrap,
-  Bubble
+  Bubble,
+  BubbleLinks
 } from '../components/ProfileElements'
 import LoadingPage from './LoadingPage';
 
@@ -41,14 +42,18 @@ const getShortArtistProfileURL = process.env.REACT_APP_GET_SHORT_ARTIST_PROFILE;
 
 //UserName/UserInfo/MessageButton
 const UserPage = () => {
-  const [get, setGet] = useState(null);
+  const [get, setGet] = useState("");
+  const [checkLoading, setCheckLoading] = useState(null);
+  const [shortProfile, setShortProfile] = useState("");
+  const [educationList, setEducationList] = useState([]);
+  const [experienceList, setExperienceList] = useState([]);
 
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
   const [click, setClick] = useState(true);
   const [button, setButton] = useState(true);
 
   const job = "";
-  const profileName = 'jakub1';
+  const profileName = 'WojciechDuklas';
   let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
@@ -68,6 +73,8 @@ const UserPage = () => {
         const result1 = await axios.request(profileData);
         const result2 = await axios.request(profileNameData);
         setGet(result1.data);
+        setCheckLoading(result1);
+        setShortProfile(result2.data);
       } catch (error) {
         console.log(error);
       }
@@ -76,8 +83,180 @@ const UserPage = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if(get){
+      clear();
+      for (let i = 0; i < get.education.length; i++) {
+        handleAddEducationElement(
+          i,
+          get.education[i].school_name,
+          get.education[i].faculty,
+          get.education[i].field_of_study,
+          get.education[i].degree,
+          get.education[i].start_date,
+          get.education[i].end_date,
+          get.education[i].description,
+        );
+      }
+      for (let i = 0; i < get.experience.length; i++) {
+        handleAddExperienceElement(
+          i,
+          get.experience[i].company,
+          get.experience[i].city,
+          get.experience[i].position,
+          get.experience[i].description,
+          get.experience[i].start_date,
+          get.experience[i].end_date,
+        );
+      }
+    }
+  }, [get]);
+
+  const handleAddEducationElement = (newId, faculty, schoolName, fieldOfStudy, degree, startDate, endDate, description) => {
+    setEducationList((prevList) => [
+      ...prevList,
+      {
+        id: newId,
+        faculty,
+        school_name: schoolName,
+        field_of_study: fieldOfStudy,
+        degree,
+        start_date: startDate,
+        end_date: endDate,
+        description,
+      },
+    ]);
+  };
+  function handleAddExperienceElement(id, company, city, position, description, start_date, end_date) {
+    setExperienceList((experienceList) => [
+      ...experienceList,
+      {
+        id: id,
+        company: company,
+        city: city,
+        position: position,
+        description: description,
+        start_date: start_date,
+        end_date: end_date,
+      },
+    ]);
+  }
+
+  function clear() {
+    handleClearEducationList();
+    handleClearExperienceList();
+  }
+  function handleClearEducationList() {
+    setEducationList([]);
+  }
+
+  function handleClearExperienceList() {
+    setExperienceList([]);
+  }
+
+  function ListEducation() {
+
+    const list = educationList.map((item, index) => {
+      return (
+        
+        <div key={item.id}>
+          {index !== 0 && <LineForm />}
+          <HeaderText>Wykształcenie</HeaderText>
+          <LeftInfoRow>
+          <InfoText>Kierunek: </InfoText>
+            <label>{item.faculty}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+          <InfoText>Uczelnia: </InfoText>
+          <label>{item.school_name}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Dziedzina nauk: </InfoText>
+            <label>{item.field_of_study}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Stopień: </InfoText>
+            <label>{item.degree}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Od: </InfoText>
+             <label>{item.start_date}</label> 
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Opis: </InfoText>
+           <label>{item.description}</label>
+          </LeftInfoRow>
+        </div>
+      );
+    });
 
 
+    return (
+      <>
+      {list}
+      </>
+    );
+  }
+  function ListLinks(){
+    return(    <>
+      { (get.facebook || get.instagram || get.linkedin || get.pinterest || get.twitter || get.website) &&  (
+      <>
+        <LineForm />
+        <InfoText>Media społecznościowe:</InfoText>
+      </>
+      )}
+      <BubbleWrap>
+    
+        {get.facebook && <BubbleLinks href={get.facebook}  > facebook</BubbleLinks>}
+        {get.instagram && <BubbleLinks href={get.instagram}> instagram </BubbleLinks>}
+        {get.linkedin && <BubbleLinks href={get.linkedin}> linkedin  </BubbleLinks>}
+        {get.pinterest && <BubbleLinks href={get.pinterest}> pinterest  </BubbleLinks>}
+        {get.twitter && <BubbleLinks href={get.twitter}> twitter  </BubbleLinks>}
+        {get.website && <BubbleLinks href={get.website}> website  </BubbleLinks>}
+     
+      
+      </BubbleWrap>
+     </>
+    )
+  }
+  function ListExperience() {
+
+    const list = experienceList.map((item, index) => {
+      return (
+        <div key={item.id}>
+          <LineForm />
+          <HeaderText>Doświadczenie</HeaderText>
+          <LeftInfoRow>
+          <InfoText>Nazwa firmy: </InfoText>
+            <label>{item.comapny}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+          <InfoText>Miasto: </InfoText>
+           <label>{item.city}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Stanowisko: </InfoText>
+            <label>{item.position}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Od: </InfoText>
+           <label>{item.start_date}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Do: </InfoText>
+          <label>{item.end_date}</label>
+          </LeftInfoRow>
+        </div>
+      );
+    });
+
+
+    return (
+      <>
+      {list}
+      </>
+    );
+  }
   const handleClick = () => setClick(!click);
 
   const handleRating = (rate: number) => {
@@ -102,13 +281,14 @@ const UserPage = () => {
   const ratingCount = 2.5; //pobrac z bazy
   const Default = "...";
   return (
-    <>{get ? (
+    <>{checkLoading && get ? (
+
       <ProfileWrapper>
-        <TopSection>
+        <TopSection>      {console.log(shortProfile)}
           <LeftWrapper>
             <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
             <JobText> {get.level} </JobText>
-            <NameText>Tomasz Nowak</NameText>
+            <NameText>{shortProfile.firstname} {shortProfile.lastname} </NameText>
             <RatingWrapper>
               <Rating
                 size="2rem"
@@ -142,7 +322,7 @@ const UserPage = () => {
                   </LeftInfoRow>
                   <LeftInfoRow>
                     <InfoText>Miejscowość:</InfoText>
-                    <DataText>{get.location}</DataText>
+                    <DataText>{shortProfile.city}</DataText>
                   </LeftInfoRow>
                   <LeftInfoRow>
                     <InfoText>Prace:</InfoText>
@@ -162,57 +342,13 @@ const UserPage = () => {
                       get.skills.map((skill, index) => <Bubble key={index}>{skill}</Bubble>)
                     ) : <Bubble>{Default}</Bubble>}
                   </BubbleWrap>
-                  <LineForm />
-                  <InfoText>Linki:</InfoText>
-                  <BubbleWrap>
-                    <Bubble>{get.website}</Bubble>
-                    <Bubble>{get.linkedin}</Bubble>
-                  </BubbleWrap>
+                  <ListLinks />
                 </LeftColumn>
                 <RightColumn>
-                  <HeaderText>Wykształcenie</HeaderText>
-                  <LeftInfoRow>
-                    <InfoText>Nazwa szkoły/uczelni:</InfoText>
-                    <DataText>{get.education[0].school_name}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>Wydział:</InfoText>
-                    <DataText>{get.education[0].faculty}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>Kierunek:</InfoText>
-                    <DataText>{get.education[0].field_of_study}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>Data rozpoczęcia:</InfoText>
-                    <DataText>{get.education[0].start_date}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>Data zakończenia:</InfoText>
-                    <DataText>{get.education[0].end_date}</DataText>
-                  </LeftInfoRow>
-                  <LineForm />
-                  <HeaderText>Doświadczenie</HeaderText>
-                  <LeftInfoRow>
-                    <InfoText>Firma:</InfoText>
-                    <DataText>{get.experience[0].company}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>Miasto:</InfoText>
-                    <DataText>{get.experience[0].city}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>Stanowisko:</InfoText>
-                    <DataText>{get.experience[0].position}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>Data rozpoczęcia:</InfoText>
-                    <DataText>{get.experience[0].start_date}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>Data zakończenia:</InfoText>
-                    <DataText>{get.experience[0].end_date}</DataText>
-                  </LeftInfoRow>
+
+                  <ListEducation />
+                  <ListExperience />
+          
                 </RightColumn>
               </InfoRow>
             </Left>

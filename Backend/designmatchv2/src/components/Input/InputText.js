@@ -7,14 +7,15 @@ function InputText({
     name,
     id,
     value = '',
-    onChange
+    onChange,
+    checkRegex
 }) {
     const [email, setEmail] = useState(value);
 
     const handleChange = (e) => {
         setEmail(e.target.value);
         onChange && onChange(e.target.value);
-          
+        
     } 
 
   return (
@@ -26,6 +27,7 @@ function InputText({
             id={id}
             type="text"
             onChange={handleChange}
+            checkRegex={checkRegex}
         ></Input>
         <LabelInput htmlFor={id}>{label}</LabelInput>
     </InputGroup>
@@ -39,5 +41,6 @@ InputText.propTypes = {
   id: PropTypes.string.isRequired,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  checkRegex: PropTypes.bool,
 };
 export default InputText;

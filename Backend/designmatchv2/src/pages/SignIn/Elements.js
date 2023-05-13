@@ -97,6 +97,11 @@ export const LineForm = styled.div`
   height: 1px;
   background-color: #bbb;
 `;
+export const ErrorLabel = styled.label`
+color: red;
+font-size: 0.8rem;
+left: 0;
+`
 
 export const CenterButton = styled.div`
   position: relative;

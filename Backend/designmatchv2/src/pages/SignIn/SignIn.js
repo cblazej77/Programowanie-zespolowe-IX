@@ -3,47 +3,61 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../components/Auth';
 import { default as axios } from "../../api/axios"
 import { useGoogleLogin } from '@react-oauth/google';
-import { LogoIcon2, FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
+import { LogoIcon2, ErrorLabel, FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
 import InputText from '../../components/Input/InputText';
 import PasswordInput from '../../components/Input/PasswordInput';
 import FacebookLogin from '@greatsumini/react-facebook-login';
+import { PASSWORD_REGEX, EMAIL_REGEX } from '../../components/Regex';
 
 export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const authApi = useAuth();
 
+    const [submitting, setSubmitting] = useState(false);
+  const [checkRegexEmail, setCheckRegexEmail] = useState(true);
+  const [checkRegexPassword, setCheckRegexPassword] = useState(true);
+  const [allInput, setAllInput] = useState(true);
 
   const [passwordInvalid, setPasswordInvalid] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const minPassword = 3;
+  const minPassword = 8;
+  const maxPassword = 24;
   const navigate = useNavigate();
   const location = useLocation()
 
   const redirectPath = location.state?.path || '/';
   const LOGIN_URL = '/api/auth/login';
 
-  const handleSubmit = async (e) => {
-    if (password.length < minPassword && email.length !== 0) {
-      setPasswordInvalid(true);
-    } else {
-      setPasswordInvalid(false);
+  const handleCheckBlockButton = () => {
+    if(email === "" || password === "") {
+      setAllInput(false);
+      setSubmitting(false);
+    }
+    else if(checkRegexEmail && checkRegexPassword){
+      handleSubmit();
+    }
+    else  setSubmitting(false);
 
-      e.preventDefault();
+  }
+
+  const handleSubmit = async () => {
       try {
+              setSubmitting(true);
         const response = await axios.post(LOGIN_URL,
           JSON.stringify({ email, password }),
           {
             headers: { 'Content-Type': 'application/json' },
           }
         );
+              setSubmitting(false);
         console.log(response?.data);
         console.log(response?.accessToken);
         console.log(JSON.stringify(response));
         authApi.login(email, password);
         navigate(redirectPath, { replace: true });
       } catch (err) {
-
+      setSubmitting(false);
         if (!err?.response) {
           console.log('No Server Response');
         } else if (err.response?.status === 409) {
@@ -55,7 +69,6 @@ export const SignIn = () => {
         }
       }
      } 
-    }
       const login = useGoogleLogin({
         onSuccess: CodeResponse  => {
           console.log(CodeResponse );
@@ -66,32 +79,28 @@ export const SignIn = () => {
       });
 
       const handleEmailChange = (value) => {
-        setEmail(value);
+            setEmail(value);
+            setAllInput(true);
+    if(value && emailPatternValidation(value)) setCheckRegexEmail(true);
+    else setCheckRegexEmail(false);
       }
+
       const handlePasswordChange = (value) => {
-        setPassword(value);
+           setPassword(value);
+           setAllInput(true);
+    if(value && passwordPatternValidation(value)) setCheckRegexPassword(true);
+    else setCheckRegexPassword(false);
       }
     
-/*
-  const buttonEnabled = (username, password) => {
-      if(username.length > 0 && password.length > 2 ) {
-          setEnabled(true);
-      } else {
-          setEnabled(false);
-      }
+ function passwordPatternValidation(password) {
+    const regex = new RegExp(PASSWORD_REGEX);
+    return regex.test(password);
   }
 
-  /*
-    const buttonEnabled = (username, password) => {
-        if(username.length > 0 && password.length > 2 ) {
-            setEnabled(true);
-        } else {
-            setEnabled(false);
-        }
-    }
-  */
-
-
+  function emailPatternValidation(email) {
+    const regex = new RegExp(EMAIL_REGEX);
+    return regex.test(email);
+  }
 
   return (
     <AllPage>
@@ -99,13 +108,15 @@ export const SignIn = () => {
       <StyledForm >
       <LogoIcon2 />
 
-        <InputText label="email:" name="login" id="loginId" onChange={handleEmailChange}/>
-        <PasswordInput label="hasło:" name="login" id="passwordId" onChange = {handlePasswordChange}/>
+        <InputText label="email:" name="login" id="loginId" onChange={handleEmailChange} checkRegex={checkRegexEmail}/>
+        { (!checkRegexEmail && email !=="" ) && <ErrorLabel>Wpisano email w nieprawidłowym formacie.</ErrorLabel>}
+        <PasswordInput label="hasło:" name="login" id="passwordId" onChange = {handlePasswordChange} checkRegex ={checkRegexPassword}/>
+        { (!checkRegexPassword && password!=="") && <ErrorLabel>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </ErrorLabel>}
+          { (!allInput) && <ErrorLabel>Wszystkie pola musza być zepełnione</ErrorLabel>}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           {passwordInvalid ? <StyledAlert>Podane hasło jest nieprawidłowe.</StyledAlert> : <></>}
-          <LoginButton to='' type="submit" onClick={e => handleSubmit(e)}>Zaloguj się</LoginButton>
-          {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
-          {/*<Button to='/sign-up' type="button" >Zarejestruj się</Button>*/}
+          { !submitting ? <LoginButton to='##' type="submit" onClick={handleCheckBlockButton}>Zaloguj się</LoginButton> :
+          <LoginButton to='#' type="submit">Zaloguj się</LoginButton> }
           <LineForm />
           <GoogleButton to='#' type="button" onClick={ () => login()} >Kontynuuj z Google{' '}</GoogleButton>
           <FacebookLogin
