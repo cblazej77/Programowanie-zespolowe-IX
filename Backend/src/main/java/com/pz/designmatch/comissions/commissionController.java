@@ -54,4 +54,10 @@ public class commissionController {
         return ResponseEntity.status(HttpStatus.OK.value()).body(commission);
     }
 
+    @PutMapping(value = "/setComplited", produces = apiVersionAccept)
+    public ResponseEntity<commissionDto> setComplitedCommission(@RequestParam Long id){
+        commissionDto commissionCompleted = commissionService.setCommissionComplited(id);
+        return ResponseEntity.status(HttpStatus.OK.value()).body(commissionCompleted);
+    }
+
 }

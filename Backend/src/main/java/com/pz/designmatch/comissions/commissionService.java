@@ -4,10 +4,10 @@ package com.pz.designmatch.comissions;
 import com.pz.designmatch.model.Commission;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.repository.CommissionRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,15 +27,12 @@ public class commissionService {
                 commission.getTitle(),
                 commission.getDescription(),
                 commission.getDeadline(),
-                commission.getCompletedAt(),
-                commission.getCommissionedAt(),
-                commission.getClient(),
-                commission.getContractor(),
                 commission.getLevel().stream().limit(3).map(Level::getDisplayName).collect(Collectors.toSet()),
                 commission.getLanguages().stream().limit(3).map(Language::getDisplayName).collect(Collectors.toSet()),
                 commission.getLocation().stream().limit(2).map(City::getDisplayName).collect(Collectors.toSet()),
                 commission.getSkills().stream().limit(2).map(Skill::getDisplayName).collect(Collectors.toSet()),
-                commission.getTags().stream().limit(2).map(Tag::getDisplayName).collect(Collectors.toSet())
+                commission.getTags().stream().limit(2).map(Tag::getDisplayName).collect(Collectors.toSet()),
+                commission.getStawka()
         );
     }
 
@@ -50,13 +47,14 @@ public class commissionService {
         newCommission.setTitle(commissionDto.getTitle());
         newCommission.setDescription(commissionDto.getDescription());
         newCommission.setDeadline(commissionDto.getDeadline());
+        newCommission.setCommissionedAt(LocalDateTime.now());
         newCommission.setLevel(commissionDto.getLevel().stream().map(Level::fromDisplayName).collect(Collectors.toSet()));
         newCommission.setLocation(commissionDto.getLocation().stream().map(City::fromDisplayName).collect(Collectors.toSet()));
         newCommission.setLanguages(commissionDto.getLanguages().stream().map(Language::fromDisplayName).collect(Collectors.toSet()));
         newCommission.setSkills(commissionDto.getSkills().stream().map(Skill::fromDisplayName).collect(Collectors.toSet()));
         newCommission.setTags(commissionDto.getTags().stream().map(Tag::fromDisplayName).collect(Collectors.toSet()));
-        //Commission savedCommission = commissionRepository.save(newCommission);
-        //commissionDto.setId(newCommission.getId());
+        newCommission.setStawka(commissionDto.getStawka());
+        newCommission.setCompleted(false);
         return mapToCommissionDto(commissionRepository.save(newCommission));
     }
 
@@ -93,6 +91,20 @@ public class commissionService {
         if(commissionDto.getTags() != null){
             existingCommission.setTags(commissionDto.getTags().stream().map(Tag::fromDisplayName).collect(Collectors.toSet()));
         }
+        if(commissionDto.getStawka() != null){
+            existingCommission.setStawka(commissionDto.getStawka());
+        }
+        return mapToCommissionDto(commissionRepository.save(existingCommission));
+    }
+
+    public commissionDto setCommissionComplited(Long id){
+        Optional<Commission> optionalCommission= commissionRepository.findById(id);
+        if(optionalCommission.isEmpty()){
+            throw new RuntimeException("Te zlecenie nie istnieje");
+        }
+        Commission existingCommission = optionalCommission.get();
+        existingCommission.setCompleted(true);
+        existingCommission.setCompletedAt(LocalDateTime.now());
         return mapToCommissionDto(commissionRepository.save(existingCommission));
     }
 }
