@@ -17,6 +17,8 @@ import EditUserPageMobile from "./pages/Profile/EditUserPageMobile";
 import EditUserPage from './pages/Profile/EditUserPage';
 import Modal from "./components/ModalA";
 import Chat from "./pages/Chat/Chat";
+import EditUserPage from './pages/Profile/EditUserPage';
+import CompanyPage from './pages/Profile/CompanyPage';
 
 function App() {
   return (
@@ -47,7 +49,8 @@ function App() {
           />
           <Route path="/test" element={<EditUserPageMobile />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/1" element={<EditUserPage />} />
+          <Route path="/1" element={<Modal />} />
+          <Route path="/company" element={<CompanyPage />}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

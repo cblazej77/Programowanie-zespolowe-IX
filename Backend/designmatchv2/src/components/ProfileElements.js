@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { COLORS } from './Colors';
+import { TitleText } from '../pages/Home/CardsElement';
 
-const { darkLight, gray1 } = COLORS;
+const { darkLight, darkLight2, gray1, white } = COLORS;
 
 export const ProfileWrapper = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ export const ProfileWrapper = styled.div`
 
 export const TopSection = styled.div`
   margin-top: 4rem;
-  margin-bottom: 2rem;
+  margin-bottom: 7rem;
   display: flex;
   padding: 0 3vw;
   justify-content: center;
@@ -51,7 +52,7 @@ export const RightWrapper = styled.div`
   display: flex;
   padding: 60px;
   height: 30rem;
-  width: 55rem;
+  width: 55rem; 
   flex-direction: column;
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
@@ -202,7 +203,12 @@ export const RatingWrapper = styled.div`
 `;
 
 export const DownSection = styled.div`
-    width: 100%;
+    width: calc(85rem + 3vw);
+    display: flex;
+    flex-direction: column;
+    @media screen and (max-width: calc(85rem + 3vw)) {
+      width: calc(100% - 6vw);
+    }
 `;
 
 export const BubbleWrap = styled.div`
@@ -248,4 +254,68 @@ export const DataColumnt = styled(LeftColumn)`
 
 export const RatingText = styled(JobText)`
   font-size: 0.9rem;
+`;
+
+export const CommisionCard = styled.div`
+  display: flex;
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  flex-direction: column;
+  margin-bottom: 2.5rem;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.02);
+  }  
+`;
+
+export const CommisionTitle = styled(TitleText)`
+  font-size: 2.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const CommisionBubble = styled.p`
+  display: inline-block;
+  justify-content: center;
+  align-items: flex-start;
+  color: ${darkLight};
+  border: 1px solid ${darkLight};
+  border-radius: 15px;
+  height: 1.6rem;
+  font-size: 1rem;
+  padding: 0rem 0.6rem; 
+  margin: 0 0.2rem;
+  vertical-align: top;
+`;
+
+export const LevelBubble = styled(CommisionBubble)`
+    background: ${darkLight2};
+    color: ${white};
+    margin-right: 1rem;
+    border: 0px;
+`;
+
+export const CommisionText = styled.text`
+  color: ${gray1};
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+  margin-right: 1rem;
+`;
+
+export const CommisionTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CommisionBottom = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const CommisionTitleContainer = styled.div`
+  display: flex;
+  allign-items: flex-start;
+  max-width: 70rem;
 `;

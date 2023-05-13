@@ -226,6 +226,7 @@ export const RatingWrapper = styled.div`
 
 export const DownSection = styled.div`
   width: 100%;
+  
 `;
 
 export const BubbleWrap = styled.div`
@@ -287,3 +288,5 @@ export const SmallInput = styled(StyledTextarea)`
   font-size: 1rem;
   height: 2.5rem;
 `;
+
+
