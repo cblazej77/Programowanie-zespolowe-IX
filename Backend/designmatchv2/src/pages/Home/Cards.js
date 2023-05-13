@@ -34,6 +34,11 @@ const Cards = () => {
   const [selectCity, setSelectCity] = useState("");
   const [selectTag, setSelectTag] = useState("");
   const [FilterURL, setFilterURL] = useState("/artist/filter?level=&location=&category=&language=&subcategory=&tags=&page=0&size=10");
+  const [levelsFilter, setLevelsFilter] = useState([]);
+  const [citiesFilter, setCitiesFilter] = useState([]);
+  const [tagsFilter, setTagsFilter] = useState([]);
+  const [languagesFilter, setLanguagesFilter] = useState([]);
+  const [categoriesFilter, setCategoriesFilter] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,17 +68,31 @@ const Cards = () => {
             url: "/api/artist/getAvailableCategories",
             headers: {},
           }),
-          axios.request({
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: FilterURL,
-          }),
+          axios.post(
+            '/artist/filter',
+            {
+              level: levelsFilter,
+              location: citiesFilter,
+              skills: categoriesFilter,
+              languages: languagesFilter,
+              tags: tagsFilter,
+            },
+            {
+              params: { page: 0, size: 10 },
+              headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+            }),
+          // axios.request({
+          //   method: 'get',
+          //   maxBodyLength: Infinity,
+          //   url: FilterURL,
+          // }),
         ]);
         setCities(citiesResponse.data);
         setLanguages(languagesResponse.data);
         setTags(tagsResponse.data);
         setCategories(categoriesResponse.data);
         setFiltered(filteredResponse.data);
+        // setFiltered(filteredResponse.data);
         setGetData("Get all date");
       } catch (err) {
         console.error(err);
@@ -82,36 +101,12 @@ const Cards = () => {
     };
 
     fetchData();
-  }, [FilterURL]);
+  }, [levelsFilter, categoriesFilter, languagesFilter, citiesFilter, tagsFilter]);
 
   const cityOptions = useMemo(() => (
     cities.map((city, index) => {
-      const normalizedValue = city.toUpperCase().replace(/[ĄąĆćĘęŁłŃńÓóŚśŹźŻż]/g, match => {
-        const replacements = {
-          'Ą': 'A',
-          'ą': 'a',
-          'Ć': 'C',
-          'ć': 'c',
-          'Ę': 'E',
-          'ę': 'e',
-          'Ł': 'L',
-          'ł': 'l',
-          'Ń': 'N',
-          'ń': 'n',
-          'Ó': 'O',
-          'ó': 'o',
-          'Ś': 'S',
-          'ś': 's',
-          'Ź': 'Z',
-          'ź': 'z',
-          'Ż': 'Z',
-          'ż': 'z',
-        };
-        return replacements[match] || match;
-      });
-      const value = (normalizedValue === "ZDALNIE") ? 'REMOTE' : normalizedValue;
       return (
-        <StyledOption key={index} value={value}>{city}</StyledOption>
+        <StyledOption key={index} value={city}>{city}</StyledOption>
       );
     })
   ), [cities]);
@@ -120,7 +115,7 @@ const Cards = () => {
     languages.map((language, index) => (
       <StyledOption key={index} value={language}>{language}</StyledOption>
     ))
-  ), [tags]);
+  ), [languages]);
 
   const tagOptions = useMemo(() => (
     tags.map((tag, index) => (
@@ -220,11 +215,7 @@ const Cards = () => {
             <StyledOption value="">Wybierz tag</StyledOption>
             {tagOptions}
           </StyledSelect>
-          <SubtitleText>Kategorie</SubtitleText>
-          <StyledSelect>
-            <StyledOption value="">Wybierz kategorię</StyledOption>
-            {categoryOptions}
-          </StyledSelect>
+          <SubtitleText>Umiejętności</SubtitleText>
           {categoryCheckBoxes}
         </FilterWrapper>
       </FilterLabel>

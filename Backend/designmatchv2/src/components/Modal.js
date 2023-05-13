@@ -3,14 +3,15 @@ import styled from 'styled-components';
 import { COLORS } from './Colors';
 import axios from '../api/axios';
 
-import { CheckBoxLabel,
-    CheckBoxWrapper,
-    CheckBox,
-    CategoryText,
-    JobText
-    } from '../pages/Home/CardsElement';
+import {
+  CheckBoxLabel,
+  CheckBoxWrapper,
+  CheckBox,
+  CategoryText,
+  JobText
+} from '../pages/Home/CardsElement';
 
-    const Background = styled.div`
+const Background = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
@@ -68,14 +69,14 @@ padding: 0;
 z-index: 10;
 `;
 
-const Modal = ({showModal, setShowModal, URL}) => {
-    const modalRef = useRef();
+const Modal = ({ showModal, setShowModal, URL }) => {
+  const modalRef = useRef();
 
 
-const [categories, setCategories] = useState([]);
-const [userCategories, setUserCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [userCategories, setUserCategories] = useState([]);
 
-const closeModal = e => {
+  const closeModal = e => {
     if (modalRef.current === e.target) {
       setShowModal(false);
     }
@@ -99,32 +100,32 @@ const closeModal = e => {
   }), []);
 
   useEffect(() => {
-    
+
     const fetchData = async () => {
       try {
         const categoriesResponse = await axios.request(categoriesData);
         setCategories(categoriesResponse.data);
-    } catch (error) {
+      } catch (error) {
         console.log(error);
       }
     };
 
     fetchData();
-}, [categoriesData]);
+  }, [categoriesData]);
 
-useEffect(
-  () => {
-    document.addEventListener('keydown', keyPress);
-    return () => document.removeEventListener('keydown', keyPress);
-  },
-  [keyPress]
-);
+  useEffect(
+    () => {
+      document.addEventListener('keydown', keyPress);
+      return () => document.removeEventListener('keydown', keyPress);
+    },
+    [keyPress]
+  );
 
   const categoryCheckBoxes = useMemo(() => {
     if (!Array.isArray(categories.categories)) {
       return null;
     }
-      return categories.categories.map((category, indexC) => (
+    return categories.categories.map((category, indexC) => (
       <>
         <CategoryText key={indexC}>{category.name}</CategoryText>
         {category.subcategories.map((subcategory, indexS) => (
@@ -142,16 +143,16 @@ useEffect(
 
   return (
     <>
-        {showModal ? ( 
-            <Background onClick={closeModal} ref={modalRef}>
-                <ModalWrapper showModal={showModal}>
-                    <ModalContent>
-                        {categoryCheckBoxes}
-                        <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
-                    </ModalContent>
-                </ModalWrapper >
-            </Background>
-         ) : null}
+      {showModal ? (
+        <Background onClick={closeModal} ref={modalRef}>
+          <ModalWrapper showModal={showModal}>
+            <ModalContent>
+              {categoryCheckBoxes}
+              <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
+            </ModalContent>
+          </ModalWrapper >
+        </Background>
+      ) : null}
     </>
   )
 };

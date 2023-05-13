@@ -277,4 +277,3 @@ export const SmallInput = styled(StyledTextarea)`
   height: 2.5rem;
 `;
 
-

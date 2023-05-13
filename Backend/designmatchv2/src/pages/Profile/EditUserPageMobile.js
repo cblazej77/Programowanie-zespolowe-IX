@@ -230,11 +230,11 @@ const EditUserPageMobile = () => {
     headers: {}
   };
   let languageData = {
-  method: 'get',
-  maxBodyLength: Infinity,
-  url: "/api/artist/getAvailableLanguages",
-  headers: {}
-};
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: "/api/artist/getAvailableLanguages",
+    headers: {}
+  };
   const handleDeleteEducationElement = (id) => {
     setEducationList((prevList) => prevList.filter((item) => item.id !== id));
   };
@@ -491,13 +491,13 @@ const EditUserPageMobile = () => {
     const fetchData = async () => {
       try {
         //odebranie wszsytkich wyników
-        const levelsResponse =      await axios.request(levelsData);
+        const levelsResponse = await axios.request(levelsData);
         const artistResponse = await axios.request(profileData);
         const artistShortResponse = await axios.request(profileNameData);
-        const citiesResponse =      await axios.request(citiesData);
+        const citiesResponse = await axios.request(citiesData);
         const categoriesResponse = await axios.request(categoriesData);
-        const tagsResponse =        await axios.request(tagsData);
-        const languageResponse =    await axios.request(languageData);
+        const tagsResponse = await axios.request(tagsData);
+        const languageResponse = await axios.request(languageData);
         setGet(artistResponse.data);
         setArtistProfile(artistResponse.data);
         setArtistShortProfile(artistShortResponse.data);
@@ -566,110 +566,110 @@ const EditUserPageMobile = () => {
   }, [artistProfile]);
 
   useEffect(() => {
-    if(availableCategories) {
-      for(let i = 0; i < availableCategories.categories.length; ++i) {
-          for(let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
-              handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
-          }
+    if (availableCategories) {
+      for (let i = 0; i < availableCategories.categories.length; ++i) {
+        for (let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
+          handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
+        }
       }
-  }
-}, [availableCategories]);
+    }
+  }, [availableCategories]);
 
-function ListAvailableTags() {
-  if (availableTags) {
-    const available = availableTags.filter((item) => {
-      if (!tags.includes(item)) return item;
-    });
-    const list = available.map((item, id) => (
-      <button onClick={() => {
-          if(tagsToAdd.includes(item)) {handleDeleteTagsToAdd(item)}
-          else {handleAddTagsToAdd(item)}
-          }} key={id}>
-        <ModalBubble
-          key={id}
-          checked={tagsToAdd.includes(item)}
-        >
-          <label style={{ marginRight: 2 }}>{item}</label>
-        </ModalBubble>
-      </button>
-    ));
-    return <>{list}</>;
-  } else {
-    return <label>pusto ListAvalileTags</label>;
+  function ListAvailableTags() {
+    if (availableTags) {
+      const available = availableTags.filter((item) => {
+        if (!tags.includes(item)) return item;
+      });
+      const list = available.map((item, id) => (
+        <button onClick={() => {
+          if (tagsToAdd.includes(item)) { handleDeleteTagsToAdd(item) }
+          else { handleAddTagsToAdd(item) }
+        }} key={id}>
+          <ModalBubble
+            key={id}
+            checked={tagsToAdd.includes(item)}
+          >
+            <label style={{ marginRight: 2 }}>{item}</label>
+          </ModalBubble>
+        </button>
+      ));
+      return <>{list}</>;
+    } else {
+      return <label>pusto ListAvalileTags</label>;
+    }
   }
-}
-function ListTags() {
-  if (tags) {
-    const list = tags.map((item, id) => (
+  function ListTags() {
+    if (tags) {
+      const list = tags.map((item, id) => (
 
-      <Bubble key={id} >
-        <label>{item}</label>
-        <button onClick={() =>handleDeleteTag(item)}>
-        [X]</button>
-      </Bubble>
-    ));
-    return (
-      <>
-        {list}
-        <Bubble >
-        <button onClick={openModalTags}>   
-            <label>Dodaj</label>  
-        </button>  
+        <Bubble key={id} >
+          <label>{item}</label>
+          <button onClick={() => handleDeleteTag(item)}>
+            [X]</button>
         </Bubble>
-      </>
-    );
-  } else {
-    return <label>empty</label>;
-  }
-}
-function ListSkills() {
-  if (skills) {
-    const list = skills.map((item, id) => (
-      <Bubble key={id} >
-        <label>{item}</label>
-        <button onClick={() => handleDeleteSkill(item)}>
-          [X] </button>
-      </Bubble>
-    ));
-    return (
-      <>
-        {list}
+      ));
+      return (
+        <>
+          {list}
           <Bubble >
-            <button onClick ={openModalSkills}>
+            <button onClick={openModalTags}>
               <label>Dodaj</label>
             </button>
-           
           </Bubble>
-      </>
-    );
-  } else {
-    return <label>pusty ListSkills</label>;
+        </>
+      );
+    } else {
+      return <label>empty</label>;
+    }
   }
-}
-function ListLanguages() {
-  if (languages) {
-    const list = languages.map((item, id) => (
-      <Bubble key={id} >
-        <label>{item}</label>
-        <button onClick={() => handleDeleteLanguage(item)}>
-              [X] </button>
-      </Bubble>
-    ));
-    return (
-      <>
-        {list}
+  function ListSkills() {
+    if (skills) {
+      const list = skills.map((item, id) => (
+        <Bubble key={id} >
+          <label>{item}</label>
+          <button onClick={() => handleDeleteSkill(item)}>
+            [X] </button>
+        </Bubble>
+      ));
+      return (
+        <>
+          {list}
           <Bubble >
-            <button onClick ={openModalLanguages}>
+            <button onClick={openModalSkills}>
               <label>Dodaj</label>
             </button>
-            
+
           </Bubble>
-      </>
-    );
-  } else {
-    return <label></label>;
+        </>
+      );
+    } else {
+      return <label>pusty ListSkills</label>;
+    }
   }
-}
+  function ListLanguages() {
+    if (languages) {
+      const list = languages.map((item, id) => (
+        <Bubble key={id} >
+          <label>{item}</label>
+          <button onClick={() => handleDeleteLanguage(item)}>
+            [X] </button>
+        </Bubble>
+      ));
+      return (
+        <>
+          {list}
+          <Bubble >
+            <button onClick={openModalLanguages}>
+              <label>Dodaj</label>
+            </button>
+
+          </Bubble>
+        </>
+      );
+    } else {
+      return <label></label>;
+    }
+  }
 
   function ListEducation() {
 
@@ -677,7 +677,7 @@ function ListLanguages() {
       return (
         <div key={item.id}>
           <LeftInfoRow>
-          <InfoText>Kierunek: </InfoText>
+            <InfoText>Kierunek: </InfoText>
             <input
               maxLength={50}
               type="text"
@@ -690,7 +690,7 @@ function ListLanguages() {
             />
           </LeftInfoRow>
           <LeftInfoRow>
-          <InfoText>Uczelnia: </InfoText>
+            <InfoText>Uczelnia: </InfoText>
             <input
               maxLength={100}
               type="text"
@@ -781,7 +781,7 @@ function ListLanguages() {
 
     return (
       <>
-      {list}
+        {list}
         <div style={{ alignItems: 'center' }}>
           <button
             onClick={handleAddEducationClick}
@@ -799,7 +799,7 @@ function ListLanguages() {
       return (
         <div key={item.id}>
           <LeftInfoRow>
-          <InfoText>Nazwa firmy: </InfoText>
+            <InfoText>Nazwa firmy: </InfoText>
             <input
               maxLength={50}
               type="text"
@@ -812,7 +812,7 @@ function ListLanguages() {
             />
           </LeftInfoRow>
           <LeftInfoRow>
-          <InfoText>Miasto: </InfoText>
+            <InfoText>Miasto: </InfoText>
             <input
               maxLength={100}
               type="text"
@@ -863,7 +863,7 @@ function ListLanguages() {
               placeholder="Wpisz datę zakończenia w formacie MM/YYYY"
             />
           </LeftInfoRow>
-          
+
           <div style={{ alignItems: 'center' }}>
             <button
               onClick={() => handleDeleteExperienceElement(item.id)}
@@ -891,7 +891,7 @@ function ListLanguages() {
 
     return (
       <>
-      {list}
+        {list}
         <div style={{ alignItems: 'center' }}>
           <button
             onClick={handleAddExperienceClick}
@@ -971,10 +971,10 @@ function ListLanguages() {
   return (
 
     <>
-      <Modal showModal={showModalTags} setShowModal={setShowModalTags} tags={tags} setTags={setTags}/>
-      <ModalSkills showModal={showModalSkills} setShowModal={setShowModalSkills} skills={skills} setSkills={setSkills}/>
+      <Modal showModal={showModalTags} setShowModal={setShowModalTags} tags={tags} setTags={setTags} />
+      <ModalSkills showModal={showModalSkills} setShowModal={setShowModalSkills} skills={skills} setSkills={setSkills} />
       <ModalLinks showModal={showModalLinks} setShowModal={setShowModalLinks} />
-      <ModalLanguages showModal={showModalLanguages} setShowModal={setShowModalLanguages} languages={languages} setLanguages={setLanguages}/>
+      <ModalLanguages showModal={showModalLanguages} setShowModal={setShowModalLanguages} languages={languages} setLanguages={setLanguages} />
       {artistProfile ? (
         <ProfileWrapper>
           <TopSection>
@@ -987,7 +987,7 @@ function ListLanguages() {
               </div>
               {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
               {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <Dropdown
-              options={availableLevels} onChange={(e) => setLevel(e)} value={level} placeHolder={level}
+                options={availableLevels} onChange={(e) => setLevel(e)} value={level} placeHolder={level}
               />}
               {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
               {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <RatingWrapper>
@@ -1022,18 +1022,18 @@ function ListLanguages() {
                       <InfoText>Miejscowość:</InfoText>
                       {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
                       {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <Dropdown
-                       options={availableLocations} onChange={(e) => setLocation(e)} value={location} placeHolder={location}
-                    /> }
+                        options={availableLocations} onChange={(e) => setLocation(e)} value={location} placeHolder={location}
+                      />}
                     </LeftInfoRow>
                     <LeftInfoRow>
                       <InfoText>Prace:</InfoText>
                       <DataText>20</DataText>
                     </LeftInfoRow>
-                    
+
                     <LineForm />
                     <LeftInfoRow>
                       <HeaderText>Tags:</HeaderText>
-                      
+
                     </LeftInfoRow>
                     <BubbleWrap>
                       <ListTags />
@@ -1041,7 +1041,7 @@ function ListLanguages() {
                     <LineForm />
                     <LeftInfoRow>
                       <HeaderText>Skills:</HeaderText>
-                      
+
                     </LeftInfoRow>
                     <BubbleWrap>
                       <ListSkills />
