@@ -19,34 +19,45 @@ import {
   RightLabel,
   TopSection,
   Button,
+  FilterDropDownContainer,
+  Icon,
+  CategoryWrapper,
+  CheckBoxText,
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
 import LoadingPage from '../LoadingPage';
+import { faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Cards = () => {
   const [cities, setCities] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [levels, setLevels] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [getData, setGetData] = useState(null);
   const [selectLanguage, setSelectLanguage] = useState("");
   const [selectCity, setSelectCity] = useState("");
   const [selectTag, setSelectTag] = useState("");
-  const [FilterURL, setFilterURL] = useState("/artist/filter?level=&location=&category=&language=&subcategory=&tags=&page=0&size=10");
   const [levelsFilter, setLevelsFilter] = useState([]);
   const [citiesFilter, setCitiesFilter] = useState([]);
   const [tagsFilter, setTagsFilter] = useState([]);
   const [languagesFilter, setLanguagesFilter] = useState([]);
   const [categoriesFilter, setCategoriesFilter] = useState([]);
   const [selectCategories, setSelectCategories] = useState("");
+  const [showCities, setShowCities] = useState(false);
+  const [showLanguages, setShowLanguages] = useState(false);
+  const [showLevels, setShowLevels] = useState(false);
+  const [showTags, setShowTags] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
   const urlFilter = process.env.REACT_APP_GET_ARTIST_FILTER;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [citiesResponse, languagesResponse, tagsResponse, categoriesResponse] = await Promise.all([
+        const [citiesResponse, languagesResponse, tagsResponse, categoriesResponse, levelsResponse, filteredResponse] = await Promise.all([
           axios.request({
             method: 'get',
             maxBodyLength: 5000,
@@ -71,6 +82,12 @@ const Cards = () => {
             url: "/api/artist/getAvailableCategories",
             headers: {},
           }),
+          axios.request({
+            method: 'get',
+            maxBodyLength: 5000,
+            url: "/api/artist/getAvailableLevels",
+            headers: {},
+          }),
           axios.post(
             '/artist/filter',
             {
@@ -84,18 +101,13 @@ const Cards = () => {
               params: { page: 0, size: 10 },
               headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
             }),
-          // axios.request({
-          //   method: 'get',
-          //   maxBodyLength: Infinity,
-          //   url: FilterURL,
-          // }),
         ]);
         setCities(citiesResponse.data);
         setLanguages(languagesResponse.data);
         setTags(tagsResponse.data);
         setCategories(categoriesResponse.data);
+        setLevels(levelsResponse.data);
         setFiltered(filteredResponse.data);
-        // setFiltered(filteredResponse.data);
         setGetData("Get all date");
       } catch (err) {
         console.error(err);
@@ -106,87 +118,65 @@ const Cards = () => {
     fetchData();
   }, [levelsFilter, categoriesFilter, languagesFilter, citiesFilter, tagsFilter]);
 
-  const cityOptions = useMemo(() => (
-    cities.map((city, index) => {
-      return (
-        <StyledOption key={index} value={city}>{city}</StyledOption>
-      );
-    })
-  ), [cities]);
+  const cityOptions = useMemo(() => {
+    return cities.map((city, index) => (
+      <CheckBoxWrapper key={index}>
+        <CheckBox type='checkbox' id={city} />
+        <CheckBoxLabel htmlFor={city} />
+        <CheckBoxText>{city}</CheckBoxText>
+      </CheckBoxWrapper>
+    ));
+  });
 
-  const languageOptions = useMemo(() => (
-    languages.map((language, index) => (
-      <StyledOption key={index} value={language}>{language}</StyledOption>
-    ))
-  ), [languages]);
+  const languageOptions = useMemo(() => {
+    return languages.map((language, index) => (
+      <CheckBoxWrapper key={index}>
+        <CheckBox type='checkbox' id={language} />
+        <CheckBoxLabel htmlFor={language} />
+        <CheckBoxText>{language}</CheckBoxText>
+      </CheckBoxWrapper>
+    ));
+  });
 
-  const tagOptions = useMemo(() => (
-    tags.map((tag, index) => (
-      <StyledOption key={index} value={tag}>{tag}</StyledOption>
-    ))
-  ), [tags]);
+  const tagOptions = useMemo(() => {
+    return tags.map((tag, index) => (
+      <CheckBoxWrapper key={index}>
+        <CheckBox type='checkbox' id={tag} />
+        <CheckBoxLabel htmlFor={tag} />
+        <CheckBoxText>{tag}</CheckBoxText>
+      </CheckBoxWrapper>
+    ));
+  });
 
-  // niżej są 2 opcje wyświetlania filtrowania kategorii
-  // tutaj jest dropbox
+  const levelOptions = useMemo(() => {
+    return levels.map((level, index) => (
+      <CheckBoxWrapper key={index}>
+        <CheckBox type='checkbox' id={level} />
+        <CheckBoxLabel htmlFor={level} />
+        <CheckBoxText>{level}</CheckBoxText>
+      </CheckBoxWrapper>
+    ));
+  });
+
   const categoryOptions = useMemo(() => {
     if (!Array.isArray(categories.categories)) {
       return null;
     }
 
     return categories.categories.map((category, indexC) => (
-      <StyledOptgroup label={category.name} key={indexC} >
-        {category.subcategories.map((subcategory, indexS) => (
-          <StyledOption key={indexS} value={subcategory}>{subcategory}</StyledOption>
-        ))}
-      </StyledOptgroup>
-    ));
-  });
-
-  // a tutaj są checkboxy
-  const categoryCheckBoxes = useMemo(() => {
-    if (!Array.isArray(categories.categories)) {
-      return null;
-    }
-
-    return categories.categories.map((category, indexC) => (
-      <>
+      <CategoryWrapper>
         <CategoryText key={indexC}>{category.name}</CategoryText>
         {category.subcategories.map((subcategory, indexS) => (
           <CheckBoxWrapper key={indexS}>
             <CheckBox type='checkbox' id={subcategory} />
             <CheckBoxLabel htmlFor={subcategory} />
-            <JobText>{subcategory}</JobText>
+            <CheckBoxText>{subcategory}</CheckBoxText>
           </CheckBoxWrapper>
         ))}
 
-      </>
+      </CategoryWrapper>
     ));
   });
-  const FilteredResponse = async () => {
-    let level = [];
-    let location = [];
-    location.push({
-      selectCity: selectCity
-    });
-    const response = await axios.put(
-      '/artist/filte',
-      {
-        level: [],
-        location: location,
-        skills: { selectCategories },
-        tags: selectTag,
-      },
-      {
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-      },
-    )
-      .catch((error) => {
-        console.log("FiltredError  ", error);
-      });
-    setFiltered(response.data);
-    console.log("Filtred:     ", response);
-  }
-
 
   //console.log(filtered.content[0].firstname);
 
@@ -213,28 +203,24 @@ const Cards = () => {
     ));
   });
 
-  const handleCityChange = (event) => {
-    setSelectCity(event.target.value);
-    FilteredResponse();
-    //setFilterURL(`/artist/filter?level=&location=${event.target.value}&category=&language=&subcategory=&tags=${selectTag}&page=0&size=10`);
-  };
-
-  const handleTagChange = (event) => {
-    setSelectTag(event.target.value);
-    FilteredResponse();
-    //setFilterURL(`/artist/filter?level=&location=${selectCity}&category=&language=&subcategory=&tags=${event.target.value}&page=0&size=10`);
-  };
-
-  const handleLanguageChange = (event) => {
-
-    setSelectLanguage(event.target.value);
-    FilteredResponse();
+  const handleCityVisibleClick = () => {
+    setShowCities(!showCities);
   }
 
-  const handleCategoriesChange = (event) => {
+  const handleLanguageVisibleClick = () => {
+    setShowLanguages(!showLanguages);
+  }
 
-    setSelectCategories(event.target.value);
-    FilteredResponse();
+  const handleTagVisibleClick = () => {
+    setShowTags(!showTags);
+  }
+
+  const handleCategoryVisibleClick = () => {
+    setShowCategories(!showCategories);
+  }
+
+  const handleLevelVisibleClick = () => {
+    setShowLevels(!showLevels);
   }
 
   return (
@@ -242,23 +228,51 @@ const Cards = () => {
       <FilterLabel>
         <TitleText>Filtruj</TitleText>
         <FilterWrapper>
-          <SubtitleText>Skąd?</SubtitleText>
-          <StyledSelect onChange={handleCityChange}>
-            <StyledOption value="">Wybierz lokalizację</StyledOption>
-            {cityOptions}
-          </StyledSelect>
-          <SubtitleText>Języki</SubtitleText>
-          <StyledSelect onChange={handleLanguageChange}>
-            <StyledOption value="">Wybierz język</StyledOption>
-            {languageOptions}
-          </StyledSelect>
-          <SubtitleText>Tagi</SubtitleText>
-          <StyledSelect onChange={handleTagChange}>
-            <StyledOption value="">Wybierz tag</StyledOption>
-            {tagOptions}
-          </StyledSelect>
-          <SubtitleText>Umiejętności</SubtitleText>
-          {categoryCheckBoxes}
+          <FilterDropDownContainer onClick={handleCityVisibleClick}>
+            <FontAwesomeIcon icon={showCities ? faChevronDown : faChevronRight} />
+            <SubtitleText>Skąd?</SubtitleText>
+          </FilterDropDownContainer>
+          {showCities && (
+            <>
+              {cityOptions}
+            </>
+          )}
+          <FilterDropDownContainer onClick={handleLanguageVisibleClick}>
+            <FontAwesomeIcon icon={showLanguages ? faChevronDown : faChevronRight} />
+            <SubtitleText>Języki</SubtitleText>
+            {showLanguages && (
+              <>
+                {languageOptions}
+              </>
+            )}
+          </FilterDropDownContainer>
+          <FilterDropDownContainer onClick={handleTagVisibleClick}>
+            <FontAwesomeIcon icon={showTags ? faChevronDown : faChevronRight} />
+            <SubtitleText>Tagi</SubtitleText>
+            {showTags && (
+              <>
+                {tagOptions}
+              </>
+            )}
+          </FilterDropDownContainer>
+          <FilterDropDownContainer onClick={handleCategoryVisibleClick}>
+            <FontAwesomeIcon icon={showCategories ? faChevronDown : faChevronRight} />
+            <SubtitleText>Umiejętności</SubtitleText>
+            {showCategories && (
+              <>
+                {categoryOptions}
+              </>
+            )}
+          </FilterDropDownContainer>
+          <FilterDropDownContainer onClick={handleLevelVisibleClick}>
+            <FontAwesomeIcon icon={showLevels ? faChevronDown : faChevronRight} />
+            <SubtitleText>Poziom</SubtitleText>
+            {showLevels && (
+              <>
+                {levelOptions}
+              </>
+            )}
+          </FilterDropDownContainer>
         </FilterWrapper>
       </FilterLabel>
 
