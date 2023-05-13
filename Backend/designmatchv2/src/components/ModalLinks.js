@@ -218,12 +218,12 @@ const checkValidWebsite = (e) => {
                             <Input width="45%" placeholder='instagram.com'check = {check2}  value={link2} onChange = {(e) => checkValidInstagram(e)} ></Input>
                         </DivLink>
                         <DivLink>
-                        <Label href="https://pl.linkedin.com/" target="_blank" rel="noopener">Linekedin:</Label>
+                        <Label href="https://pl.linkedin.com/" target="_blank" rel="noopener">Linkedin:</Label>
                             <Input width="45%" placeholder='pl.linkedin.com' check = {check3} value={link3} onChange = {(e) => checkValidLinekedin(e)}></Input>
                         </DivLink>
                         <DivLink>
                         <Label href="https://pl.pinterest.com/" target="_blank" rel="noopener">Pinterest:</Label>
-                            <Input width="45%" placeholder='pl.pinterest.com' check = {check4}value={link4} onChange = {(e) => checkValidPinterest(e)}></Input>
+                            <Input width="45%" placeholder='pl.pinterest.com' check = {check4} value={link4} onChange = {(e) => checkValidPinterest(e)}></Input>
                         </DivLink>
                         <DivLink>
                         <Label href="https://twitter.com/" target="_blank" rel="noopener">Twitter:</Label>
