@@ -18,8 +18,8 @@ function Dropdown(){
     const handleMapClick = (item) => {
         if(item === "handleLogOut"){
           setClick(false);
+          localStorage.removeItem('storageLogin');
           auth.logout();
-          
         }
         else if(item === "handleSetClick"){
           setClick(false);

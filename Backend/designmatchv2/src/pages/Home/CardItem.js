@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { BrowserRouter, Route,Routes,  Navigate } from 'react-router-dom';
 import {
   CardAvatar,
   CardLabel,
@@ -17,12 +18,26 @@ import {
   ThirdPhoto,
 } from "./CardsElement";
 import { Rating } from "react-simple-star-rating";
+import { useNavigate } from "react-router-dom";
+import OtherUserPage from "../Profile/OtherProfile";
 
 function CardItem(props) {
+  const navigate = useNavigate();
+
+  const handleGoProfile = () => {
+    
+    let userNick = props.username;
+    console.log(userNick);
+      navigate('/other-account/', { state: {
+        argument: props.username
+      }});
+  };
+
   return (
+    <>
     <CardLabel>
       <SimpleInfoContainer>
-        <CardAvatar src={props.avatar} />
+        <CardAvatar src={props.avatar} onClick ={handleGoProfile}/>
         <LevelText>{props.level}</LevelText>
         <NameText>
           {props.name} {props.surname}
@@ -55,6 +70,8 @@ function CardItem(props) {
       <ThirdPhoto src={props.project3} />
       <FourthPhoto src={props.project4} />
     </CardLabel>
+    </>
+         
   );
 }
 

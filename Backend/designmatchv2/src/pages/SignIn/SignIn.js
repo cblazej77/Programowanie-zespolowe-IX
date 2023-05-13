@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../components/Auth';
 import { default as axios } from "../../api/axios"
@@ -41,6 +41,18 @@ export const SignIn = () => {
 
   }
 
+
+
+  useEffect(() => {
+    if(localStorage.length > 0){
+      let myKey = localStorage.getItem("key");
+      console.log(myKey);
+      authApi.login("Michal", "pssw");
+      navigate(redirectPath, {replace: true});
+    }
+    else console.log("pusty localStorage");
+  }, []);
+
   const handleSubmit = async () => {
       try {
               setSubmitting(true);
@@ -55,6 +67,7 @@ export const SignIn = () => {
         console.log(response?.accessToken);
         console.log(JSON.stringify(response));
         authApi.login(email, password);
+        saveStorageData();
         navigate(redirectPath, { replace: true });
       } catch (err) {
       setSubmitting(false);
@@ -73,6 +86,7 @@ export const SignIn = () => {
         onSuccess: CodeResponse  => {
           console.log(CodeResponse );
           authApi.login("Michal", "pssw");
+          saveStorageData();
           navigate(redirectPath, {replace: true});
         },
         flow: 'auth-code',
@@ -101,6 +115,12 @@ export const SignIn = () => {
     const regex = new RegExp(EMAIL_REGEX);
     return regex.test(email);
   }
+
+    //saveStorageData
+    const saveStorageData = () => {
+      let key = 'storageLogin';
+      localStorage.setItem(key, 'Zalogowany :)');
+    };
 
   return (
     <AllPage>
@@ -131,8 +151,8 @@ export const SignIn = () => {
   onProfileSuccess={(response) => {
     console.log('Get Profile Success!', response);
     authApi.login(response.name, "passwordini");
+    saveStorageData();
     navigate(redirectPath, {replace: true});
-    
   }}
   render={({ onClick }) => (
     <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>

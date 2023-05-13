@@ -1,6 +1,6 @@
 //Switch => Routes
 import React from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, useParams} from 'react-router-dom';
 import { AuthProvider } from './components/Auth';
 import Head from './components/header/Header';
 import Home  from './pages/Home/Home';
@@ -19,6 +19,7 @@ import Chat from "./pages/Chat/Chat";
 import EditUserPage from './pages/Profile/EditUserPage';
 import CompanyPage from './pages/Profile/CompanyPage';
 import EditCompanyPage from './pages/Profile/EditCompanyPage';
+import OtherUserPage from './pages/Profile/OtherProfile';
 
 function App() {
   return (
@@ -30,11 +31,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/account" element={ <RequireAuth> {" "} <UserPage />{" "} </RequireAuth> } />
+          <Route path="/other-account/:argument" element={ <OtherUserPage /> } />
           <Route path="/sign-in" element={
               <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
                 {" "} <SignIn />{" "}
               </GoogleOAuthProvider> }
           />
+
           <Route path="/sign-up" element={
               <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
                 {" "} <SignUp />{" "}

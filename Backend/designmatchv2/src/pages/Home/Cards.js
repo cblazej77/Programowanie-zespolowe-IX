@@ -99,69 +99,6 @@ const Cards = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const [citiesResponse, languagesResponse, tagsResponse, categoriesResponse, levelsResponse, filteredResponse] = await Promise.all([
-  //         axios.request({
-  //           method: 'get',
-  //           maxBodyLength: 5000,
-  //           url: "/api/artist/getAvailableCities",
-  //           headers: {},
-  //         }),
-  //         axios.request({
-  //           method: 'get',
-  //           maxBodyLength: 5000,
-  //           url: "/api/artist/getAvailableLanguages",
-  //           headers: {},
-  //         }),
-  //         axios.request({
-  //           method: 'get',
-  //           maxBodyLength: 5000,
-  //           url: "/api/artist/getAvailableTags",
-  //           headers: {},
-  //         }),
-  //         axios.request({
-  //           method: 'get',
-  //           maxBodyLength: 5000,
-  //           url: "/api/artist/getAvailableCategories",
-  //           headers: {},
-  //         }),
-  //         axios.request({
-  //           method: 'get',
-  //           maxBodyLength: 5000,
-  //           url: "/api/artist/getAvailableLevels",
-  //           headers: {},
-  //         }),
-  //         axios.post(
-  //           '/artist/filter',
-  //           {
-  //             level: levelsFilter,
-  //             location: citiesFilter,
-  //             skills: categoriesFilter,
-  //             languages: languagesFilter,
-  //             tags: tagsFilter,
-  //           },
-  //           {
-  //             params: { page: 0, size: 10 },
-  //             headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-  //           }),
-  //       ]);
-  //       setCities(citiesResponse.data);
-  //       setLanguages(languagesResponse.data);
-  //       setTags(tagsResponse.data);
-  //       setCategories(categoriesResponse.data);
-  //       setLevels(levelsResponse.data);
-  //       setFiltered(filteredResponse.data);
-  //       setGetData("Get all data");
-  //     } catch (err) {
-  //       console.error(err);
-  //       setGetData(null);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [levelsFilter, categoriesFilter, languagesFilter, citiesFilter, tagsFilter]);
 
   const citiesData = useMemo(
     () => ({
@@ -380,6 +317,7 @@ const Cards = () => {
         avatar="/assets/cards/person1.jpg"
         name={filter.firstname}
         surname={filter.lastname}
+        username={filter.username}
         level={filter.level}
         rating={3.5}
         ratingCount={12}

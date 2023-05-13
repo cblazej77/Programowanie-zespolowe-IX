@@ -1,13 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   AllPage,
   HeroContainer,
 } from './Styles';
-
+import { useAuth } from '../../components/Auth';
 import Cards from './Cards';
 
 
 const Home = () => {
+  const authApi = useAuth();
+
+  useEffect(() => {
+    if(localStorage.length > 0){
+      let myKey = localStorage.getItem("key");
+      console.log(myKey);
+      authApi.login("Michal", "pssw");
+    }
+    else console.log("pusty localStorage");
+  }, []);
+
+
   return (
     <>
       <AllPage>
