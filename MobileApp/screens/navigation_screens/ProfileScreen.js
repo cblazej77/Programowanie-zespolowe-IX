@@ -70,13 +70,10 @@ export default function ProfileScreen({ navigation }) {
           <ChatLabel
             style={{
               height: 60,
-              justifyContent: 'space-between',
+              justifyContent: 'flex-end',
             }}
           >
-            <HeaderText numberOfLines={1} style={{ width: '75%', marginLeft: 10 }}>
-              {userInfo.firstname + ' ' + userInfo.lastname}
-            </HeaderText>
-            <View style={[styles.HeaderViewStyle, { width: '20%' }]}>
+            <View style={[styles.HeaderViewStyle]}>
               {editing ? (
                 <SelectDropdown
                   data={['Opuść']}
@@ -86,7 +83,7 @@ export default function ProfileScreen({ navigation }) {
                     }
                   }}
                   defaultButtonText=" "
-                  buttonStyle={{ width: 80, backgroundColor: darkLight }}
+                  buttonStyle={{ backgroundColor: darkLight }}
                   renderDropdownIcon={(isOpened) => {
                     return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={primary} size={18} />;
                   }}
@@ -109,7 +106,7 @@ export default function ProfileScreen({ navigation }) {
                     }
                   }}
                   defaultButtonText=" "
-                  buttonStyle={{ width: 80, backgroundColor: darkLight }}
+                  buttonStyle={{ backgroundColor: darkLight }}
                   renderDropdownIcon={(isOpened) => {
                     return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={primary} size={18} />;
                   }}
@@ -266,12 +263,10 @@ const styles = StyleSheet.create({
   },
   dropdown1DropdownStyle: {
     backgroundColor: '#EFEFEF',
-    width: 150,
   },
   dropdown1RowStyle: {
     backgroundColor: '#EFEFEF',
     borderBottomColor: '#C5C5C5',
-    width: 150,
   },
   dropdown1RowTxtStyle: {
     color: '#444',

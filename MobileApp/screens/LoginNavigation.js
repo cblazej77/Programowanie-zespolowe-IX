@@ -9,6 +9,7 @@ import Signup from './Signup';
 import MainNavigation from './MainNavigation';
 import HomePage from './navigation_screens/HomePage';
 import ArtistScreen from './Artist/ArtistScreen';
+import CompanyScreen from './Company/CompanyScreen';
 import Chat from './Chat';
 import { StatusBar } from 'react-native';
 
@@ -34,6 +35,7 @@ const LoginNavigation = () => {
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="ArtistScreen" component={ArtistScreen} />
         <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen name="CompanyScreen" component={CompanyScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

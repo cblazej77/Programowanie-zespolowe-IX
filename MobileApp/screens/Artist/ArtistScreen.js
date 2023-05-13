@@ -62,9 +62,6 @@ export default function ArtistScreen({ route, navigation }) {
             >
               <Ionicons name="arrow-back" size={38} style={{ color: primary, marginLeft: 5 }} />
             </TouchableOpacity>
-            <HeaderText numberOfLines={1} style={{ width: '85%' }}>
-              {route.params.firstname + ' ' + route.params.lastname}
-            </HeaderText>
           </ChatLabel>
           <Tab.Navigator
             initialRouteName="ArtistProfile"
@@ -87,7 +84,11 @@ export default function ArtistScreen({ route, navigation }) {
               }}
               name="ArtistProfile"
               component={ArtistProfile}
-              initialParams={{ username: route.params.username }}
+              initialParams={{
+                username: route.params.username,
+                firstname: route.params.firstname,
+                lastname: route.params.lastname,
+              }}
             />
             <Tab.Screen
               options={{

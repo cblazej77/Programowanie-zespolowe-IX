@@ -13,6 +13,7 @@ import {
   AppTextInput,
   ModalBubble,
   MsgBox,
+  HeaderText,
 } from './styles';
 import Stars from 'react-native-stars';
 //SecureStoring accessToken
@@ -1055,13 +1056,36 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
 
   function ListLinks() {
     if (artistProfile) {
+      function changeLink(text, id) {
+        if(id === 1) {
+          setFacebook(text);
+        }
+        if(id === 2) {
+          setInstagram(text);
+        }
+        if(id === 3) {
+          setLinkedin(text);
+        }
+        if(id === 4) {
+          setPinterest(text);
+        }
+        if(id === 5) {
+          setTwitter(text);
+        }
+        if(id === 6) {
+          setDribble(text);
+        }
+        if(id === 7) {
+          setWebsite(text);
+        }
+      };
       const links = [
         { id: 1, name: 'Facebook:', data: facebook },
         { id: 2, name: 'Instagram:', data: instagram },
         { id: 3, name: 'LinkedIn:', data: linkedin },
         { id: 4, name: 'Pinterest:', data: pinterest },
         { id: 5, name: 'Twitter:', data: twitter },
-        { id: 6, name: 'Dribble:', data: dribble },
+        { id: 6, name: 'Dribbble:', data: dribble },
         { id: 7, name: 'Twoja strona:', data: website },
       ];
       const list = links.map((item) => (
@@ -1072,7 +1096,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
             style={{ flexWrap: 'wrap', width: '70%' }}
             defaultValue={item.data}
             onChangeText={(newText) => {
-              item.data = newText;
+              changeLink(newText, item.id);
             }}
             placeholder="Wpisz adres"
             autoComplete="off"
@@ -1093,32 +1117,22 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
             <Avatar resizeMode="contain" source={require('../assets/img/avatar.png')}></Avatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
-              <Stars
-                default={3.5}
-                spacing={7}
-                count={5}
-                starSize={30}
-                half={true}
-                disabled={true}
-                fullStar={require('../assets/img/star.png')}
-                halfStar={require('../assets/img/star-half.png')}
-                emptyStar={require('../assets/img/star-outline.png')}
-              />
-              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around' }}>
-                <View>
-                  <StatsText bold={true}>63</StatsText>
-                  <StatsText>Prace</StatsText>
-                </View>
-                <View>
-                  <StatsText bold={true}>205</StatsText>
-                  <StatsText>Opinie</StatsText>
-                </View>
-                <View>
-                  <StatsText bold={true}>3,5/5</StatsText>
-                  <StatsText>Ocena</StatsText>
-                </View>
-              </View>
+            <Pressable
+              onPress={() => {
+              }}
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? 'lightgrey' : darkLight,
+                },
+                styles.ModalButton,
+              ]}
+            >
+              <AppText style={{ color: primary }}>Zmień zdjęcie profilowe</AppText>
+            </Pressable>
             </View>
+          </View>
+          <View style={{ marginLeft: 15, justifyContent: 'space-between'}}>
+            <HeaderText style={{color:darkLight, fontSize: 20}}>{userInfo.firstname + ' ' + userInfo.lastname}</HeaderText>
           </View>
           <AppText style={styles.About}>O mnie:</AppText>
           <RegularTextInput
@@ -1184,7 +1198,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
               isVisible={skillsModalVisible}
               onBackdropPress={() => setSkillsModalVisible(false)}
               onSwipeComplete={() => setSkillsModalVisible(false)}
-              swipeDirection="left"
+              swipeDirection="right"
               animationInTiming={500}
               animationOutTiming={500}
               hideModalContentWhileAnimating={true}
@@ -1233,7 +1247,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
               isVisible={languagesModalVisible}
               onBackdropPress={() => setLanguagesModalVisible(false)}
               onSwipeComplete={() => setLanguagesModalVisible(false)}
-              swipeDirection="left"
+              swipeDirection="right"
               animationInTiming={500}
               animationOutTiming={500}
               hideModalContentWhileAnimating={true}
@@ -1282,7 +1296,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
               isVisible={tagsModalVisible}
               onBackdropPress={() => setTagsModalVisible(false)}
               onSwipeComplete={() => setTagsModalVisible(false)}
-              swipeDirection="left"
+              swipeDirection="right"
               animationInTiming={500}
               animationOutTiming={500}
               hideModalContentWhileAnimating={true}

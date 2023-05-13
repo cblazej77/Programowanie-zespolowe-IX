@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, Linking } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Colors, RegularText, StatsText, AppText, Avatar, Bubble, Line } from '../components/styles';
+import { Colors, RegularText, StatsText, AppText, Avatar, Bubble, Line, HeaderText } from '../components/styles';
 import Stars from 'react-native-stars';
 //SecureStoring accessToken
 import * as SecureStore from 'expo-secure-store';
@@ -77,7 +77,7 @@ const Profile = ({ navigation }) => {
     }, [link]);
 
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10, paddingLeft: 0 }}>
           <AppText style={{fontSize: 18, marginRight: 15}}>{children1}</AppText>
         <TouchableOpacity onPress={handlePress}>
           <Fontisto name={children2} color={color} size={22} />
@@ -118,12 +118,12 @@ const Profile = ({ navigation }) => {
   function ListEducation() {
     if (artistProfile.education) {
       const list = artistProfile.education.map((item, id) => (
-        <View style={styles.ListElement} key={id}>
-          <AppText>{'Kierunek: ' + item.faculty}</AppText>
-          <AppText>{'Uczelnia: ' + item.school_name}</AppText>
-          <AppText>{'Stopień: ' + item.degree}</AppText>
-          <AppText>{'Od: ' + item.start_date}</AppText>
-          <AppText>{'Do: ' + item.end_date}</AppText>
+        <View style={[styles.ListElement, {marginBottom: 7, marginLeft: 25}]} key={id}>
+          <AppText style={{marginBottom: 2}}>{'Kierunek: ' + item.faculty}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Uczelnia: ' + item.school_name}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Stopień: ' + item.degree}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Od: ' + item.start_date}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Do: ' + item.end_date}</AppText>
         </View>
       ));
       return <>{list}</>;
@@ -135,13 +135,13 @@ const Profile = ({ navigation }) => {
   function ListExperience() {
     if (artistProfile.experience) {
       const list = artistProfile.experience.map((item, id) => (
-        <View style={styles.ListElement} key={id}>
-          <AppText>{'Nazwa firmy: ' + item.company}</AppText>
-          <AppText>{'Miasto: ' + item.city}</AppText>
-          <AppText>{'Stanowsko: ' + item.position}</AppText>
-          <AppText>{'Opis obowiązków: ' + item.description}</AppText>
-          <AppText>{'Od: ' + item.start_date}</AppText>
-          <AppText>{'Do: ' + item.end_date}</AppText>
+        <View style={[styles.ListElement, {marginBottom: 7, marginLeft: 25}]} key={id}>
+          <AppText style={{marginBottom: 2}}>{'Nazwa firmy: ' + item.company}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Miasto: ' + item.city}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Stanowsko: ' + item.position}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Opis obowiązków: ' + item.description}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Od: ' + item.start_date}</AppText>
+          <AppText style={{marginBottom: 2}}>{'Do: ' + item.end_date}</AppText>
         </View>
       ));
       return <>{list}</>;
@@ -278,6 +278,9 @@ const Profile = ({ navigation }) => {
               </View>
             </View>
           </View>
+          <View style={{ marginLeft: 15, justifyContent: 'space-between'}}>
+            <HeaderText style={{color:darkLight, fontSize: 20}}>{userInfo.firstname + ' ' + userInfo.lastname}</HeaderText>
+          </View>
           <AppText style={styles.About}>O mnie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
             {artistProfile.bio}
@@ -321,12 +324,12 @@ const Profile = ({ navigation }) => {
           </View>
           <View style={{ width: '100%', flexDirection: 'column', justifyContent: 'space-around', margin: 10 }}>
             <AppText style={{ fontSize: 19, color: black }}>Umiejętności:</AppText>
-            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap' }}>{ListSkills()}</View>
+            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>{ListSkills()}</View>
             <AppText style={{ fontSize: 19, color: black }}>Języki:</AppText>
-            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap' }}>{ListLanguages()}</View>
+            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>{ListLanguages()}</View>
             <AppText style={{ fontSize: 19, color: black }}>Tagi:</AppText>
-            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap' }}>{ListTags()}</View>
-            <AppText style={{ fontSize: 19, color: black }}>Linki: </AppText>
+            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>{ListTags()}</View>
+            <AppText style={{ fontSize: 19, color: black }}>Media Społecznościowe: </AppText>
             {ListLinks()}
           </View>
         </ScrollView>
