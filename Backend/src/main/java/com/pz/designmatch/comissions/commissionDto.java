@@ -2,13 +2,16 @@ package com.pz.designmatch.comissions;
 
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.pz.designmatch.model.user.UserEntity;
 import lombok.Getter;
 import org.apache.catalina.User;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -25,11 +28,13 @@ public class commissionDto {
     @JsonProperty("description")
     private String description;
     @JsonProperty("deadline")
-    private ZonedDateTime deadline;
-    //@JsonProperty("completedAT")
-    //private ZonedDateTime completedAT;
-    @JsonProperty("publishedAT")
-    private ZonedDateTime publishedAT = ZonedDateTime.now();
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Europe/Zagreb")
+    @JsonDeserialize(using = DefaultLocalDateTimeDeserializer.class)
+    private LocalDateTime deadline;
+//    @JsonProperty("publishedAT")
+//    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Europe/Zagreb")
+//    @JsonDeserialize(using = DefaultLocalDateTimeDeserializer.class)
+//    private LocalDateTime publishedAT;
     @JsonProperty("level")
     private Set<String> level;
     @JsonProperty("location")
@@ -40,25 +45,24 @@ public class commissionDto {
     private Set<String> tags;
     @JsonProperty("languages")
     private Set<String> languages;
-
-    //private boolean isCompleted = false;
+    @JsonProperty("stawka")
+    private Integer stawka;
 
     @JsonCreator
-    public commissionDto(String title, String description, ZonedDateTime deadline, ZonedDateTime completedAT,
-                         ZonedDateTime publishedAT, UserEntity contractor, UserEntity client, Set<String> level, Set<String> location, Set<String> skills,
-                         Set<String> tags, Set<String> languages) {
+    public commissionDto(String title, String description, LocalDateTime deadline,
+                         Set<String> level, Set<String> location, Set<String> skills,
+                         Set<String> tags, Set<String> languages, Integer stawka) {
         //this.contractor = contractor;
         //this.client = client;
         this.title = title;
         this.description = description;
         this.deadline = deadline;
-        //this.completedAT = completedAT;
-        this.publishedAT = publishedAT;
         this.level = level;
         this.location = location;
         this.skills = skills;
         this.tags = tags;
         this.languages = languages;
+        this.stawka = stawka;
     }
 
 
@@ -72,13 +76,13 @@ public class commissionDto {
         return description;
     }
     @JsonGetter("deadline")
-    public ZonedDateTime getDeadline() {
+    public LocalDateTime getDeadline() {
         return deadline;
     }
-    @JsonGetter("publishedAT")
-    public ZonedDateTime getPublishedAT() {
-        return publishedAT;
-    }
+    //@JsonGetter("publishedAT")
+    //public LocalDateTime getPublishedAT() {
+        //return publishedAT;
+    //}
     @JsonGetter("level")
     public Set<String> getLevel() {
         return level;
@@ -99,8 +103,11 @@ public class commissionDto {
     public Set<String> getLanguages() {
         return languages;
     }
-
-//    public void setId(Long id) {
+    @JsonGetter("stawka")
+    public Integer getStawka() {
+        return stawka;
+    }
+    //    public void setId(Long id) {
 //        this.id = id;
 //    }
 
