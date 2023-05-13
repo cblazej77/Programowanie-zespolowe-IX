@@ -69,7 +69,7 @@ export const ProfileImage = styled.div`
     align-items: center;
   `;
 
-  export const Image = styled.img`
+export const Image = styled.img`
   margin: 0 auto;
   width: 100%;
   max-width: 400px;
@@ -215,7 +215,7 @@ export const BubbleWrap = styled.div`
   padding-top: 1rem;
 `;
 
-export const  Bubble = styled.p`
+export const Bubble = styled.p`
   padding: 5px 10px 5px 10px;
   display: inline-flex;
   margin-right: 15px;
@@ -276,6 +276,12 @@ export const CommisionTitle = styled(TitleText)`
   text-overflow: ellipsis;
 `;
 
+export const CommisionTitleContainer = styled.div`
+  display: flex;
+  allign-items: flex-start;
+  max-width: 70rem;
+`;
+
 export const CommisionBubble = styled.p`
   display: inline-block;
   justify-content: center;
@@ -314,8 +320,4 @@ export const CommisionBottom = styled.div`
   justify-content: flex-end;
 `;
 
-export const CommisionTitleContainer = styled.div`
-  display: flex;
-  allign-items: flex-start;
-  max-width: 70rem;
-`;
+

@@ -10,7 +10,8 @@ const {
     gray1,
     secondary,
     secondary1,
-    black
+    black,
+    white
 } = COLORS;
 
 export const Cards2 = styled.div`
@@ -64,7 +65,7 @@ export const FilterWrapper = styled.div`
     background: ${primary};
     border-radius: 10px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-    padding: 0vh 1rem 10rem 1rem;
+    padding: 0vh 0rem 10rem 0rem;
     overflow-y: auto;
     &::-webkit-scrollbar {
         width: 0.25rem;
@@ -97,8 +98,8 @@ export const TitleText = styled.text`
 
 export const SubtitleText = styled.text`
     color: ${black};
-    font-size: 1.2rem;
-    margin: 1.8rem 0 0.8rem 0;
+    font-size: 1.5rem;
+    margin: 0rem 0 0rem 1rem;
 `;
 
 export const CheckBox = styled.input`
@@ -111,7 +112,7 @@ export const CheckBoxLabel = styled.label`
     width: 1.1rem;
     height: 1.1rem;
     border-radius: 50%;
-    background: #fff;
+    background: ${white};
     border: 2px solid ${darkLight};
     transition: all 150ms;
     cursor: pointer;
@@ -147,10 +148,9 @@ export const JobText = styled(SubtitleText)`
         }
 `;
 
-export const CheckBoxWrapper = styled.div`
-    flex-flow: row;
-    margin-bottom: 0.7rem;
-    flex-shrink: 0;
+export const CheckBoxWrapper = styled.div`    
+    flex-direction: row;
+    margin: 1rem 1rem;
     align-items: center;
     display: flex;
 `;
@@ -418,4 +418,18 @@ export const Button = styled(Link)`
     @media screen and (max-width: 960px) {
         display: flex;
     }
+`;
+
+export const FilterDropDownContainer = styled.div`
+    padding: 1rem;
+    cursor: pointer;
+`;
+
+export const CategoryWrapper = styled.div`
+    margin-top: 1rem;
+    padding-left: 1rem;
+`;
+
+export const CheckBoxText = styled(JobText)`
+    font-size: 1.2rem;
 `;

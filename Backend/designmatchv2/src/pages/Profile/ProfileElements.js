@@ -244,8 +244,12 @@ export const Bubble = styled.p`
   margin-top: 5px;
 `;
 
-export const BubbleLinks = styled.a`
-
+export const BubbleLinks = styled.a.attrs(props => ({
+  target: '_blank',
+  rel: 'noopener',
+  href: props.href.startsWith('http://') || props.href.startsWith('https://')
+  ? props.href : `https://${props.href}`
+}))`
  padding: 5px 10px 5px 10px;
   display: inline-flex;
   margin-right: 15px;
@@ -288,5 +292,4 @@ export const SmallInput = styled(StyledTextarea)`
   font-size: 1rem;
   height: 2.5rem;
 `;
-
 

@@ -6,6 +6,7 @@ import com.pz.designmatch.model.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -29,9 +30,11 @@ public class Commission {
     private UserEntity contractor;
     private String title;
     private String description;
-    private ZonedDateTime commissionedAt;
-    private ZonedDateTime deadline;
-    private ZonedDateTime completedAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime commissionedAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime deadline;
+    private LocalDateTime completedAt;
     @ElementCollection(targetClass = Level.class)
     @Enumerated(EnumType.STRING)
     private Set<Level> level;
@@ -47,6 +50,7 @@ public class Commission {
     @ElementCollection(targetClass = Language.class)
     @Enumerated(EnumType.STRING)
     private Set<Language> languages;
+    private Integer stawka;
     @Column(name = "is_completed")
     private boolean isCompleted = false;
 }

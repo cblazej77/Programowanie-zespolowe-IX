@@ -106,16 +106,16 @@ const EditUserPage = () => {
   const [get, setGet] = useState(null);
   const [height, setHeight] = useState("20px");
   //popUp
-  const[showModal, setShowModal] = useState(false);
-  const[showModalLinks, setShowModalLinks] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showModalLinks, setShowModalLinks] = useState(false);
 
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
 
-  const openModalLinks = () =>{
+  const openModalLinks = () => {
     setShowModalLinks(prev => !prev);
-}
+  }
 
   //edycja profilu
   const [bio, setBio] = useState("");
@@ -337,11 +337,11 @@ const EditUserPage = () => {
                       value={date}
                       onChange={(e) => hanldeDate(e)}
                     />
-                      <InputInfoText>Miejscowość:</InputInfoText>
-                      <SmallInput
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                      />
+                    <InputInfoText>Miejscowość:</InputInfoText>
+                    <SmallInput
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
                     <LineForm />
                     <LeftInfoRow>
                       <HeaderText>Języki:</HeaderText>

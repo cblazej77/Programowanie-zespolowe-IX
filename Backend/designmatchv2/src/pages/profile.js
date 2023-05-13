@@ -305,7 +305,7 @@ const UserPage = () => {
             <Button>Napisz wiadomość</Button>
             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
               <SmallButton >Napisz opinię</SmallButton>
-              <SmallButton > Obserwuj</SmallButton>
+              <SmallButton > Like</SmallButton>
             </div>
           </LeftWrapper>
           <RightWrapper>

@@ -674,23 +674,22 @@ function ListLanguages() {
       </>
     );
   }
-function ListLinks(){
-  return(
-    <BubbleWrap>
-      <>
-      {console.log(facebook)}
-      {facebook && <BubbleLinks href={facebook} > facebook</BubbleLinks>}
-      {instagram && <BubbleLinks href={instagram}> instagram </BubbleLinks>}
-      {linkedin && <BubbleLinks href={linkedin}> linkedin  </BubbleLinks>}
-      {pinterest && <BubbleLinks href={pinterest}> pinterest  </BubbleLinks>}
-      {twitter && <BubbleLinks href={twitter}> twitter  </BubbleLinks>}
-      {website && <BubbleLinks href={website}> website  </BubbleLinks>}
-      </>
+  function ListLinks(){
+    return(    <>
+      <BubbleWrap>
     
-    </BubbleWrap>
-
-  )
-}
+        {get.facebook && <BubbleLinks href={get.facebook}  > facebook</BubbleLinks>}
+        {get.instagram && <BubbleLinks href={get.instagram}> instagram </BubbleLinks>}
+        {get.linkedin && <BubbleLinks href={get.linkedin}> linkedin  </BubbleLinks>}
+        {get.pinterest && <BubbleLinks href={get.pinterest}> pinterest  </BubbleLinks>}
+        {get.twitter && <BubbleLinks href={get.twitter}> twitter  </BubbleLinks>}
+        {get.website && <BubbleLinks href={get.website}> website  </BubbleLinks>}
+     
+      
+      </BubbleWrap>
+     </>
+    )
+  }
 
   function ListExperience() {
 
@@ -840,7 +839,7 @@ function ListLinks(){
       <Modal showModal={showModalTags} setShowModal={setShowModalTags} tags={tags} setTags={setTags}/>
       <ModalSkills showModal={showModalSkills} setShowModal={setShowModalSkills} skills={skills} setSkills={setSkills}/>
       <ModalLinks showModal={showModalLinks} setShowModal={setShowModalLinks} dribble={dribble} setDribble={setDribble} facebook={facebook} setFacebook={setFacebook} instagram={instagram} setInstagram={setInstagram} 
-      linkedin={linkedin} setLinkedin={setLinkedin} pinterest={pinterest} setPinterest={pinterest} twitter={twitter} setTwitter={setTwitter} website={website} setWebsite={website}/>
+      linkedin={linkedin} setLinkedin={setLinkedin} pinterest={pinterest} setPinterest={setPinterest} twitter={twitter} setTwitter={setTwitter} website={website} setWebsite={setWebsite}/>
       <ModalLanguages showModal={showModalLanguages} setShowModal={setShowModalLanguages} languages={languages} setLanguages={setLanguages}/>
       {artistProfile ? (
         <ProfileWrapper>
