@@ -54,41 +54,170 @@ const Cards = () => {
   const [showCategories, setShowCategories] = useState(false);
   const urlFilter = process.env.REACT_APP_GET_ARTIST_FILTER;
 
+  const handleCityChange = (e) => {
+    const city = e.target.id;
+    if (e.target.checked) {
+      setCitiesFilter([...citiesFilter, city]);
+    } else {
+      setCitiesFilter(citiesFilter.filter((c) => c !== city));
+    }
+  };
+
+  const handleLanguageChange = (e) => {
+    const language = e.target.id;
+    if (e.target.checked) {
+      setLanguagesFilter([...languagesFilter, language]);
+    } else {
+      setLanguagesFilter(languagesFilter.filter((c) => c !== language));
+    }
+  };
+
+  const handleTagChange = (e) => {
+    const tag = e.target.id;
+    if (e.target.checked) {
+      setTagsFilter([...tagsFilter, tag]);
+    } else {
+      setTagsFilter(tagsFilter.filter((c) => c !== tag));
+    }
+  };
+
+  const handleCategoryChange = (e) => {
+    const category = e.target.id;
+    if (e.target.checked) {
+      setCategoriesFilter([...categoriesFilter, category]);
+    } else {
+      setCategoriesFilter(categoriesFilter.filter((c) => c !== category));
+    }
+  };
+
+  const handleLevelChange = (e) => {
+    const level = e.target.id;
+    if (e.target.checked) {
+      setLevelsFilter([...levelsFilter, level]);
+    } else {
+      setLevelsFilter(levelsFilter.filter((c) => c !== level));
+    }
+  };
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const [citiesResponse, languagesResponse, tagsResponse, categoriesResponse, levelsResponse, filteredResponse] = await Promise.all([
+  //         axios.request({
+  //           method: 'get',
+  //           maxBodyLength: 5000,
+  //           url: "/api/artist/getAvailableCities",
+  //           headers: {},
+  //         }),
+  //         axios.request({
+  //           method: 'get',
+  //           maxBodyLength: 5000,
+  //           url: "/api/artist/getAvailableLanguages",
+  //           headers: {},
+  //         }),
+  //         axios.request({
+  //           method: 'get',
+  //           maxBodyLength: 5000,
+  //           url: "/api/artist/getAvailableTags",
+  //           headers: {},
+  //         }),
+  //         axios.request({
+  //           method: 'get',
+  //           maxBodyLength: 5000,
+  //           url: "/api/artist/getAvailableCategories",
+  //           headers: {},
+  //         }),
+  //         axios.request({
+  //           method: 'get',
+  //           maxBodyLength: 5000,
+  //           url: "/api/artist/getAvailableLevels",
+  //           headers: {},
+  //         }),
+  //         axios.post(
+  //           '/artist/filter',
+  //           {
+  //             level: levelsFilter,
+  //             location: citiesFilter,
+  //             skills: categoriesFilter,
+  //             languages: languagesFilter,
+  //             tags: tagsFilter,
+  //           },
+  //           {
+  //             params: { page: 0, size: 10 },
+  //             headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+  //           }),
+  //       ]);
+  //       setCities(citiesResponse.data);
+  //       setLanguages(languagesResponse.data);
+  //       setTags(tagsResponse.data);
+  //       setCategories(categoriesResponse.data);
+  //       setLevels(levelsResponse.data);
+  //       setFiltered(filteredResponse.data);
+  //       setGetData("Get all data");
+  //     } catch (err) {
+  //       console.error(err);
+  //       setGetData(null);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [levelsFilter, categoriesFilter, languagesFilter, citiesFilter, tagsFilter]);
+
+  const citiesData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/api/artist/getAvailableCities',
+      headers: {},
+    }),
+    [],
+  );
+
+  const tagsData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/api/artist/getAvailableTags',
+      headers: {},
+    }),
+    [],
+  );
+
+  const languagesData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/api/artist/getAvailableLanguages',
+      headers: {},
+    }),
+    [],
+  );
+
+  const levelsData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/api/artist/getAvailableLevels',
+      headers: {},
+    }),
+    [],
+  );
+
+  const categoriesData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/api/artist/getAvailableCategories',
+      headers: {},
+    }),
+    [],
+  );
+
   useEffect(() => {
-    const fetchData = async () => {
+    const filter = async () => {
       try {
-        const [citiesResponse, languagesResponse, tagsResponse, categoriesResponse, levelsResponse, filteredResponse] = await Promise.all([
-          axios.request({
-            method: 'get',
-            maxBodyLength: 5000,
-            url: "/api/artist/getAvailableCities",
-            headers: {},
-          }),
-          axios.request({
-            method: 'get',
-            maxBodyLength: 5000,
-            url: "/api/artist/getAvailableLanguages",
-            headers: {},
-          }),
-          axios.request({
-            method: 'get',
-            maxBodyLength: 5000,
-            url: "/api/artist/getAvailableTags",
-            headers: {},
-          }),
-          axios.request({
-            method: 'get',
-            maxBodyLength: 5000,
-            url: "/api/artist/getAvailableCategories",
-            headers: {},
-          }),
-          axios.request({
-            method: 'get',
-            maxBodyLength: 5000,
-            url: "/api/artist/getAvailableLevels",
-            headers: {},
-          }),
-          axios.post(
+        const response = await axios
+          .post(
             '/artist/filter',
             {
               level: levelsFilter,
@@ -100,29 +229,62 @@ const Cards = () => {
             {
               params: { page: 0, size: 10 },
               headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-            }),
-        ]);
+            },
+          )
+          .catch((error) => {
+            console.log(error);
+          });
+        if ((response.status = 200)) {
+          setFiltered(response.data);
+          console.log(response.status);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    filter();
+  }, [levelsFilter, categoriesFilter, languagesFilter, citiesFilter, tagsFilter]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
+          [
+            axios.request(citiesData),
+            axios.request(tagsData),
+            axios.request(categoriesData),
+            axios.request(languagesData),
+            axios.request(levelsData),
+          ],
+        );
         setCities(citiesResponse.data);
-        setLanguages(languagesResponse.data);
         setTags(tagsResponse.data);
-        setCategories(categoriesResponse.data);
         setLevels(levelsResponse.data);
-        setFiltered(filteredResponse.data);
-        setGetData("Get all date");
+        setLanguages(languagesResponse.data);
+        setCategories(categoriesResponse.data);
       } catch (err) {
         console.error(err);
-        setGetData(null);
       }
     };
 
     fetchData();
-  }, [levelsFilter, categoriesFilter, languagesFilter, citiesFilter, tagsFilter]);
+  }, [citiesData, tagsData, categoriesData, languagesData, levelsData]);
+
 
   const cityOptions = useMemo(() => {
     return cities.map((city, index) => (
       <CheckBoxWrapper key={index}>
-        <CheckBox type='checkbox' id={city} />
-        <CheckBoxLabel htmlFor={city} />
+        <div>
+          <CheckBox
+            type='checkbox'
+            id={city}
+            checked={citiesFilter.includes(city)}
+            onChange={handleCityChange}
+          />
+          <CheckBoxLabel htmlFor={city} />
+        </div>
         <CheckBoxText>{city}</CheckBoxText>
       </CheckBoxWrapper>
     ));
@@ -131,8 +293,15 @@ const Cards = () => {
   const languageOptions = useMemo(() => {
     return languages.map((language, index) => (
       <CheckBoxWrapper key={index}>
-        <CheckBox type='checkbox' id={language} />
-        <CheckBoxLabel htmlFor={language} />
+        <div>
+          <CheckBox
+            type='checkbox'
+            id={language}
+            checked={languagesFilter.includes(language)}
+            onChange={handleLanguageChange}
+          />
+          <CheckBoxLabel htmlFor={language} />
+        </div>
         <CheckBoxText>{language}</CheckBoxText>
       </CheckBoxWrapper>
     ));
@@ -141,8 +310,15 @@ const Cards = () => {
   const tagOptions = useMemo(() => {
     return tags.map((tag, index) => (
       <CheckBoxWrapper key={index}>
-        <CheckBox type='checkbox' id={tag} />
-        <CheckBoxLabel htmlFor={tag} />
+        <div>
+          <CheckBox
+            type='checkbox'
+            id={tag}
+            checked={tagsFilter.includes(tag)}
+            onChange={handleTagChange}
+          />
+          <CheckBoxLabel htmlFor={tag} />
+        </div>
         <CheckBoxText>{tag}</CheckBoxText>
       </CheckBoxWrapper>
     ));
@@ -151,8 +327,15 @@ const Cards = () => {
   const levelOptions = useMemo(() => {
     return levels.map((level, index) => (
       <CheckBoxWrapper key={index}>
-        <CheckBox type='checkbox' id={level} />
-        <CheckBoxLabel htmlFor={level} />
+        <div>
+          <CheckBox
+            type='checkbox'
+            id={level}
+            checked={levelsFilter.includes(level)}
+            onChange={handleLevelChange}
+          />
+          <CheckBoxLabel htmlFor={level} />
+        </div>
         <CheckBoxText>{level}</CheckBoxText>
       </CheckBoxWrapper>
     ));
@@ -168,8 +351,15 @@ const Cards = () => {
         <CategoryText key={indexC}>{category.name}</CategoryText>
         {category.subcategories.map((subcategory, indexS) => (
           <CheckBoxWrapper key={indexS}>
-            <CheckBox type='checkbox' id={subcategory} />
-            <CheckBoxLabel htmlFor={subcategory} />
+            <div>
+              <CheckBox
+                type='checkbox'
+                id={subcategory}
+                checked={categoriesFilter.includes(subcategory)}
+                onChange={handleCategoryChange}
+              />
+              <CheckBoxLabel htmlFor={subcategory} />
+            </div>
             <CheckBoxText>{subcategory}</CheckBoxText>
           </CheckBoxWrapper>
         ))}
@@ -181,7 +371,7 @@ const Cards = () => {
   //console.log(filtered.content[0].firstname);
 
   const filteredCards = useMemo(() => {
-    if (!Array.isArray(filtered.content)) {
+    if (!filtered || !filtered.content) {
       return null;
     }
 
@@ -240,46 +430,46 @@ const Cards = () => {
           <FilterDropDownContainer onClick={handleLanguageVisibleClick}>
             <FontAwesomeIcon icon={showLanguages ? faChevronDown : faChevronRight} />
             <SubtitleText>Języki</SubtitleText>
-            {showLanguages && (
-              <>
-                {languageOptions}
-              </>
-            )}
           </FilterDropDownContainer>
+          {showLanguages && (
+            <>
+              {languageOptions}
+            </>
+          )}
           <FilterDropDownContainer onClick={handleTagVisibleClick}>
             <FontAwesomeIcon icon={showTags ? faChevronDown : faChevronRight} />
             <SubtitleText>Tagi</SubtitleText>
-            {showTags && (
-              <>
-                {tagOptions}
-              </>
-            )}
           </FilterDropDownContainer>
+          {showTags && (
+            <>
+              {tagOptions}
+            </>
+          )}
           <FilterDropDownContainer onClick={handleCategoryVisibleClick}>
             <FontAwesomeIcon icon={showCategories ? faChevronDown : faChevronRight} />
             <SubtitleText>Umiejętności</SubtitleText>
-            {showCategories && (
-              <>
-                {categoryOptions}
-              </>
-            )}
           </FilterDropDownContainer>
+          {showCategories && (
+            <>
+              {categoryOptions}
+            </>
+          )}
           <FilterDropDownContainer onClick={handleLevelVisibleClick}>
             <FontAwesomeIcon icon={showLevels ? faChevronDown : faChevronRight} />
             <SubtitleText>Poziom</SubtitleText>
-            {showLevels && (
-              <>
-                {levelOptions}
-              </>
-            )}
           </FilterDropDownContainer>
+          {showLevels && (
+            <>
+              {levelOptions}
+            </>
+          )}
         </FilterWrapper>
       </FilterLabel>
 
-      {getData ? (
+      {filtered ? (
         <RightLabel>
           <TopSection>
-            <Button>Filtruj</Button>
+            <Button>Filteruj</Button>
             <StyledSelect>
               <StyledOption value="">Sortuj po...</StyledOption>
               <StyledOption value="1">najlepsza ocena</StyledOption>

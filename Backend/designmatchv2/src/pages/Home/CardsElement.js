@@ -148,10 +148,9 @@ export const JobText = styled(SubtitleText)`
         }
 `;
 
-export const CheckBoxWrapper = styled.div`
-    flex-flow: row;
+export const CheckBoxWrapper = styled.div`    
+    flex-direction: row;
     margin: 1rem 1rem;
-    flex-shrink: 0;
     align-items: center;
     display: flex;
 `;
@@ -428,9 +427,9 @@ export const FilterDropDownContainer = styled.div`
 
 export const CategoryWrapper = styled.div`
     margin-top: 1rem;
+    padding-left: 1rem;
 `;
 
 export const CheckBoxText = styled(JobText)`
     font-size: 1.2rem;
 `;
-
