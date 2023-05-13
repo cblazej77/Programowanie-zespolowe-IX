@@ -284,7 +284,7 @@ const Login = ({ navigation }) => {
                   </LinearGradientStyle>
                 )}
                 {!facebookSubmiting && (
-                  <LinearGradientStyle colors={[facebook1, facebook2]}>
+                  <LinearGradientStyle colors={[facebook2, facebook1]}>
                     <StyledButton
                       facebook={true}
                       disabled={!requestF}
@@ -298,7 +298,7 @@ const Login = ({ navigation }) => {
                   </LinearGradientStyle>
                 )}
                 {facebookSubmiting && (
-                  <LinearGradientStyle colors={[darkLight2, darkLight]}>
+                  <LinearGradientStyle colors={[facebook2, facebook1]}>
                     <StyledButton facebook={true} disabled={true}>
                       <ActivityIndicator size="large" color={primary} />
                     </StyledButton>

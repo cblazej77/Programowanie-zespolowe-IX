@@ -10,28 +10,6 @@ const { secondary1, darkLight, gray1, grey } = Colors;
 
 function CardItem(props) {
   return (
-    // <View style={styles.PostStyle}>
-    //     <View style={{
-    //         height: '20%',
-    //         alignItems: 'center',
-    //         flexDirection: 'row',
-    //     }}>
-    //         <View style={{ height: 50, width: 50, backgroundColor: "#CCC", marginHorizontal: 10, borderRadius: 30 }} />
-    //         <HeaderText numberOfLines={1} style={{
-    //             color: "#000",
-    //         }}>{props.name} {props.surname}</HeaderText>
-    //     </View>
-    //     <View style={{
-    //         backgroundColor: "#CCC",
-    //         height: "70%",
-    //         alignItems: 'center',
-    //         justifyContent: 'center'
-    //     }}>
-    //         <Text style={{ color: primary }}>Image not found</Text></View>
-    //     <View style={{ height: '10%', justifyContent: 'center', marginLeft: 10 }}>
-    //         <RegularText style={{ color: "#000", }}>{props.ratingCount} opinii</RegularText>
-    //     </View>
-    // </View>
     <View style={styles.PostStyle}>
       <View style={styles.SimpleInfoContainer}>
         <Image style={styles.Avatar} resizeMode="cover" source={require('./../assets/img/avatar1.png')} />

@@ -16,7 +16,7 @@ export const Colors = {
     red: "#F00",
     black: "#1D1D1F",
     green: "#47D531",
-    green2: "#3dc428",
+    green2: "#2fb31b",
     white: "#F5F5F5",
     grey: "#00000022",
     gray1: "#777",
@@ -32,10 +32,13 @@ const {
     secondary1,
     tertiary,
     darkLight,
+    darkLight2,
+    white,
     brand,
     red,
     green,
     grey,
+    gray1,
     checked,
 } = Colors;
 
