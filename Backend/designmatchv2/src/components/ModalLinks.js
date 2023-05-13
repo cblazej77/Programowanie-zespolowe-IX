@@ -2,7 +2,8 @@ import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components';
 import axios from '../api/axios';
 import { xIcon } from '../assets/img/svg/SvgIcons';
-
+import { FACEBOOK_URL, OWN_WEBSITE_URL, INSTAGRAM_URL, TWITTER_URL, LINKEDIN_URL, PINTEREST_URL } from './Regex';
+import PropTypes from "prop-types";
 
     const Background = styled.div`
   width: 100%;
@@ -84,24 +85,22 @@ const Input = styled.input`
 const InputWebsite = styled(Input)`
   margin-right: 0px;
 `
-const ModalLinks = ({showModal, setShowModal}) => {
+const ModalLinks = ({showModal, setShowModal, dribble, setDribble, facebook, setFacebook, instagram, linkedin, pinterest, twitter, website, setInstagram, setLinkedin, setPinterest, setTwitter, setWebsite}) => {
     const modalRef = useRef();
-    const [link1, setLink1] = useState("");
-    const [link2, setLink2] = useState("");
-    const [link3, setLink3] = useState("");
-    const [link4, setLink4] = useState("");
-    const [link5, setLink5] = useState("");
-    const [link, setLink] = useState("");
-    const [short, setShort] = useState("");
+    
+    const [link1, setLink1] = useState(facebook);
+    const [link2, setLink2] = useState(instagram);
+    const [link3, setLink3] = useState(linkedin);
+    const [link4, setLink4] = useState(pinterest);
+    const [link5, setLink5] = useState(twitter);
+    const [link, setLink] = useState(website);
+
     const [check, setCheck] = useState(false);
     const [check1, setCheck1] = useState(false);
     const [check2, setCheck2] = useState(false);
     const [check3, setCheck3] = useState(false);
     const [check4, setCheck4] = useState(false);
     const [check5, setCheck5] = useState(false);
-
-    const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-    const regex = new RegExp(expression); 
 
 const closeModal = e => {
     if (modalRef.current === e.target) {
@@ -127,44 +126,80 @@ const closeModal = e => {
   );
 
 
-  const checkValidLink1 = (e) => {
+  const checkValidFacebook = (e) => {
     setLink1(e.target.value);
-    if(e.target.value.match(regex)  || e.target.value.length == "0")setCheck1(false);
-    else setCheck1(true);
-  }
-    const checkValidLink2 = (e) => {
-  setLink2(e.target.value);
-      if(e.target.value.match(regex) || e.target.value.length == "0") setCheck2(false);
-      else setCheck2(true);
+    const regex = new RegExp(FACEBOOK_URL); 
+    if(e.target.value.match(regex)  || e.target.value.length == "0") {
+      setCheck1(false);
+      setFacebook(e.target.value);
     }
-  const checkValidLink3 = (e) => {
-  setLink3(e.target.value);
-    if(e.target.value.match(regex) || e.target.value.length == "0") setCheck3(false);
-    else setCheck3(true);
+    else{
+      setCheck1(true);
+      setFacebook("");
+    }
   }
-const checkValidLink4 = (e) => {
+    const checkValidInstagram = (e) => {
+      setLink2(e.target.value);
+      const regex = new RegExp(INSTAGRAM_URL); 
+      if(e.target.value.match(regex) || e.target.value.length == "0"){
+        setCheck2(false);
+        setInstagram(e.target.value);
+      }
+      else{
+        setCheck2(true);
+        setInstagram("");
+      }
+    }
+  const checkValidLinekedin = (e) => {
+  setLink3(e.target.value);
+  const regex = new RegExp(LINKEDIN_URL); 
+    if(e.target.value.match(regex) || e.target.value.length == "0"){
+      setCheck3(false);
+      setLinkedin(e.target.value);
+    }
+    else{
+      setCheck3(true);
+      setLinkedin("");
+    }
+  }
+const checkValidPinterest = (e) => {
    setLink4(e.target.value);
-  if(e.target.value.match(regex) || e.target.value.length == "0") setCheck4(false);
-  else setCheck4(true);
+   const regex = new RegExp(PINTEREST_URL); 
+  if(e.target.value.match(regex) || e.target.value.length == "0"){
+    setCheck4(false);
+    setPinterest(e.target.value);
+  }
+  else{
+    setCheck4(true);
+    setPinterest("");
+  }
 }
-const checkValidLink5 = (e) => {
+const checkValidTwitter = (e) => {
   setLink5(e.target.value);
-  if(e.target.value.match(regex)  || e.target.value.length == "0") setCheck5(false);
-  else setCheck5(true);
+  const regex = new RegExp(TWITTER_URL); 
+  if(e.target.value.match(regex)  || e.target.value.length == "0"){
+    setCheck5(false);
+    setTwitter(e.target.value);
+  }
+  else{
+    setCheck5(true);
+    setTwitter("");
+  }
 }
 
-const checkValidLink = (e) => {
+const checkValidWebsite = (e) => {
     setLink(e.target.value);
-    if((e.target.value.length == "0" && short.length == "0" ) || (e.target.value.match(regex) && short.length >= 3 && e.target.value.length > "0")) setCheck(false);
-    else setCheck(true);
+    const regex = new RegExp(OWN_WEBSITE_URL); 
+    if( (e.target.value.length == "0") || (e.target.value.match(regex)) ){
+      setCheck(false);
+      setWebsite(e.target.value);
+    }
+    else{
+      setCheck(true);
+      setWebsite("");
+    }
 }
 
-const checkValidShort = (e) => {
-    setShort(e.target.value);
-  if((e.target.value.length == "0" && link.length == "0") || (e.target.value.length >= 3 && link.match(regex) && link.length > "0")) setCheck(false);
-  else setCheck(true);
-}
-   
 
   return (
     <>
@@ -176,29 +211,29 @@ const checkValidShort = (e) => {
                         <DivLink>
 
                            <Label href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook:</Label>
-                            <Input width="45%" placeholder='facebook.com' value={link1} check = {check1} onChange = {(e) => checkValidLink1(e)}></Input>
+                            <Input width="45%" placeholder='facebook.com' value={link1} check = {check1} onChange = {(e) => checkValidFacebook(e)}></Input>
                         </DivLink>
                         <DivLink>
                           <Label href="https://www.instagram.com/"target="_blank" rel="noopener" >Instagram:</Label>
-                            <Input width="45%" placeholder='instagram.com'check = {check2}  value={link2} onChange = {(e) => checkValidLink2(e)} ></Input>
+                            <Input width="45%" placeholder='instagram.com'check = {check2}  value={link2} onChange = {(e) => checkValidInstagram(e)} ></Input>
                         </DivLink>
                         <DivLink>
                         <Label href="https://pl.linkedin.com/" target="_blank" rel="noopener">Linekedin:</Label>
-                            <Input width="45%" placeholder='pl.linkedin.com' check = {check3} value={link3} onChange = {(e) => checkValidLink3(e)}></Input>
+                            <Input width="45%" placeholder='pl.linkedin.com' check = {check3} value={link3} onChange = {(e) => checkValidLinekedin(e)}></Input>
                         </DivLink>
                         <DivLink>
                         <Label href="https://pl.pinterest.com/" target="_blank" rel="noopener">Pinterest:</Label>
-                            <Input width="45%" placeholder='pl.pinterest.com' check = {check4}value={link4} onChange = {(e) => checkValidLink4(e)}></Input>
+                            <Input width="45%" placeholder='pl.pinterest.com' check = {check4}value={link4} onChange = {(e) => checkValidPinterest(e)}></Input>
                         </DivLink>
                         <DivLink>
                         <Label href="https://twitter.com/" target="_blank" rel="noopener">Twitter:</Label>
-                            <Input width="45%" placeholder='twitter.com' check = {check5} value={link5} onChange = {(e) => checkValidLink5(e)}></Input>
+                            <Input width="45%" placeholder='twitter.com' check = {check5} value={link5} onChange = {(e) => checkValidTwitter(e)}></Input>
                         </DivLink>
-                        <label>Own website:</label>
-                        <div >
-                            <InputWebsite width="20%" placeholder='Example >= 3' value={short} check = {check} onChange = {(e) => checkValidShort(e)}></InputWebsite>
-                            <InputWebsite width="45%" placeholder='www.example.com' value={link} check = {check}  style={{marginLeft: "15px"}} onChange = {(e) => checkValidLink(e)}></InputWebsite>
-                        </div>
+                        <DivLink>
+                            <Label>Own website:</Label>
+                            <Input width="45%" placeholder='www.example.com' value={link} check = {check}  onChange = {(e) => checkValidWebsite(e)}></Input>
+                        </DivLink>
+                       
                         <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
                     </ModalContent>
                 </ModalWrapper >
@@ -207,5 +242,17 @@ const checkValidShort = (e) => {
     </>
   )
 };
+ModalLinks.propTypes = {
+  facebook: PropTypes.string,
+  instagram: PropTypes.string,
+  linkedin: PropTypes.string,
+  website: PropTypes.string,
+  pinterest: PropTypes.string,
 
+  setFacebook: PropTypes.func,
+  setInstagram: PropTypes.func,
+  setLinkedin: PropTypes.func,
+  setWebsite: PropTypes.func,
+  setPinterest: PropTypes.func,
+};
 export default ModalLinks;

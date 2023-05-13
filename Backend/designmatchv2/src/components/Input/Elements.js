@@ -26,7 +26,8 @@ width: 100%;
 border-radius: 10px;
 color: rgb(1, 1, 1);
 padding: 12px 24px;
-border-bottom: 2px solid ${({value}) => value ? 'black' : 'none'};
+
+border-bottom: 2px solid ${({value, checkRegex}) => value ? (checkRegex ? 'black' : 'red') : 'none'};
 padding-right: ${({isWithButton}) => isWithButton ? '45px' : '10px'};
 &:valid + ${LabelInput}
 {
@@ -38,7 +39,7 @@ padding-right: ${({isWithButton}) => isWithButton ? '45px' : '10px'};
   display: none
 }
 &:focus{
-  border-bottom: 2px solid black;//tutaj dziala po kliknieciu, a po wpisaniu dziala wyzej
+  border-bottom: 2px solid ${({value, checkRegex}) => value ? (checkRegex ? 'black' : 'red') : 'black'};//tutaj dziala po kliknieciu, a po wpisaniu dziala wyzej
 }
 
 &:focus + ${LabelInput}

@@ -31,6 +31,7 @@ const Cards = () => {
   const [categories, setCategories] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [getData, setGetData] = useState(null);
+  const [selectLanguage, setSelectLanguage] = useState("");
   const [selectCity, setSelectCity] = useState("");
   const [selectTag, setSelectTag] = useState("");
   const [FilterURL, setFilterURL] = useState("/artist/filter?level=&location=&category=&language=&subcategory=&tags=&page=0&size=10");
@@ -39,11 +40,13 @@ const Cards = () => {
   const [tagsFilter, setTagsFilter] = useState([]);
   const [languagesFilter, setLanguagesFilter] = useState([]);
   const [categoriesFilter, setCategoriesFilter] = useState([]);
+  const [selectCategories, setSelectCategories] = useState("");
+  const urlFilter = process.env.REACT_APP_GET_ARTIST_FILTER;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [citiesResponse, languagesResponse, tagsResponse, categoriesResponse, filteredResponse] = await Promise.all([
+        const [citiesResponse, languagesResponse, tagsResponse, categoriesResponse] = await Promise.all([
           axios.request({
             method: 'get',
             maxBodyLength: 5000,
@@ -159,6 +162,31 @@ const Cards = () => {
       </>
     ));
   });
+  const FilteredResponse = async () => {
+    let level = [];
+    let location = [];
+    location.push({
+      selectCity: selectCity
+    });
+    const response = await axios.put(
+      '/artist/filte',
+      {
+        level: [],
+        location: location,
+        skills: { selectCategories },
+        tags: selectTag,
+      },
+      {
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      },
+    )
+      .catch((error) => {
+        console.log("FiltredError  ", error);
+      });
+    setFiltered(response.data);
+    console.log("Filtred:     ", response);
+  }
+
 
   //console.log(filtered.content[0].firstname);
 
@@ -187,13 +215,27 @@ const Cards = () => {
 
   const handleCityChange = (event) => {
     setSelectCity(event.target.value);
-    setFilterURL(`/artist/filter?level=&location=${event.target.value}&category=&language=&subcategory=&tags=${selectTag}&page=0&size=10`);
+    FilteredResponse();
+    //setFilterURL(`/artist/filter?level=&location=${event.target.value}&category=&language=&subcategory=&tags=${selectTag}&page=0&size=10`);
   };
 
   const handleTagChange = (event) => {
     setSelectTag(event.target.value);
-    setFilterURL(`/artist/filter?level=&location=${selectCity}&category=&language=&subcategory=&tags=${event.target.value}&page=0&size=10`);
+    FilteredResponse();
+    //setFilterURL(`/artist/filter?level=&location=${selectCity}&category=&language=&subcategory=&tags=${event.target.value}&page=0&size=10`);
   };
+
+  const handleLanguageChange = (event) => {
+
+    setSelectLanguage(event.target.value);
+    FilteredResponse();
+  }
+
+  const handleCategoriesChange = (event) => {
+
+    setSelectCategories(event.target.value);
+    FilteredResponse();
+  }
 
   return (
     <Cards2>
@@ -206,7 +248,7 @@ const Cards = () => {
             {cityOptions}
           </StyledSelect>
           <SubtitleText>Języki</SubtitleText>
-          <StyledSelect onChange={handleCityChange}>
+          <StyledSelect onChange={handleLanguageChange}>
             <StyledOption value="">Wybierz język</StyledOption>
             {languageOptions}
           </StyledSelect>

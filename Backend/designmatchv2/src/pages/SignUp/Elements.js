@@ -271,4 +271,18 @@ export const FacebookButton = styled(Button)`
         transform: scale(1.05) translateY(1.3rem);
       }
   }
+
+
+`
+
+export const ErrorLabel = styled.label`
+color: red;
+font-size: 0.8rem;
+left: 0;
+`
+
+export const ErrorLabel2 = styled(ErrorLabel)`
+margin-left: 50px;
+margin-right: 50px;
+transform:  translateX(0);
 `

@@ -7,7 +7,8 @@ function PasswordInput({
     name,
     id,
     value = '',
-    onChange
+    onChange,
+    checkRegex
 }) {
   const [password, setPassword] = useState(value);
   const [visible, setVisible] = useState(false);
@@ -29,7 +30,9 @@ function PasswordInput({
           value={password}
           type={visible ? "text" : "password"}
           onChange={handleClick}
+          checkRegex={checkRegex}
         ></Input>
+
         <LabelInput htmlFor={id}>{label}</LabelInput>
         <NotButton onClick={() => setVisible(!visible)}>
             {visible ? <OpenEyeIcon /> : <CloseEyeIcon />}
@@ -46,5 +49,6 @@ PasswordInput.propTypes = {
   id: PropTypes.string.isRequired,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  checkRegex: PropTypes.bool,
 };
 export default PasswordInput;

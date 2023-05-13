@@ -44,10 +44,8 @@ function App() {
             path="/accountEdit"
             element={
               <RequireAuth>
-                {" "}
-                <EditUserPage />{" "}
-              </RequireAuth>
-            }
+               <EditUserPageMobile />
+              </RequireAuth> }
           />
           <Route path="/test" element={<EditUserPageMobile />} />
           <Route path="/chat" element={<Chat />} />

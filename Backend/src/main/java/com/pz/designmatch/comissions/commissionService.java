@@ -31,7 +31,7 @@ public class commissionService {
                 commission.getCommissionedAt(),
                 commission.getClient(),
                 commission.getContractor(),
-                commission.getLevel().toString(),
+                commission.getLevel().stream().limit(3).map(Level::getDisplayName).collect(Collectors.toSet()),
                 commission.getLanguages().stream().limit(3).map(Language::getDisplayName).collect(Collectors.toSet()),
                 commission.getLocation().stream().limit(2).map(City::getDisplayName).collect(Collectors.toSet()),
                 commission.getSkills().stream().limit(2).map(Skill::getDisplayName).collect(Collectors.toSet()),
@@ -50,7 +50,7 @@ public class commissionService {
         newCommission.setTitle(commissionDto.getTitle());
         newCommission.setDescription(commissionDto.getDescription());
         newCommission.setDeadline(commissionDto.getDeadline());
-        newCommission.setLevel(Level.fromDisplayName(commissionDto.getLevel()));
+        newCommission.setLevel(commissionDto.getLevel().stream().map(Level::fromDisplayName).collect(Collectors.toSet()));
         newCommission.setLocation(commissionDto.getLocation().stream().map(City::fromDisplayName).collect(Collectors.toSet()));
         newCommission.setLanguages(commissionDto.getLanguages().stream().map(Language::fromDisplayName).collect(Collectors.toSet()));
         newCommission.setSkills(commissionDto.getSkills().stream().map(Skill::fromDisplayName).collect(Collectors.toSet()));
@@ -79,7 +79,7 @@ public class commissionService {
             existingCommission.setDeadline(commissionDto.getDeadline());
         }
         if(commissionDto.getLevel() != null){
-            existingCommission.setLevel(Level.fromDisplayName(commissionDto.getLevel()));
+            existingCommission.setLevel(commissionDto.getLevel().stream().map(Level::fromDisplayName).collect(Collectors.toSet()));
         }
         if(commissionDto.getLocation() != null){
             existingCommission.setLocation(commissionDto.getLocation().stream().map(City::fromDisplayName).collect(Collectors.toSet()));
