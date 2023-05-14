@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { COLORS } from './Colors';
 import { TitleText } from '../pages/Home/CardsElement';
 
-const { darkLight, darkLight2, gray1, white } = COLORS;
+const { darkLight, darkLight2, gray1, white, primary } = COLORS;
 
 export const ProfileWrapper = styled.div`
   display: flex;
@@ -169,7 +169,7 @@ export const BubbleLinks = styled.a.attrs(props => ({
   target: '_blank',
   rel: 'noopener',
   href: props.href.startsWith('http://') || props.href.startsWith('https://')
-  ? props.href : `https://${props.href}`
+    ? props.href : `https://${props.href}`
 }))`
 
  padding: 5px 10px 5px 10px;
@@ -292,8 +292,12 @@ export const CommisionBubble = styled.p`
   height: 1.6rem;
   font-size: 1rem;
   padding: 0rem 0.6rem; 
-  margin: 0 0.2rem;
+  margin: 0.2rem;
   vertical-align: top;
+  @media screen and (max-width: 1280px) {
+    font-size: 0.9rem;
+    height: 1.4rem;
+  }
 `;
 
 export const LevelBubble = styled(CommisionBubble)`
@@ -318,6 +322,79 @@ export const CommisionTop = styled.div`
 export const CommisionBottom = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+export const ModalBackground = styled.div`
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    background: rgba(255,255,255,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const ModalWrapper = styled.div`
+    overflow-y: auto; 
+    width: 95rem;
+    height: 80%;
+    border-radius: 15px;
+    flex-direction: column;
+    background: ${primary};
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+    display: flex;
+    padding: 2rem;
+    font-size: 1.5rem;
+    @media screen and (max-width: 100rem) {
+      width: 95%;
+    }
+    @media screen and (max-width: 1280px) {
+      font-size: 1.2rem;
+    }
+`;
+
+export const ModalTitle = styled.text`
+  font-size: 150%;
+  color: ${darkLight};
+  margin-bottom: 1rem;
+`;
+
+export const ModalInfo = styled.text`
+  color: ${gray1};
+`;
+
+export const ModalBottomSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  @media screen and (max-width: 960px) {
+    flex-direction: column;
+  }
+`;
+
+export const ModalColumn = styled.div`
+  display: flex;
+  width: 47%;
+  flex-direction: column;
+  @media screen and (max-width: 960px) {
+    width: 100%;
+  }
+`;
+
+export const ModalRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0.7rem 0;
+`;
+
+export const ModalData = styled(ModalInfo)`
+  font-weight: bold;
+`;
+
+export const ModalBubbleContainer = styled.div`
+  margin-top: 1rem;
 `;
 
 

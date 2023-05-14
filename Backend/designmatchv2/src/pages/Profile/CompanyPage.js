@@ -5,7 +5,7 @@ import {
   RightColumn,
   InfoRow,
   LeftColumn,
-  Right, Left,
+  Left,
   AboutMe,
   Button,
   Image,
@@ -31,13 +31,26 @@ import {
   CommisionTitleContainer,
   CommisionBottom,
   LevelBubble,
+  ModalBackground,
+  ModalWrapper,
+  ModalTitle,
+  ModalDescription,
+  ModalInfo,
+  ModalBottomSection,
+  ModalColumn,
+  ModalRow,
+  ModalData,
+  ModalBubbleContainer,
 } from '../../components/ProfileElements'
 import { TitleText } from '../Home/CardsElement';
+import { COLORS } from '../../components/Colors';
+
+const { darkLight } = COLORS;
 
 const CommisionsData = [
   {
-    title: "Projekt logo dla firmy produkującej kosmetyki naturalne Projekt",
-    description: "Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości",
+    title: "Projekt logo dla firmy produkującej kosmetyki naturalne",
+    description: "Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości.",
     stake: 2000,
     deadline: "2 tyg.",
     level: "Mid",
@@ -46,6 +59,14 @@ const CommisionsData = [
       "Design logo",
       "Kosmetyki",
       "Ekologia",
+    ],
+    categories: [
+      "logo",
+      "Aobe Illustrator",
+    ],
+    languages: [
+      "Polski",
+      "Angielski",
     ],
   },
   {
@@ -60,6 +81,14 @@ const CommisionsData = [
       "Herbaty",
       "Ekologia",
     ],
+    categories: [
+      "logo",
+      "Aobe Illustrator",
+    ],
+    languages: [
+      "Polski",
+      "Angielski",
+    ],
   },
   {
     title: "Projekt plakatu promującego wystawę sztuki nowoczesnej",
@@ -73,38 +102,121 @@ const CommisionsData = [
       "Sztuka",
       "Wystawa",
     ],
+    categories: [
+      "logo",
+      "Aobe Illustrator",
+    ],
+    languages: [
+      "Polski",
+      "Angielski",
+    ],
   },
 ];
 
-const CommisionElement = (props) => {
-  return (
-    <CommisionCard>
-      <CommisionTop>
-        <CommisionTitleContainer>
-          <CommisionTitle>
-            {props.title}
-          </CommisionTitle>
-          <LevelBubble>
-            {props.level}
-          </LevelBubble>
-        </CommisionTitleContainer>
-        <TitleText>{props.stake} PLN</TitleText>
-      </CommisionTop>
-      <div>
-        <CommisionText>{props.location}</CommisionText>
-        <CommisionText>{props.deadline}</CommisionText>
-      </div>
-      <CommisionBottom>
-        {props.tags.map((tag, indexT) => (
-          <CommisionBubble key={indexT}>{tag}</CommisionBubble>
-        ))}
-      </CommisionBottom>
-    </CommisionCard>
-  );
-};
-
 //UserName/UserInfo/MessageButton
 const CompanyPage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState([]);
+
+  const openModalClick = (data) => {
+    setModalData(data);
+    setShowModal(true);
+  };
+
+  const closeModalClick = () => {
+    setShowModal(false);
+  };
+
+  const handleWrapperClick = (event) => {
+    event.stopPropagation();
+  };
+
+  const Modal = ({ showModal }) => {
+    return (
+      <>
+        {showModal && (
+          <ModalBackground onClick={closeModalClick}>
+            <ModalWrapper onClick={handleWrapperClick}>
+              <ModalTitle>{modalData.title}</ModalTitle>
+              <ModalInfo>{modalData.description}</ModalInfo>
+              <LineForm />
+              <ModalBottomSection>
+                <ModalColumn>
+                  <ModalRow>
+                    <ModalInfo>Stawka:</ModalInfo>
+                    <ModalData style={{ color: darkLight }}>{modalData.stake} PLN</ModalData>
+                  </ModalRow>
+                  <ModalRow>
+                    <ModalInfo>Czas wykonania:</ModalInfo>
+                    <ModalData>{modalData.deadline}</ModalData>
+                  </ModalRow>
+                  <ModalRow>
+                    <ModalInfo>Poziom zaawansowania:</ModalInfo>
+                    <ModalData>{modalData.level}</ModalData>
+                  </ModalRow>
+                  <ModalRow>
+                    <ModalInfo>Lokalizacja:</ModalInfo>
+                    <ModalData>{modalData.location}</ModalData>
+                  </ModalRow>
+                  <LineForm />
+                </ModalColumn>
+                <ModalColumn>
+                  <ModalInfo>Wymagane umiejętności:</ModalInfo>
+                  <ModalBubbleContainer>
+                    {modalData.categories.map((category, index) => (
+                      <CommisionBubble key={index}>{category}</CommisionBubble>
+                    ))}
+                  </ModalBubbleContainer>
+                  <LineForm />
+                  <ModalInfo>Wymagane języki:</ModalInfo>
+                  <ModalBubbleContainer>
+                    {modalData.languages.map((language, index) => (
+                      <CommisionBubble key={index}>{language}</CommisionBubble>
+                    ))}
+                  </ModalBubbleContainer>
+                  <LineForm />
+                  <ModalInfo>Tagi:</ModalInfo>
+                  <ModalBubbleContainer>
+                    {modalData.tags.map((tag, index) => (
+                      <CommisionBubble key={index}>{tag}</CommisionBubble>
+                    ))}
+                  </ModalBubbleContainer>
+                </ModalColumn>
+              </ModalBottomSection>
+            </ModalWrapper>
+          </ModalBackground>
+        )}
+      </>
+    );
+  };
+
+  const CommisionElement = (props) => {
+    return (
+      <CommisionCard onClick={() => openModalClick(props)}>
+        <CommisionTop>
+          <CommisionTitleContainer>
+            <CommisionTitle>
+              {props.title}
+            </CommisionTitle>
+            <LevelBubble>
+              {props.level}
+            </LevelBubble>
+          </CommisionTitleContainer>
+          <TitleText>{props.stake} PLN</TitleText>
+        </CommisionTop>
+        <div>
+          <CommisionText>{props.location}</CommisionText>
+          <CommisionText>{props.deadline}</CommisionText>
+        </div>
+        <CommisionBottom>
+          {props.tags.map((tag, indexT) => (
+            <CommisionBubble key={indexT}>{tag}</CommisionBubble>
+          ))}
+        </CommisionBottom>
+      </CommisionCard>
+    );
+  };
+
   return (
     <>
       <ProfileWrapper>
@@ -144,21 +256,23 @@ const CompanyPage = () => {
         </TopSection>
         <DownSection>
           <TitleText>Zlecenia</TitleText>
-          {CommisionsData.map((cms, indexC) => (
+          {CommisionsData.map((com, indexC) => (
             <CommisionElement
               key={indexC}
-              title={cms.title}
-              description={cms.description}
-              stake={cms.stake}
-              deadline={cms.deadline}
-              level={cms.level}
-              location={cms.location}
-              tags={cms.tags}
+              title={com.title}
+              description={com.description}
+              stake={com.stake}
+              deadline={com.deadline}
+              level={com.level}
+              location={com.location}
+              languages={com.languages}
+              tags={com.tags}
+              categories={com.categories}
             />
           ))}
         </DownSection>
       </ProfileWrapper>
-
+      <Modal showModal={showModal} data={modalData} />
     </>
 
   );

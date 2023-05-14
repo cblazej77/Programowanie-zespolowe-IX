@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../../components/Colors";
+import { CommisionTitle } from "../../components/ProfileElements";
 
 const { darkLight, gray, gray1, primary, white } = COLORS;
 
@@ -248,7 +249,7 @@ export const BubbleLinks = styled.a.attrs(props => ({
   target: '_blank',
   rel: 'noopener',
   href: props.href.startsWith('http://') || props.href.startsWith('https://')
-  ? props.href : `https://${props.href}`
+    ? props.href : `https://${props.href}`
 }))`
  padding: 5px 10px 5px 10px;
   display: inline-flex;
@@ -260,7 +261,7 @@ export const BubbleLinks = styled.a.attrs(props => ({
   margin-top: 5px;
 `
 
-export const  ModalBubble = styled.p`
+export const ModalBubble = styled.p`
   padding: 5px 10px 5px 10px;
   display: inline-flex;
   margin-right: 15px;
@@ -292,4 +293,3 @@ export const SmallInput = styled(StyledTextarea)`
   font-size: 1rem;
   height: 2.5rem;
 `;
-
