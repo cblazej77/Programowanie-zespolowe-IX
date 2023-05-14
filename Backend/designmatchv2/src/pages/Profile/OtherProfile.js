@@ -42,8 +42,8 @@ const getUserURL = process.env.REACT_APP_GET_USER;
 const getShortArtistProfileURL = process.env.REACT_APP_GET_SHORT_ARTIST_PROFILE;
 
 //UserName/UserInfo/MessageButton
-const OtherUserPage = ({ argument }) => {
-   // const { argument } = useParams();
+const OtherUserPage = () => {
+   const { argument } = useParams();
   const [get, setGet] = useState("");
   const [checkLoading, setCheckLoading] = useState(null);
   const [shortProfile, setShortProfile] = useState("");
@@ -57,11 +57,12 @@ const OtherUserPage = ({ argument }) => {
 
 
   useEffect(() => { 
-    let profileName = 'WojciechDuklas';
+    //let profileName = 'WojciechDuklas';
+    let profileName = "";
     console.log(argument);
     console.log({argument});
-    // if(argument) profileName = 'WojciechDuklas';
-    // else profileName = 'Jakub1';
+     if(!argument) profileName = 'WojciechDuklas';
+     else profileName = argument;
 
     let profileData = {
       method: 'get',

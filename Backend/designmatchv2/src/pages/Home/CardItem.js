@@ -19,7 +19,6 @@ import {
 } from "./CardsElement";
 import { Rating } from "react-simple-star-rating";
 import { useNavigate } from "react-router-dom";
-import OtherUserPage from "../Profile/OtherProfile";
 
 function CardItem(props) {
   const navigate = useNavigate();
@@ -28,8 +27,8 @@ function CardItem(props) {
     
     let userNick = props.username;
     console.log(userNick);
-      navigate('/other-account/', { state: {
-        argument: props.username
+      navigate(`/other-account/${userNick}`, { state: {
+        argument: userNick,
       }});
   };
 
