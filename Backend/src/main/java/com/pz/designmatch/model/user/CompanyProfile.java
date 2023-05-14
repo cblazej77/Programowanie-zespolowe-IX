@@ -23,6 +23,8 @@ public class CompanyProfile {
     @Column(name = "profile_banner_url")
     private String profileBannerUrl;
     private String NIP;
+    private String REGON;
+    private String KRS;
     private String website;
     private String facebook;
     private String linkedin;
