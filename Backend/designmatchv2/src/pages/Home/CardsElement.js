@@ -204,6 +204,7 @@ export const CardsWrapper = styled.div`
     padding-bottom: 10rem;
     overflow: auto;
     margin-top: 1.5rem;
+    padding-left: 2rem;
     &::-webkit-scrollbar {
         width: 0.5vw;
       }
@@ -387,20 +388,20 @@ export const CityText = styled.text`
 
 export const RightLabel = styled.div`
     position: fixed;
-    left: 21rem;
+    left: 20rem;
     right: 0px;
     @media screen and (max-width: 960px) {
         display: flex;
         flex-direction: column;
         left: 0;
         justify-content: center;
-        align-items: flex-start;
-        padding-left: 5vw; 
+        align-items: flex-start; 
     }
 `;
 
 export const TopSection = styled.div`
     display: flex;
+    padding-left: 2rem;
 `;
 
 export const FilterButton = styled(Link)`
