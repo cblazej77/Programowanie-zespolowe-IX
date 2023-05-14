@@ -8,27 +8,35 @@ import {
   CheckBoxLabel,
   CheckBoxWrapper,
   CheckBox,
-  JobText,
-  Input,
   FilterLabel,
   StyledSelect,
   StyledOption,
   CardsWrapper,
-  StyledOptgroup,
   CategoryText,
   RightLabel,
   TopSection,
-  Button,
+  FilterButton,
   FilterDropDownContainer,
-  Icon,
   CategoryWrapper,
   CheckBoxText,
+  ClearButton,
+  FilterScroll,
+  ModalBackground,
+  ModalWrapper,
+  ModalButton,
+  ModalButtonContainer,
+  ModalIconContainer,
+  LineForm,
+  ModalScroll,
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
 import LoadingPage from '../LoadingPage';
 import { faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { COLORS } from '../../components/Colors';
+
+const { darkLight } = COLORS;
 
 const Cards = () => {
   const [cities, setCities] = useState([]);
@@ -37,22 +45,17 @@ const Cards = () => {
   const [categories, setCategories] = useState([]);
   const [levels, setLevels] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [getData, setGetData] = useState(null);
-  const [selectLanguage, setSelectLanguage] = useState("");
-  const [selectCity, setSelectCity] = useState("");
-  const [selectTag, setSelectTag] = useState("");
   const [levelsFilter, setLevelsFilter] = useState([]);
   const [citiesFilter, setCitiesFilter] = useState([]);
   const [tagsFilter, setTagsFilter] = useState([]);
   const [languagesFilter, setLanguagesFilter] = useState([]);
   const [categoriesFilter, setCategoriesFilter] = useState([]);
-  const [selectCategories, setSelectCategories] = useState("");
   const [showCities, setShowCities] = useState(false);
   const [showLanguages, setShowLanguages] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
   const [showTags, setShowTags] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
-  const urlFilter = process.env.REACT_APP_GET_ARTIST_FILTER;
+  const [showModal, setShowModal] = useState(false);
 
   const handleCityChange = (e) => {
     const city = e.target.id;
@@ -99,6 +102,13 @@ const Cards = () => {
     }
   };
 
+  const clearFilters = () => {
+    setLevelsFilter([]);
+    setLanguagesFilter([]);
+    setCitiesFilter([]);
+    setCategoriesFilter([]);
+    setTagsFilter([]);
+  };
 
   const citiesData = useMemo(
     () => ({
@@ -351,86 +361,164 @@ const Cards = () => {
     setShowLevels(!showLevels);
   }
 
+  const handleFilterClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleWrapperClick = (event) => {
+    event.stopPropagation();
+  };
+
+  const Modal = ({ showModal, onCloseModal }) => {
+    return (
+      <>
+        {showModal && (
+          <ModalBackground onClick={onCloseModal}>
+            <ModalWrapper onClick={handleWrapperClick}>
+              <ModalIconContainer onClick={onCloseModal}>
+                <FontAwesomeIcon style={{ color: darkLight }} icon={faChevronDown} />
+              </ModalIconContainer>
+              <LineForm />
+              <ModalScroll>
+                <ModalButtonContainer>
+                  <ModalButton onClick={clearFilters}>Wyczyść filtry</ModalButton>
+                </ModalButtonContainer>
+                <FilterDropDownContainer onClick={handleCityVisibleClick}>
+                  <FontAwesomeIcon icon={showCities ? faChevronDown : faChevronRight} />
+                  <SubtitleText>Skąd?</SubtitleText>
+                </FilterDropDownContainer>
+                {showCities && (
+                  <>
+                    {cityOptions}
+                  </>
+                )}
+                <FilterDropDownContainer onClick={handleLanguageVisibleClick}>
+                  <FontAwesomeIcon icon={showLanguages ? faChevronDown : faChevronRight} />
+                  <SubtitleText>Języki</SubtitleText>
+                </FilterDropDownContainer>
+                {showLanguages && (
+                  <>
+                    {languageOptions}
+                  </>
+                )}
+                <FilterDropDownContainer onClick={handleTagVisibleClick}>
+                  <FontAwesomeIcon icon={showTags ? faChevronDown : faChevronRight} />
+                  <SubtitleText>Tagi</SubtitleText>
+                </FilterDropDownContainer>
+                {showTags && (
+                  <>
+                    {tagOptions}
+                  </>
+                )}
+                <FilterDropDownContainer onClick={handleCategoryVisibleClick}>
+                  <FontAwesomeIcon icon={showCategories ? faChevronDown : faChevronRight} />
+                  <SubtitleText>Umiejętności</SubtitleText>
+                </FilterDropDownContainer>
+                {showCategories && (
+                  <>
+                    {categoryOptions}
+                  </>
+                )}
+                <FilterDropDownContainer onClick={handleLevelVisibleClick}>
+                  <FontAwesomeIcon icon={showLevels ? faChevronDown : faChevronRight} />
+                  <SubtitleText>Poziom</SubtitleText>
+                </FilterDropDownContainer>
+                {showLevels && (
+                  <>
+                    {levelOptions}
+                  </>
+                )}
+              </ModalScroll>
+            </ModalWrapper>
+          </ModalBackground>
+        )}
+      </>
+    );
+  };
+
   return (
-    <Cards2>
-      <FilterLabel>
-        <TitleText>Filtruj</TitleText>
-        <FilterWrapper>
-          <FilterDropDownContainer onClick={handleCityVisibleClick}>
-            <FontAwesomeIcon icon={showCities ? faChevronDown : faChevronRight} />
-            <SubtitleText>Skąd?</SubtitleText>
-          </FilterDropDownContainer>
-          {showCities && (
-            <>
-              {cityOptions}
-            </>
-          )}
-          <FilterDropDownContainer onClick={handleLanguageVisibleClick}>
-            <FontAwesomeIcon icon={showLanguages ? faChevronDown : faChevronRight} />
-            <SubtitleText>Języki</SubtitleText>
-          </FilterDropDownContainer>
-          {showLanguages && (
-            <>
-              {languageOptions}
-            </>
-          )}
-          <FilterDropDownContainer onClick={handleTagVisibleClick}>
-            <FontAwesomeIcon icon={showTags ? faChevronDown : faChevronRight} />
-            <SubtitleText>Tagi</SubtitleText>
-          </FilterDropDownContainer>
-          {showTags && (
-            <>
-              {tagOptions}
-            </>
-          )}
-          <FilterDropDownContainer onClick={handleCategoryVisibleClick}>
-            <FontAwesomeIcon icon={showCategories ? faChevronDown : faChevronRight} />
-            <SubtitleText>Umiejętności</SubtitleText>
-          </FilterDropDownContainer>
-          {showCategories && (
-            <>
-              {categoryOptions}
-            </>
-          )}
-          <FilterDropDownContainer onClick={handleLevelVisibleClick}>
-            <FontAwesomeIcon icon={showLevels ? faChevronDown : faChevronRight} />
-            <SubtitleText>Poziom</SubtitleText>
-          </FilterDropDownContainer>
-          {showLevels && (
-            <>
-              {levelOptions}
-            </>
-          )}
-        </FilterWrapper>
-      </FilterLabel>
+    <>
+      <Cards2>
+        <FilterLabel>
+          <TitleText>Filtruj</TitleText>
+          <FilterWrapper>
+            <ClearButton onClick={clearFilters}>Wyczyść filtry</ClearButton>
+            <FilterScroll>
+              <FilterDropDownContainer onClick={handleCityVisibleClick}>
+                <FontAwesomeIcon icon={showCities ? faChevronDown : faChevronRight} />
+                <SubtitleText>Skąd?</SubtitleText>
+              </FilterDropDownContainer>
+              {showCities && (
+                <>
+                  {cityOptions}
+                </>
+              )}
+              <FilterDropDownContainer onClick={handleLanguageVisibleClick}>
+                <FontAwesomeIcon icon={showLanguages ? faChevronDown : faChevronRight} />
+                <SubtitleText>Języki</SubtitleText>
+              </FilterDropDownContainer>
+              {showLanguages && (
+                <>
+                  {languageOptions}
+                </>
+              )}
+              <FilterDropDownContainer onClick={handleTagVisibleClick}>
+                <FontAwesomeIcon icon={showTags ? faChevronDown : faChevronRight} />
+                <SubtitleText>Tagi</SubtitleText>
+              </FilterDropDownContainer>
+              {showTags && (
+                <>
+                  {tagOptions}
+                </>
+              )}
+              <FilterDropDownContainer onClick={handleCategoryVisibleClick}>
+                <FontAwesomeIcon icon={showCategories ? faChevronDown : faChevronRight} />
+                <SubtitleText>Umiejętności</SubtitleText>
+              </FilterDropDownContainer>
+              {showCategories && (
+                <>
+                  {categoryOptions}
+                </>
+              )}
+              <FilterDropDownContainer onClick={handleLevelVisibleClick}>
+                <FontAwesomeIcon icon={showLevels ? faChevronDown : faChevronRight} />
+                <SubtitleText>Poziom</SubtitleText>
+              </FilterDropDownContainer>
+              {showLevels && (
+                <>
+                  {levelOptions}
+                </>
+              )}
+            </FilterScroll>
+          </FilterWrapper>
+        </FilterLabel>
+        {filtered ? (
+          <RightLabel>
+            <TopSection>
+              <FilterButton onClick={handleFilterClick}>Filtruj</FilterButton>
+              <StyledSelect>
+                <StyledOption value="">Sortuj po...</StyledOption>
+                <StyledOption value="1">najlepsza ocena</StyledOption>
+                <StyledOption value="2">najwięcej prac</StyledOption>
+                <StyledOption value="3">ostatnia aktywność</StyledOption>
+              </StyledSelect>
+            </TopSection>
+            <CardsWrapper>
+              {filteredCards}
+            </CardsWrapper>
+            <Modal showModal={showModal} onCloseModal={handleCloseModal} />
+          </RightLabel>
 
-      {filtered ? (
-        <RightLabel>
-          <TopSection>
-            <Button>Filteruj</Button>
-            <StyledSelect>
-              <StyledOption value="">Sortuj po...</StyledOption>
-              <StyledOption value="1">najlepsza ocena</StyledOption>
-              <StyledOption value="2">najwięcej prac</StyledOption>
-              <StyledOption value="3">ostatnia aktywność</StyledOption>
-            </StyledSelect>
-          </TopSection>
-          <CardsWrapper>
-            {filteredCards}
-          </CardsWrapper>
-        </RightLabel>
+        ) : (
+          <LoadingPage />
+        )}
+      </Cards2>
 
-      ) : (
-        <LoadingPage /> //test tego albo
-        /*
-        <CardsWrapper> //tego nie wiem co lepsze
-          <CardItem />
-          <CardItem />
-          <CardItem />
-        </CardsWrapper>
-        */
-      )}
-    </Cards2>
+    </>
   )
 }
 

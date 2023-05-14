@@ -65,29 +65,33 @@ export const FilterWrapper = styled.div`
     background: ${primary};
     border-radius: 10px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-    padding: 0vh 0rem 10rem 0rem;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-        width: 0.25rem;
-      }
-    
-      &::-webkit-scrollbar-track {
-        background: ${primary};
-      }
-    
-      &::-webkit-scrollbar-thumb {
-        background: ${gray1};
-      }
-    
-      &::-webkit-scrollbar-thumb:hover {
-        background: ${darkLight};
-      }
+    margin-top: 0.5rem;
 `;
 
 export const FilterLabel = styled.div`
     position: fixed;
     @media screen and (max-width: 960px) {
         display: none;
+    }
+`;
+
+export const FilterScroll = styled.div`
+    overflow-y: auto;
+    padding-bottom: 15rem;
+    &::-webkit-scrollbar {
+        width: 0.25rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: ${primary};
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: ${gray1};
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: ${darkLight};
     }
 `;
 
@@ -197,9 +201,9 @@ export const CardsLabel = styled.div`
 export const CardsWrapper = styled.div`
     width: 100%;
     height: 82vh;
-    padding-top: 1.3rem;
     padding-bottom: 10rem;
     overflow: auto;
+    margin-top: 1.5rem;
     &::-webkit-scrollbar {
         width: 0.5vw;
       }
@@ -399,13 +403,12 @@ export const TopSection = styled.div`
     display: flex;
 `;
 
-export const Button = styled(Link)`
+export const FilterButton = styled(Link)`
     display: none;
     border: none;
     border-radius: 10px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
     color: rgb(255, 255, 255);
-    text-align: center;
     text-decoration: none;
     padding: 0.2rem 1rem;
     margin-right: 1rem;
@@ -420,6 +423,14 @@ export const Button = styled(Link)`
     }
 `;
 
+export const ClearButton = styled(FilterButton)`
+    display: flex;
+    background: ${primary};
+    color: ${darkLight};
+    width: 100%;
+    justify-content: center;
+`;
+
 export const FilterDropDownContainer = styled.div`
     padding: 1rem;
     cursor: pointer;
@@ -432,4 +443,54 @@ export const CategoryWrapper = styled.div`
 
 export const CheckBoxText = styled(JobText)`
     font-size: 1.2rem;
+`;
+
+export const ModalBackground = styled.div`
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    background: rgba(255,255,255,0.6);
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+`;
+
+export const ModalWrapper = styled.div`
+    width: 100%;
+    height: 75%;
+    background: ${primary};
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+`;
+
+export const ModalButton = styled(FilterButton)`
+    display: flex;    
+    margin: 0;
+    justify-content: center;
+    width: 9rem;
+`;
+
+export const ModalButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+`;
+
+export const ModalIconContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+    font-size: 2rem;
+`;
+
+export const LineForm = styled.div`
+    background: #CCC;
+    border-radius: 100%;
+    height: 1px;
+    width: 100%;
+`;
+
+export const ModalScroll = styled(FilterScroll)`
+    max-height: 100%;
 `;
