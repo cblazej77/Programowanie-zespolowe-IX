@@ -33,7 +33,8 @@ public class companiesService {
                 companyProfile.getFacebook(),
                 companyProfile.getLinkedin(),
                 companyProfile.getTwitter(),
-                companyProfile.getInstagram()
+                companyProfile.getInstagram(),
+                companyProfile.getCompanyAdress()
         );
     }
 
@@ -51,11 +52,15 @@ public class companiesService {
             newCompanyProfile.setProfileBannerUrl(companiesDto.getProfileBannerUrl());
         }
         newCompanyProfile.setNIP(companiesDto.getNIP());
-        newCompanyProfile.setREGON(companiesDto.getREGON());
+        if (companiesDto.getREGON() != null){
+            newCompanyProfile.setREGON(companiesDto.getREGON());
+        }
         if(companiesDto.getKRS() != null){
             newCompanyProfile.setKRS(companiesDto.getKRS());
         }
-        newCompanyProfile.setWebsite(companiesDto.getWebsite());
+        if (companiesDto.getWebsite() != null){
+            newCompanyProfile.setWebsite(companiesDto.getWebsite());
+        }
         if(companiesDto.getFacebook() != null){
             newCompanyProfile.setFacebook(companiesDto.getFacebook());
         }
@@ -65,7 +70,12 @@ public class companiesService {
         if (companiesDto.getInstagram() != null){
             newCompanyProfile.setInstagram(companiesDto.getInstagram());
         }
-        newCompanyProfile.setLinkedin(companiesDto.getLinkedin());
+        if (companiesDto.getLinkedin() != null){
+            newCompanyProfile.setLinkedin(companiesDto.getLinkedin());
+        }
+        if (companiesDto.getCompanyAdress() != null){
+            newCompanyProfile.setCompanyAdress(companiesDto.getCompanyAdress());
+        }
         return mapToCompaniesDto(companyProfileRepository.save(newCompanyProfile));
 
     }
@@ -84,9 +94,6 @@ public class companiesService {
         }
         if (companiesDto.getProfileBannerUrl() != null){
             existingCompanyProfile.setProfileBannerUrl(companiesDto.getProfileBannerUrl());
-        }
-        if (companiesDto.getNIP() != null){
-            existingCompanyProfile.setNIP(existingCompanyProfile.getNIP());
         }
         if (companiesDto.getREGON() != null){
             existingCompanyProfile.setREGON(existingCompanyProfile.getREGON());
@@ -109,6 +116,9 @@ public class companiesService {
         if (companiesDto.getLinkedin() != null){
             existingCompanyProfile.setLinkedin(existingCompanyProfile.getLinkedin());
         }
+        if (companiesDto.getCompanyAdress() != null){
+            existingCompanyProfile.setCompanyAdress(companiesDto.getCompanyAdress());
+        }
         return mapToCompaniesDto(companyProfileRepository.save(existingCompanyProfile));
 
     }
@@ -118,3 +128,19 @@ public class companiesService {
                 .orElseThrow(()-> new RuntimeException("CompanyProfile not found for name :" + name));
     }
 }
+
+//newCompanyProfile.setEmail(companiesDto.getEmail());
+//        newCompanyProfile.setUsername(companiesDto.getUsername());
+//        newCompanyProfile.setPassword(companiesDto.getPassword());
+//        if(companiesDto.getFirstname() != null){
+//        newCompanyProfile.setFirstname(companiesDto.getFirstname());
+//        }
+//        if (companiesDto.getLastname() != null){
+//        newCompanyProfile.setLastname(companiesDto.getLastname());
+//        }
+
+//companyProfile.getEmail(),
+//        companyProfile.getUsername(),
+//        companyProfile.getPassword(),
+//        companyProfile.getFirstname(),
+//        companyProfile.getLastname(),

@@ -5,12 +5,22 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pz.designmatch.model.user.UserEntity;
+import jakarta.persistence.Column;
 import lombok.Getter;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class companiesDto {
-    //private UserEntity user;
+//    @JsonProperty("email")
+//    private String email;
+//    @JsonProperty("username")
+//    private String username;
+//    @JsonProperty("password")
+//    private String password;
+//    @JsonProperty("firstname")
+//    private String firstname;
+//    @JsonProperty("lastname")
+//    private String lastname;
     @JsonProperty("name")
     private String name;
     @JsonProperty("description")
@@ -35,12 +45,18 @@ public class companiesDto {
     private String twitter;
     @JsonProperty("instagram")
     private String instagram;
+    @JsonProperty("companyAdress")
+    private String companyAdress;
 
     @JsonCreator
     public companiesDto(String name, String description, String profileImageUrl,
                         String profileBannerUrl, String NIP, String REGON, String KRS, String website,
-                        String facebook, String linkedin, String twitter, String instagram) {
-        //this.user = user;
+                        String facebook, String linkedin, String twitter, String instagram, String companyAdress) {
+        //this.email = email;
+        //this.username = username;
+        //this.password = password;
+        //this.firstname = firstname;
+        //this.lastname = lastname;
         this.name = name;
         this.description = description;
         this.profileImageUrl = profileImageUrl;
@@ -53,7 +69,29 @@ public class companiesDto {
         this.linkedin = linkedin;
         this.twitter = twitter;
         this.instagram = instagram;
+        this.companyAdress = companyAdress;
     }
+
+//    @JsonGetter("email")
+//    public String getEmail() {
+//        return email;
+//    }
+//    @JsonGetter("username")
+//    public String getUsername() {
+//        return username;
+//    }
+//    @JsonGetter("password")
+//    public String getPassword() {
+//        return password;
+//    }
+//    @JsonGetter("firstname")
+//    public String getFirstname() {
+//        return firstname;
+//    }
+//    @JsonGetter("lastname")
+//    public String getLastname() {
+//        return lastname;
+//    }
 
     @JsonGetter("name")
     public String getName() {
@@ -102,5 +140,9 @@ public class companiesDto {
     @JsonGetter("instagram")
     public String getInstagram() {
         return instagram;
+    }
+    @JsonGetter("companyAdress")
+    public String getCompanyAdress() {
+        return companyAdress;
     }
 }

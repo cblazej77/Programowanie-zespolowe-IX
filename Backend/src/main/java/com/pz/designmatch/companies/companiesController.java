@@ -2,6 +2,7 @@ package com.pz.designmatch.companies;
 
 import com.pz.designmatch.comissions.commissionDto;
 import com.pz.designmatch.repository.CompanyProfileRepository;
+import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,14 @@ public class companiesController {
     @PostMapping(value = "/createCompanyProfile", produces = apiVersionAccept, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<companiesDto> createCompanyProfile(@RequestBody companiesDto companiesDto){
         try{
+            String name = companiesDto.getName();
+            if(companyProfileRepository.existsCompanyProfileByName(name)){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+//            EmailValidator emailValidator = new EmailValidator();
+//            if (!emailValidator.isValid(companiesDto.getEmail(), null)){
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//            }
             companiesDto newCompanyProfile = companiesService.createCompanyProfile(companiesDto);
             return ResponseEntity.ok(newCompanyProfile);
         } catch (Exception ex){
