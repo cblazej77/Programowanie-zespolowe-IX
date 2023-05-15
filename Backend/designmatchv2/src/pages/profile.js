@@ -84,7 +84,7 @@ const UserPage = () => {
   }, []);
 
   useEffect(() => {
-    if(get){
+    if (get) {
       clear();
       for (let i = 0; i < get.education.length; i++) {
         handleAddEducationElement(
@@ -127,6 +127,7 @@ const UserPage = () => {
       },
     ]);
   };
+
   function handleAddExperienceElement(id, company, city, position, description, start_date, end_date) {
     setExperienceList((experienceList) => [
       ...experienceList,
@@ -158,17 +159,17 @@ const UserPage = () => {
 
     const list = educationList.map((item, index) => {
       return (
-        
+
         <div key={item.id}>
           {index !== 0 && <LineForm />}
           <HeaderText>Wykształcenie</HeaderText>
           <LeftInfoRow>
-          <InfoText>Kierunek: </InfoText>
+            <InfoText>Kierunek: </InfoText>
             <label>{item.faculty}</label>
           </LeftInfoRow>
           <LeftInfoRow>
-          <InfoText>Uczelnia: </InfoText>
-          <label>{item.school_name}</label>
+            <InfoText>Uczelnia: </InfoText>
+            <label>{item.school_name}</label>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Dziedzina nauk: </InfoText>
@@ -180,11 +181,11 @@ const UserPage = () => {
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Od: </InfoText>
-             <label>{item.start_date}</label> 
+            <label>{item.start_date}</label>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Opis: </InfoText>
-           <label>{item.description}</label>
+            <label>{item.description}</label>
           </LeftInfoRow>
         </div>
       );
@@ -193,30 +194,30 @@ const UserPage = () => {
 
     return (
       <>
-      {list}
+        {list}
       </>
     );
   }
-  function ListLinks(){
-    return(    <>
-      { (get.facebook || get.instagram || get.linkedin || get.pinterest || get.twitter || get.website) &&  (
-      <>
-        <LineForm />
-        <InfoText>Media społecznościowe:</InfoText>
-      </>
+  function ListLinks() {
+    return (<>
+      {(get.facebook || get.instagram || get.linkedin || get.pinterest || get.twitter || get.website) && (
+        <>
+          <LineForm />
+          <InfoText>Media społecznościowe:</InfoText>
+        </>
       )}
       <BubbleWrap>
-    
+
         {get.facebook && <BubbleLinks href={get.facebook}  > facebook</BubbleLinks>}
         {get.instagram && <BubbleLinks href={get.instagram}> instagram </BubbleLinks>}
         {get.linkedin && <BubbleLinks href={get.linkedin}> linkedin  </BubbleLinks>}
         {get.pinterest && <BubbleLinks href={get.pinterest}> pinterest  </BubbleLinks>}
         {get.twitter && <BubbleLinks href={get.twitter}> twitter  </BubbleLinks>}
         {get.website && <BubbleLinks href={get.website}> website  </BubbleLinks>}
-     
-      
+
+
       </BubbleWrap>
-     </>
+    </>
     )
   }
   function ListExperience() {
@@ -227,12 +228,12 @@ const UserPage = () => {
           <LineForm />
           <HeaderText>Doświadczenie</HeaderText>
           <LeftInfoRow>
-          <InfoText>Nazwa firmy: </InfoText>
+            <InfoText>Nazwa firmy: </InfoText>
             <label>{item.comapny}</label>
           </LeftInfoRow>
           <LeftInfoRow>
-          <InfoText>Miasto: </InfoText>
-           <label>{item.city}</label>
+            <InfoText>Miasto: </InfoText>
+            <label>{item.city}</label>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Stanowisko: </InfoText>
@@ -240,11 +241,11 @@ const UserPage = () => {
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Od: </InfoText>
-           <label>{item.start_date}</label>
+            <label>{item.start_date}</label>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Do: </InfoText>
-          <label>{item.end_date}</label>
+            <label>{item.end_date}</label>
           </LeftInfoRow>
         </div>
       );
@@ -253,7 +254,7 @@ const UserPage = () => {
 
     return (
       <>
-      {list}
+        {list}
       </>
     );
   }
@@ -311,9 +312,9 @@ const UserPage = () => {
           <RightWrapper>
             <BoldLabel >O mnie:</BoldLabel>
             <AboutMe>{get.bio}</AboutMe>
-            
+
             <Left>
-            <LineForm />
+              <LineForm />
               <InfoRow >
                 <LeftColumn >
                   <LeftInfoRow>
@@ -348,14 +349,14 @@ const UserPage = () => {
 
                   <ListEducation />
                   <ListExperience />
-          
+
                 </RightColumn>
               </InfoRow>
             </Left>
           </RightWrapper>
         </TopSection>
         <DownSection>
-          
+
         </DownSection>
       </ProfileWrapper>
     ) : (<LoadingPage />)}

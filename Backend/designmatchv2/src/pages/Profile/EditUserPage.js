@@ -87,6 +87,7 @@ const ButtonSave = styled.button`
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
   }
 `;
+
 const ButtonEdit = styled.button`
   padding: 5px 20px;
   color: black;

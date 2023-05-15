@@ -173,7 +173,7 @@ export const NameContainer = styled.div`
 export const InputInfoText = styled.text`
   width: 100%;
   color: ${gray1};
-  margin: 0.4rem 0px;
+  margin: 0.2rem 0px;
   font-size: 1rem;
 `;
 

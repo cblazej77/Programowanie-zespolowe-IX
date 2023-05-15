@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
 import {
@@ -44,6 +44,7 @@ import {
 } from '../../components/ProfileElements'
 import { TitleText } from '../Home/CardsElement';
 import { COLORS } from '../../components/Colors';
+import axios from '../../api/axios';
 
 const { darkLight } = COLORS;
 
@@ -113,10 +114,38 @@ const CommisionsData = [
   },
 ];
 
-//UserName/UserInfo/MessageButton
 const CompanyPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState([]);
+  const [get, setGet] = useState("");
+  const [checkLoading, setCheckLoading] = useState(null);
+
+  const companyName = 'Acme%20Corporation';
+
+  const companyData = useMemo(() => ({
+    method: 'get',
+    maxBodyLength: 10000,
+    url: '/companies/getCompanyProfileByName?name=' + companyName,
+    headers: {},
+  }),
+    [],
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.request(companyData);
+        setGet(result.data);
+        setCheckLoading(result);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
 
   const openModalClick = (data) => {
     setModalData(data);
@@ -223,21 +252,24 @@ const CompanyPage = () => {
         <TopSection>
           <LeftWrapper>
             <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-            <NameText>Oracle</NameText>
+            <NameText>{get.name}</NameText>
             <LineForm />
             <Button>Napisz wiadomość</Button>
           </LeftWrapper>
           <RightWrapper>
             <BoldLabel >O firmie:</BoldLabel>
-            <AboutMe>get.bio</AboutMe>
+            <AboutMe>{get.description}</AboutMe>
             <Left>
               <LineForm />
               <InfoRow >
                 <LeftColumn >
                   <InfoText>Linki:</InfoText>
                   <BubbleWrap>
-                    <Bubble>get.website</Bubble>
-                    <Bubble>get.linkedin</Bubble>
+                    <Bubble>{get.website}</Bubble>
+                    <Bubble>{get.linkedin}</Bubble>
+                    <Bubble>{get.facebook}</Bubble>
+                    <Bubble>{get.instagram}</Bubble>
+                    <Bubble>{get.twitter}</Bubble>
                   </BubbleWrap>
                 </LeftColumn>
                 <RightColumn>
@@ -247,7 +279,15 @@ const CompanyPage = () => {
                   </LeftInfoRow>
                   <LeftInfoRow>
                     <InfoText>NIP:</InfoText>
-                    <DataText>get.NIP</DataText>
+                    <DataText>{get.nip}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>REGON:</InfoText>
+                    <DataText>{get.regon}</DataText>
+                  </LeftInfoRow>
+                  <LeftInfoRow>
+                    <InfoText>KRS:</InfoText>
+                    <DataText>{get.krs}</DataText>
                   </LeftInfoRow>
                 </RightColumn>
               </InfoRow>

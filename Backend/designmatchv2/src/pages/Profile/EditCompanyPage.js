@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   RightColumn,
   InfoRow,
@@ -17,9 +17,34 @@ import {
   BoldLabel,
   BubbleWrap,
   Bubble,
+  InfoInputWrapper,
+  SmallTextArea,
 } from '../../components/ProfileElements'
-import { DataText, DataTextArena, HeaderText, NameText, StyledTextarea } from './ProfileElements';
+import { DataText, DataTextArena, HeaderText, InputInfoText, NameText, StyledTextarea } from './ProfileElements';
 import styled from 'styled-components';
+import axios from '../../api/axios';
+import LoadingPage from '../LoadingPage';
+import { COLORS } from '../../components/Colors';
+
+const { secondary } = COLORS;
+
+const ButtonSave = styled.button`
+  padding: 20px 50px;
+  font-size: 1.2rem;
+  margin-top: 0;
+  margin-left: 80vw;
+  display: flex;
+  color: white;
+  border-radius: 15px;
+  border: 1px solid black;
+  background: ${secondary};
+  transform: translateY(2.5rem);
+  &:hover {
+    transition: 0.3s;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+  }
+`;
 
 const AboutInput = styled(StyledTextarea)`
   min-height: 15rem;
@@ -49,10 +74,35 @@ const ButtonEdit = styled.button`
 //UserName/UserInfo/MessageButton
 const EditCompanyPage = () => {
   const [height, setHeight] = useState("20px");
+  const [get, setGet] = useState({});
+  const [checkLoading, setCheckLoading] = useState(null);
   const [bio, setBio] = useState("");
+  const [putData, setPutData] = useState({});
+
   const maxChars = 300;
-  const chars = bio.length;
   const limitHeight = 60;
+  const companyName = 'Acme%20Corpo';
+
+  const companyData = useMemo(() => ({
+    method: 'get',
+    maxBodyLength: 10000,
+    url: `/companies/getCompanyProfileByName?name=${companyName}`,
+    headers: {},
+  }), [companyName]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.request(companyData);
+        setGet(result.data);
+        setCheckLoading(result);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -68,56 +118,101 @@ const EditCompanyPage = () => {
     }
   };
 
+  const handleSave = useCallback(async () => {
+    try {
+      const response = await axios.put(`/companies/updateCompanyProfileByName?name=${companyName}`, get);
+      console.log('Data saved successfully!');
+      console.log(response.data);
+    } catch (err) {
+      console.error('Error while saving data:', err);
+    }
+  }, [companyName, get]);
+
   return (
     <>
-      <ProfileWrapper>
-        <TopSection>
-          <LeftWrapper>
-            <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-            <NameText>Oracle</NameText>
-          </LeftWrapper>
-          <RightWrapper>
-              <BoldLabel >O firmie:</BoldLabel>
-             <AboutInput
-                hag={height}
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
+      {checkLoading ? (
+        <ProfileWrapper>
+          <TopSection>
+            <LeftWrapper>
+              <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
+              <InfoInputWrapper>
+                <InputInfoText>Nazwa firmy: </InputInfoText>
+                <NameText
+                  defaultValue={get.name}
+                  value={get.name}
+                  onChange={({ target }) =>
+                    setGet({
+                      ...get, name: target.value,
+                    })} />
+              </InfoInputWrapper>
+              <InfoInputWrapper>
+                <InputInfoText>Adres firmy: </InputInfoText>
+                <NameText>get.address</NameText>
+              </InfoInputWrapper>
+            </LeftWrapper>
+            <RightWrapper>
+              <InputInfoText>Opis firmy:</InputInfoText>
+              <AboutInput
+                defaultValue={get.description}
+                value={get.description}
+                onChange={({ target }) =>
+                  setGet({ ...get, description: target.value, })}
                 maxLength={maxChars}
                 onKeyDown={(e) => handleKeyDown(e)}
               />
-              <Nawias>
-                ({chars}/{maxChars})
-              </Nawias>
-              <LineForm />
-            <Left>
-            <LineForm />
-              <InfoRow >
-                <LeftColumn>
-                  <LeftInfoRow>
-                      <HeaderText>Linki:</HeaderText>
-                      <ButtonEdit>Edytuj</ButtonEdit>
-                    </LeftInfoRow>
-                    <BubbleWrap>
-                      <Bubble>get.website</Bubble>
-                       <Bubble>get.linkedin</Bubble>
-                    </BubbleWrap>
+              <Nawias>({Math.min(get.description.length, maxChars)}/{maxChars})</Nawias>
+              <Left>
+                <LineForm style={{ marginBottom: '3rem' }} />
+                <LeftColumn >
+                  <InfoInputWrapper>
+                    <InputInfoText>Strona firmy: </InputInfoText>
+                    <SmallTextArea
+                      defaultValue={get.website}
+                      value={get.website}
+                      onChange={({ target }) =>
+                        setGet({ ...get, website: target.value, })} />
+                  </InfoInputWrapper>
+                  <InfoInputWrapper>
+                    <InputInfoText>Linkedin: </InputInfoText>
+                    <SmallTextArea
+                      defaultValue={get.linkedin}
+                      value={get.linkedin}
+                      onChange={({ target }) =>
+                        setGet({ ...get, linkedin: target.value, })} />
+                  </InfoInputWrapper>
+                  <InfoInputWrapper>
+                    <InputInfoText>Facebook: </InputInfoText>
+                    <SmallTextArea
+                      defaultValue={get.facebook}
+                      value={get.facebook}
+                      onChange={({ target }) =>
+                        setGet({ ...get, facebook: target.value, })} />
+                  </InfoInputWrapper>
+                  <InfoInputWrapper>
+                    <InputInfoText>Instagram: </InputInfoText>
+                    <SmallTextArea
+                      defaultValue={get.instagram}
+                      value={get.instagram}
+                      onChange={({ target }) =>
+                        setGet({ ...get, instagram: target.value, })} />
+                  </InfoInputWrapper>
+                  <InfoInputWrapper>
+                    <InputInfoText>Twitter: </InputInfoText>
+                    <SmallTextArea
+                      defaultValue={get.twitter}
+                      value={get.twitter}
+                      onChange={({ target }) =>
+                        setGet({ ...get, twitter: target.value, })} />
+                  </InfoInputWrapper>
                 </LeftColumn>
-                <RightColumn>
-                  <LeftInfoRow>
-                    <InfoText>Adres:</InfoText>
-                    <DataTextArena>get.location</DataTextArena>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>NIP:</InfoText>
-                    <DataTextArena>get.NIP</DataTextArena>
-                  </LeftInfoRow>
-                </RightColumn>
-              </InfoRow>
-            </Left>
-          </RightWrapper>
-        </TopSection>
-      </ProfileWrapper>
-   
+              </Left>
+            </RightWrapper>
+          </TopSection>
+          <ButtonSave onClick={handleSave}>Zapisz</ButtonSave>
+        </ProfileWrapper>
+      ) : (
+        <LoadingPage />
+      )}
     </>
 
   );

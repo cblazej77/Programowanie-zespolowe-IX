@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { COLORS } from './Colors';
 import { TitleText } from '../pages/Home/CardsElement';
+import { StyledTextarea } from '../pages/Profile/ProfileElements';
 
 const { darkLight, darkLight2, gray1, white, primary } = COLORS;
 
@@ -34,7 +35,7 @@ export const LeftWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 1rem 1.9rem;
-  justify-content: center;
+  justify-content: space-evenly;
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
   font-size: 0.9vw;
@@ -395,6 +396,18 @@ export const ModalData = styled(ModalInfo)`
 
 export const ModalBubbleContainer = styled.div`
   margin-top: 1rem;
+`;
+
+export const InfoInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const SmallTextArea = styled(StyledTextarea)`
+  font-size: 1rem;
+  height: 1.8rem;
+  padding: 0.1rem 0 0 0.5rem;
 `;
 
 
