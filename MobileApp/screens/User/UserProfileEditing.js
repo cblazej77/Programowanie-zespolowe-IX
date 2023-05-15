@@ -14,13 +14,13 @@ import {
   ModalBubble,
   MsgBox,
   HeaderText,
-} from './styles';
+} from '../../components/styles';
 import Stars from 'react-native-stars';
 //SecureStoring accessToken
 import * as SecureStore from 'expo-secure-store';
-import { default as baseURL } from './AxiosAuth';
+import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
-import Loading from './Loading';
+import Loading from '../../components/Loading';
 import { Button } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -107,9 +107,33 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
     setMessageType(type);
   };
 
-  function datePatternValidation(date) {
-    const regex = new RegExp(/^(0?[1-9]|1[0-2])[\/](19|20)$/);
-    return regex.test(date);
+  function facebookPatternValidation(name) {
+    const regex = new RegExp(/(?:https?:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/);
+    return regex.test(name);
+  }
+  function instagramPatternValidation(name) {
+    const regex = new RegExp(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/);
+    return regex.test(name);
+  }
+  function pinterestPatternValidation(name) {
+    const regex = new RegExp(/(https?:\/\/)?(www\.)?[a-z_.]{1,3}pinterest\.com\/[A-Za-z0-9_.]{1,30}/);
+    return regex.test(name);
+  }
+  function twitterPatternValidation(name) {
+    const regex = new RegExp(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]{5,15}(\?(\w+=\w+&?)*)?/);
+    return regex.test(name);
+  }
+  function linkedinPatternValidation(name) {
+    const regex = new RegExp(/(https?:\/\/)?(www\.)?linkedin\.com\/[A-Za-z0-9_.]{1,30}/);
+    return regex.test(name);
+  }
+  function dribbblePatternValidation(name) {
+    const regex = new RegExp("^([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$");
+    return regex.test(name);
+  }
+  function websitePatternValidation(name) {
+    const regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/);
+    return regex.test(name);
   }
 
   //funcions handling setState for temp values
@@ -286,15 +310,22 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   }
 
   async function updateArtistProfile() {
-    let education = educationList;
-    let experience = experienceList;
+    if(!facebookPatternValidation(facebook) ||
+    !twitterPatternValidation(twitter) ||
+    !instagramPatternValidation(instagram) ||
+    !websitePatternValidation(website) ||
+    !linkedinPatternValidation(linkedin) ||
+    !pinterestPatternValidation(pinterest)) {
+      handleMessage('Źle wpisano link','FAILED');
+      return;
+    }
 
-    education.map((item, index) => {
-      delete item.id;
-    });
-    experience.map((item, index) => {
-      delete item.id;
-    });
+    // education.map((item, index) => {
+    //   delete item.id;
+    // });
+    // experience.map((item, index) => {
+    //   delete item.id;
+    // });
     const response = await axios
       .put(
         baseURL + '/api/artist/updateArtistProfile',
@@ -305,8 +336,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           skills: skills,
           tags: tags,
           languages: languages,
-          education: education,
-          experience: experience,
+          education: educationList,
+          experience: experienceList,
           website: website,
           facebook: facebook,
           linkedin: linkedin,
@@ -326,8 +357,6 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
       });
     if ((response.status = 200)) {
       handleMessage('Zapisano zmiany!', 'SUCCESS');
-      experience = null;
-      education = null;
     }
   }
 
@@ -725,7 +754,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           <View style={{ alignItems: 'center' }}>
             <TouchableOpacity
               onPress={() => {
-                handleAddEducationElement(getIdOfLastEducationElement() + 1, '', '', '', '', '', '', '');
+                handleAddEducationElement(getIdOfLastEducationElement() + 1, '', '', '', '', '01/01/1970', '01/01/1970', '');
               }}
             >
               <Bubble style={[{ alignContent: 'center', marginBottom: 3, marginTop: 3 }, styles.boxShadow]}>
@@ -859,7 +888,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           <View style={{ alignItems: 'center' }}>
             <TouchableOpacity
               onPress={() => {
-                handleAddExperienceElement(getIdOfLastExperienceElement() + 1, '', '', '', '', '', '');
+                handleAddExperienceElement(getIdOfLastExperienceElement() + 1, '', '', '', '', '01/01/1970', '01/01/1970');
               }}
             >
               <Bubble style={[{ alignContent: 'center', marginBottom: 3, marginTop: 3 }, styles.boxShadow]}>
@@ -1115,7 +1144,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
       {artistProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-            <Avatar resizeMode="contain" source={require('../assets/img/avatar.png')}></Avatar>
+            <Avatar resizeMode="contain" source={require('../../assets/img/avatar.png')}></Avatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
             <Pressable
               onPress={() => {
@@ -1352,13 +1381,19 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
             }}
           >
             <MsgBox type={messageType}>{message}</MsgBox>
-            <Button
+             <Pressable
               onPress={() => {
                 updateArtistProfile();
               }}
-              title="Zapisz"
-              color={darkLight}
-            ></Button>
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? 'lightgrey' : darkLight,
+                },
+                styles.ModalButton,
+              ]}
+            >
+              <AppText style={{ color: primary, fontSize: 16 }}>Zapisz</AppText>
+            </Pressable>
           </View>
         </ScrollView>
       ) : (

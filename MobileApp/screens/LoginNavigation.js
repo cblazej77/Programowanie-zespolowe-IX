@@ -10,6 +10,7 @@ import MainNavigation from './MainNavigation';
 import HomePage from './navigation_screens/HomePage';
 import ArtistScreen from './Artist/ArtistScreen';
 import CompanyScreen from './Company/CompanyScreen';
+import UserCompanyScreen from './User/UserCompanyScreen';
 import Chat from './Chat';
 import { StatusBar } from 'react-native';
 
@@ -27,7 +28,7 @@ const LoginNavigation = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Login"
+        initialRouteName="UserCompanyScreen"
       >
         <Stack.Screen name="MainNavigation" component={MainNavigation} />
         <Stack.Screen name="Login" component={Login} />
@@ -36,6 +37,7 @@ const LoginNavigation = () => {
         <Stack.Screen name="ArtistScreen" component={ArtistScreen} />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="CompanyScreen" component={CompanyScreen} />
+        <Stack.Screen name="UserCompanyScreen" component={UserCompanyScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

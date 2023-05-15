@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, SafeAreaView, Image, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ChatLabel, Colors, HeaderText } from '../../components/styles';
-import Gallery from '../../components/Gallery';
-import GalleryEditing from '../../components/GalleryEditing';
-import Reviews from '../../components/Reviews';
-import Profile from '../../components/Profile';
-import ProfileEditing from '../../components/ProfileEditing';
+import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ChatLabel, Colors } from '../../components/styles';
+import CompanyProfile from './UserCompanyProfile';
+import CompanyCommisions from './UserCompanyCommisions';
+import CompanyCommisionsEditing from './UserCompanyCommisionsEditing';
+import CompanyProfileEditing from './UserCompanyProfileEditing';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //SecureStoring accessToken
@@ -15,6 +13,7 @@ import * as SecureStore from 'expo-secure-store';
 import Loading from '../../components/Loading';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 
 const Tab = createMaterialTopTabNavigator();
 const { primary, secondary, darkLight, link, black } = Colors;
@@ -27,41 +26,37 @@ async function getValueFor(key) {
   return result;
 }
 
-export default function ProfileScreen({ navigation }) {
+export default function UserCompanyScreen({ navigation }) {
   const [token, setToken] = useState('');
-  const [userInfo, setUserInfo] = useState('');
+  const [userInfo, setUserInfo] = useState('jakis tam cos ');
   const [editing, setEditing] = useState(false);
 
-  const changeEditingState = (state) => {
-    setEditing(state);
-  };
+  // async function getAccessToken() {
+  //   const t = await getValueFor('accessToken');
+  //   setToken(t);
+  // }
 
-  async function getAccessToken() {
-    const t = await getValueFor('accessToken');
-    setToken(t);
-  }
+  // async function getUserInfo() {
+  //   const u = await getValueFor('user');
+  //   setUserInfo(JSON.parse(u));
+  // }
 
-  async function getUserInfo() {
-    const u = await getValueFor('user');
-    setUserInfo(JSON.parse(u));
-  }
+  // useEffect(() => {
+  //   getAccessToken();
+  //   getUserInfo();
+  // }, []);
 
-  useEffect(() => {
-    getAccessToken();
-    getUserInfo();
-  }, []);
+  // async function save(key, value) {
+  //   await SecureStore.setItemAsync(key, value).catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
 
-  async function save(key, value) {
-    await SecureStore.setItemAsync(key, value).catch((error) => {
-      console.log(error);
-    });
-  }
-
-  async function logout() {
-    save('accessToken', '');
-    save('user', '');
-    navigation.navigate('Login');
-  }
+  // async function logout() {
+  //   save('accessToken', '');
+  //   save('user', '');
+  //   navigation.navigate('Login');
+  // }
 
   return (
     <>
@@ -70,9 +65,16 @@ export default function ProfileScreen({ navigation }) {
           <ChatLabel
             style={{
               height: 60,
-              justifyContent: 'flex-end',
+              justifyContent: 'space-between',
             }}
           >
+             <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Ionicons name="arrow-back" size={38} style={{ color: primary, marginLeft: 5 }} />
+            </TouchableOpacity>
             <View style={[styles.HeaderViewStyle]}>
               {editing ? (
                 <SelectDropdown
@@ -121,46 +123,7 @@ export default function ProfileScreen({ navigation }) {
               )}
             </View>
           </ChatLabel>
-          {editing ? (
-            <Tab.Navigator
-              initialRouteName="ProfileEditing"
-              screenOptions={{
-                tabBarIndicatorStyle: { backgroundColor: darkLight },
-                tabBarStyle: { backgroundColor: primary, marginTop: 0 },
-              }}
-            >
-              <Tab.Screen
-                options={{
-                  title: ({ color, focused }) => {
-                    return (
-                      <Ionicons
-                        size={25}
-                        name={focused ? 'person' : 'person-outline'}
-                        color={focused ? darkLight : secondary}
-                      />
-                    );
-                  },
-                }}
-                name="ProfileEditing"
-                component={ProfileEditing}
-              />
-              <Tab.Screen
-                options={{
-                  title: ({ color, focused }) => {
-                    return (
-                      <Ionicons
-                        size={25}
-                        name={focused ? 'images' : 'images-outline'}
-                        color={focused ? darkLight : secondary}
-                      />
-                    );
-                  },
-                }}
-                name="GalleryEditing"
-                component={GalleryEditing}
-              />
-            </Tab.Navigator>
-          ) : (
+          {!editing ? ( 
             <Tab.Navigator
               initialRouteName="Profile"
               screenOptions={{
@@ -174,14 +137,14 @@ export default function ProfileScreen({ navigation }) {
                     return (
                       <Ionicons
                         size={25}
-                        name={focused ? 'person' : 'person-outline'}
+                        name={focused ? 'people' : 'people-outline'}
                         color={focused ? darkLight : secondary}
                       />
                     );
                   },
                 }}
                 name="Profile"
-                component={Profile}
+                component={CompanyProfile}
               />
               <Tab.Screen
                 options={{
@@ -189,31 +152,55 @@ export default function ProfileScreen({ navigation }) {
                     return (
                       <Ionicons
                         size={25}
-                        name={focused ? 'images' : 'images-outline'}
+                        name={focused ? 'reader' : 'reader-outline'}
                         color={focused ? darkLight : secondary}
                       />
                     );
                   },
                 }}
-                name="Gallery"
-                component={Gallery}
-              />
-              <Tab.Screen
-                options={{
-                  title: ({ color, focused }) => {
-                    return (
-                      <Ionicons
-                        size={25}
-                        name={focused ? 'happy' : 'happy-outline'}
-                        color={focused ? darkLight : secondary}
-                      />
-                    );
-                  },
-                }}
-                name="Reviews"
-                component={Reviews}
+                name="Commisions"
+                component={CompanyCommisions}
               />
             </Tab.Navigator>
+          ) : (
+            <Tab.Navigator
+              initialRouteName="ProfileEditing"
+              screenOptions={{
+                tabBarIndicatorStyle: { backgroundColor: darkLight },
+                tabBarStyle: { backgroundColor: primary, marginTop: 0 },
+              }}
+            >
+              <Tab.Screen
+                options={{
+                  title: ({ color, focused }) => {
+                    return (
+                      <Ionicons
+                        size={25}
+                        name={focused ? 'people' : 'people-outline'}
+                        color={focused ? darkLight : secondary}
+                      />
+                    );
+                  },
+                }}
+                name="ProfileEditing"
+                component={CompanyProfileEditing}
+              />
+              <Tab.Screen
+                options={{
+                  title: ({ color, focused }) => {
+                    return (
+                      <Ionicons
+                        size={25}
+                        name={focused ? 'reader' : 'reader-outline'}
+                        color={focused ? darkLight : secondary}
+                      />
+                    );
+                  },
+                }}
+                name="CommisionsEditing"
+                component={CompanyCommisionsEditing}
+              />
+              </Tab.Navigator>
           )}
         </SafeAreaView>
       ) : (
@@ -222,54 +209,6 @@ export default function ProfileScreen({ navigation }) {
     </>
   );
 }
+
 const styles = StyleSheet.create({
-  HeaderViewStyle: {
-    justifyContent: 'flex-end',
-  },
-  ContentLabelStyle: {
-    flexDirection: 'row',
-    width: '100%',
-    height: 35,
-  },
-  IconStyle: {
-    height: 30,
-    width: 30,
-    tintColor: darkLight,
-  },
-  GalleryLabelStyle: {
-    width: '50%',
-    alignItems: 'center',
-    borderBottomWidth: 3,
-  },
-  ReviewsLabelStyle: {
-    width: '50%',
-    alignItems: 'center',
-    borderBottomWidth: 3,
-  },
-  ListHeader: {
-    fontSize: 19,
-    color: black,
-    marginHorizontal: 10,
-  },
-  ListElement: {
-    color: black,
-    marginHorizontal: 10,
-  },
-  About: {
-    fontFamily: 'LexendDeca-SemiBold',
-    fontSize: 22,
-    marginHorizontal: 10,
-    color: black,
-  },
-  dropdown1DropdownStyle: {
-    backgroundColor: '#EFEFEF',
-  },
-  dropdown1RowStyle: {
-    backgroundColor: '#EFEFEF',
-    borderBottomColor: '#C5C5C5',
-  },
-  dropdown1RowTxtStyle: {
-    color: '#444',
-    textAlign: 'left',
-  },
 });
