@@ -315,8 +315,6 @@ const Cards = () => {
     ));
   });
 
-  //console.log(filtered.content[0].firstname);
-
   const filteredCards = useMemo(() => {
     if (!filtered || !filtered.content) {
       return null;

@@ -81,7 +81,7 @@ const EditCompanyPage = () => {
 
   const maxChars = 300;
   const limitHeight = 60;
-  const companyName = 'Acme%20Corpo';
+  const companyName = 'Acme%20Corporation';
 
   const companyData = useMemo(() => ({
     method: 'get',
@@ -120,6 +120,7 @@ const EditCompanyPage = () => {
 
   const handleSave = useCallback(async () => {
     try {
+      console.log(get);
       const response = await axios.put(`/companies/updateCompanyProfileByName?name=${companyName}`, get);
       console.log('Data saved successfully!');
       console.log(response.data);

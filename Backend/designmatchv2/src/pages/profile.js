@@ -33,6 +33,7 @@ import {
   BubbleLinks
 } from '../components/ProfileElements'
 import LoadingPage from './LoadingPage';
+import Commisions from './Home/Commisions';
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
@@ -53,7 +54,7 @@ const UserPage = () => {
   const [button, setButton] = useState(true);
 
   const job = "";
-  const profileName = 'WojciechDuklas';
+  const profileName = 'jakub1';
   let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
@@ -355,9 +356,6 @@ const UserPage = () => {
             </Left>
           </RightWrapper>
         </TopSection>
-        <DownSection>
-
-        </DownSection>
       </ProfileWrapper>
     ) : (<LoadingPage />)}
     </>

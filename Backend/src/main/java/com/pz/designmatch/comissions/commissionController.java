@@ -62,11 +62,11 @@ public class commissionController {
         return ResponseEntity.status(HttpStatus.OK.value()).body(commissionCompleted);
     }
 
-    @PostMapping(value = "/filterCommissions", produces = apiVersionAccept, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<commissionDto>> filterCommissions(@RequestBody commissionDto commissionDto,
-                                                                @RequestParam(defaultValue = "0", name = "page") int page,
-                                                                @RequestParam(defaultValue = "10", name = "size") int size){
-        Specification<Commission> specification = Specification.where(null);
-    }
+//    @PostMapping(value = "/filterCommissions", produces = apiVersionAccept, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Page<commissionDto>> filterCommissions(@RequestBody commissionDto commissionDto,
+//                                                                @RequestParam(defaultValue = "0", name = "page") int page,
+//                                                                @RequestParam(defaultValue = "10", name = "size") int size){
+//        Specification<Commission> specification = Specification.where(null);
+//    }
 
 }

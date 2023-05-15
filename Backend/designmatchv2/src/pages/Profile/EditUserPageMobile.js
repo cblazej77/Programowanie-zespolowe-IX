@@ -11,7 +11,6 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import './Dropdown.css';
 
-
 import {
   RightColumn,
   InfoRow,
@@ -40,7 +39,11 @@ import {
   BoldLabel,
   DataTextArena,
   SmallInput,
-  BubbleLinks
+  BubbleLinks,
+  StyledDropDown,
+  StyledDropDownToggle,
+  AboutInput,
+  Bracket
 
 } from './ProfileElements'
 import LoadingPage from '../LoadingPage';
@@ -64,12 +67,8 @@ const AboutMe = styled.textarea`
   min-height: ${props => props.hag};
   max-height: 60px;
   z-index: 10;
-`
-
-const Nawias = styled.p`
-  border: 1px solid red;
-  margin: auto 15px auto auto;
 `;
+
 const ButtonSave = styled.button`
   padding: 20px 50px;
   font-size: 1.2rem;
@@ -167,13 +166,13 @@ const EditUserPageMobile = () => {
   const limitHeight = 60;
   const maxChars = 300;
   let chars;
-  if(bio) chars = bio.length;
+  if (bio) chars = bio.length;
   else chars = 0;
 
 
 
   //pobieranie danych z backendu
-  const profileName = 'WojciechDuklas';
+  const profileName = 'jakub1';
   let levelsData = {
     method: 'get',
     maxBodyLength: Infinity,
@@ -198,7 +197,7 @@ const EditUserPageMobile = () => {
     url: "/api/artist/getAvailableCities",
     headers: {}
   };
- 
+
 
 
   const handleDeleteEducationElement = (id) => {
@@ -367,7 +366,7 @@ const EditUserPageMobile = () => {
     });
     const response = await axios
       .put(
-          '/api/artist/updateArtistProfile',
+        '/api/artist/updateArtistProfile',
         {
           bio: bio,
           level: level.value,
@@ -393,7 +392,7 @@ const EditUserPageMobile = () => {
       .catch((error) => {
         console.log("updateArtist  ", error);
       });
-      console.log("updateArtist response:     ", response);
+    console.log("updateArtist response:     ", response);
     if ((response.status = 200)) {
       experience = null;
       education = null;
@@ -406,10 +405,10 @@ const EditUserPageMobile = () => {
     const fetchData = async () => {
       try {
         //odebranie wszsytkich wyników
-        const levelsResponse =      await axios.request(levelsData);
-        const artistResponse =      await axios.request(profileData);
+        const levelsResponse = await axios.request(levelsData);
+        const artistResponse = await axios.request(profileData);
         const artistShortResponse = await axios.request(profileNameData);
-        const citiesResponse =      await axios.request(citiesData);
+        const citiesResponse = await axios.request(citiesData);
         setArtistShortProfile(artistShortResponse.data);
         setGet(artistResponse.data);
         setArtistProfile(artistResponse.data);
@@ -422,12 +421,12 @@ const EditUserPageMobile = () => {
     fetchData();
   }, []);
 
-  useEffect( () => {
-    if(artistShortProfile){
+  useEffect(() => {
+    if (artistShortProfile) {
       setName(artistShortProfile.firstname);
       setSurname(artistShortProfile.lastname);
     }
-    
+
   }, [artistShortProfile])
 
   useEffect(() => {
@@ -480,161 +479,143 @@ const EditUserPageMobile = () => {
 
 
 
-function ListTags() {
-  if (tags) {
-    const list = tags.map((item, id) => (
+  function ListTags() {
+    if (tags) {
+      const list = tags.map((item, id) => (
 
-      <Bubble key={id} >
-        <label>{item}</label>
-        <button onClick={() =>handleDeleteTag(item)}>
-        [X]</button>
-      </Bubble> 
-    ));
-    return (
-      <>
-        {list}
-        <Bubble >
-        <button onClick={openModalTags}>   
-            <label>Dodaj</label>  
-        </button>  
+        <Bubble key={id} >
+          <label>{item}</label>
+          <button onClick={() => handleDeleteTag(item)}>
+            [X]</button>
         </Bubble>
-      </>
-    );
-  } else {
-    return <label>empty</label>;
-  }
-}
-function ListSkills() {
-  if (skills) {
-    const list = skills.map((item, id) => (
-      <Bubble key={id} >
-        <label>{item}</label>
-        <button onClick={() => handleDeleteSkill(item)}>
-          [X] </button>
-      </Bubble>
-    ));
-    return (
-      <>
-        {list}
+      ));
+      return (
+        <>
+          {list}
           <Bubble >
-            <button onClick ={openModalSkills}>
+            <button onClick={openModalTags}>
               <label>Dodaj</label>
             </button>
-           
           </Bubble>
-      </>
-    );
-  } else {
-    return <label>pusty ListSkills</label>;
+        </>
+      );
+    } else {
+      return <label>empty</label>;
+    }
   }
-}
-function ListLanguages() {
-  if (languages) {
-    const list = languages.map((item, id) => (
-      <Bubble key={id} >
-        <label>{item}</label>
-        <button onClick={() => handleDeleteLanguage(item)}>
-              [X] </button>
-      </Bubble>
-    ));
-    return (
-      <>
-        {list}
+  function ListSkills() {
+    if (skills) {
+      const list = skills.map((item, id) => (
+        <Bubble key={id} >
+          <label>{item}</label>
+          <button onClick={() => handleDeleteSkill(item)}>
+            [X] </button>
+        </Bubble>
+      ));
+      return (
+        <>
+          {list}
           <Bubble >
-            <button onClick ={openModalLanguages}>
+            <button onClick={openModalSkills}>
               <label>Dodaj</label>
             </button>
-            
+
           </Bubble>
-      </>
-    );
-  } else {
-    return <label></label>;
+        </>
+      );
+    } else {
+      return <label>pusty ListSkills</label>;
+    }
   }
-}
+  function ListLanguages() {
+    if (languages) {
+      const list = languages.map((item, id) => (
+        <Bubble key={id} >
+          <label>{item}</label>
+          <button onClick={() => handleDeleteLanguage(item)}>
+            [X] </button>
+        </Bubble>
+      ));
+      return (
+        <>
+          {list}
+          <Bubble >
+            <button onClick={openModalLanguages}>
+              <label>Dodaj</label>
+            </button>
+
+          </Bubble>
+        </>
+      );
+    } else {
+      return <label></label>;
+    }
+  }
   function ListEducation() {
 
     const list = educationList.map((item) => {
       return (
         <div key={item.id}>
-          <LeftInfoRow>
-          <InfoText>Kierunek: </InfoText>
-            <input
-              maxLength={50}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '82%' }}
-              defaultValue={item.faculty}
-              onChange={(e) => {
-                item.faculty = e.target.value;
-              }}
-              placeholder="Wpisz kierunek"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-          <InfoText>Uczelnia: </InfoText>
-            <input
-              maxLength={100}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '83%' }}
-              defaultValue={item.school_name}
-              onChange={(e) => {
-                item.school_name = e.target.value;
-              }}
-              placeholder="Wpisz nazwę uczelni"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-            <InfoText>Dziedzina nauk: </InfoText>
-            <input
-              maxLength={50}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '69%' }}
-              defaultValue={item.field_of_study}
-              onChange={(e) => {
-                item.field_of_study = e.target.value;
-              }}
-              placeholder="Wpisz dziedzinę nauk"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-            <InfoText>Stopień: </InfoText>
-            <input
-              maxLength={30}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '50%' }}
-              defaultValue={item.degree}
-              onChange={(e) => {
-                item.degree = e.target.value;
-              }}
-              placeholder="Wpisz stopień"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-            <InfoText>Od: </InfoText>
-            <input
-              maxLength={10}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '50%' }}
-              defaultValue={item.start_date}
-              onChange={(e) => {
-                item.start_date = e.target.value;
-              }}
-              placeholder="Data rozpoczęcia, DD/MM/YYYY"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-            <InfoText>Opis: </InfoText>
-            <input
-              maxLength={255}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '90%' }}
-              defaultValue={item.description}
-              onChange={(e) => {
-                item.description = e.target.value;
-              }}
-              placeholder="Wpisz opis"
-            />
-          </LeftInfoRow>
+          <InputInfoText>Kierunek: </InputInfoText>
+          <SmallInput
+            maxLength={50}
+            type="text"
+            defaultValue={item.faculty}
+            onChange={(e) => {
+              item.faculty = e.target.value;
+            }}
+            placeholder="Wpisz kierunek"
+          />
+          <InputInfoText>Uczelnia: </InputInfoText>
+          <SmallInput
+            maxLength={100}
+            type="text"
+            defaultValue={item.school_name}
+            onChange={(e) => {
+              item.school_name = e.target.value;
+            }}
+            placeholder="Wpisz nazwę uczelni"
+          />
+          <InputInfoText>Dziedzina nauk: </InputInfoText>
+          <SmallInput
+            maxLength={50}
+            type="text"
+            defaultValue={item.field_of_study}
+            onChange={(e) => {
+              item.field_of_study = e.target.value;
+            }}
+            placeholder="Wpisz dziedzinę nauk"
+          />
+          <InputInfoText>Stopień: </InputInfoText>
+          <SmallInput
+            maxLength={30}
+            type="text"
+            defaultValue={item.degree}
+            onChange={(e) => {
+              item.degree = e.target.value;
+            }}
+            placeholder="Wpisz stopień"
+          />
+          <InputInfoText>Od: </InputInfoText>
+          <SmallInput
+            maxLength={10}
+            type="text"
+            defaultValue={item.start_date}
+            onChange={(e) => {
+              item.start_date = e.target.value;
+            }}
+            placeholder="Data rozpoczęcia, DD/MM/YYYY"
+          />
+          <InputInfoText>Opis: </InputInfoText>
+          <SmallInput
+            maxLength={255}
+            type="text"
+            defaultValue={item.description}
+            onChange={(e) => {
+              item.description = e.target.value;
+            }}
+            placeholder="Wpisz opis"
+          />
           <div style={{ alignItems: 'center' }}>
             <button
               onClick={() => handleDeleteEducationElement(item.id)}
@@ -662,7 +643,7 @@ function ListLanguages() {
 
     return (
       <>
-      {list}
+        {list}
         <div style={{ alignItems: 'center' }}>
           <button
             onClick={handleAddEducationClick}
@@ -674,20 +655,20 @@ function ListLanguages() {
       </>
     );
   }
-  function ListLinks(){
-    return(    <>
+  function ListLinks() {
+    return (<>
       <BubbleWrap>
-    
+
         {get.facebook && <BubbleLinks href={get.facebook}  > facebook</BubbleLinks>}
         {get.instagram && <BubbleLinks href={get.instagram}> instagram </BubbleLinks>}
         {get.linkedin && <BubbleLinks href={get.linkedin}> linkedin  </BubbleLinks>}
         {get.pinterest && <BubbleLinks href={get.pinterest}> pinterest  </BubbleLinks>}
         {get.twitter && <BubbleLinks href={get.twitter}> twitter  </BubbleLinks>}
         {get.website && <BubbleLinks href={get.website}> website  </BubbleLinks>}
-     
-      
+
+
       </BubbleWrap>
-     </>
+    </>
     )
   }
 
@@ -696,72 +677,57 @@ function ListLanguages() {
     const list = experienceList.map((item) => {
       return (
         <div key={item.id}>
-          <LeftInfoRow>
-          <InfoText>Nazwa firmy: </InfoText>
-            <input
-              maxLength={50}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '82%' }}
-              defaultValue={item.comapny}
-              onChange={(e) => {
-                item.comapny = e.target.value;
-              }}
-              placeholder="Wpisz nazwę firmy"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-          <InfoText>Miasto: </InfoText>
-            <input
-              maxLength={100}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '83%' }}
-              defaultValue={item.city}
-              onChange={(e) => {
-                item.city = e.target.value;
-              }}
-              placeholder="Wpisz miasto"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-            <InfoText>Stanowisko: </InfoText>
-            <input
-              maxLength={50}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '69%' }}
-              defaultValue={item.position}
-              onChange={(e) => {
-                item.position = e.target.value;
-              }}
-              placeholder="Wpisz stanowisko"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-            <InfoText>Od: </InfoText>
-            <input
-              maxLength={10}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '50%' }}
-              defaultValue={item.start_date}
-              onChange={(e) => {
-                item.start_date = e.target.value;
-              }}
-              placeholder="Datę rozpoczęcia, DD/MM/YYYY"
-            />
-          </LeftInfoRow>
-          <LeftInfoRow>
-            <InfoText>Do: </InfoText>
-            <input
-              maxLength={10}
-              type="text"
-              style={{ flexWrap: 'wrap', width: '50%' }}
-              defaultValue={item.end_date}
-              onChange={(e) => {
-                item.end_date = e.target.value;
-              }}
-              placeholder="Datę zakończenia, DD/MM/YYYY"
-            />
-          </LeftInfoRow>
-          
+          <InputInfoText>Nazwa firmy: </InputInfoText>
+          <SmallInput
+            maxLength={50}
+            type="text"
+            defaultValue={item.comapny}
+            onChange={(e) => {
+              item.comapny = e.target.value;
+            }}
+            placeholder="Wpisz nazwę firmy"
+          />
+          <InputInfoText>Miasto: </InputInfoText>
+          <SmallInput
+            maxLength={100}
+            type="text"
+            defaultValue={item.city}
+            onChange={(e) => {
+              item.city = e.target.value;
+            }}
+            placeholder="Wpisz miasto"
+          />
+          <InputInfoText>Stanowisko: </InputInfoText>
+          <SmallInput
+            maxLength={50}
+            type="text"
+            defaultValue={item.position}
+            onChange={(e) => {
+              item.position = e.target.value;
+            }}
+            placeholder="Wpisz stanowisko"
+          />
+          <InputInfoText>Od: </InputInfoText>
+          <SmallInput
+            maxLength={10}
+            type="text"
+            defaultValue={item.start_date}
+            onChange={(e) => {
+              item.start_date = e.target.value;
+            }}
+            placeholder="Datę rozpoczęcia, DD/MM/YYYY"
+          />
+          <InputInfoText>Do: </InputInfoText>
+          <SmallInput
+            maxLength={10}
+            type="text"
+            defaultValue={item.end_date}
+            onChange={(e) => {
+              item.end_date = e.target.value;
+            }}
+            placeholder="Datę zakończenia, DD/MM/YYYY"
+          />
+
           <div style={{ alignItems: 'center' }}>
             <button
               onClick={() => handleDeleteExperienceElement(item.id)}
@@ -789,7 +755,7 @@ function ListLanguages() {
 
     return (
       <>
-      {list}
+        {list}
         <div style={{ alignItems: 'center' }}>
           <button
             onClick={handleAddExperienceClick}
@@ -834,13 +800,13 @@ function ListLanguages() {
   const reviewCount = 15;
   const ratingCount = 2.5; //pobrac z bazy
   return (
-   
+
     <>
-      <Modal showModal={showModalTags} setShowModal={setShowModalTags} tags={tags} setTags={setTags}/>
-      <ModalSkills showModal={showModalSkills} setShowModal={setShowModalSkills} skills={skills} setSkills={setSkills}/>
-      <ModalLinks showModal={showModalLinks} setShowModal={setShowModalLinks} dribble={dribble} setDribble={setDribble} facebook={facebook} setFacebook={setFacebook} instagram={instagram} setInstagram={setInstagram} 
-      linkedin={linkedin} setLinkedin={setLinkedin} pinterest={pinterest} setPinterest={setPinterest} twitter={twitter} setTwitter={setTwitter} website={website} setWebsite={setWebsite}/>
-      <ModalLanguages showModal={showModalLanguages} setShowModal={setShowModalLanguages} languages={languages} setLanguages={setLanguages}/>
+      <Modal showModal={showModalTags} setShowModal={setShowModalTags} tags={tags} setTags={setTags} />
+      <ModalSkills showModal={showModalSkills} setShowModal={setShowModalSkills} skills={skills} setSkills={setSkills} />
+      <ModalLinks showModal={showModalLinks} setShowModal={setShowModalLinks} dribble={dribble} setDribble={setDribble} facebook={facebook} setFacebook={setFacebook} instagram={instagram} setInstagram={setInstagram}
+        linkedin={linkedin} setLinkedin={setLinkedin} pinterest={pinterest} setPinterest={setPinterest} twitter={twitter} setTwitter={setTwitter} website={website} setWebsite={setWebsite} />
+      <ModalLanguages showModal={showModalLanguages} setShowModal={setShowModalLanguages} languages={languages} setLanguages={setLanguages} />
       {artistProfile ? (
         <ProfileWrapper>
           <TopSection>
@@ -848,60 +814,56 @@ function ListLanguages() {
               <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
               <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie(ND)</ButtonEdit>
               <div>
-              <InputInfoText>Imię:</InputInfoText>
-                  <NameText value={name} onChange={(e) => setName(e.target.value)} />
-                  <InputInfoText>Nazwisko:</InputInfoText>
-                  <NameText value={surname} onChange={(e) => setSurname(e.target.value)} />
+                <InputInfoText>Imię:</InputInfoText>
+                <NameText value={name} onChange={(e) => setName(e.target.value)} />
+                <InputInfoText>Nazwisko:</InputInfoText>
+                <NameText value={surname} onChange={(e) => setSurname(e.target.value)} />
               </div>
               {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
               <InputInfoText>Poziom doświadczenia:</InputInfoText>
-              {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <Dropdown className='dropdown-level'
-              options={availableLevels} onChange={(e) => setLevel(e)} value={level} placeHolder={level}
-              />}
+              {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) &&
+                <StyledDropDown
+                  className='dropdown-level'
+                  options={availableLevels}
+                  onChange={(e) => setLevel(e)}
+                  value={level}
+                  placeHolder={level} />}
             </LeftWrapper>
             <RightWrapper>
               <InputInfoText >O mnie: </InputInfoText>
-              <AboutMe hag={height} value={bio} onChange={(e) => setBio(e.target.value)} maxLength={maxChars} onKeyDown={(e) => handleKeyDown(e)} ></AboutMe>
-              <Nawias>({chars}/{maxChars})</Nawias>
-              <LineForm />
+              <AboutInput
+                // defaultValue={get.description}
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+              />
+              {/* <AboutMe
+                hag={height}
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                maxLength={maxChars}
+                onKeyDown={(e) => handleKeyDown(e)} /> */}
+              <Bracket>({chars}/{maxChars})</Bracket>
               <Left>
+                <LineForm />
                 <InfoRow >
                   <LeftColumn >
-                    <LeftInfoRow>
-                      <InputInfoText>Członek od:</InputInfoText>
-                      <SmallInput value={date} onChange={(e) => hanldeDate(e)} />
-                    </LeftInfoRow>
-                    <LeftInfoRow>
-                      <InputInfoText>Miejscowość:</InputInfoText>
-                      {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
-                      {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <Dropdown
-                       options={availableLocations} onChange={(e) => setLocation(e)} value={location} placeHolder={location}
-                    /> }
-                    </LeftInfoRow>
-                    <LeftInfoRow>
-                      <InputInfoText>Prace:</InputInfoText>
-                      <DataText>20</DataText>
-                    </LeftInfoRow>
-                    
+                    <InputInfoText>Miejscowość:</InputInfoText>
+                    {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
+                    {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <Dropdown
+                      options={availableLocations} onChange={(e) => setLocation(e)} value={location} placeHolder={location}
+                    />}
                     <LineForm />
-                    <LeftInfoRow>
-                      <HeaderText>Tags:</HeaderText>
-                      
-                    </LeftInfoRow>
+                    <HeaderText>Tagi:</HeaderText>
                     <BubbleWrap>
                       <ListTags />
                     </BubbleWrap>
                     <LineForm />
-                    <LeftInfoRow>
-                      <HeaderText>Skills:</HeaderText>
-                    </LeftInfoRow>
+                    <HeaderText>Umiejętności:</HeaderText>
                     <BubbleWrap>
                       <ListSkills />
                     </BubbleWrap>
                     <LineForm />
-                    <LeftInfoRow>
-                      <HeaderText>Języki:</HeaderText>
-                    </LeftInfoRow>
+                    <HeaderText>Języki:</HeaderText>
                     <BubbleWrap>
                       <ListLanguages />
                     </BubbleWrap>
@@ -913,13 +875,10 @@ function ListLanguages() {
                     <ListLinks />
                   </LeftColumn>
                   <RightColumn>
-                    <LeftInfoRow>
-                      <HeaderText>Wykształcenie:</HeaderText>
-                    </LeftInfoRow>
+                    <HeaderText>Wykształcenie:</HeaderText>
                     <ListEducation />
-                    <LeftInfoRow>
-                      <HeaderText>Doświadczenie:</HeaderText>
-                    </LeftInfoRow>
+                    <LineForm />
+                    <HeaderText>Doświadczenie:</HeaderText>
                     <ListExperience />
                   </RightColumn>
                 </InfoRow>

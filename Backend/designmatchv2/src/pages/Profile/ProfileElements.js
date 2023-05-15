@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../../components/Colors";
 import { CommisionTitle } from "../../components/ProfileElements";
+import Dropdown from 'react-dropdown';
 
 const { darkLight, gray, gray1, primary, white } = COLORS;
 
@@ -81,7 +82,7 @@ export const Image = styled.img`
 export const LineForm = styled.div`
   background: #ccc;
   border-radius: 100%;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   height: 1px;
   width: 100%;
 `;
@@ -110,7 +111,6 @@ export const SmallButton = styled(Button)`
 
 export const Left = styled.div`
   flex-basis: 50%;
-  padding-top: 2rem;
 `;
 
 export const Right = styled(Left)``;
@@ -292,4 +292,24 @@ export const DataTextArena = styled.textarea`
 export const SmallInput = styled(StyledTextarea)`
   font-size: 1rem;
   height: 2.5rem;
+`;
+
+export const StyledDropDown = styled(Dropdown)`
+  &.dropdown-toggle {
+    border-radius: 10px;
+  }
+  &.dropdown-menu {
+    border-radius: 10px;
+  }
+`;
+
+export const AboutInput = styled(StyledTextarea)`
+  min-height: 15rem;
+  font-size: 1.2rem;
+  overflow-y: auto;
+  white-space: normal;
+`;
+
+export const Bracket = styled.p`
+  margin: auto 15px auto auto;
 `;
