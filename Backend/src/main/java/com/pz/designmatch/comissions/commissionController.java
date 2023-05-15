@@ -5,6 +5,8 @@ import com.pz.designmatch.model.Commission;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.repository.CommissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +60,13 @@ public class commissionController {
     public ResponseEntity<commissionDto> setComplitedCommission(@RequestParam Long id){
         commissionDto commissionCompleted = commissionService.setCommissionComplited(id);
         return ResponseEntity.status(HttpStatus.OK.value()).body(commissionCompleted);
+    }
+
+    @PostMapping(value = "/filterCommissions", produces = apiVersionAccept, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<commissionDto>> filterCommissions(@RequestBody commissionDto commissionDto,
+                                                                @RequestParam(defaultValue = "0", name = "page") int page,
+                                                                @RequestParam(defaultValue = "10", name = "size") int size){
+        Specification<Commission> specification = Specification.where(null);
     }
 
 }
