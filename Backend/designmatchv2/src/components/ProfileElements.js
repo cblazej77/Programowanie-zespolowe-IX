@@ -151,8 +151,8 @@ export const InfoText = styled.text`
 `;
 
 export const HeaderText = styled.text`
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
     color: ${darkLight};
 `;
 

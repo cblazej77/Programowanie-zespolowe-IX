@@ -204,18 +204,18 @@ const EditUserPageMobile = () => {
     setEducationList((prevList) => prevList.filter((item) => item.id !== id));
   };
 
-  const handleAddEducationElement = (newId, faculty, schoolName, fieldOfStudy, degree, startDate, endDate, description) => {
+  const handleAddEducationElement = (newId, schoolName, faculty, fieldOfStudy, degree, startDate, endDate, description) => {
     setEducationList((prevList) => [
       ...prevList,
       {
         id: newId,
-        faculty,
+        faculty: faculty,
         school_name: schoolName,
         field_of_study: fieldOfStudy,
-        degree,
+        degree: degree,
         start_date: startDate,
         end_date: endDate,
-        description,
+        description: description,
       },
     ]);
   };
@@ -556,25 +556,25 @@ const EditUserPageMobile = () => {
     const list = educationList.map((item) => {
       return (
         <div key={item.id}>
-          <InputInfoText>Kierunek: </InputInfoText>
-          <SmallInput
-            maxLength={50}
-            type="text"
-            defaultValue={item.faculty}
-            onChange={(e) => {
-              item.faculty = e.target.value;
-            }}
-            placeholder="Wpisz kierunek"
-          />
           <InputInfoText>Uczelnia: </InputInfoText>
           <SmallInput
-            maxLength={100}
+            maxLength={50}
             type="text"
             defaultValue={item.school_name}
             onChange={(e) => {
               item.school_name = e.target.value;
             }}
             placeholder="Wpisz nazwę uczelni"
+          />
+          <InputInfoText>Kierunek: </InputInfoText>
+          <SmallInput
+            maxLength={100}
+            type="text"
+            defaultValue={item.faculty}
+            onChange={(e) => {
+              item.faculty = e.target.value;
+            }}
+            placeholder="Wpisz kierunek"
           />
           <InputInfoText>Dziedzina nauk: </InputInfoText>
           <SmallInput

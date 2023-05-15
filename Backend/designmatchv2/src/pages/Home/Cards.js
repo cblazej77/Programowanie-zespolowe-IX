@@ -28,6 +28,7 @@ import {
   ModalIconContainer,
   LineForm,
   ModalScroll,
+  CheckBoxContainter,
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
@@ -223,7 +224,7 @@ const Cards = () => {
   const cityOptions = useMemo(() => {
     return cities.map((city, index) => (
       <CheckBoxWrapper key={index}>
-        <div>
+        <CheckBoxContainter>
           <CheckBox
             type='checkbox'
             id={city}
@@ -231,7 +232,7 @@ const Cards = () => {
             onChange={handleCityChange}
           />
           <CheckBoxLabel htmlFor={city} />
-        </div>
+        </CheckBoxContainter>
         <CheckBoxText>{city}</CheckBoxText>
       </CheckBoxWrapper>
     ));
@@ -240,7 +241,7 @@ const Cards = () => {
   const languageOptions = useMemo(() => {
     return languages.map((language, index) => (
       <CheckBoxWrapper key={index}>
-        <div>
+        <CheckBoxContainter>
           <CheckBox
             type='checkbox'
             id={language}
@@ -248,7 +249,7 @@ const Cards = () => {
             onChange={handleLanguageChange}
           />
           <CheckBoxLabel htmlFor={language} />
-        </div>
+        </CheckBoxContainter>
         <CheckBoxText>{language}</CheckBoxText>
       </CheckBoxWrapper>
     ));
@@ -257,7 +258,7 @@ const Cards = () => {
   const tagOptions = useMemo(() => {
     return tags.map((tag, index) => (
       <CheckBoxWrapper key={index}>
-        <div>
+        <CheckBoxContainter>
           <CheckBox
             type='checkbox'
             id={tag}
@@ -265,7 +266,7 @@ const Cards = () => {
             onChange={handleTagChange}
           />
           <CheckBoxLabel htmlFor={tag} />
-        </div>
+        </CheckBoxContainter>
         <CheckBoxText>{tag}</CheckBoxText>
       </CheckBoxWrapper>
     ));
@@ -274,7 +275,7 @@ const Cards = () => {
   const levelOptions = useMemo(() => {
     return levels.map((level, index) => (
       <CheckBoxWrapper key={index}>
-        <div>
+        <CheckBoxContainter>
           <CheckBox
             type='checkbox'
             id={level}
@@ -282,7 +283,7 @@ const Cards = () => {
             onChange={handleLevelChange}
           />
           <CheckBoxLabel htmlFor={level} />
-        </div>
+        </CheckBoxContainter>
         <CheckBoxText>{level}</CheckBoxText>
       </CheckBoxWrapper>
     ));
@@ -298,7 +299,7 @@ const Cards = () => {
         <CategoryText key={indexC}>{category.name}</CategoryText>
         {category.subcategories.map((subcategory, indexS) => (
           <CheckBoxWrapper key={indexS}>
-            <div>
+            <CheckBoxContainter>
               <CheckBox
                 type='checkbox'
                 id={subcategory}
@@ -306,7 +307,7 @@ const Cards = () => {
                 onChange={handleCategoryChange}
               />
               <CheckBoxLabel htmlFor={subcategory} />
-            </div>
+            </CheckBoxContainter>
             <CheckBoxText>{subcategory}</CheckBoxText>
           </CheckBoxWrapper>
         ))}

@@ -112,7 +112,7 @@ export const CheckBox = styled.input`
 
 export const CheckBoxLabel = styled.label`
     display: inline-block;
-    margin-right: 1rem;
+    margin: 0rem 1rem 0 2rem;
     width: 1.1rem;
     height: 1.1rem;
     border-radius: 50%;
@@ -130,9 +130,9 @@ export const CheckBoxLabel = styled.label`
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
     }
     @media screen and (max-width: 960px) {
-        width: 3vh;
-        height: 3vh;
-        }
+        width: 1.2rem;
+        height: 1.2rem;
+    }
 `;
 
 // do zmiany
@@ -156,6 +156,11 @@ export const CheckBoxWrapper = styled.div`
     flex-direction: row;
     margin: 1rem 1rem;
     align-items: center;
+    display: flex;
+`;
+
+export const CheckBoxContainter = styled.div`
+    justify-content: center;
     display: flex;
 `;
 

@@ -113,7 +113,7 @@ const UserPage = () => {
     }
   }, [get]);
 
-  const handleAddEducationElement = (newId, faculty, schoolName, fieldOfStudy, degree, startDate, endDate, description) => {
+  const handleAddEducationElement = (newId, schoolName, faculty, fieldOfStudy, degree, startDate, endDate, description) => {
     setEducationList((prevList) => [
       ...prevList,
       {
@@ -160,17 +160,16 @@ const UserPage = () => {
 
     const list = educationList.map((item, index) => {
       return (
-
         <div key={item.id}>
           {index !== 0 && <LineForm />}
           <HeaderText>Wykształcenie</HeaderText>
           <LeftInfoRow>
-            <InfoText>Kierunek: </InfoText>
-            <label>{item.faculty}</label>
-          </LeftInfoRow>
-          <LeftInfoRow>
             <InfoText>Uczelnia: </InfoText>
             <label>{item.school_name}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Kierunek: </InfoText>
+            <label>{item.faculty}</label>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Dziedzina nauk: </InfoText>
@@ -191,7 +190,6 @@ const UserPage = () => {
         </div>
       );
     });
-
 
     return (
       <>
