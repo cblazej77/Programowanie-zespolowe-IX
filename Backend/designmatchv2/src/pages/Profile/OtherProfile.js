@@ -232,15 +232,6 @@ const OtherUserPage = () => {
       </>
     );
   }
-  const handleClick = () => setClick(!click);
-
-  const handleRating = (rate: number) => {
-    setRating(rate)
-  }
-
-  const onPointerEnter = () => console.log('Enter')
-  const onPointerLeave = () => console.log('Leave')
-  const onPointerMove = (value: number, index: number) => console.log(value, index)
 
   const showButton = () => {
     if (window.innerWidth <= 1000) {
@@ -255,6 +246,11 @@ const OtherUserPage = () => {
   const reviewCount = 15; //pobrac to z bazy
   const ratingCount = 2.5; //pobrac z bazy
   const Default = "...";
+
+  function handleRating(rate) {
+    setRating(rate);
+  }
+
   return (
     <>{checkLoading && get ? (
       <ProfileWrapper>
@@ -269,9 +265,9 @@ const OtherUserPage = () => {
                 allowFraction={true}
                 initialValue={ratingCount}
                 onClick={handleRating}
-                onPointerEnter={onPointerEnter}
-                onPointerLeave={onPointerLeave}
-                onPointerMove={onPointerMove}
+                onPointerEnter={() => console.log('Enter')}
+                onPointerLeave={() => console.log('Leave')}
+                onPointerMove={(value, index) => console.log(value, index)}
               />
               <RatingText>({reviewCount} opinii)</RatingText>
             </RatingWrapper>

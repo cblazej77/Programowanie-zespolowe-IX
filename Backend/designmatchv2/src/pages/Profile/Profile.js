@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Rating } from 'react-simple-star-rating';
 import { default as axios } from '../../api/axios'
 import LoadingPage from '../LoadingPage';
-import Commisions from '../Home/Commisions';
 import {
   AboutMe,
   BoldLabel,
@@ -193,6 +192,7 @@ const UserPage = () => {
       </>
     );
   }
+
   function ListLinks() {
     return (<>
       {(get.facebook || get.instagram || get.linkedin || get.pinterest || get.twitter || get.website) && (
@@ -212,6 +212,7 @@ const UserPage = () => {
     </>
     )
   }
+
   function ListExperience() {
 
     const list = experienceList.map((item, index) => {
@@ -249,15 +250,6 @@ const UserPage = () => {
       </>
     );
   }
-  const handleClick = () => setClick(!click);
-
-  const handleRating = (rate: number) => {
-    setRating(rate)
-  }
-
-  const onPointerEnter = () => console.log('Enter')
-  const onPointerLeave = () => console.log('Leave')
-  const onPointerMove = (value: number, index: number) => console.log(value, index)
 
   const showButton = () => {
     if (window.innerWidth <= 1000) {
@@ -266,6 +258,10 @@ const UserPage = () => {
       setButton(true);
     }
   };
+
+  function handleRating(rate) {
+    setRating(rate);
+  }
 
   window.addEventListener('resize', showButton);
 
@@ -286,9 +282,9 @@ const UserPage = () => {
                 allowFraction={true}
                 initialValue={ratingCount}
                 onClick={handleRating}
-                onPointerEnter={onPointerEnter}
-                onPointerLeave={onPointerLeave}
-                onPointerMove={onPointerMove}
+                onPointerEnter={() => console.log('Enter')}
+                onPointerLeave={() => console.log('Leave')}
+                onPointerMove={(value, index) => console.log(value, index)}
               />
               <RatingText>({reviewCount} opinii)</RatingText>
             </RatingWrapper>

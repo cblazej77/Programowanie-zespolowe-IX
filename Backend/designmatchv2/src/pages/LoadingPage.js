@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { logoLoading } from '../assets/img/svg/SvgIcons';
-const LoadingPage = () => {
-  
-    const AllPage = styled.div`
+
+const AllPage = styled.div`
     display: flex;
     position: relative;
     height: 100%;
     justify-content: center;
     padding: 0 rem;
     min-width: 350px;
-`
+`;
 
 const Logo = styled(logoLoading)`
   height: 50vh;
@@ -19,16 +18,14 @@ const Logo = styled(logoLoading)`
   position: absolute;
   top: 50%;
   transform: translateY( calc(50% - 60px));
-  `;
+ `;
 
-
+const LoadingPage = () => {
   return (
     <AllPage>
-        <Logo />
+      <Logo />
     </AllPage>
   )
 };
-
-  
 
 export default LoadingPage;

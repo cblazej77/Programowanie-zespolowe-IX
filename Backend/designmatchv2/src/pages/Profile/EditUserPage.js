@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import { Rating } from "react-simple-star-rating";
+import React, { useState, useEffect, useMemo, } from "react";
 import styled from "styled-components";
 import { default as axios } from "../../api/axios";
 import { COLORS } from "../../components/Colors";
 import Modal from "../../components/Modal";
-import ModalLinks from '../../components/ModalLinks';
 import {
   RightColumn,
   InfoRow,
@@ -26,7 +24,6 @@ import {
   EditUserDownSection,
   BubbleWrap,
   Bubble,
-  DataTextArena,
   InputInfoText,
   LevelSelect,
   LevelContainer,

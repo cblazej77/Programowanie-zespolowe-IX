@@ -309,15 +309,6 @@ export const BoldLabel = styled.h3`
   margin-bottom: 5px;
 `;
 
-export const DataTextArena = styled.textarea`
-  display: flex;
-  text-align: right;
-  font-weight: bold;
-  resize: none;
-  overflow: hidden;
-  margin-left: 6vw;
-`;
-
 export const SmallInput = styled(StyledTextarea)`
   font-size: 1rem;
   height: 2.5rem;
