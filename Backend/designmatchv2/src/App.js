@@ -9,7 +9,7 @@ import { SignIn } from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
 import './App.css';
 import { RequireAuth } from './components/RequireAuth';
-import UserPage from './pages/profile'
+import UserPage from './pages/Profile/Profile';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import EditUserPageMobile from "./pages/Profile/EditUserPageMobile";
 import Modal from "./components/ModalA";

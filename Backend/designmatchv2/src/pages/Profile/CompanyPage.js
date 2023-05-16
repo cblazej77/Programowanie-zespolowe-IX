@@ -1,50 +1,40 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import styled from 'styled-components';
-import { Rating } from 'react-simple-star-rating';
-import {
-  RightColumn,
-  InfoRow,
-  LeftColumn,
-  Left,
-  AboutMe,
-  Button,
-  Image,
-  LeftWrapper,
-  LineForm,
-  ProfileImage,
-  ProfileWrapper,
-  RightWrapper,
-  TopSection,
-  LeftInfoRow,
-  InfoText,
-  DataText,
-  NameText,
-  DownSection,
-  BoldLabel,
-  BubbleWrap,
-  Bubble,
-  CommisionCard,
-  CommisionTitle,
-  CommisionBubble,
-  CommisionText,
-  CommisionTop,
-  CommisionTitleContainer,
-  CommisionBottom,
-  LevelBubble,
-  ModalBackground,
-  ModalWrapper,
-  ModalTitle,
-  ModalDescription,
-  ModalInfo,
-  ModalBottomSection,
-  ModalColumn,
-  ModalRow,
-  ModalData,
-  ModalBubbleContainer,
-} from '../../components/ProfileElements'
 import { TitleText } from '../Home/CardsElement';
 import { COLORS } from '../../components/Colors';
 import axios from '../../api/axios';
+import {
+  AboutMe,
+  BoldLabel,
+  Bubble,
+  BubbleWrap,
+  Button,
+  DataText,
+  DownSection,
+  Image,
+  InfoRow,
+  InfoText,
+  Left,
+  LeftColumn,
+  LeftInfoRow,
+  LeftWrapper,
+  LineForm,
+  ModalBackground,
+  ModalBottomSection,
+  ModalBubbleContainer,
+  ModalColumn,
+  ModalData,
+  ModalInfo,
+  ModalRow,
+  ModalTitle,
+  ModalWrapper,
+  NameText,
+  ProfileImage,
+  ProfileWrapper,
+  RightColumn,
+  RightWrapper,
+  TopSection
+} from './ProfileElements';
+import { CommisionBottom, CommisionBubble, CommisionCard, CommisionText, CommisionTitle, CommisionTitleContainer, CommisionTop, LevelBubble } from '../Home/CommisionsElements';
 
 const { darkLight } = COLORS;
 
@@ -257,12 +247,12 @@ const CompanyPage = () => {
             <Button>Napisz wiadomość</Button>
           </LeftWrapper>
           <RightWrapper>
-            <BoldLabel >O firmie:</BoldLabel>
+            <BoldLabel>O firmie:</BoldLabel>
             <AboutMe>{get.description}</AboutMe>
             <Left>
               <LineForm />
-              <InfoRow >
-                <LeftColumn >
+              <InfoRow>
+                <LeftColumn>
                   <InfoText>Linki:</InfoText>
                   <BubbleWrap>
                     <Bubble>{get.website}</Bubble>

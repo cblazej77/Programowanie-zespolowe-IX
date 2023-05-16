@@ -1,11 +1,9 @@
 import React from "react";
-import { CommisionLabel } from "./CommisionsElements";
+import { CommisionLabel, CommisionTitle, CommisionTitleContainer } from "./CommisionsElements";
 import {
     CommisionBottom,
     CommisionBubble,
     CommisionText,
-    CommisionTitle,
-    CommisionTitleContainer,
     CommisionTop,
     LevelBubble
 } from "../../components/ProfileElements";

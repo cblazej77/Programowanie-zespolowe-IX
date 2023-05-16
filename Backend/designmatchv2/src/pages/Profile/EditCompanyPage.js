@@ -1,26 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  RightColumn,
-  InfoRow,
-  LeftColumn,
-  Left,
-  AboutMe,
+  AboutInput,
   Image,
+  InfoInputWrapper,
+  InputInfoText,
+  Left,
+  LeftColumn,
   LeftWrapper,
   LineForm,
+  NameText,
   ProfileImage,
   ProfileWrapper,
   RightWrapper,
-  TopSection,
-  LeftInfoRow,
-  InfoText,
-  BoldLabel,
-  BubbleWrap,
-  Bubble,
-  InfoInputWrapper,
   SmallTextArea,
-} from '../../components/ProfileElements'
-import { DataText, DataTextArena, HeaderText, InputInfoText, NameText, StyledTextarea } from './ProfileElements';
+  TopSection
+} from './ProfileElements';
 import styled from 'styled-components';
 import axios from '../../api/axios';
 import LoadingPage from '../LoadingPage';
@@ -44,13 +38,6 @@ const ButtonSave = styled.button`
     border: 2px solid rgba(0, 0, 0, 0.5);
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
   }
-`;
-
-const AboutInput = styled(StyledTextarea)`
-  min-height: 15rem;
-  font-size: 1.2rem;
-  overflow-y: auto;
-  white-space: normal;
 `;
 
 const Nawias = styled.p`
@@ -164,7 +151,7 @@ const EditCompanyPage = () => {
               <Nawias>({Math.min(get.description.length, maxChars)}/{maxChars})</Nawias>
               <Left>
                 <LineForm style={{ marginBottom: '3rem' }} />
-                <LeftColumn >
+                <LeftColumn>
                   <InfoInputWrapper>
                     <InputInfoText>Strona firmy: </InputInfoText>
                     <SmallTextArea

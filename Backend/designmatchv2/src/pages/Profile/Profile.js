@@ -1,39 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
-import { default as axios } from '../api/axios'
+import { default as axios } from '../../api/axios'
+import LoadingPage from '../LoadingPage';
+import Commisions from '../Home/Commisions';
 import {
-  RightColumn,
-  InfoRow,
-  LeftColumn as LeftColumn,
-  DataColumnt,
-  Right, Left,
   AboutMe,
-  SmallButton,
+  BoldLabel,
+  Bubble,
+  BubbleLinks,
+  BubbleWrap,
   Button,
-  Image,
-  LeftWrapper,
-  LineForm,
-  ProfileImage,
-  ProfileWrapper,
-  RightWrapper,
-  TopSection,
-  LeftInfoRow,
-  InfoText,
   DataText,
   HeaderText,
-  NameText,
+  Image,
+  InfoRow,
+  InfoText,
   JobText,
-  RatingWrapper,
-  DownSection,
+  Left,
+  LeftColumn,
+  LeftInfoRow,
+  LeftWrapper,
+  LineForm,
+  NameText,
+  ProfileImage,
+  ProfileWrapper,
   RatingText,
-  BoldLabel,
-  BubbleWrap,
-  Bubble,
-  BubbleLinks
-} from '../components/ProfileElements'
-import LoadingPage from './LoadingPage';
-import Commisions from './Home/Commisions';
+  RatingWrapper,
+  RightColumn,
+  RightWrapper,
+  SmallButton,
+  TopSection
+} from './ProfileElements';
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
@@ -157,18 +154,17 @@ const UserPage = () => {
   }
 
   function ListEducation() {
-
     const list = educationList.map((item, index) => {
       return (
         <div key={item.id}>
           {index !== 0 && <LineForm />}
           <HeaderText>Wykształcenie</HeaderText>
           <LeftInfoRow>
-            <InfoText>Uczelnia: </InfoText>
+            <InfoText>Uczelnia:</InfoText>
             <label>{item.school_name}</label>
           </LeftInfoRow>
           <LeftInfoRow>
-            <InfoText>Kierunek: </InfoText>
+            <InfoText>Kierunek:</InfoText>
             <label>{item.faculty}</label>
           </LeftInfoRow>
           <LeftInfoRow>
@@ -206,15 +202,12 @@ const UserPage = () => {
         </>
       )}
       <BubbleWrap>
-
-        {get.facebook && <BubbleLinks href={get.facebook}  > facebook</BubbleLinks>}
-        {get.instagram && <BubbleLinks href={get.instagram}> instagram </BubbleLinks>}
-        {get.linkedin && <BubbleLinks href={get.linkedin}> linkedin  </BubbleLinks>}
-        {get.pinterest && <BubbleLinks href={get.pinterest}> pinterest  </BubbleLinks>}
-        {get.twitter && <BubbleLinks href={get.twitter}> twitter  </BubbleLinks>}
-        {get.website && <BubbleLinks href={get.website}> website  </BubbleLinks>}
-
-
+        {get.facebook && <BubbleLinks href={get.facebook}>facebook</BubbleLinks>}
+        {get.instagram && <BubbleLinks href={get.instagram}>instagram</BubbleLinks>}
+        {get.linkedin && <BubbleLinks href={get.linkedin}>linkedin</BubbleLinks>}
+        {get.pinterest && <BubbleLinks href={get.pinterest}>pinterest</BubbleLinks>}
+        {get.twitter && <BubbleLinks href={get.twitter}>twitter</BubbleLinks>}
+        {get.website && <BubbleLinks href={get.website}>website</BubbleLinks>}
       </BubbleWrap>
     </>
     )
@@ -250,7 +243,6 @@ const UserPage = () => {
       );
     });
 
-
     return (
       <>
         {list}
@@ -282,12 +274,11 @@ const UserPage = () => {
   const Default = "...";
   return (
     <>{checkLoading && get ? (
-
       <ProfileWrapper>
         <TopSection>      {console.log(shortProfile)}
           <LeftWrapper>
             <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-            <JobText> {get.level} </JobText>
+            <JobText>{get.level}</JobText>
             <NameText>{shortProfile.firstname} {shortProfile.lastname} </NameText>
             <RatingWrapper>
               <Rating
@@ -304,18 +295,17 @@ const UserPage = () => {
             <LineForm />
             <Button>Napisz wiadomość</Button>
             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-              <SmallButton >Napisz opinię</SmallButton>
-              <SmallButton > Like</SmallButton>
+              <SmallButton>Napisz opinię</SmallButton>
+              <SmallButton>Like</SmallButton>
             </div>
           </LeftWrapper>
           <RightWrapper>
-            <BoldLabel >O mnie:</BoldLabel>
+            <BoldLabel>O mnie:</BoldLabel>
             <AboutMe>{get.bio}</AboutMe>
-
             <Left>
               <LineForm />
-              <InfoRow >
-                <LeftColumn >
+              <InfoRow>
+                <LeftColumn>
                   <LeftInfoRow>
                     <InfoText>Członek od:</InfoText>
                     <DataText>20.20.2023</DataText>
@@ -345,10 +335,8 @@ const UserPage = () => {
                   <ListLinks />
                 </LeftColumn>
                 <RightColumn>
-
                   <ListEducation />
                   <ListExperience />
-
                 </RightColumn>
               </InfoRow>
             </Left>
@@ -359,8 +347,6 @@ const UserPage = () => {
     </>
 
   );
-
-
 };
 
 export default UserPage;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import CardItem from './CardItem'
 import {
   Cards2,
   FilterWrapper,
@@ -35,24 +34,20 @@ import LoadingPage from '../LoadingPage';
 import { faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { COLORS } from '../../components/Colors';
-import CommisionItem from './CommisionItem';
 import {
   CommisionBottom,
   CommisionBubble,
+  CommisionLabel,
+  CommisionLineForm,
   CommisionText,
   CommisionTitle,
   CommisionTitleContainer,
   CommisionTop,
   LevelBubble,
-  ModalBottomSection,
-  ModalBubbleContainer,
-  ModalColumn,
-  ModalData,
-  ModalInfo,
-  ModalRow,
-  ModalTitle
-} from '../../components/ProfileElements';
-import { CommisionLabel, CommisionLineForm, ModalCommisionBackground, ModalCommisionWrapper } from './CommisionsElements';
+  ModalCommisionBackground,
+  ModalCommisionWrapper
+} from './CommisionsElements';
+import { ModalBottomSection, ModalBubbleContainer, ModalColumn, ModalData, ModalInfo, ModalRow, ModalTitle } from '../Profile/ProfileElements';
 
 const { darkLight } = COLORS;
 

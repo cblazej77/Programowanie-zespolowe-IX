@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from '../../components/Colors';
+import { TitleText } from './CardsElement';
 
 const {
     darkLight,
@@ -67,3 +68,70 @@ export const CommisionLineForm = styled.div`
     margin 1rem 0;
 `;
 
+export const CommisionCard = styled.div`
+  display: flex;
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  flex-direction: column;
+  margin-bottom: 2.5rem;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.02);
+  }  
+`;
+
+export const CommisionTitle = styled(TitleText)`
+  font-size: 2.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const CommisionTitleContainer = styled.div`
+  display: flex;
+  allign-items: flex-start;
+  max-width: 70rem;
+`;
+
+export const CommisionBubble = styled.p`
+  display: inline-block;
+  justify-content: center;
+  align-items: flex-start;
+  color: ${darkLight};
+  border: 1px solid ${darkLight};
+  border-radius: 15px;
+  height: 1.6rem;
+  font-size: 1rem;
+  padding: 0rem 0.6rem; 
+  margin: 0.2rem;
+  vertical-align: top;
+  @media screen and (max-width: 1280px) {
+    font-size: 0.9rem;
+    height: 1.4rem;
+  }
+`;
+
+export const LevelBubble = styled(CommisionBubble)`
+    background: ${darkLight2};
+    color: ${white};
+    margin-right: 1rem;
+    border: 0px;
+`;
+
+export const CommisionText = styled.text`
+  color: ${gray1};
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+  margin-right: 1rem;
+`;
+
+export const CommisionTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CommisionBottom = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;

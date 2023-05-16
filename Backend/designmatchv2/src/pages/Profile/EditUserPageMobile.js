@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Rating } from 'react-simple-star-rating';
 import styled from 'styled-components';
 import { default as axios } from '../../api/axios';
 import { COLORS } from '../../components/Colors';
@@ -14,40 +13,30 @@ import './Dropdown.css';
 import {
   RightColumn,
   InfoRow,
-  LeftColumn as LeftColumn,
+  LeftColumn,
   Left,
   InputInfoText,
-  Button,
   Image,
-  LeftWrapper,
+  EditLeftWrapper,
   LineForm,
   ProfileImage,
   ProfileWrapper,
-  RightWrapper,
+  EditRightWrapper,
   TopSection,
   LeftInfoRow,
-  InfoText,
-  DataText,
   HeaderText,
   NameText,
-  JobText,
-  RatingWrapper,
-  DownSection,
+  EditUserDownSection,
   BubbleWrap,
   Bubble,
-  ModalBubble,
-  BoldLabel,
-  DataTextArena,
   SmallInput,
   BubbleLinks,
   StyledDropDown,
-  StyledDropDownToggle,
   AboutInput,
   Bracket
 
 } from './ProfileElements'
 import LoadingPage from '../LoadingPage';
-
 
 const {
   secondary,
@@ -810,7 +799,7 @@ const EditUserPageMobile = () => {
       {artistProfile ? (
         <ProfileWrapper>
           <TopSection>
-            <LeftWrapper>
+            <EditLeftWrapper>
               <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
               <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie(ND)</ButtonEdit>
               <div>
@@ -828,8 +817,8 @@ const EditUserPageMobile = () => {
                   onChange={(e) => setLevel(e)}
                   value={level}
                   placeHolder={level} />}
-            </LeftWrapper>
-            <RightWrapper>
+            </EditLeftWrapper>
+            <EditRightWrapper>
               <InputInfoText >O mnie: </InputInfoText>
               <AboutInput
                 // defaultValue={get.description}
@@ -883,13 +872,13 @@ const EditUserPageMobile = () => {
                   </RightColumn>
                 </InfoRow>
               </Left>
-            </RightWrapper>
+            </EditRightWrapper>
           </TopSection>
           {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
           {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <ButtonSave onClick={updateArtistProfile}>ZAPISZ</ButtonSave>}
-          <DownSection>
+          <EditUserDownSection>
 
-          </DownSection>
+          </EditUserDownSection>
         </ProfileWrapper>
       ) : (<LoadingPage />)}
     </>

@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../../components/Colors";
-import { CommisionTitle } from "../../components/ProfileElements";
 import Dropdown from 'react-dropdown';
 
-const { darkLight, gray, gray1, primary, white } = COLORS;
+const {
+  darkLight,
+  gray,
+  gray1,
+  primary,
+  white
+} = COLORS;
 
 export const ProfileWrapper = styled.div`
   display: flex;
@@ -17,7 +22,7 @@ export const ProfileWrapper = styled.div`
 
 export const TopSection = styled.div`
   margin-top: 4rem;
-  margin-bottom: 2rem;
+  margin-bottom: 7rem;
   display: flex;
   padding: 0 3vw;
   justify-content: center;
@@ -25,7 +30,6 @@ export const TopSection = styled.div`
   width: 100%;
   @media screen and (max-width: 960px) {
     flex-direction: column;
-    }
   }
 `;
 
@@ -35,24 +39,27 @@ export const LeftWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 1rem 1.9rem;
-  justify-content: center;
+  justify-content: space-evenly; 
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
   font-size: 0.9vw;
-  height: 35rem;
+  height: 30rem; 
   width: 30rem;
   @media screen and (max-width: 960px) {
     width: 85vw;
     margin: 0;
   }
-}
+`;
+
+export const EditLeftWrapper = styled(LeftWrapper)`
+  height: 35rem; 
 `;
 
 export const RightWrapper = styled.div`
   margin-left: 1.5vw;
   display: flex;
   padding: 60px;
-  height: 35rem;
+  height: 30rem;
   width: 55rem;
   flex-direction: column;
   border-radius: 15px;
@@ -63,6 +70,15 @@ export const RightWrapper = styled.div`
     height: auto;
     margin: 2rem 0 0 0;
   }
+`;
+
+export const EditRightWrapper = styled(RightWrapper)`
+  height: 35rem;
+`;
+
+export const AboutMe = styled.text`
+  margin: 0 50px;
+  maxlength="500";
 `;
 
 export const ProfileImage = styled.div`
@@ -98,11 +114,11 @@ export const Button = styled(Link)`
     font-size: 0.9rem;
     width: 100%;
     text-align: center;
-    cursor: not-allowed;
-    background: ${gray1};
-  );
-    
-    
+    background: linear-gradient(
+    to top,
+    #4A4E69,
+    #555978
+    );
 `;
 
 export const SmallButton = styled(Button)`
@@ -111,6 +127,7 @@ export const SmallButton = styled(Button)`
 
 export const Left = styled.div`
   flex-basis: 50%;
+  padding-top: 2rem;
 `;
 
 export const Right = styled(Left)``;
@@ -147,8 +164,8 @@ export const InfoText = styled.text`
 `;
 
 export const HeaderText = styled.text`
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
   color: ${darkLight};
 `;
 
@@ -225,9 +242,21 @@ export const RatingWrapper = styled.div`
   padding-top: 0rem;
 `;
 
+export const RatingText = styled(JobText)`
+  font-size: 0.9rem;
+`;
+
 export const DownSection = styled.div`
+    width: calc(85rem + 3vw);
+    display: flex;
+    flex-direction: column;
+    @media screen and (max-width: calc(85rem + 3vw)) {
+      width: calc(100% - 6vw);
+    }
+`;
+
+export const EditUserDownSection = styled.div`
   width: 100%;
-  
 `;
 
 export const BubbleWrap = styled.div`
@@ -312,4 +341,89 @@ export const AboutInput = styled(StyledTextarea)`
 
 export const Bracket = styled.p`
   margin: auto 15px auto auto;
+`;
+
+export const ModalBackground = styled.div`
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    background: rgba(255,255,255,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const ModalWrapper = styled.div`
+    overflow-y: auto; 
+    width: 95rem;
+    height: 80%;
+    border-radius: 15px;
+    flex-direction: column;
+    background: ${primary};
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+    display: flex;
+    padding: 2rem;
+    font-size: 1.5rem;
+    @media screen and (max-width: 100rem) {
+      width: 95%;
+    }
+    @media screen and (max-width: 1280px) {
+      font-size: 1.2rem;
+    }
+`;
+
+export const ModalTitle = styled.text`
+  font-size: 150%;
+  color: ${darkLight};
+  margin-bottom: 1rem;
+`;
+
+export const ModalInfo = styled.text`
+  color: ${gray1};
+`;
+
+export const ModalBottomSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  @media screen and (max-width: 960px) {
+    flex-direction: column;
+  }
+`;
+
+export const ModalColumn = styled.div`
+  display: flex;
+  width: 47%;
+  flex-direction: column;
+  @media screen and (max-width: 960px) {
+    width: 100%;
+  }
+`;
+
+export const ModalRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0.7rem 0;
+`;
+
+export const ModalData = styled(ModalInfo)`
+  font-weight: bold;
+`;
+
+export const ModalBubbleContainer = styled.div`
+  margin-top: 1rem;
+`;
+
+export const InfoInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const SmallTextArea = styled(StyledTextarea)`
+  font-size: 1rem;
+  height: 1.8rem;
+  padding: 0.1rem 0 0 0.5rem;
 `;

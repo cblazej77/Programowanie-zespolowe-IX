@@ -141,9 +141,6 @@ export const JobText = styled(SubtitleText)`
     font-size: 1.5rem;
     margin: 0;
     cursor: default;
-    &:hover {
-        color: ${darkLight};
-    }
     ${CheckBox}:checked + & {
         color: ${darkLight};
     }
@@ -207,6 +204,7 @@ export const CardsWrapper = styled.div`
     width: 100%;
     height: 82vh;
     padding-bottom: 10rem;
+    padding-top: 0.4rem;
     overflow: auto;
     margin-top: 1.5rem;
     padding-left: 2rem;

@@ -23,7 +23,7 @@ import {
   HeaderText,
   NameText,
   JobText,
-  DownSection,
+  EditUserDownSection,
   BubbleWrap,
   Bubble,
   DataTextArena,
@@ -439,7 +439,7 @@ const EditUserPage = () => {
             </RightWrapper>
           </TopSection>
           {!showModal && <ButtonSave>ZAPISZ</ButtonSave>}
-          <DownSection></DownSection>
+          <EditUserDownSection></EditUserDownSection>
         </ProfileWrapper>
       ) : (
         <LoadingPage />
