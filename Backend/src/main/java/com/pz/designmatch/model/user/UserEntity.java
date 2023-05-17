@@ -1,6 +1,5 @@
 package com.pz.designmatch.model.user;
 
-import com.pz.designmatch.repository.RoleRepository;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "users")
 public class UserEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
