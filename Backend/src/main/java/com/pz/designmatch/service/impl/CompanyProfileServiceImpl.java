@@ -33,8 +33,8 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
         Optional.ofNullable(companiesDto.getName()).ifPresent(existingCompanyProfile::setName);
         Optional.ofNullable(companiesDto.getDescription()).ifPresent(existingCompanyProfile::setDescription);
         Optional.ofNullable(companiesDto.getAddress()).ifPresent(existingCompanyProfile::setAddress);
-        Optional.ofNullable(companiesDto.getREGON()).ifPresent(existingCompanyProfile::setREGON);
-        Optional.ofNullable(companiesDto.getKRS()).ifPresent(existingCompanyProfile::setKRS);
+        Optional.ofNullable(companiesDto.getRegon()).ifPresent(existingCompanyProfile::setREGON);
+        Optional.ofNullable(companiesDto.getKrs()).ifPresent(existingCompanyProfile::setKRS);
         Optional.ofNullable(companiesDto.getWebsite()).ifPresent(existingCompanyProfile::setWebsite);
         Optional.ofNullable(companiesDto.getFacebook()).ifPresent(existingCompanyProfile::setFacebook);
         Optional.ofNullable(companiesDto.getLinkedin()).ifPresent(existingCompanyProfile::setLinkedin);
