@@ -25,28 +25,25 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public CompanyProfileResponse updateCompanyProfileByUsername(String username, CompanyProfileRequest companiesDto) {
         CompanyProfile existingCompanyProfile = companyProfileRepository.findByUser_Username(username)
                 .orElseThrow(() -> new RuntimeException("Nie znaleziono profilu firmy dla użytkownika " + username));
 
         Optional.ofNullable(companiesDto.getName()).ifPresent(existingCompanyProfile::setName);
         Optional.ofNullable(companiesDto.getDescription()).ifPresent(existingCompanyProfile::setDescription);
-        Optional.ofNullable(companiesDto.getAddress()).ifPresent(existingCompanyProfile::setAddress);
         Optional.ofNullable(companiesDto.getRegon()).ifPresent(existingCompanyProfile::setREGON);
         Optional.ofNullable(companiesDto.getKrs()).ifPresent(existingCompanyProfile::setKRS);
         Optional.ofNullable(companiesDto.getWebsite()).ifPresent(existingCompanyProfile::setWebsite);
         Optional.ofNullable(companiesDto.getFacebook()).ifPresent(existingCompanyProfile::setFacebook);
-        Optional.ofNullable(companiesDto.getLinkedin()).ifPresent(existingCompanyProfile::setLinkedin);
         Optional.ofNullable(companiesDto.getTwitter()).ifPresent(existingCompanyProfile::setTwitter);
         Optional.ofNullable(companiesDto.getInstagram()).ifPresent(existingCompanyProfile::setInstagram);
+        Optional.ofNullable(companiesDto.getLinkedin()).ifPresent(existingCompanyProfile::setLinkedin);
+        Optional.ofNullable(companiesDto.getAddress()).ifPresent(existingCompanyProfile::setAddress);
 
         return companyProfileMapper.mapToResponse(companyProfileRepository.save(existingCompanyProfile));
-
     }
 
     @Override
-    @Transactional(readOnly = true)
     public CompanyProfileResponse getCompanyProfileByUsername(String username) {
         return companyProfileMapper.mapToResponse(companyProfileRepository.findByUser_Username(username)
                 .orElseThrow(() -> new RuntimeException("Nie znaleziono profilu firmy dla użytkownika " + username)));

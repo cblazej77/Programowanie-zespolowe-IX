@@ -34,20 +34,17 @@ public class CommissionServiceImpl implements CommissionService {
         this.commissionMapper = commissionMapper;
     }
 
-    @Transactional(readOnly = true)
     public CommissionResponse getCommission(Long id) {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
         return commissionMapper.mapToResponse(existingCommission);
     }
 
-    @Transactional
     public CommissionResponse createCommission(CommissionRequest commissionRequest) {
         Commission commission = commissionMapper.mapToEntity(commissionRequest);
         return commissionMapper.mapToResponse(commissionRepository.save(commission));
     }
 
-    @Transactional
     public CommissionResponse updateCommission(Long id, CommissionRequest commissionRequest) throws EntityNotFoundException {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
@@ -75,7 +72,6 @@ public class CommissionServiceImpl implements CommissionService {
         return commissionMapper.mapToResponse(commissionRepository.save(existingCommission));
     }
 
-    @Transactional
     public CommissionResponse setCommissionCompleted(Long id) throws EntityNotFoundException {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
@@ -85,7 +81,6 @@ public class CommissionServiceImpl implements CommissionService {
         return commissionMapper.mapToResponse(commissionRepository.save(existingCommission));
     }
 
-    @Transactional(readOnly = true)
     public Page<CommissionResponse> filterCommissions(CommissionFilterRequest filterRequest, Pageable pageable) {
         Specification<Commission> specification = Specification.where(null);
 

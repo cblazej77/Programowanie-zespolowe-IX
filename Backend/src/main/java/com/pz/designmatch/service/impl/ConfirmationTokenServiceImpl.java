@@ -18,7 +18,6 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
-    @Transactional
     public String saveConfirmationToken(UserEntity user) {
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
@@ -26,7 +25,6 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         return token;
     }
 
-    @Transactional
     public String confirmToken(String token) {
         ConfirmationToken confirmationToken = getToken(token).orElseThrow(() -> new IllegalStateException("Token not found"));
         if (confirmationToken.getConfirmedAt() != null) {
