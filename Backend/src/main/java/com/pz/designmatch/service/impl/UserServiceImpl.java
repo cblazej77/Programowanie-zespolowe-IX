@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmailIgnoreCase(email).orElseThrow(() -> new RuntimeException("Ten email jest już zajęty"));
     }
 
+    @Transactional
     @Override
     public UserEntity registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException {
         Role role = roleRepository.findByName(roleName).orElseThrow(() -> new EntityNotFoundException("Taka rola nie istnieje!"));
