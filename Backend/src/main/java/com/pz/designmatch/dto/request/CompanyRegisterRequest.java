@@ -16,13 +16,13 @@ public class CompanyRegisterRequest extends RegisterRequest {
     private String name;
 
     @NotEmpty
-    @JsonProperty("NIP")
-    private String NIP;
+    @JsonProperty("nip")
+    private String nip;
 
     @NotEmpty
-    @JsonProperty("REGON")
-    private String REGON;
+    @JsonProperty("regon")
+    private String regon;
 
-    @JsonProperty("KRS")
-    private String KRS;
+    @JsonProperty("krs")
+    private String krs;
 }

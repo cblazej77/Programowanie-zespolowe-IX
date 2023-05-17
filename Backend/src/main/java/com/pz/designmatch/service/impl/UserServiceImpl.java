@@ -15,7 +15,6 @@ import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.ConfirmationTokenService;
 import com.pz.designmatch.service.EmailService;
 import com.pz.designmatch.service.UserService;
-import com.pz.designmatch.util.validator.PasswordValidator;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
@@ -76,13 +75,6 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("Niepoprawny email");
         }
 
-        PasswordValidator passwordValidator = new PasswordValidator();
-        try {
-            passwordValidator.isValid(registerRequest);
-        } catch (ValidationException e) {
-            throw new ValidationException(e.getMessage());
-        }
-
 
         UserEntity user = buildUser(registerRequest, role);
 
@@ -138,9 +130,9 @@ public class UserServiceImpl implements UserService {
     private CompanyProfile buildCompanyProfile(final CompanyRegisterRequest signUpRequest) {
         CompanyProfile companyProfile = new CompanyProfile();
         companyProfile.setName(signUpRequest.getName());
-        companyProfile.setNIP(signUpRequest.getNIP());
-        companyProfile.setREGON(signUpRequest.getREGON());
-        companyProfile.setKRS(signUpRequest.getKRS());
+        companyProfile.setNIP(signUpRequest.getNip());
+        companyProfile.setREGON(signUpRequest.getRegon());
+        companyProfile.setKRS(signUpRequest.getKrs());
         return companyProfile;
     }
 
