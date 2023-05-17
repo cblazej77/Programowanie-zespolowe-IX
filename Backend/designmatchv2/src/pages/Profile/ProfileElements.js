@@ -226,7 +226,13 @@ export const StyledTextarea = styled.textarea`
   padding: 0.5rem 0px 0rem 0.7rem;
 `;
 
-export const NameText = styled(StyledTextarea)``;
+export const EditNameText = styled(StyledTextarea)``;
+
+export const NameText = styled.text`
+  color: ${darkLight};
+  font-size: 2rem;
+  padding-bottom: 0.5rem;
+`;
 
 export const JobText = styled.text`
   color: ${gray1};

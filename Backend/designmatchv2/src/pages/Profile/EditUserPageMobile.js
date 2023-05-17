@@ -25,7 +25,6 @@ import {
   TopSection,
   LeftInfoRow,
   HeaderText,
-  NameText,
   EditUserDownSection,
   BubbleWrap,
   Bubble,
@@ -33,7 +32,8 @@ import {
   BubbleLinks,
   StyledDropDown,
   AboutInput,
-  Bracket
+  Bracket,
+  EditNameText
 
 } from './ProfileElements'
 import LoadingPage from '../LoadingPage';
@@ -608,8 +608,7 @@ const EditUserPageMobile = () => {
           <div style={{ alignItems: 'center' }}>
             <button
               onClick={() => handleDeleteEducationElement(item.id)}
-              style={{ alignContent: 'center', marginBottom: 3, marginTop: 3 }}
-            >
+              style={{ alignContent: 'center', marginBottom: 3, marginTop: 3 }}>
               Usuń
             </button>
           </div>
@@ -800,23 +799,34 @@ const EditUserPageMobile = () => {
         <ProfileWrapper>
           <TopSection>
             <EditLeftWrapper>
-              <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-              <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie(ND)</ButtonEdit>
-              <div>
-                <InputInfoText>Imię:</InputInfoText>
-                <NameText value={name} onChange={(e) => setName(e.target.value)} />
-                <InputInfoText>Nazwisko:</InputInfoText>
-                <NameText value={surname} onChange={(e) => setSurname(e.target.value)} />
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+                }}>
+                <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
+                <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie(ND)</ButtonEdit>
               </div>
+              {/* <div>
+                <InputInfoText>Imię:</InputInfoText>
+                <EditNameText value={name} onChange={(e) => setName(e.target.value)} />
+                <InputInfoText>Nazwisko:</InputInfoText>
+                <EditNameText value={surname} onChange={(e) => setSurname(e.target.value)} />
+              </div> */}
               {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
-              <InputInfoText>Poziom doświadczenia:</InputInfoText>
-              {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) &&
-                <StyledDropDown
-                  className='dropdown-level'
-                  options={availableLevels}
-                  onChange={(e) => setLevel(e)}
-                  value={level}
-                  placeHolder={level} />}
+              <div style={{ width: '100%' }}>
+                <InputInfoText>Poziom doświadczenia:</InputInfoText>
+                {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) &&
+                  <StyledDropDown
+                    className='dropdown-level'
+                    options={availableLevels}
+                    onChange={(e) => setLevel(e)}
+                    value={level}
+                    placeHolder={level} />}
+              </div>
             </EditLeftWrapper>
             <EditRightWrapper>
               <InputInfoText >O mnie: </InputInfoText>

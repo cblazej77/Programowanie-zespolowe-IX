@@ -3,7 +3,34 @@ import { Rating } from 'react-simple-star-rating';
 import { default as axios } from '../../api/axios'
 import LoadingPage from '../LoadingPage';
 import { useParams } from 'react-router-dom';
-import { AboutMe, BoldLabel, Bubble, BubbleLinks, BubbleWrap, Button, DataText, DownSection, HeaderText, Image, InfoRow, InfoText, JobText, Left, LeftColumn, LeftInfoRow, LeftWrapper, LineForm, NameText, ProfileImage, ProfileWrapper, RatingText, RatingWrapper, RightColumn, RightWrapper, SmallButton, TopSection } from './ProfileElements';
+import {
+  AboutMe,
+  BoldLabel,
+  Bubble,
+  BubbleLinks,
+  BubbleWrap,
+  Button,
+  DataText,
+  DownSection,
+  HeaderText,
+  Image, InfoRow,
+  InfoText,
+  JobText,
+  Left,
+  LeftColumn,
+  LeftInfoRow,
+  LeftWrapper,
+  LineForm,
+  NameText,
+  ProfileImage,
+  ProfileWrapper,
+  RatingText,
+  RatingWrapper,
+  RightColumn,
+  RightWrapper,
+  SmallButton,
+  TopSection
+} from './ProfileElements';
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
@@ -31,7 +58,7 @@ const OtherUserPage = () => {
     let profileName = "";
     console.log(argument);
     console.log({ argument });
-    if (!argument) profileName = 'WojciechDuklas';
+    if (!argument) profileName = 'jakub1';
     else profileName = argument;
 
     let profileData = {

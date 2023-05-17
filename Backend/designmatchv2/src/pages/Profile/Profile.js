@@ -50,13 +50,15 @@ const UserPage = () => {
   const [button, setButton] = useState(true);
 
   const job = "";
-  const profileName = 'MiMichu';
+  const profileName = 'jakub1';
+
   let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
     url: getArtistProfileURL + profileName,
     headers: {}
   };
+
   let profileNameData = {
     method: 'get',
     maxBodyLength: Infinity,

@@ -20,39 +20,38 @@ import {
   DownPointerIcon,
 } from './NavbarElements';
 
-
 function Navbar() {
-    const [click, setClick] = useState(false);
-    const [button, setButton] = useState(true);
-    const [dropdown, setDropdown] = useState(false);
-  
-    const handleClick = () => setClick(!click);
-    const closeMobileMenu = () => setClick(false);
-  
-    const showButton = () => {
-      if (window.innerWidth <= 960) {
-        setButton(false);
-      } else {
-        setButton(true);
-      }
-    };
-    const onMouseEnter = () => {
-        if (window.innerWidth < 960) {
-          setDropdown(false);
-        } else {
-          setDropdown(true);
-        }
-      };
-    
-      const onMouseLeave = () => {
-        if (window.innerWidth < 960) {
-          setDropdown(false);
-        } else {
-          setDropdown(false);
-        }
-      };
+  const [click, setClick] = useState(false);
+  const [button, setButton] = useState(true);
+  const [dropdown, setDropdown] = useState(false);
 
- 
+  const handleClick = () => setClick(!click);
+  const closeMobileMenu = () => setClick(false);
+
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  };
+  const onMouseEnter = () => {
+    if (window.innerWidth < 960) {
+      setDropdown(false);
+    } else {
+      setDropdown(true);
+    }
+  };
+
+  const onMouseLeave = () => {
+    if (window.innerWidth < 960) {
+      setDropdown(false);
+    } else {
+      setDropdown(false);
+    }
+  };
+
+
 
   const auth = useAuth()
   const navigate = useNavigate()
@@ -91,13 +90,18 @@ function Navbar() {
             </NavItem>
 
             <NavItem>
-              <NavLink to='/account' onClick={closeMobileMenu}>
-                KontoTest
+              <NavLink to='/commisions' onClick={closeMobileMenu}>
+                Zlecenia
               </NavLink>
             </NavItem>
-                
+            <NavItem>
+              <NavLink to='/' onClick={closeMobileMenu}>
+                Artyści
+              </NavLink>
+            </NavItem>
+
             {!auth.user ? (
-              <NavItem> 
+              <NavItem>
                 <NavLink to='/sign-in' onClick={closeMobileMenu}>
                   Logowanie
                 </NavLink>

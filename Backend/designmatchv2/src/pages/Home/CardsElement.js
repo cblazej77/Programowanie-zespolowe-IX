@@ -357,6 +357,7 @@ export const CardAvatar = styled.img`
     width: 8rem;
     border-radius: 100%;
     object-fit: cover;
+    cursor: pointer;
 `;
 
 export const LevelText = styled(JobText)`

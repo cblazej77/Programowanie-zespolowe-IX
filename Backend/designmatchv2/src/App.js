@@ -1,6 +1,6 @@
 //Switch => Routes
 import React from 'react';
-import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/Auth';
 import Head from './components/header/Header';
 import Home from './pages/Home/Home';

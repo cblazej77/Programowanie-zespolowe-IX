@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AboutInput,
+  EditNameText,
   Image,
   InfoInputWrapper,
   InputInfoText,
@@ -8,7 +9,6 @@ import {
   LeftColumn,
   LeftWrapper,
   LineForm,
-  NameText,
   ProfileImage,
   ProfileWrapper,
   RightWrapper,
@@ -125,7 +125,7 @@ const EditCompanyPage = () => {
               <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
               <InfoInputWrapper>
                 <InputInfoText>Nazwa firmy: </InputInfoText>
-                <NameText
+                <EditNameText
                   defaultValue={get.name}
                   value={get.name}
                   onChange={({ target }) =>
@@ -135,7 +135,13 @@ const EditCompanyPage = () => {
               </InfoInputWrapper>
               <InfoInputWrapper>
                 <InputInfoText>Adres firmy: </InputInfoText>
-                <NameText>get.address</NameText>
+                <EditNameText
+                  defaultValue={get.companyAdress}
+                  value={get.companyAdress}
+                  onChange={({ target }) =>
+                    setGet({
+                      ...get, companyAdress: target.value,
+                    })} />
               </InfoInputWrapper>
             </LeftWrapper>
             <RightWrapper>

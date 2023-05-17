@@ -1,20 +1,53 @@
 import React from 'react';
-import { AllPage, Top, Date, Bottom, Border, Question, Space } from './Elements';
+import {
+  AllPage,
+  Top,
+  Data,
+  Bottom,
+  Border,
+  Question,
+  Space,
+  AnswerText,
+  QuestionText
+} from './Elements';
 
 const About = () => {
   return (
     <AllPage>
-        <Border>
+      <Border>
         <Top>O nas!</Top>
         <Space></Space>
-        <Question>Kim jesteśmy?</Question>     
-          <Date>Wystartowaliśmy w 2023, Designmatch jest serwisem
-                na którym można kupić różne rodzaje grafik, pojekty i obrazy
-                stworzone przez zarejestrowanych design'erów.</Date> 
-        <Question>Dlaczego my?</Question> 
-          <Date>Jeszcze nie wiem, ale wygląda to trochę jak komunikator.</Date> 
-        <Bottom>Zostań częścią przyszłości!</Bottom>
-      </Border>- ,
+        <Question>
+          <QuestionText>
+            Kim jesteśmy?
+          </QuestionText>
+        </Question>
+        <Data>
+          <AnswerText>
+            Wystartowaliśmy w 2023 roku. DesignMatch to platforma, która umożliwia szukanie
+            artystów graficznych do zleceń oraz umieszczanie zleceń przez klientów poszukujących
+            usług artystycznych. Głównym celem strony jest połączenie artystów graficznych z potencjalnymi
+            klientami, którzy potrzebują ich umiejętności i talentu w zakresie projektowania graficznego.
+          </AnswerText>
+        </Data>
+        <Question>
+          <QuestionText>
+            Dlaczego my?
+          </QuestionText>
+        </Question>
+        <Data>
+          <AnswerText>
+            1. Duży wybór artystów graficznych.
+          </AnswerText>
+          <AnswerText>
+            2. Możliwość przeglądania portfolio.
+          </AnswerText>
+          <AnswerText>
+            3. Proces łatwego składania ofert.
+          </AnswerText>
+        </Data>
+        <Bottom>Zarejestruj się i sam zobacz!</Bottom>
+      </Border>
     </AllPage>
   )
 };

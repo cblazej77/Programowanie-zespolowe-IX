@@ -265,7 +265,7 @@ const CompanyPage = () => {
                 <RightColumn>
                   <LeftInfoRow>
                     <InfoText>Adres:</InfoText>
-                    <DataText>get.location</DataText>
+                    <DataText>{get.companyAdress}</DataText>
                   </LeftInfoRow>
                   <LeftInfoRow>
                     <InfoText>NIP:</InfoText>
