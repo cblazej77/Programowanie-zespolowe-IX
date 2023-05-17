@@ -45,7 +45,8 @@ import {
   CommisionTop,
   LevelBubble,
   ModalCommisionBackground,
-  ModalCommisionWrapper
+  ModalCommisionWrapper,
+  StakeText
 } from './CommisionsElements';
 import { ModalBottomSection, ModalBubbleContainer, ModalColumn, ModalData, ModalInfo, ModalRow, ModalTitle } from '../Profile/ProfileElements';
 
@@ -54,9 +55,9 @@ const { darkLight } = COLORS;
 const CommisionsData = [
   {
     name: 'PixelScape',
-    title: "Projekt logo dla firmy produkującej kosmetyki naturalne",
+    title: "Projekt logo dla firmy produkującej kosmetyki naturalne text1 text2 text3 text4",
     description: "Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości.",
-    stake: 2000,
+    stake: 20000,
     deadline: "2 tyg.",
     level: "Mid",
     location: "Zdalnie",
@@ -319,7 +320,7 @@ const Commisions = () => {
         <CheckBoxText>{city}</CheckBoxText>
       </CheckBoxWrapper>
     ));
-  });
+  },);
 
   const languageOptions = useMemo(() => {
     return languages.map((language, index) => (
@@ -519,7 +520,7 @@ const Commisions = () => {
               {props.level}
             </LevelBubble>
           </CommisionTitleContainer>
-          <TitleText>{props.stake} PLN</TitleText>
+          <StakeText>{props.stake} PLN</StakeText>
         </CommisionTop>
         <div>
           <CommisionText>{props.location}</CommisionText>

@@ -51,12 +51,14 @@ const UserPage = () => {
 
   const job = "";
   const profileName = 'jakub1';
+
   let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
     url: getArtistProfileURL + profileName,
     headers: {}
   };
+
   let profileNameData = {
     method: 'get',
     maxBodyLength: Infinity,
