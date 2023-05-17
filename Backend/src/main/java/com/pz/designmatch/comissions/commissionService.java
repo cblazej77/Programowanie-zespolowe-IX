@@ -19,7 +19,7 @@ public class commissionService {
         this.commissionRepository = commissionRepository;
     }
 
-    private commissionDto mapToCommissionDto(Commission commission){
+    public commissionDto mapToCommissionDto(Commission commission){
         if(commission == null){
             return null;
         }
@@ -28,10 +28,10 @@ public class commissionService {
                 commission.getDescription(),
                 commission.getDeadline(),
                 commission.getLevel().stream().limit(3).map(Level::getDisplayName).collect(Collectors.toSet()),
-                commission.getLanguages().stream().limit(3).map(Language::getDisplayName).collect(Collectors.toSet()),
                 commission.getLocation().stream().limit(2).map(City::getDisplayName).collect(Collectors.toSet()),
                 commission.getSkills().stream().limit(2).map(Skill::getDisplayName).collect(Collectors.toSet()),
                 commission.getTags().stream().limit(2).map(Tag::getDisplayName).collect(Collectors.toSet()),
+                commission.getLanguages().stream().limit(3).map(Language::getDisplayName).collect(Collectors.toSet()),
                 commission.getStawka()
         );
     }
