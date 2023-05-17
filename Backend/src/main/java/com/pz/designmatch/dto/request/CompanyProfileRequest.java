@@ -21,15 +21,15 @@ public class CompanyProfileRequest {
     private String address;
 
     @NotEmpty
-    @JsonProperty("NIP")
-    private String NIP;
+    @JsonProperty("nip")
+    private String nip;
 
     @NotEmpty
-    @JsonProperty("REGON")
-    private String REGON;
+    @JsonProperty("regon")
+    private String regon;
 
-    @JsonProperty("KRS")
-    private String KRS;
+    @JsonProperty("krs")
+    private String krs;
 
     @JsonProperty("website")
     private String website;

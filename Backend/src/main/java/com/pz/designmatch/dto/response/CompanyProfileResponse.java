@@ -26,15 +26,15 @@ public class CompanyProfileResponse {
     private String address;
 
     @NotEmpty
-    @JsonProperty("NIP")
-    private String NIP;
+    @JsonProperty("nip")
+    private String nip;
 
     @NotEmpty
-    @JsonProperty("REGON")
-    private String REGON;
+    @JsonProperty("regon")
+    private String regon;
 
-    @JsonProperty("KRS")
-    private String KRS;
+    @JsonProperty("krs")
+    private String krs;
 
     @JsonProperty("website")
     private String website;
@@ -52,16 +52,16 @@ public class CompanyProfileResponse {
     private String instagram;
 
     @JsonCreator
-    public CompanyProfileResponse(Long id, String username, String name, String description, String address, String NIP, String REGON,
-                                  String KRS, String website, String facebook, String linkedin, String twitter, String instagram) {
+    public CompanyProfileResponse(Long id, String username, String name, String description, String address, String nip, String regon,
+                                  String krs, String website, String facebook, String linkedin, String twitter, String instagram) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.description = description;
         this.address = address;
-        this.NIP = NIP;
-        this.REGON = REGON;
-        this.KRS = KRS;
+        this.nip = nip;
+        this.regon = regon;
+        this.krs = krs;
         this.website = website;
         this.facebook = facebook;
         this.linkedin = linkedin;
