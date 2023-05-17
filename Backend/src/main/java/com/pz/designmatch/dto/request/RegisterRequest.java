@@ -22,10 +22,5 @@ public class RegisterRequest {
     @JsonProperty("password")
     @Schema(description = "Hasło musi mieć minimum 6 znaków.", minLength = 6)
     private String password;
-
-    @NotEmpty
-    @JsonProperty("matching_password")
-    @Schema(description = "Hasło musi mieć minimum 6 znaków.", minLength = 6)
-    private String matchingPassword;
 }
 
