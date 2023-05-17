@@ -19,7 +19,7 @@ import {
   DropDownInfoText,
   DropDownSubcategoryText,
 } from './../../components/styles';
-import {HomeSearchFilter} from '../../components/SearchFilter';
+import { HomeSearchFilter, CommisionsSearchFilter } from '../../components/SearchFilter';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
 import BASE_URL from '../../components/AxiosAuth';
@@ -42,6 +42,7 @@ export default function HomePage({ navigation }) {
   const [languagesFiltr, setLanguagesFiltr] = useState([]);
   const [categoriesFiltr, setCategoriesFiltr] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [commisions, setCommisions] = useState([]);
   const [input, setInput] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
@@ -49,6 +50,7 @@ export default function HomePage({ navigation }) {
   const [showCategories, setShowCategories] = useState(false);
   const [showTags, setShowTags] = useState(false);
   const [showLocations, setShowLocations] = useState(false);
+  const [showArtistPage, setShowArtistPage] = useState(true);
 
   const sort = ['ocena: najwyższa', 'ocena: najniższa', 'ostatnia aktywność'];
 
@@ -156,31 +158,60 @@ export default function HomePage({ navigation }) {
 
   useEffect(() => {
     const filter = async () => {
-      try {
-        const response = await axios
-          .post(
-            BASE_URL + '/artist/filter',
-            {
-              level: levelsFiltr,
-              location: citiesFiltr,
-              skills: categoriesFiltr,
-              languages: languagesFiltr,
-              tags: tagsFiltr,
-            },
-            {
-              params: { page: 0, size: 10 },
-              headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-            },
-          )
-          .catch((error) => {
-            console.log(error);
-          });
-        if ((response.status = 200)) {
-          setFiltered(response.data);
-          console.log(response.status);
+      if (showArtistPage) {
+        try {
+          const response = await axios
+            .post(
+              BASE_URL + '/artist/filter',
+              {
+                level: levelsFiltr,
+                location: citiesFiltr,
+                skills: categoriesFiltr,
+                languages: languagesFiltr,
+                tags: tagsFiltr,
+              },
+              {
+                params: { page: 0, size: 10 },
+                headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+              },
+            )
+            .catch((error) => {
+              console.log(error);
+            });
+          if ((response.status = 200)) {
+            setFiltered(response.data);
+            console.log(response.status);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
+      } else {
+        try {
+          const response = await axios
+            .post(
+              BASE_URL + '/commisions/filterCommisions',
+              {
+                level: levelsFiltr,
+                location: citiesFiltr,
+                skills: categoriesFiltr,
+                languages: languagesFiltr,
+                tags: tagsFiltr,
+              },
+              {
+                params: { page: 0, size: 10 },
+                headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+              },
+            )
+            .catch((error) => {
+              console.log(error);
+            });
+          if ((response.status = 200)) {
+            setCommisions(response.data);
+            console.log(response.status);
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
@@ -231,7 +262,9 @@ export default function HomePage({ navigation }) {
               iconStyle={{ borderColor: darkLight }}
               innerIconStyle={{ borderWidth: 1 }}
               textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-              onPress={(isChecked) => {isChecked ? handleAddCategoriesFiltr(subcategory) : handleDeleteCategoriesFiltr(subcategory)}}
+              onPress={(isChecked) => {
+                isChecked ? handleAddCategoriesFiltr(subcategory) : handleDeleteCategoriesFiltr(subcategory);
+              }}
             ></BouncyCheckbox>
           </View>
         ))}
@@ -257,7 +290,9 @@ export default function HomePage({ navigation }) {
           iconStyle={{ borderColor: darkLight }}
           innerIconStyle={{ borderWidth: 1 }}
           textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-          onPress={(isChecked) => {isChecked ? handleAddLevelsFiltr(item) : handleDeleteLevelsFiltr(item)}}
+          onPress={(isChecked) => {
+            isChecked ? handleAddLevelsFiltr(item) : handleDeleteLevelsFiltr(item);
+          }}
         ></BouncyCheckbox>
       </View>
     ));
@@ -281,7 +316,9 @@ export default function HomePage({ navigation }) {
           iconStyle={{ borderColor: darkLight }}
           innerIconStyle={{ borderWidth: 1 }}
           textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-          onPress={(isChecked) => {isChecked ? handleAddCitiesFiltr(item) : handleDeleteCitiesFiltr(item)}}
+          onPress={(isChecked) => {
+            isChecked ? handleAddCitiesFiltr(item) : handleDeleteCitiesFiltr(item);
+          }}
         ></BouncyCheckbox>
       </View>
     ));
@@ -305,7 +342,9 @@ export default function HomePage({ navigation }) {
           iconStyle={{ borderColor: darkLight }}
           innerIconStyle={{ borderWidth: 1 }}
           textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-          onPress={(isChecked) => {isChecked ? handleAddLanguagesFiltr(item) : handleDeleteLanguagesFiltr(item)}}
+          onPress={(isChecked) => {
+            isChecked ? handleAddLanguagesFiltr(item) : handleDeleteLanguagesFiltr(item);
+          }}
         ></BouncyCheckbox>
       </View>
     ));
@@ -329,7 +368,9 @@ export default function HomePage({ navigation }) {
           iconStyle={{ borderColor: darkLight }}
           innerIconStyle={{ borderWidth: 1 }}
           textStyle={{ textDecorationLine: 'none', fontFamily: 'LexendDeca-VariableFont_wght' }}
-          onPress={(isChecked) => {isChecked ? handleAddTagsFiltr(item) : handleDeleteTagsFiltr(item)}}
+          onPress={(isChecked) => {
+            isChecked ? handleAddTagsFiltr(item) : handleDeleteTagsFiltr(item);
+          }}
         ></BouncyCheckbox>
       </View>
     ));
@@ -342,7 +383,7 @@ export default function HomePage({ navigation }) {
       return null;
     }
 
-    return <HomeSearchFilter data={filtered.content} input={input} setInput={setInput} navigation={navigation}/>;
+    return <HomeSearchFilter data={filtered.content} input={input} setInput={setInput} navigation={navigation} />;
 
     // return filtered.content.map((filter, indexF) => (
     //   <CardItem
@@ -365,181 +406,415 @@ export default function HomePage({ navigation }) {
     // ));
   });
 
+  const filteredCommisions = useMemo(() => {
+    if (!Array.isArray(commisions.content)) {
+      return null;
+    }
+
+    <CommisionsSearchFilter data={commisions.content} input={input} setInput={setInput} navigation={navigation} />;
+  });
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
-      <ChatLabel
-        style={{
-          height: 60,
-          justifyContent: 'center',
-        }}
-      >
-        <HeaderText>Przeglądaj designer'ów</HeaderText>
-      </ChatLabel>
-      <HomeLabel>
-        <HomeIconButton onPress={() => setShowModal(true)} activeOpacity={0.5}>
-          <ChatImage
-            style={{ tintColor: '#A9A9A9', width: '50%', marginLeft: 10 }}
-            resizeMode="contain"
-            source={require('./../../assets/img/filter.png')}
-          />
-        </HomeIconButton>
-        <Modal visible={showModal} transparent={true} animationType="slide" onRequestClose={() => setShowModal(false)}>
-          <View style={styles.ModalStyle}>
-            <View style={styles.ModalViewStyle}>
-              <TouchableOpacity onPress={() => setShowModal(false)} style={{ width: '100%' }}>
-                <View style={{ alignItems: 'center' }}>
-                  <Icon name="angle-down" size={35} color={darkLight} />
-                </View>
-              </TouchableOpacity>
-              <LineForm />
-              <TouchableOpacity onPress={() => {clearFilters()}}>
-                <View style={styles.ModalButton}>
-                  <AppText style={{color: white}}>Wyczyść filtry</AppText>
-                </View>
-              </TouchableOpacity>
-              <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
-                <View style={styles.ModalFilterViewStyle}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'baseline',
+    <>
+      {showArtistPage ? (
+        <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
+          <ChatLabel
+            style={{
+              height: '8%',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <HeaderText>Przeglądaj designer'ów</HeaderText>
+            <TouchableOpacity
+              onPress={() => {
+                setShowArtistPage(!showArtistPage);
+                clearFilters();
+              }}
+            >
+              <FontAwesome
+                name={'chevron-right'}
+                color={primary}
+                size={25}
+                style={{ marginLeft: 33, marginRight: 5 }}
+              />
+            </TouchableOpacity>
+          </ChatLabel>
+          <HomeLabel>
+            <HomeIconButton onPress={() => setShowModal(true)} activeOpacity={0.5}>
+              <ChatImage
+                style={{ tintColor: '#A9A9A9', width: '50%', marginLeft: 10 }}
+                resizeMode="contain"
+                source={require('./../../assets/img/filter.png')}
+              />
+            </HomeIconButton>
+            <Modal
+              visible={showModal}
+              transparent={true}
+              animationType="slide"
+              onRequestClose={() => setShowModal(false)}
+            >
+              <View style={styles.ModalStyle}>
+                <View style={styles.ModalViewStyle}>
+                  <TouchableOpacity onPress={() => setShowModal(false)} style={{ width: '100%' }}>
+                    <View style={{ alignItems: 'center' }}>
+                      <Icon name="angle-down" size={35} color={darkLight} />
+                    </View>
+                  </TouchableOpacity>
+                  <LineForm />
+                  <TouchableOpacity
+                    onPress={() => {
+                      clearFilters();
                     }}
                   >
-                    <TouchableOpacity
-                      onPress={() => {
-                        setShowLevels(!showLevels);
-                      }}
-                    >
-                      <FontAwesome name={showLevels ? 'chevron-down' : 'chevron-right'} color={'#A9A9A9'} size={18} />
-                    </TouchableOpacity>
-                    <DropDownInfoText style={{ marginLeft: 15 }}>Poziomy:</DropDownInfoText>
-                  </View>
+                    <View style={styles.ModalButton}>
+                      <AppText style={{ color: white }}>Wyczyść filtry</AppText>
+                    </View>
+                  </TouchableOpacity>
+                  <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowLevels(!showLevels);
+                          }}
+                        >
+                          <FontAwesome
+                            name={showLevels ? 'chevron-down' : 'chevron-right'}
+                            color={'#A9A9A9'}
+                            size={18}
+                          />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Poziomy:</DropDownInfoText>
+                      </View>
 
-                  {showLevels ? levelsList : <></>}
+                      {showLevels ? levelsList : <></>}
+                    </View>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowLocations(!showLocations);
+                          }}
+                        >
+                          <FontAwesome
+                            name={showLocations ? 'chevron-down' : 'chevron-right'}
+                            color={'#A9A9A9'}
+                            size={18}
+                          />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Skąd:</DropDownInfoText>
+                      </View>
+                      {showLocations ? locationsList : <></>}
+                    </View>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowLanguages(!showLanguages);
+                          }}
+                        >
+                          <FontAwesome
+                            name={showLanguages ? 'chevron-down' : 'chevron-right'}
+                            color={'#A9A9A9'}
+                            size={18}
+                          />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Języki:</DropDownInfoText>
+                      </View>
+                      {showLanguages ? languagesList : <></>}
+                    </View>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowTags(!showTags);
+                          }}
+                        >
+                          <FontAwesome name={showTags ? 'chevron-down' : 'chevron-right'} color={'#A9A9A9'} size={18} />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Tagi:</DropDownInfoText>
+                      </View>
+                      {showTags ? tagsList : <></>}
+                    </View>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowCategories(!showCategories);
+                          }}
+                        >
+                          <FontAwesome
+                            name={showCategories ? 'chevron-down' : 'chevron-right'}
+                            color={'#A9A9A9'}
+                            size={18}
+                          />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Umiejętności:</DropDownInfoText>
+                      </View>
+                      {showCategories ? categoriesList : <></>}
+                    </View>
+                  </ScrollView>
                 </View>
-                <View style={styles.ModalFilterViewStyle}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'baseline',
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        setShowLocations(!showLocations);
-                      }}
-                    >
-                      <FontAwesome
-                        name={showLocations ? 'chevron-down' : 'chevron-right'}
-                        color={'#A9A9A9'}
-                        size={18}
-                      />
-                    </TouchableOpacity>
-                    <DropDownInfoText style={{ marginLeft: 15 }}>Skąd:</DropDownInfoText>
-                  </View>
-                  {showLocations ? locationsList : <></>}
-                </View>
-                <View style={styles.ModalFilterViewStyle}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'baseline',
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        setShowLanguages(!showLanguages);
-                      }}
-                    >
-                      <FontAwesome
-                        name={showLanguages ? 'chevron-down' : 'chevron-right'}
-                        color={'#A9A9A9'}
-                        size={18}
-                      />
-                    </TouchableOpacity>
-                    <DropDownInfoText style={{ marginLeft: 15 }}>Języki:</DropDownInfoText>
-                  </View>
-                  {showLanguages ? languagesList : <></>}
-                </View>
-                <View style={styles.ModalFilterViewStyle}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'baseline',
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        setShowTags(!showTags);
-                      }}
-                    >
-                      <FontAwesome name={showTags ? 'chevron-down' : 'chevron-right'} color={'#A9A9A9'} size={18} />
-                    </TouchableOpacity>
-                    <DropDownInfoText style={{ marginLeft: 15 }}>Tagi:</DropDownInfoText>
-                  </View>
-                  {showTags ? tagsList : <></>}
-                </View>
-                <View style={styles.ModalFilterViewStyle}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'baseline',
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        setShowCategories(!showCategories);
-                      }}
-                    >
-                      <FontAwesome
-                        name={showCategories ? 'chevron-down' : 'chevron-right'}
-                        color={'#A9A9A9'}
-                        size={18}
-                      />
-                    </TouchableOpacity>
-                    <DropDownInfoText style={{ marginLeft: 15 }}>Umiejętności:</DropDownInfoText>
-                  </View>
-                  {showCategories ? categoriesList : <></>}
-                </View>
-              </ScrollView>
-            </View>
+              </View>
+            </Modal>
+
+            <SelectDropdown
+              data={sort}
+              defaultValueByIndex={0}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item;
+              }}
+              buttonStyle={styles.DropdownButtonStyle}
+              buttonTextStyle={styles.DropdownButtonTextStyle}
+              renderDropdownIcon={(isOpened) => {
+                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
+              }}
+              dropdownIconPosition={'right'}
+              dropdownStyle={styles.DropDownStyle1}
+              rowStyle={styles.DropdownRowStyle}
+              rowTextStyle={styles.DropdownRowTextStyle}
+            />
+            <HomeTextInput
+              value={input}
+              onChangeText={(text) => setInput(text)}
+              backgroundColor={'#FFFFFF'}
+              placeholderTextColor={'#D6D6D6'}
+              placeholder="szukaj"
+            />
+          </HomeLabel>
+          <View style={{ height: '86.5%' }}>
+            <ScrollView contentContainerStyle={{ alignItems: 'center', marginTop: 5 }}>{filteredCards}</ScrollView>
           </View>
-        </Modal>
+        </SafeAreaView>
+      ) : (
+        <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
+          <ChatLabel
+            style={{
+              height: '8%',
+              justifyContent: 'flex-start',
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setShowArtistPage(!showArtistPage);
+                clearFilters();
+              }}
+            >
+              <FontAwesome name={'chevron-left'} color={primary} size={25} style={{ marginLeft: 5, marginRight: 60 }} />
+            </TouchableOpacity>
+            <HeaderText>Przeglądaj zlecenia</HeaderText>
+          </ChatLabel>
+          <HomeLabel>
+            <HomeIconButton onPress={() => setShowModal(true)} activeOpacity={0.5}>
+              <ChatImage
+                style={{ tintColor: '#A9A9A9', width: '50%', marginLeft: 10 }}
+                resizeMode="contain"
+                source={require('./../../assets/img/filter.png')}
+              />
+            </HomeIconButton>
+            <Modal
+              visible={showModal}
+              transparent={true}
+              animationType="slide"
+              onRequestClose={() => setShowModal(false)}
+            >
+              <View style={styles.ModalStyle}>
+                <View style={styles.ModalViewStyle}>
+                  <TouchableOpacity onPress={() => setShowModal(false)} style={{ width: '100%' }}>
+                    <View style={{ alignItems: 'center' }}>
+                      <Icon name="angle-down" size={35} color={darkLight} />
+                    </View>
+                  </TouchableOpacity>
+                  <LineForm />
+                  <TouchableOpacity
+                    onPress={() => {
+                      clearFilters();
+                    }}
+                  >
+                    <View style={styles.ModalButton}>
+                      <AppText style={{ color: white }}>Wyczyść filtry</AppText>
+                    </View>
+                  </TouchableOpacity>
+                  <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowLevels(!showLevels);
+                          }}
+                        >
+                          <FontAwesome
+                            name={showLevels ? 'chevron-down' : 'chevron-right'}
+                            color={'#A9A9A9'}
+                            size={18}
+                          />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Poziomy:</DropDownInfoText>
+                      </View>
 
-        <SelectDropdown
-          data={sort}
-          defaultValueByIndex={0}
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
-          }}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-          buttonStyle={styles.DropdownButtonStyle}
-          buttonTextStyle={styles.DropdownButtonTextStyle}
-          renderDropdownIcon={(isOpened) => {
-            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
-          }}
-          dropdownIconPosition={'right'}
-          dropdownStyle={styles.DropDownStyle1}
-          rowStyle={styles.DropdownRowStyle}
-          rowTextStyle={styles.DropdownRowTextStyle}
-        />
-        <HomeTextInput
-          value={input}
-          onChangeText={(text) => setInput(text)}
-          backgroundColor={'#FFFFFF'}
-          placeholderTextColor={'#D6D6D6'}
-          placeholder="szukaj"
-        />
-      </HomeLabel>
-      <View style={{ height: '86.5%' }}>
-        <ScrollView contentContainerStyle={{ alignItems: 'center', marginTop: 5 }}>{filteredCards}</ScrollView>
-      </View>
-    </SafeAreaView>
+                      {showLevels ? levelsList : <></>}
+                    </View>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowLocations(!showLocations);
+                          }}
+                        >
+                          <FontAwesome
+                            name={showLocations ? 'chevron-down' : 'chevron-right'}
+                            color={'#A9A9A9'}
+                            size={18}
+                          />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Skąd:</DropDownInfoText>
+                      </View>
+                      {showLocations ? locationsList : <></>}
+                    </View>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowLanguages(!showLanguages);
+                          }}
+                        >
+                          <FontAwesome
+                            name={showLanguages ? 'chevron-down' : 'chevron-right'}
+                            color={'#A9A9A9'}
+                            size={18}
+                          />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Języki:</DropDownInfoText>
+                      </View>
+                      {showLanguages ? languagesList : <></>}
+                    </View>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowTags(!showTags);
+                          }}
+                        >
+                          <FontAwesome name={showTags ? 'chevron-down' : 'chevron-right'} color={'#A9A9A9'} size={18} />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Tagi:</DropDownInfoText>
+                      </View>
+                      {showTags ? tagsList : <></>}
+                    </View>
+                    <View style={styles.ModalFilterViewStyle}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'baseline',
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setShowCategories(!showCategories);
+                          }}
+                        >
+                          <FontAwesome
+                            name={showCategories ? 'chevron-down' : 'chevron-right'}
+                            color={'#A9A9A9'}
+                            size={18}
+                          />
+                        </TouchableOpacity>
+                        <DropDownInfoText style={{ marginLeft: 15 }}>Umiejętności:</DropDownInfoText>
+                      </View>
+                      {showCategories ? categoriesList : <></>}
+                    </View>
+                  </ScrollView>
+                </View>
+              </View>
+            </Modal>
+
+            <SelectDropdown
+              data={sort}
+              defaultValueByIndex={0}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item;
+              }}
+              buttonStyle={styles.DropdownButtonStyle}
+              buttonTextStyle={styles.DropdownButtonTextStyle}
+              renderDropdownIcon={(isOpened) => {
+                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A9A9A9'} size={18} />;
+              }}
+              dropdownIconPosition={'right'}
+              dropdownStyle={styles.DropDownStyle1}
+              rowStyle={styles.DropdownRowStyle}
+              rowTextStyle={styles.DropdownRowTextStyle}
+            />
+            <HomeTextInput
+              value={input}
+              onChangeText={(text) => setInput(text)}
+              backgroundColor={'#FFFFFF'}
+              placeholderTextColor={'#D6D6D6'}
+              placeholder="szukaj"
+            />
+          </HomeLabel>
+          <View style={{ height: '86.5%' }}>
+            <ScrollView contentContainerStyle={{ alignItems: 'center', marginTop: 5 }}>{filteredCommisions}</ScrollView>
+          </View>
+        </SafeAreaView>
+      )}
+    </>
   );
 }
 

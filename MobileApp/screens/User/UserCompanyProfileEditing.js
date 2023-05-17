@@ -6,11 +6,13 @@ import {
   Colors,
   RegularTextInput,
   AppTextInput,
+  LinkTextInput,
   AppText,
   Avatar,
   Bubble,
   Line,
   HeaderTextInput,
+  MsgBox,
 } from '../../components/styles';
 //SecureStoring accessToken
 import * as SecureStore from 'expo-secure-store';
@@ -51,8 +53,10 @@ async function getValueFor(key) {
 }
 
 const CompanyProfileEditing = ({ route, navigation }) => {
+  const [message, setMessage] = useState();
+  const [messageType, setMessageType] = useState();
   const [token, setToken] = useState('');
-  const [companyProfile, setcompanyProfile] = useState('dadsa');
+  const [companyProfile, setcompanyProfile] = useState('');
   const [facebook, setFacebook] = useState('');
   const [instagram, setInstagram] = useState('');
   const [linkedin, setLinkedin] = useState('');
@@ -63,7 +67,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
   const [REGON, setREGON] = useState('');
   const [KRS, setKRS] = useState('');
   const [adress, setAdress] = useState('');
-  const [companyName, setCompanyName] = useState('');
+  const [companyName, setCompanyName] = useState('Oracle');
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
@@ -75,25 +79,35 @@ const CompanyProfileEditing = ({ route, navigation }) => {
   //   console.log(t);
   // }
 
+  const handleMessage = (message, type = 'FAILED') => {
+    setMessage(message);
+    setMessageType(type);
+  };
+
   function facebookPatternValidation(name) {
+    if(name === '') {return true;}
     const regex = new RegExp(
       /(?:https?:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/,
     );
     return regex.test(name);
   }
   function instagramPatternValidation(name) {
+    if(name === '') {return true;}
     const regex = new RegExp(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/);
     return regex.test(name);
   }
   function twitterPatternValidation(name) {
+    if(name === '') {return true;}
     const regex = new RegExp(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]{5,15}(\?(\w+=\w+&?)*)?/);
     return regex.test(name);
   }
   function linkedinPatternValidation(name) {
+    if(name === '') {return true;}
     const regex = new RegExp(/(https?:\/\/)?(www\.)?linkedin\.com\/[A-Za-z0-9_.]{1,30}/);
     return regex.test(name);
   }
   function websitePatternValidation(name) {
+    if(name === '') {return true;}
     const regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/);
     return regex.test(name);
   }
@@ -123,32 +137,105 @@ const CompanyProfileEditing = ({ route, navigation }) => {
   //   getAccessToken();
   // }, []);
 
-  //   useEffect(() => {
-  //     if (username) {
-  //       let config = {
-  //         method: 'get',
-  //         maxBodyLength: Infinity,
-  //         url: baseURL + '/api/artist/getArtistProfile?username=' + username,
-  //         headers: {},
-  //       };
+  useEffect(() => {
+    if (companyName) {
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: baseURL + '/companies/getCompanyProfileByName',
+        params: { name: companyName},
+        headers: {},
+      };
 
-  //       const fetchData = async () => {
-  //         try {
-  //           console.log(config.url);
-  //           const result = await axios.request(config);
-  //           console.log(result.data);
-  //           setArtistProfile(result.data);
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       };
+      const fetchData = async () => {
+        try {
+          const result = await axios.request(config);
+          console.log(result.data);
+          setcompanyProfile(result.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
-  //       fetchData();
-  //     }
-  //   }, [username]);
+      fetchData();
+    }
+  }, [companyName]);
+
+  useEffect(() => {
+    setAdress(companyProfile.companyAdress);
+    setDescription(companyProfile.description);
+    setFacebook(companyProfile.facebook);
+    setInstagram(companyProfile.instagram);
+    setKRS(companyProfile.krs);
+    setLinkedin(companyProfile.linkedin);
+    setNIP(companyProfile.nip);
+    setREGON(companyProfile.regon);
+    setTwitter(companyProfile.twitter);
+    setWebsite(companyProfile.website);
+  }, [companyProfile]);
+
+  async function updateCompanyProfile() {
+    handleMessage('');
+    if(!facebookPatternValidation(facebook) ||
+    !twitterPatternValidation(twitter) ||
+    !instagramPatternValidation(instagram) ||
+    !websitePatternValidation(website) ||
+    !linkedinPatternValidation(linkedin)) {
+      handleMessage('Źle wpisano link','FAILED');
+      return;
+    }
+
+    const response = await axios
+      .put(
+        baseURL + '/companies/updateCompanyProfileByName',
+        {
+          name: companyName,
+          description: description,
+          profileImageUrl: '',
+          profileBannerUrl: '',
+          nip: NIP,
+          regon: REGON,
+          krs: KRS,
+          website: website,
+          facebook: facebook,
+          linkedin: linkedin,
+          twitter: twitter,
+          instagram: instagram,
+          companyAdress: adress
+        },
+        {
+          params: { name: companyName },
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        },
+      )
+      .catch((error) => {
+        handleMessage('Wystąpił błąd', 'FAILED');
+        console.log(error);
+      });
+    if ((response.status = 200)) {
+      handleMessage('Zapisano zmiany!', 'SUCCESS');
+    }
+  }
 
   function ListLinks() {
     if (companyProfile) {
+      function setValid(text, id) {
+        if (id === 1) {
+          return facebookPatternValidation(text);
+        }
+        if (id === 2) {
+          return instagramPatternValidation(text);
+        }
+        if (id === 3) {
+          return linkedinPatternValidation(text);
+        }
+        if (id === 5) {
+          return twitterPatternValidation(text);
+        }
+        if (id === 6) {
+          return websitePatternValidation(text);
+        }
+      }
       function changeLink(text, id) {
         if (id === 1) {
           setFacebook(text);
@@ -162,21 +249,21 @@ const CompanyProfileEditing = ({ route, navigation }) => {
         if (id === 5) {
           setTwitter(text);
         }
-        if (id === 7) {
+        if (id === 6) {
           setWebsite(text);
         }
       }
       const links = [
-        { id: 1, name: 'Facebook:', data: facebook },
-        { id: 2, name: 'Instagram:', data: instagram },
-        { id: 3, name: 'LinkedIn:', data: linkedin },
-        { id: 5, name: 'Twitter:', data: twitter },
-        { id: 7, name: 'Twoja strona:', data: website },
+        { id: 1, name: 'Facebook:', data: facebook},
+        { id: 2, name: 'Instagram:', data: instagram},
+        { id: 3, name: 'LinkedIn:', data: linkedin},
+        { id: 5, name: 'Twitter:', data: twitter},
+        { id: 6, name: 'Twoja strona:', data: website},
       ];
       const list = links.map((item) => (
         <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }} key={item.id}>
           <AppText style={{ width: '25%', alignContent: 'flex-start', alignItems: 'flex-start' }}>{item.name}</AppText>
-          <AppTextInput
+          <LinkTextInput
             maxLength={100}
             style={{ flexWrap: 'wrap', width: '70%' }}
             defaultValue={item.data}
@@ -186,6 +273,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
             placeholder="Wpisz adres"
             autoComplete="off"
             autoCorrect={false}
+            checkRegex={setValid(item.data, item.id)}
           />
         </View>
       ));
@@ -194,7 +282,6 @@ const CompanyProfileEditing = ({ route, navigation }) => {
       return <View></View>;
     }
   }
-
   return (
     <>
       {companyProfile ? (
@@ -315,8 +402,10 @@ const CompanyProfileEditing = ({ route, navigation }) => {
               marginBottom: 15,
             }}
           >
+             <MsgBox type={messageType}>{message}</MsgBox>
           <Pressable
               onPress={() => {
+                updateCompanyProfile();
               }}
               style={({ pressed }) => [
                 {

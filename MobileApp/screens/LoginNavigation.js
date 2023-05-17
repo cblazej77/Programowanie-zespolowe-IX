@@ -28,7 +28,7 @@ const LoginNavigation = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="UserCompanyScreen"
+        initialRouteName="Login"
       >
         <Stack.Screen name="MainNavigation" component={MainNavigation} />
         <Stack.Screen name="Login" component={Login} />

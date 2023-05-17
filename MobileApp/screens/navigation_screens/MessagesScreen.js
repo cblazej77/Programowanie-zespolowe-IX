@@ -190,16 +190,14 @@ function MessagesScreen({ navigation }) {
   const [input, setInput] = useState('');
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
-      <LinearGradient colors={[darkLight, darkLight2]}>
         <ChatLabel
           style={{
-            height: 60,
+            height: '8%',
             justifyContent: 'center',
           }}
         >
           <HeaderText>Wiadomości</HeaderText>
         </ChatLabel>
-      </LinearGradient>
 
       <View
         style={{

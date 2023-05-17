@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, Linking } from 'react-native';
+import { View, StyleSheet, Linking, Alert } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Colors, RegularText, StatsText, AppText, Avatar, Bubble, Line, HeaderText } from '../../components/styles';
 import Stars from 'react-native-stars';
@@ -67,12 +67,15 @@ const Profile = ({ navigation }) => {
 
   const OpenLinkElement = ({ link, children1, children2, color }) => {
     const handlePress = useCallback(async () => {
-      const supported = await Linking.canOpenURL('https://' + link);
+      if(!link.startsWith('https://')) {
+        link = 'https://' + link;
+      }
+      const supported = await Linking.canOpenURL(link);
 
       if (supported) {
-        await Linking.openURL('https://' + link);
+        await Linking.openURL(link);
       } else {
-        Alert.alert(`Nie można otworzyć takiego URL'a: https://${link}`);
+        Alert.alert(`Nie można otworzyć takiego URL'a: ${link}`);
       }
     }, [link]);
 

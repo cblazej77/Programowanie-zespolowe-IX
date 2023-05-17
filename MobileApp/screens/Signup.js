@@ -52,7 +52,7 @@ const Signup = ({ navigation }) => {
   const [submitting, setSubmitting] = useState(false);
 
   function passwordPatternValidation(password) {
-    const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$');
+    const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$');
     return regex.test(password);
   }
 
@@ -62,7 +62,7 @@ const Signup = ({ navigation }) => {
   }
 
   function namesPatternValidation(name) {
-    const regex = new RegExp("^([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$");
+    const regex = new RegExp("^([A-ZÀ-ÿŻŹĆĄŚĘŁÓŃ]+[-,a-zżźćńółęąś. ']*[ ]*)+$");
     return regex.test(name);
   }
 

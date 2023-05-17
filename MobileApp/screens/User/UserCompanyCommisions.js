@@ -82,11 +82,11 @@ const CommisionElement = (props) => {
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
   return (
-    <View style={[styles.Commision, styles.boxShadow]}>
+    <View style={[styles.Commision]}>
       <View style={styles.TopContainer}>
         <View style={styles.TitleContainer}>
           <View style={styles.TitleText}>
-            <StatsText>{props.title}</StatsText>
+            <StatsText style={{textAlign: 'left'}}>{props.title}</StatsText>
           </View>
           <Bubble style={[styles.LevelBubble]}>
             <AppText style={{ fontSize: 10, color: darkLight }}>{props.level}</AppText>
@@ -264,7 +264,8 @@ export default CompanyCommisions;
 const styles = StyleSheet.create({
   Commision: {
     borderRadius: 15,
-    borderColor: gray,
+    borderColor: '#0F0F0F33',
+    borderWidth: 1,
     padding: 5,
     margin: 5,
     marginRight: 5,
@@ -296,6 +297,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     borderColor: '#a8a5a5',
     borderWidth: 1,
+    
   },
   MiddleText1: {
     color: '#a8a5a5',
@@ -330,6 +332,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
     borderColor: '#a8a5a5',
     borderWidth: 1,
+    
   },
   centeredView: {
     flex: 1,

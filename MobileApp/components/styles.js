@@ -55,6 +55,14 @@ export const AppTextInput = styled.TextInput`
     padding: 7px 8px 7px 8px;
 `;
 
+export const LinkTextInput = styled.TextInput`
+    fontFamily: 'LexendDeca-VariableFont_wght';
+    borderWidth: 1px;
+    borderColor: ${(props) => props.checkRegex ? grey : red}
+    borderRadius: 12px;
+    padding: 7px 8px 7px 8px;
+`;
+
 export const HeaderText = styled(AppText)`
     color: ${primary};
     fontSize: 26px;
@@ -155,6 +163,22 @@ export const PageLogo = styled.Image`
 `;
 
 export const Avatar = styled.Image`
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    border-radius: 50px;
+    border-width: 2px;
+    border-color: ${darkLight};
+`;
+
+export const MediumAvatar = styled.Image`
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    border-radius: 50px;
+`;
+
+export const SmallAvatar = styled.Image`
     width: 100px;
     height: 100px;
     margin: auto;

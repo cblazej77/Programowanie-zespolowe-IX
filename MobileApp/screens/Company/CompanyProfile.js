@@ -43,7 +43,8 @@ async function getValueFor(key) {
 
 const CompanyProfile = ({ route, navigation }) => {
   const [token, setToken] = useState('');
-  const [companyProfile, setcompanyProfile] = useState('dadsa');
+  const [companyProfile, setcompanyProfile] = useState('');
+  const companyName = 'Oracle';
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
@@ -80,38 +81,38 @@ const CompanyProfile = ({ route, navigation }) => {
   //   getAccessToken();
   // }, []);
 
-//   useEffect(() => {
-//     if (username) {
-//       let config = {
-//         method: 'get',
-//         maxBodyLength: Infinity,
-//         url: baseURL + '/api/artist/getArtistProfile?username=' + username,
-//         headers: {},
-//       };
+  useEffect(() => {
+    if (companyName) {
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: baseURL + '/companies/getCompanyProfileByName',
+        params: { name: companyName},
+        headers: {},
+      };
 
-//       const fetchData = async () => {
-//         try {
-//           console.log(config.url);
-//           const result = await axios.request(config);
-//           console.log(result.data);
-//           setArtistProfile(result.data);
-//         } catch (error) {
-//           console.log(error);
-//         }
-//       };
+      const fetchData = async () => {
+        try {
+          const result = await axios.request(config);
+          console.log(result.data);
+          setcompanyProfile(result.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
-//       fetchData();
-//     }
-//   }, [username]);
+      fetchData();
+    }
+  }, [companyName]);
 
   function ListLinks() {
     if (companyProfile) {
       const links = [
-        { id: 1, data: companyProfile.facebook },
-        { id: 2, data: companyProfile.instagram },
-        { id: 3, data: companyProfile.linkedin },
-        { id: 4, data: companyProfile.twitter },
-        { id: 5, data: companyProfile.website },
+        { id: 0, data: companyProfile.facebook },
+        { id: 1, data: companyProfile.instagram },
+        { id: 2, data: companyProfile.linkedin },
+        { id: 3, data: companyProfile.twitter },
+        { id: 4, data: companyProfile.website },
       ];
       const names = [
         { enum: 'facebook', name: 'Facebook', color: '#4267B2' },
@@ -147,8 +148,8 @@ const CompanyProfile = ({ route, navigation }) => {
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
             <Avatar resizeMode="contain" source={require('../../assets/img/avatar1.png')}></Avatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
-              <HeaderText numberOfLines={1} style={{ width: '75%', marginLeft: 10, color: black }}>
-                {'Nazwa Firmy'}
+              <HeaderText numberOfLines={1} style={{ width: '75%', marginLeft: 10, color: darkLight , fontSize: 22}}>
+                {companyProfile.name}
               </HeaderText>
             </View>
           </View>
@@ -177,7 +178,7 @@ const CompanyProfile = ({ route, navigation }) => {
           </View>
           <AppText style={styles.About}>O firmie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
-            {'Tutaj bedzie znajdowac sie opis firmy'}
+            {companyProfile.description}
           </RegularText>
           <View>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -185,13 +186,20 @@ const CompanyProfile = ({ route, navigation }) => {
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <AppText style={styles.ListHeader}>Adres:</AppText>
+              <AppText style={[styles.ListHeader, {color: darkLight}]}>{companyProfile.companyAdress}</AppText>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <AppText style={styles.ListHeader}>NIP:</AppText>
+              <AppText style={[styles.ListHeader, {color: darkLight}]}>{companyProfile.nip}</AppText>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <AppText style={styles.ListHeader}>REGON:</AppText>
+              <AppText style={[styles.ListHeader, {color: darkLight}]}>{companyProfile.regon}</AppText>
             </View>
+            {companyProfile.krs ? (<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <AppText style={styles.ListHeader}>KRS:</AppText>
+              <AppText style={[styles.ListHeader, {color: darkLight}]}>{companyProfile.krs}</AppText>
+            </View>) : (<></>)}
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Line style={{ width: '90%' }} />
             </View>

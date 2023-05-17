@@ -57,7 +57,7 @@ const Login = ({ navigation }) => {
   const [submitting, setSubmitting] = useState(false);
 
   function passwordPatternValidation(password) {
-    const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$');
+    const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$');
     return regex.test(password);
   }
 
@@ -93,6 +93,7 @@ const Login = ({ navigation }) => {
   useEffect(() => {
     if (responseG?.type === 'success') {
       setGoogleSubmiting(false);
+      console.log(responseG);
       save('accessToken', JSON.stringify(responseG.authentication.accessToken));
       navigation.navigate('MainNavigation');
     }

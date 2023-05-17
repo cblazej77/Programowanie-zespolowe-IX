@@ -107,13 +107,13 @@ const CommisionElement = (props) => {
       <View style={styles.TopContainer}>
         <View style={styles.TitleContainer}>
           <View style={styles.TitleText}>
-            <StatsText>{props.title}</StatsText>
+            <StatsText style={{ textAlign: 'left' }}>{props.title}</StatsText>
           </View>
           <Bubble style={[styles.LevelBubble]}>
             <AppText style={{ fontSize: 10, color: darkLight }}>{props.level}</AppText>
           </Bubble>
         </View>
-        <RegularText style={{ maxWidth: '20%' }}>{props.stawka + ' PLN'}</RegularText>
+        <RegularText style={{ maxWidth: '20%', textAlign: 'right' }}>{props.stawka + ' PLN'}</RegularText>
       </View>
       <View style={styles.MiddleContainer}>
         {props.location.length > 1 ? (
@@ -817,22 +817,20 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                   <HeaderTextInput
                     maxLength={255}
                     multiline={true}
-                    style={{ color: darkLight }}
+                    style={{ color: darkLight, maxWidth: '95%', width: '90%', textAlign: 'left' }}
                     value={title}
                     onChangeText={setTitle}
                     placeholder="Wpisz tytuł"
                   ></HeaderTextInput>
                   <Line style={{ width: '90%', height: 2 }} />
-                  <View style={styles.ModalDescription}>
-                    <RegularTextInput
-                      maxLength={255}
-                      multiline={true}
-                      style={{ color: '#6e6968' }}
-                      value={description}
-                      onChangeText={setDescription}
-                      placeholder="Wpisz opis"
-                    ></RegularTextInput>
-                  </View>
+                  <RegularTextInput
+                    maxLength={255}
+                    multiline={true}
+                    style={{ color: '#6e6968', maxWidth: '100%', width: '90%', textAlign: 'left' }}
+                    value={description}
+                    onChangeText={setDescription}
+                    placeholder="Wpisz opis"
+                  ></RegularTextInput>
                   <Line style={{ width: '90%', height: 1 }} />
                   <View style={styles.ModalCommisionDetails}>
                     <View style={styles.ModalDetail}>
@@ -1298,6 +1296,7 @@ const styles = StyleSheet.create({
   },
   TitleText: {
     maxWidth: '92%',
+    textAlign: 'left',
   },
   LevelBubble: {
     maxHeight: 20,

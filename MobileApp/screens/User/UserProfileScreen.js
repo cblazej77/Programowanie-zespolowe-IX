@@ -69,7 +69,7 @@ export default function ProfileScreen({ navigation }) {
         <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
           <ChatLabel
             style={{
-              height: 60,
+              height: '8%',
               justifyContent: 'flex-end',
             }}
           >
