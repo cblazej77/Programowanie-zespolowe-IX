@@ -16,9 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "users")
 public class UserEntity {
-
-    private static RoleRepository roleRepository;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
