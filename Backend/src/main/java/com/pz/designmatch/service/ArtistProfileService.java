@@ -15,6 +15,7 @@ import com.pz.designmatch.specification.ArtistProfileSpecification;
 import com.pz.designmatch.util.mapper.ArtistProfileMapper;
 import com.pz.designmatch.util.mapper.EducationMapper;
 import com.pz.designmatch.util.mapper.ExperienceMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,19 +55,19 @@ public class ArtistProfileService {
     public ArtistProfileResponse getArtistProfile(String username) {
         return artistProfileRepository.findByUser_Username(username)
                 .map(artistProfileMapper::mapToDto)
-                .orElseThrow(() -> new RuntimeException("Artist profile not found for username: " + username));
+                .orElseThrow(() -> new EntityNotFoundException("Artist profile not found for username: " + username));
     }
 
     public ShortArtistProfileResponse getShortArtistProfile(String username) {
         return artistProfileRepository.findByUser_Username(username)
                 .map(artistProfileMapper::mapToShortDto)
-                .orElseThrow(() -> new RuntimeException("Artist profile not found for username: " + username));
+                .orElseThrow(() -> new EntityNotFoundException("Artist profile not found for username: " + username));
     }
 
     @Transactional
     public ArtistProfileResponse updateArtistProfileByUsername(String username, ArtistProfileRequest artistProfile) {
         UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("This user doesn't exist: " + username));
+                .orElseThrow(() -> new EntityNotFoundException("This user doesn't exist: " + username));
 
         ArtistProfile existingArtistProfile = artistProfileRepository.findByUser_Username(username)
                 .orElseGet(() -> {
@@ -77,27 +78,22 @@ public class ArtistProfileService {
 
         Optional.ofNullable(artistProfile.getBio())
                 .ifPresent(existingArtistProfile::setBio);
-
         Optional.ofNullable(artistProfile.getLevel())
                 .map(Level::fromDisplayName)
                 .ifPresent(existingArtistProfile::setLevel);
-
         Optional.ofNullable(artistProfile.getLocation())
                 .map(City::fromDisplayName)
                 .ifPresent(existingArtistProfile::setCity);
-
         Optional.ofNullable(artistProfile.getSkills())
                 .map(skills -> skills.stream()
                         .map(Skill::fromDisplayName)
                         .collect(Collectors.toSet()))
                 .ifPresent(existingArtistProfile::setSkills);
-
         Optional.ofNullable(artistProfile.getTags())
                 .map(tags -> tags.stream()
                         .map(Tag::fromDisplayName)
                         .collect(Collectors.toSet()))
                 .ifPresent(existingArtistProfile::setTags);
-
         Optional.ofNullable(artistProfile.getLanguages())
                 .map(languages -> languages.stream()
                         .map(Language::fromDisplayName)
@@ -116,22 +112,16 @@ public class ArtistProfileService {
 
         Optional.ofNullable(artistProfile.getWebsite())
                 .ifPresent(existingArtistProfile::setWebsite);
-
         Optional.ofNullable(artistProfile.getFacebook())
                 .ifPresent(existingArtistProfile::setFacebook);
-
         Optional.ofNullable(artistProfile.getLinkedin())
                 .ifPresent(existingArtistProfile::setLinkedin);
-
         Optional.ofNullable(artistProfile.getInstagram())
                 .ifPresent(existingArtistProfile::setInstagram);
-
         Optional.ofNullable(artistProfile.getDribble())
                 .ifPresent(existingArtistProfile::setDribble);
-
         Optional.ofNullable(artistProfile.getPinterest())
                 .ifPresent(existingArtistProfile::setPinterest);
-
         Optional.ofNullable(artistProfile.getTwitter())
                 .ifPresent(existingArtistProfile::setTwitter);
 

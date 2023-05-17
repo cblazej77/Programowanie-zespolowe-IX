@@ -6,6 +6,7 @@ import com.pz.designmatch.model.user.CompanyProfile;
 import com.pz.designmatch.repository.CompanyProfileRepository;
 import com.pz.designmatch.service.CompanyProfileService;
 import com.pz.designmatch.util.mapper.CompanyProfileMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     @Override
     public CompanyProfileResponse updateCompanyProfileByUsername(String username, CompanyProfileRequest companiesDto) {
         CompanyProfile existingCompanyProfile = companyProfileRepository.findByUser_Username(username)
-                .orElseThrow(() -> new RuntimeException("Nie znaleziono profilu firmy dla użytkownika " + username));
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu firmy dla użytkownika " + username));
 
         Optional.ofNullable(companiesDto.getName()).ifPresent(existingCompanyProfile::setName);
         Optional.ofNullable(companiesDto.getDescription()).ifPresent(existingCompanyProfile::setDescription);
@@ -46,6 +47,6 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     @Override
     public CompanyProfileResponse getCompanyProfileByUsername(String username) {
         return companyProfileMapper.mapToResponse(companyProfileRepository.findByUser_Username(username)
-                .orElseThrow(() -> new RuntimeException("Nie znaleziono profilu firmy dla użytkownika " + username)));
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu firmy dla użytkownika " + username)));
     }
 }
