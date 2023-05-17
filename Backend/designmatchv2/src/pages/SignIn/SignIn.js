@@ -27,7 +27,7 @@ export const SignIn = () => {
   const location = useLocation()
 
   const redirectPath = location.state?.path || '/';
-  const LOGIN_URL = '/api/auth/login';
+  const LOGIN_URL = '/auth/login';
 
   const handleCheckBlockButton = () => {
     if(email === "" || password === "") {
