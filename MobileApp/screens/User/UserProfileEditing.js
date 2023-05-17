@@ -11,6 +11,7 @@ import {
   Line,
   RegularTextInput,
   AppTextInput,
+  LinkTextInput,
   ModalBubble,
   MsgBox,
   HeaderText,
@@ -86,7 +87,6 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   const [bio, setBio] = useState('');
   const [level, setLevel] = useState('');
   const [location, setLocation] = useState('');
-  const [dribble, setDribble] = useState('');
   const [facebook, setFacebook] = useState('');
   const [instagram, setInstagram] = useState('');
   const [linkedin, setLinkedin] = useState('');
@@ -108,30 +108,46 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   };
 
   function facebookPatternValidation(name) {
-    const regex = new RegExp(/(?:https?:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/);
+    if (name === '') {
+      return true;
+    }
+    const regex = new RegExp(
+      /(?:https?:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/,
+    );
     return regex.test(name);
   }
   function instagramPatternValidation(name) {
+    if (name === '') {
+      return true;
+    }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/);
     return regex.test(name);
   }
   function pinterestPatternValidation(name) {
+    if (name === '') {
+      return true;
+    }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?[a-z_.]{1,3}pinterest\.com\/[A-Za-z0-9_.]{1,30}/);
     return regex.test(name);
   }
   function twitterPatternValidation(name) {
+    if (name === '') {
+      return true;
+    }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]{5,15}(\?(\w+=\w+&?)*)?/);
     return regex.test(name);
   }
   function linkedinPatternValidation(name) {
+    if (name === '') {
+      return true;
+    }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?linkedin\.com\/[A-Za-z0-9_.]{1,30}/);
     return regex.test(name);
   }
-  function dribbblePatternValidation(name) {
-    const regex = new RegExp("^([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+$");
-    return regex.test(name);
-  }
   function websitePatternValidation(name) {
+    if (name === '') {
+      return true;
+    }
     const regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/);
     return regex.test(name);
   }
@@ -290,7 +306,6 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
     setBio('');
     setLevel('');
     setLocation('');
-    setDribble('');
     setFacebook('');
     setInstagram('');
     setTwitter('');
@@ -310,22 +325,19 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   }
 
   async function updateArtistProfile() {
-    if(!facebookPatternValidation(facebook) ||
-    !twitterPatternValidation(twitter) ||
-    !instagramPatternValidation(instagram) ||
-    !websitePatternValidation(website) ||
-    !linkedinPatternValidation(linkedin) ||
-    !pinterestPatternValidation(pinterest)) {
-      handleMessage('Źle wpisano link','FAILED');
+    handleMessage('');
+    if (
+      !facebookPatternValidation(facebook) ||
+      !twitterPatternValidation(twitter) ||
+      !instagramPatternValidation(instagram) ||
+      !websitePatternValidation(website) ||
+      !linkedinPatternValidation(linkedin) ||
+      !pinterestPatternValidation(pinterest)
+    ) {
+      handleMessage('Źle wpisano link', 'FAILED');
       return;
     }
 
-    // education.map((item, index) => {
-    //   delete item.id;
-    // });
-    // experience.map((item, index) => {
-    //   delete item.id;
-    // });
     const response = await axios
       .put(
         baseURL + '/api/artist/updateArtistProfile',
@@ -342,7 +354,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           facebook: facebook,
           linkedin: linkedin,
           instagram: instagram,
-          dribble: dribble,
+          dribble: '',
           pinterest: pinterest,
           twitter: twitter,
         },
@@ -602,7 +614,6 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
       for (let i = 0; i < artistProfile.languages.length; i++) {
         handleAddLanguage(artistProfile.languages[i]);
       }
-      setDribble(artistProfile.dribble);
       setFacebook(artistProfile.facebook);
       setInstagram(artistProfile.instagram);
       setLinkedin(artistProfile.linkedin);
@@ -754,7 +765,16 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           <View style={{ alignItems: 'center' }}>
             <TouchableOpacity
               onPress={() => {
-                handleAddEducationElement(getIdOfLastEducationElement() + 1, '', '', '', '', '01/01/1970', '01/01/1970', '');
+                handleAddEducationElement(
+                  getIdOfLastEducationElement() + 1,
+                  '',
+                  '',
+                  '',
+                  '',
+                  '01/01/1970',
+                  '01/01/1970',
+                  '',
+                );
               }}
             >
               <Bubble style={[{ alignContent: 'center', marginBottom: 3, marginTop: 3 }, styles.boxShadow]}>
@@ -888,7 +908,15 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           <View style={{ alignItems: 'center' }}>
             <TouchableOpacity
               onPress={() => {
-                handleAddExperienceElement(getIdOfLastExperienceElement() + 1, '', '', '', '', '01/01/1970', '01/01/1970');
+                handleAddExperienceElement(
+                  getIdOfLastExperienceElement() + 1,
+                  '',
+                  '',
+                  '',
+                  '',
+                  '01/01/1970',
+                  '01/01/1970',
+                );
               }}
             >
               <Bubble style={[{ alignContent: 'center', marginBottom: 3, marginTop: 3 }, styles.boxShadow]}>
@@ -1085,42 +1113,58 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
 
   function ListLinks() {
     if (artistProfile) {
+      function setValid(text, id) {
+        if (id === 1) {
+          return facebookPatternValidation(text);
+        }
+        if (id === 2) {
+          return instagramPatternValidation(text);
+        }
+        if (id === 3) {
+          return linkedinPatternValidation(text);
+        }
+        if (id === 4) {
+          return pinterestPatternValidation(text);
+        }
+        if (id === 5) {
+          return twitterPatternValidation(text);
+        }
+        if (id === 6) {
+          return websitePatternValidation(text);
+        }
+      }
       function changeLink(text, id) {
-        if(id === 1) {
+        if (id === 1) {
           setFacebook(text);
         }
-        if(id === 2) {
+        if (id === 2) {
           setInstagram(text);
         }
-        if(id === 3) {
+        if (id === 3) {
           setLinkedin(text);
         }
-        if(id === 4) {
+        if (id === 4) {
           setPinterest(text);
         }
-        if(id === 5) {
+        if (id === 5) {
           setTwitter(text);
         }
-        if(id === 6) {
-          setDribble(text);
-        }
-        if(id === 7) {
+        if (id === 6) {
           setWebsite(text);
         }
-      };
+      }
       const links = [
-        { id: 1, name: 'Facebook:', data: facebook },
-        { id: 2, name: 'Instagram:', data: instagram },
-        { id: 3, name: 'LinkedIn:', data: linkedin },
-        { id: 4, name: 'Pinterest:', data: pinterest },
-        { id: 5, name: 'Twitter:', data: twitter },
-        { id: 6, name: 'Dribbble:', data: dribble },
-        { id: 7, name: 'Twoja strona:', data: website },
+        { id: 1, name: 'Facebook:', data: facebook, valid: true},
+        { id: 2, name: 'Instagram:', data: instagram},
+        { id: 3, name: 'LinkedIn:', data: linkedin},
+        { id: 4, name: 'Pinterest:', data: pinterest},
+        { id: 5, name: 'Twitter:', data: twitter},
+        { id: 6, name: 'Twoja strona:', data: website},
       ];
       const list = links.map((item) => (
         <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }} key={item.id}>
           <AppText style={{ width: '25%', alignContent: 'flex-start', alignItems: 'flex-start' }}>{item.name}</AppText>
-          <AppTextInput
+          <LinkTextInput
             maxLength={100}
             style={{ flexWrap: 'wrap', width: '70%' }}
             defaultValue={item.data}
@@ -1130,6 +1174,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
             placeholder="Wpisz adres"
             autoComplete="off"
             autoCorrect={false}
+            checkRegex={setValid(item.data, item.id)}
           />
         </View>
       ));
@@ -1146,22 +1191,23 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
             <Avatar resizeMode="contain" source={require('../../assets/img/avatar.png')}></Avatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
-            <Pressable
-              onPress={() => {
-              }}
-              style={({ pressed }) => [
-                {
-                  backgroundColor: pressed ? 'lightgrey' : darkLight,
-                },
-                styles.ModalButton,
-              ]}
-            >
-              <AppText style={{ color: primary }}>Zmień zdjęcie profilowe</AppText>
-            </Pressable>
+              <Pressable
+                onPress={() => {}}
+                style={({ pressed }) => [
+                  {
+                    backgroundColor: pressed ? 'lightgrey' : darkLight,
+                  },
+                  styles.ModalButton,
+                ]}
+              >
+                <AppText style={{ color: primary }}>Zmień zdjęcie profilowe</AppText>
+              </Pressable>
             </View>
           </View>
-          <View style={{ marginLeft: 15, justifyContent: 'space-between'}}>
-            <HeaderText style={{color:darkLight, fontSize: 20}}>{userInfo.firstname + ' ' + userInfo.lastname}</HeaderText>
+          <View style={{ marginLeft: 15, justifyContent: 'space-between' }}>
+            <HeaderText style={{ color: darkLight, fontSize: 20 }}>
+              {userInfo.firstname + ' ' + userInfo.lastname}
+            </HeaderText>
           </View>
           <AppText style={styles.About}>O mnie:</AppText>
           <RegularTextInput
@@ -1381,7 +1427,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
             }}
           >
             <MsgBox type={messageType}>{message}</MsgBox>
-             <Pressable
+            <Pressable
               onPress={() => {
                 updateArtistProfile();
               }}
