@@ -70,15 +70,8 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
     @Override
     @Transactional
     public ArtistProfileResponse updateArtistProfileByUsername(String username, ArtistProfileRequest artistProfile) {
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("This user doesn't exist: " + username));
-
         ArtistProfile existingArtistProfile = artistProfileRepository.findByUser_Username(username)
-                .orElseGet(() -> {
-                    ArtistProfile newArtistProfile = new ArtistProfile();
-                    newArtistProfile.setUser(user);
-                    return artistProfileRepository.save(newArtistProfile);
-                });
+                .orElseThrow(() -> new EntityNotFoundException("Artist profile not found for username: " + username));
 
         Optional.ofNullable(artistProfile.getBio())
                 .ifPresent(existingArtistProfile::setBio);

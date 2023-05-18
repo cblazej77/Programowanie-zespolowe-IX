@@ -31,15 +31,8 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     @Override
     public CompanyProfileResponse updateCompanyProfileByUsername(String username, CompanyProfileRequest companiesDto) {
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("This user doesn't exist: " + username));
-
         CompanyProfile existingCompanyProfile = companyProfileRepository.findByUser_Username(username)
-                .orElseGet(() -> {
-                    CompanyProfile newcompanyProfile = new CompanyProfile();
-                    newcompanyProfile.setUser(user);
-                    return companyProfileRepository.save(newcompanyProfile);
-                });
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu firmy dla użytkownika " + username));
 
         Optional.ofNullable(companiesDto.getName()).ifPresent(existingCompanyProfile::setName);
         Optional.ofNullable(companiesDto.getDescription()).ifPresent(existingCompanyProfile::setDescription);
