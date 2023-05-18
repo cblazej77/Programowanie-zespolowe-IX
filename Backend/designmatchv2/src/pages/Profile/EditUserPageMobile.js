@@ -385,7 +385,7 @@ const EditUserPageMobile = () => {
           twitter: twitter,
         },
         {
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' , 'Access-Control-Allow-Origin' : '*'  },
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' , 'Access-Control-Allow-Origin' : '*', 'Authorization' : 'Bearer ' + localStorage.getItem("storageLogin")},
         },
       )
       .catch((error) => {
