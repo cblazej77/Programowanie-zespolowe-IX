@@ -28,12 +28,6 @@ public class CommissionController {
         return ResponseEntity.ok(commission);
     }
 
-    @PostMapping(value = "/public/api/commission/create", produces = apiVersionAccept, consumes = apiVersionAccept)
-    public ResponseEntity<CommissionResponse> createCommission(@RequestBody CommissionRequest commission) {
-        CommissionResponse createdCommission = commissionService.createCommission(commission);
-        return ResponseEntity.ok(createdCommission);
-    }
-
     @PostMapping(value = "/public/api/commission/filter", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<Page<CommissionResponse>> filterCommissions(@RequestBody CommissionFilterRequest filterRequest,
                                                                       @RequestParam(defaultValue = "0", name = "page") int page,
@@ -43,6 +37,12 @@ public class CommissionController {
     }
 
 
+
+    @PostMapping(value = "/api/commission/create", produces = apiVersionAccept, consumes = apiVersionAccept)
+    public ResponseEntity<CommissionResponse> createCommission(@RequestBody CommissionRequest commission) {
+        CommissionResponse createdCommission = commissionService.createCommission(commission);
+        return ResponseEntity.ok(createdCommission);
+    }
 
     @PutMapping(value = "/api/commission/updateById/{id}", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<CommissionResponse> updateCommissionById(@PathVariable("id") Long id, @RequestBody CommissionRequest commission) {
