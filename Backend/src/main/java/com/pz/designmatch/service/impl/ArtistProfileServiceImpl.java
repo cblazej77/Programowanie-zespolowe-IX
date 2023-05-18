@@ -72,6 +72,10 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
         ArtistProfile existingArtistProfile = artistProfileRepository.findByUser_Username(username)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
 
+        Optional.ofNullable(artistProfile.getFirstname())
+                .ifPresent(existingArtistProfile::setFirstname);
+        Optional.ofNullable(artistProfile.getLastname())
+                .ifPresent(existingArtistProfile::setLastname);
         Optional.ofNullable(artistProfile.getBio())
                 .ifPresent(existingArtistProfile::setBio);
         Optional.ofNullable(artistProfile.getLevel())
