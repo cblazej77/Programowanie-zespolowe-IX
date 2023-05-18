@@ -114,7 +114,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/filter/getAvailableCities',
+      url: '/public/api/filter/getAvailableCities',
       headers: {},
     }),
     [],
@@ -124,7 +124,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/filter/getAvailableTags',
+      url: '/public/api/filter/getAvailableTags',
       headers: {},
     }),
     [],
@@ -134,7 +134,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/filter/getAvailableLanguages',
+      url: '/public/api/filter/getAvailableLanguages',
       headers: {},
     }),
     [],
@@ -144,7 +144,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/filter/getAvailableLevels',
+      url: '/public/api/filter/getAvailableLevels',
       headers: {},
     }),
     [],
@@ -154,7 +154,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/filter/getAvailableCategories',
+      url: '/public/api/filter/getAvailableCategories',
       headers: {},
     }),
     [],
@@ -165,7 +165,7 @@ const Cards = () => {
       try {
         const response = await axios
           .post(
-            '/artist/filter',
+            '/public/api/artist/filter',
             {
               level: levelsFilter,
               location: citiesFilter,
