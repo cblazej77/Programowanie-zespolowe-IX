@@ -93,7 +93,6 @@ const ButtonEdit = styled.button`
   border: none;
   border-radius: 15px;
   box-shadow: 0px 2px 6px 0 rgba(0, 0, 0, 0.4);
-  }
   &:hover{
     transition: 0.3s;
     border: 2px solid rgba(0, 0, 0, 0.5);
@@ -173,29 +172,29 @@ const EditUserPageMobile = () => {
 
 
   //pobieranie danych z backendu
-  const profileName = 'WojciechDuklas';
+  const profileName = 'jkasinski1';
   let levelsData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableLevels",
+    url: "/public/api/filter/getAvailableLevels",
     headers: {}
   };
   let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: getArtistProfileURL + profileName,
+    url: getArtistProfileURL,
     headers: {}
   };
   let profileNameData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: getShortArtistProfileURL + profileName,
+    url: getShortArtistProfileURL,
     headers: {}
   };
   let citiesData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableCities",
+    url: "/public/api/filter/getAvailableCities",
     headers: {}
   };
  
@@ -367,7 +366,7 @@ const EditUserPageMobile = () => {
     });
     const response = await axios
       .put(
-          '/api/artist/updateArtistProfile',
+          '/api/artist/updateProfileByUsername/jkasinski1',
         {
           bio: bio,
           level: level.value,
@@ -386,8 +385,7 @@ const EditUserPageMobile = () => {
           twitter: twitter,
         },
         {
-          params: { username: profileName },
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' , 'Access-Control-Allow-Origin' : '*'  },
         },
       )
       .catch((error) => {
@@ -399,8 +397,6 @@ const EditUserPageMobile = () => {
       education = null;
     }
   }
-
-
 
   useEffect(() => {
     const fetchData = async () => {

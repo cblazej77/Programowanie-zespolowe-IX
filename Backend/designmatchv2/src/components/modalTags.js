@@ -133,7 +133,7 @@ const ModalTags = ({showModal, setShowModal, tags, setTags}) => {
   let tagsData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableTags",
+    url: "public/api/filter/getAvailableTags",
     headers: {}
   };
 

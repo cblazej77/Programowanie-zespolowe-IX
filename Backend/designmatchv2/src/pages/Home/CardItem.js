@@ -36,38 +36,38 @@ function CardItem(props) {
     <>
     <CardLabel>
       <SimpleInfoContainer>
-        <CardAvatar src={props.avatar} onClick ={handleGoProfile}/>
-        <LevelText>{props.level}</LevelText>
+        <CardAvatar src={props?.avatar} onClick ={handleGoProfile}/>
+        <LevelText>{props?.level}</LevelText>
         <NameText>
-          {props.name} {props.surname}
+          {props?.name} {props?.surname}
         </NameText>
         <div>
           <Rating
-            initialValue={props.rating}
+            initialValue={props?.rating}
             readonly={true}
             precision={0.5}
             size="1.6rem"
           />
-          <RatingText>({props.ratingCount} opinii)</RatingText>
+          <RatingText>({props?.ratingCount} opinii)</RatingText>
         </div>
       </SimpleInfoContainer>
       <DetailedInfoContainer>
-        <CityText>{props.city}, PL</CityText>
+        <CityText>{props?.city}, PL</CityText>
         <CategoryHeaderText>Umiejętności:</CategoryHeaderText>
         <CategoryText>
-          {props.skills[0]}
+          {props?.skills[0]}
           <br />
-          {props.skills[1]}
+          {props?.skills[1]}
           <br />
-          {props.skills[2]}
+          {props?.skills[2]}
           <br />
-          {props.skills[3]}
+          {props?.skills[3]}
         </CategoryText>
       </DetailedInfoContainer>
-      <FirstPhoto src={props.project1} />
-      <SecondPhoto src={props.project2} />
-      <ThirdPhoto src={props.project3} />
-      <FourthPhoto src={props.project4} />
+      <FirstPhoto src={props?.project1} />
+      <SecondPhoto src={props?.project2} />
+      <ThirdPhoto src={props?.project3} />
+      <FourthPhoto src={props?.project4} />
     </CardLabel>
     </>
          

@@ -134,7 +134,7 @@ const ModalSkills = ({showModal, setShowModal, skills, setSkills}) => {
   let skillsData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableCategories",
+    url: "public/api/filter/getAvailableCategories",
     headers: {}
   };
 
@@ -145,6 +145,7 @@ useEffect(() => {
         const skillsResponse = await axios.request(skillsData);
         handleClearAvailableSkills();
         setAvailableCategories(skillsResponse.data);
+        console.log(availableCategories);
     } catch (error) {
         console.log(error);
       }
@@ -154,8 +155,8 @@ useEffect(() => {
 useEffect(() => {
     if(availableCategories) {
         for(let i = 0; i < availableCategories.categories.length; ++i) {
-            for(let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
-                handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
+            for(let j = 0; j < availableCategories.categories[i].skills.length; ++j) {
+                handleAddAvailableSkills(availableCategories.categories[i].skills[j]);
             }
         }
     }

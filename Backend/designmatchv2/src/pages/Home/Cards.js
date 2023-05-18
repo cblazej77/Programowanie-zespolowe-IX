@@ -289,14 +289,14 @@ const Cards = () => {
   });
 
   const categoryOptions = useMemo(() => {
-    if (!Array.isArray(categories.categories)) {
+    if (!Array.isArray(categories?.categories)) {
       return null;
     }
 
     return categories.categories.map((category, indexC) => (
       <CategoryWrapper>
         <CategoryText key={indexC}>{category.name}</CategoryText>
-        {category.subcategories.map((subcategory, indexS) => (
+        {category.skills.map((subcategory, indexS) => (
           <CheckBoxWrapper key={indexS}>
             <div>
               <CheckBox
@@ -420,7 +420,7 @@ const Cards = () => {
                 </FilterDropDownContainer>
                 {showCategories && (
                   <>
-                    {categoryOptions}
+                   {categoryOptions}
                   </>
                 )}
                 <FilterDropDownContainer onClick={handleLevelVisibleClick}>

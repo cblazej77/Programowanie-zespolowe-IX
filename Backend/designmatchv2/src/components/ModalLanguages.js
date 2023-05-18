@@ -133,7 +133,7 @@ const ModalLanguages = ({showModal, setShowModal, languages, setLanguages}) => {
   let languageData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableLanguages",
+    url: "/public/api/filter/getAvailableLanguages",
     headers: {}
   };
 
