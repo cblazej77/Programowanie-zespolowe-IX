@@ -50,5 +50,4 @@ public class UserProfileController {
                 userEntity.getEmail(),
                 userEntity.getUsername());
     }
-
 }

@@ -48,7 +48,6 @@ public class AuthController {
         this.confirmationTokenService = confirmationTokenService;
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken

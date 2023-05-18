@@ -6,7 +6,6 @@ import com.pz.designmatch.dto.response.ArtistProfileResponse;
 import com.pz.designmatch.dto.response.ShortArtistProfileResponse;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
-import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.repository.EducationRepository;
 import com.pz.designmatch.repository.ExperienceRepository;

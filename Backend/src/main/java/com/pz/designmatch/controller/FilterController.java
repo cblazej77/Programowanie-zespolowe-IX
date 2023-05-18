@@ -16,7 +16,7 @@ import java.util.List;
 import static com.pz.designmatch.constants.Constants.apiVersionAccept;
 
 @RestController
-@RequestMapping("/api/filter")
+@RequestMapping("/public/api/filter")
 public class FilterController {
 
     @GetMapping(value = "/getAvailableCategories", produces = apiVersionAccept)

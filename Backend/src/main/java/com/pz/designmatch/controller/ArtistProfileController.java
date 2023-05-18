@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import static com.pz.designmatch.constants.Constants.apiVersionAccept;
 
 @RestController
-@RequestMapping("/api/artist")
 public class ArtistProfileController {
 
     private final ArtistProfileServiceImpl artistProfileServiceImpl;
@@ -25,7 +24,7 @@ public class ArtistProfileController {
         this.artistProfileServiceImpl = artistProfileServiceImpl;
     }
 
-    @GetMapping(value = "/getArtistProfileByUsername/{username}", produces = apiVersionAccept)
+    @GetMapping(value = "/public/api/artist/getArtistProfileByUsername/{username}", produces = apiVersionAccept)
     public ResponseEntity<ArtistProfileResponse> getArtistProfileByUsername(@PathVariable("username") String username) {
         ArtistProfileResponse artistProfile = artistProfileServiceImpl.getArtistProfileByUsername(username);
         return ResponseEntity
@@ -33,23 +32,25 @@ public class ArtistProfileController {
                 .body(artistProfile);
     }
 
-    @GetMapping(value = "/getShortArtistProfileByUsername/{username}", produces = apiVersionAccept)
+    @GetMapping(value = "/public/api/artist/getShortArtistProfileByUsername/{username}", produces = apiVersionAccept)
     public ResponseEntity<ShortArtistProfileResponse> getShortArtistProfileByUsername(@PathVariable String username) {
         ShortArtistProfileResponse artistProfile = artistProfileServiceImpl.getShortArtistProfileByUsername(username);
         return ResponseEntity.ok(artistProfile);
     }
 
-    @PutMapping(value = "/updateProfileByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
-    public ResponseEntity<ArtistProfileResponse> updateCompanyProfileByUsername(@PathVariable("username") String username, @RequestBody ArtistProfileRequest artistProfile) {
-        ArtistProfileResponse updatedArtistProfile = artistProfileServiceImpl.updateArtistProfileByUsername(username, artistProfile);
-        return ResponseEntity.ok(updatedArtistProfile);
-    }
-
-    @PostMapping(value = "/filter", produces = apiVersionAccept, consumes = apiVersionAccept)
+    @PostMapping(value = "/public/api/artist/filter", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<Page<ShortArtistProfileResponse>> filterArtists(@RequestBody ArtistFilterRequest filterRequest,
                                                                           @RequestParam(defaultValue = "0", name = "page") int page,
                                                                           @RequestParam(defaultValue = "10", name = "size") int size) {
         Page<ShortArtistProfileResponse> filteredArtists = artistProfileServiceImpl.filterArtistProfiles(filterRequest, PageRequest.of(page, size));
         return ResponseEntity.ok(filteredArtists);
+    }
+
+
+
+    @PutMapping(value = "/api/artist/updateProfileByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
+    public ResponseEntity<ArtistProfileResponse> updateCompanyProfileByUsername(@PathVariable("username") String username, @RequestBody ArtistProfileRequest artistProfile) {
+        ArtistProfileResponse updatedArtistProfile = artistProfileServiceImpl.updateArtistProfileByUsername(username, artistProfile);
+        return ResponseEntity.ok(updatedArtistProfile);
     }
 }
