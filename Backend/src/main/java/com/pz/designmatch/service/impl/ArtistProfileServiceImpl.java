@@ -57,21 +57,21 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
     public ArtistProfileResponse getArtistProfileByUsername(String username) {
         return artistProfileRepository.findByUser_Username(username)
                 .map(artistProfileMapper::mapToDto)
-                .orElseThrow(() -> new EntityNotFoundException("Artist profile not found for username: " + username));
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
     }
 
     @Override
     public ShortArtistProfileResponse getShortArtistProfileByUsername(String username) {
         return artistProfileRepository.findByUser_Username(username)
                 .map(artistProfileMapper::mapToShortDto)
-                .orElseThrow(() -> new EntityNotFoundException("Artist profile not found for username: " + username));
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
     }
 
     @Override
     @Transactional
     public ArtistProfileResponse updateArtistProfileByUsername(String username, ArtistProfileRequest artistProfile) {
         ArtistProfile existingArtistProfile = artistProfileRepository.findByUser_Username(username)
-                .orElseThrow(() -> new EntityNotFoundException("Artist profile not found for username: " + username));
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
 
         Optional.ofNullable(artistProfile.getBio())
                 .ifPresent(existingArtistProfile::setBio);

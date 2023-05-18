@@ -33,7 +33,7 @@ public class UserProfileController {
     public ResponseEntity<UserResponse> getAllUsers() {
         Optional<UserEntity> user = userRepository.findById(2L);
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("Nie znaleziono użytkownika o podanym id");
         }
         UserResponse userResponse = mapUserEntityToDto(user.get());
         return ResponseEntity.ok(userResponse);

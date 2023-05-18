@@ -18,7 +18,7 @@ public class ArtistProfileSpecification {
     }
 
     public static Specification<ArtistProfile> hasCity(List<City> city) {
-        return (root, query, builder) -> root.get("location").in(city);
+        return (root, query, builder) -> root.get("city").in(city);
     }
 
     public static Specification<ArtistProfile> hasLanguage(List<Language> languages) {
