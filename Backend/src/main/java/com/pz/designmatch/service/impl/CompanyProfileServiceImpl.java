@@ -3,7 +3,9 @@ package com.pz.designmatch.service.impl;
 import com.pz.designmatch.dto.request.CompanyProfileRequest;
 import com.pz.designmatch.dto.response.CompanyProfileResponse;
 import com.pz.designmatch.model.user.CompanyProfile;
+import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.CompanyProfileRepository;
+import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.CompanyProfileService;
 import com.pz.designmatch.util.mapper.CompanyProfileMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,17 +19,27 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     private final CompanyProfileRepository companyProfileRepository;
     private final CompanyProfileMapper companyProfileMapper;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileMapper companyProfileMapper) {
+    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileMapper companyProfileMapper,
+                                     UserRepository userRepository) {
         this.companyProfileRepository = companyProfileRepository;
         this.companyProfileMapper = companyProfileMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
     public CompanyProfileResponse updateCompanyProfileByUsername(String username, CompanyProfileRequest companiesDto) {
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("This user doesn't exist: " + username));
+
         CompanyProfile existingCompanyProfile = companyProfileRepository.findByUser_Username(username)
-                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu firmy dla użytkownika " + username));
+                .orElseGet(() -> {
+                    CompanyProfile newcompanyProfile = new CompanyProfile();
+                    newcompanyProfile.setUser(user);
+                    return companyProfileRepository.save(newcompanyProfile);
+                });
 
         Optional.ofNullable(companiesDto.getName()).ifPresent(existingCompanyProfile::setName);
         Optional.ofNullable(companiesDto.getDescription()).ifPresent(existingCompanyProfile::setDescription);

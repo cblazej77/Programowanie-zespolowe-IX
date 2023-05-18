@@ -23,6 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.pz.designmatch.model.user.Role.ROLE_ARTIST;
 import static com.pz.designmatch.model.user.Role.ROLE_COMPANY;
 
@@ -54,7 +57,14 @@ public class UserServiceImpl implements UserService {
     public UserEntity findUserByEmail(final String email) {
         return userRepository.findByEmailIgnoreCase(email).orElseThrow(() -> new RuntimeException("Ten email jest już zajęty"));
     }
-    
+
+    @Override
+    public List<String> getAllUsernames() {
+        return artistProfileRepository.findAll().stream()
+                .map(artistProfile -> artistProfile.getUser().getUsername())
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     @Override
     public UserEntity registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException {

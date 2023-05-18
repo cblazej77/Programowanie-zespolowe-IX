@@ -8,6 +8,7 @@ import com.pz.designmatch.dto.request.RegisterRequest;
 import com.pz.designmatch.dto.response.ApiResponse;
 import com.pz.designmatch.dto.response.JwtAuthenticationResponse;
 import com.pz.designmatch.exception.UserAlreadyExistAuthenticationException;
+import com.pz.designmatch.service.ConfirmationTokenService;
 import com.pz.designmatch.service.UserService;
 import com.pz.designmatch.service.impl.ConfirmationTokenServiceImpl;
 import jakarta.validation.ValidationException;
@@ -37,14 +38,14 @@ public class AuthController {
     private final JwtEncoder encoder;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
-    private final ConfirmationTokenServiceImpl confirmationTokenServiceImpl;
+    private final ConfirmationTokenService confirmationTokenService;
 
     public AuthController(JwtEncoder encoder, UserService userService, AuthenticationManager authenticationManager,
-                          ConfirmationTokenServiceImpl confirmationTokenServiceImpl) {
+                          ConfirmationTokenServiceImpl confirmationTokenService) {
         this.encoder = encoder;
         this.userService = userService;
         this.authenticationManager = authenticationManager;
-        this.confirmationTokenServiceImpl = confirmationTokenServiceImpl;
+        this.confirmationTokenService = confirmationTokenService;
     }
 
 
@@ -77,7 +78,7 @@ public class AuthController {
 
     @GetMapping(path = "/confirmEmail")
     public ResponseEntity<String> confirm(@RequestParam("token") String token) {
-        return new ResponseEntity<>(confirmationTokenServiceImpl.confirmToken(token), HttpStatus.OK);
+        return new ResponseEntity<>(confirmationTokenService.confirmToken(token), HttpStatus.OK);
     }
 
     private ResponseEntity<?> registerUser(RegisterRequest registerRequest, String roleName) {

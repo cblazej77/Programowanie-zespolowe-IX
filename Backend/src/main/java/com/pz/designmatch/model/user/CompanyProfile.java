@@ -16,8 +16,7 @@ public class CompanyProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "companyProfile")
     private UserEntity user;
 
     @Column(unique = true)

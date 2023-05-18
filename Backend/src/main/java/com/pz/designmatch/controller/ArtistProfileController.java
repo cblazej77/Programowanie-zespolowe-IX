@@ -4,7 +4,7 @@ import com.pz.designmatch.dto.request.ArtistFilterRequest;
 import com.pz.designmatch.dto.request.ArtistProfileRequest;
 import com.pz.designmatch.dto.response.ArtistProfileResponse;
 import com.pz.designmatch.dto.response.ShortArtistProfileResponse;
-import com.pz.designmatch.service.ArtistProfileService;
+import com.pz.designmatch.service.impl.ArtistProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,16 +18,16 @@ import static com.pz.designmatch.constants.Constants.apiVersionAccept;
 @RequestMapping("/api/artist")
 public class ArtistProfileController {
 
-    private final ArtistProfileService artistProfileService;
+    private final ArtistProfileServiceImpl artistProfileServiceImpl;
 
     @Autowired
-    public ArtistProfileController(ArtistProfileService artistProfileService) {
-        this.artistProfileService = artistProfileService;
+    public ArtistProfileController(ArtistProfileServiceImpl artistProfileServiceImpl) {
+        this.artistProfileServiceImpl = artistProfileServiceImpl;
     }
 
     @GetMapping(value = "/getArtistProfileByUsername/{username}", produces = apiVersionAccept)
     public ResponseEntity<ArtistProfileResponse> getArtistProfileByUsername(@PathVariable("username") String username) {
-        ArtistProfileResponse artistProfile = artistProfileService.getArtistProfileByUsername(username);
+        ArtistProfileResponse artistProfile = artistProfileServiceImpl.getArtistProfileByUsername(username);
         return ResponseEntity
                 .status(HttpStatus.OK.value())
                 .body(artistProfile);
@@ -35,13 +35,13 @@ public class ArtistProfileController {
 
     @GetMapping(value = "/getShortArtistProfileByUsername/{username}", produces = apiVersionAccept)
     public ResponseEntity<ShortArtistProfileResponse> getShortArtistProfileByUsername(@PathVariable String username) {
-        ShortArtistProfileResponse artistProfile = artistProfileService.getShortArtistProfileByUsername(username);
+        ShortArtistProfileResponse artistProfile = artistProfileServiceImpl.getShortArtistProfileByUsername(username);
         return ResponseEntity.ok(artistProfile);
     }
 
     @PutMapping(value = "/updateProfileByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<ArtistProfileResponse> updateCompanyProfileByUsername(@PathVariable("username") String username, @RequestBody ArtistProfileRequest artistProfile) {
-        ArtistProfileResponse updatedArtistProfile = artistProfileService.updateArtistProfileByUsername(username, artistProfile);
+        ArtistProfileResponse updatedArtistProfile = artistProfileServiceImpl.updateArtistProfileByUsername(username, artistProfile);
         return ResponseEntity.ok(updatedArtistProfile);
     }
 
@@ -49,7 +49,7 @@ public class ArtistProfileController {
     public ResponseEntity<Page<ShortArtistProfileResponse>> filterArtists(@RequestBody ArtistFilterRequest filterRequest,
                                                                           @RequestParam(defaultValue = "0", name = "page") int page,
                                                                           @RequestParam(defaultValue = "10", name = "size") int size) {
-        Page<ShortArtistProfileResponse> filteredArtists = artistProfileService.filterArtistProfiles(filterRequest, PageRequest.of(page, size));
+        Page<ShortArtistProfileResponse> filteredArtists = artistProfileServiceImpl.filterArtistProfiles(filterRequest, PageRequest.of(page, size));
         return ResponseEntity.ok(filteredArtists);
     }
 }

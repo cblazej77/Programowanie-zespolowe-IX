@@ -5,9 +5,13 @@ import com.pz.designmatch.exception.UserAlreadyExistAuthenticationException;
 import com.pz.designmatch.model.user.UserEntity;
 import jakarta.validation.ValidationException;
 
+import java.util.List;
+
 public interface UserService {
 
     UserEntity findUserByEmail(String email);
+
+    List<String> getAllUsernames();
 
     UserEntity registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException, ValidationException;
 }

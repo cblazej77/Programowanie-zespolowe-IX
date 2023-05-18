@@ -41,7 +41,8 @@ public class UserEntity {
     @JoinColumn(name = "artist_profile_id", referencedColumnName = "id")
     private ArtistProfile artistProfile;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_profile_id", referencedColumnName = "id")
     private CompanyProfile companyProfile;
 
     public UserEntity(String email, String username, String password) {

@@ -3,7 +3,8 @@ package com.pz.designmatch.controller;
 import com.pz.designmatch.dto.response.UserResponse;
 import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.UserRepository;
-import com.pz.designmatch.service.ArtistProfileService;
+import com.pz.designmatch.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +19,13 @@ import static com.pz.designmatch.constants.Constants.apiVersionAccept;
 @RestController
 @RequestMapping("/api/user")
 public class UserProfileController {
-    private final ArtistProfileService artistProfileService;
+
+    private final UserService userService;
     private final UserRepository userRepository;
 
-    public UserProfileController(ArtistProfileService artistProfileService, UserRepository userRepository) {
-        this.artistProfileService = artistProfileService;
+    @Autowired
+    public UserProfileController(UserService userService, UserRepository userRepository) {
+        this.userService = userService;
         this.userRepository = userRepository;
     }
 
@@ -38,7 +41,7 @@ public class UserProfileController {
 
     @GetMapping(value = "/getAllUsernames", produces = apiVersionAccept)
     public ResponseEntity<List<String>> getAllUsernames() {
-        List<String> usernames = artistProfileService.getAllUsernames();
+        List<String> usernames = userService.getAllUsernames();
         return ResponseEntity.ok(usernames);
     }
 
