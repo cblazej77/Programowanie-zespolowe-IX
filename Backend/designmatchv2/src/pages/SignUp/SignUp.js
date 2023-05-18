@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../components/Auth';
-import { default as axios } from "../../api/axios";
+import {default as axios} from '../../api/axios'
 import { useGoogleLogin } from '@react-oauth/google';
 import { FacebookButton, ErrorLabel, ErrorLabel2, CenterInput, InputGroupSecond, CenterButton, Button, SignUpButton, GoogleButton, LineForm, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
 import InputText from '../../components/Input/InputText';
@@ -65,13 +65,14 @@ function LoginForm() {
     setAllInput(true);
   }
 
+
   const handleRegistration = async (e) => {
     try {
       setSubmitting(true);
       const response = await axios.post(REGISTER_URL,
         JSON.stringify({ email, username: nick, password, firstname: name, lastname: surname }),
         {
-          headers: {  'accept': '*/*', 'Content-Type': 'application/json' },
+          headers: {  'accept': '*/*', 'Content-Type': 'application/json', 'Access-Control-Allow-Origin' : '*'},
         }
       );
       setSubmitting(false);

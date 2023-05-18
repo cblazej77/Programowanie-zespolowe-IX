@@ -59,7 +59,7 @@ export const SignIn = () => {
         const response = await axios.post(LOGIN_URL,
           JSON.stringify({ email, password }),
           {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json',  'Access-Control-Allow-Origin' : '*' },
           }
         );
               setSubmitting(false);
@@ -67,7 +67,7 @@ export const SignIn = () => {
         console.log(response?.accessToken);
         console.log(JSON.stringify(response));
         authApi.login(email, password);
-        saveStorageData();
+        saveStorageData(response?.data.accessToken);
         navigate(redirectPath, { replace: true });
       } catch (err) {
       setSubmitting(false);
@@ -86,7 +86,7 @@ export const SignIn = () => {
         onSuccess: CodeResponse  => {
           console.log(CodeResponse );
           authApi.login("Michal", "pssw");
-          saveStorageData();
+          saveStorageData("Goggle");
           navigate(redirectPath, {replace: true});
         },
         flow: 'auth-code',
@@ -117,9 +117,9 @@ export const SignIn = () => {
   }
 
     //saveStorageData
-    const saveStorageData = () => {
+    const saveStorageData = (AccesToken) => {
       let key = 'storageLogin';
-      localStorage.setItem(key, 'Zalogowany :)');
+      localStorage.setItem(key, AccesToken);
     };
 
   return (
@@ -151,7 +151,7 @@ export const SignIn = () => {
   onProfileSuccess={(response) => {
     console.log('Get Profile Success!', response);
     authApi.login(response.name, "passwordini");
-    saveStorageData();
+    saveStorageData("Facebook");
     navigate(redirectPath, {replace: true});
   }}
   render={({ onClick }) => (

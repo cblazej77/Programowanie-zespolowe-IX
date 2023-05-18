@@ -114,7 +114,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableCities',
+      url: '/api/filter/getAvailableCities',
       headers: {},
     }),
     [],
@@ -124,7 +124,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableTags',
+      url: '/api/filter/getAvailableTags',
       headers: {},
     }),
     [],
@@ -134,7 +134,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableLanguages',
+      url: '/api/filter/getAvailableLanguages',
       headers: {},
     }),
     [],
@@ -144,7 +144,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableLevels',
+      url: '/api/filter/getAvailableLevels',
       headers: {},
     }),
     [],
@@ -154,7 +154,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableCategories',
+      url: '/api/filter/getAvailableCategories',
       headers: {},
     }),
     [],
@@ -175,7 +175,7 @@ const Cards = () => {
             },
             {
               params: { page: 0, size: 10 },
-              headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+              headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'Access-Control-Allow-Origin' : '*'  },
             },
           )
           .catch((error) => {

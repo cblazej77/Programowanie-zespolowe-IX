@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     if(localStorage.length > 0){
-      let myKey = localStorage.getItem("key");
+      let myKey = localStorage.getItem("storageLogin");
       console.log(myKey);
       authApi.login("Michal", "pssw");
     }

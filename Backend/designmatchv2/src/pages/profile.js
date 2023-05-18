@@ -53,18 +53,18 @@ const UserPage = () => {
   const [button, setButton] = useState(true);
 
   const job = "";
-  const profileName = 'WojciechDuklas';
+  //const profileName = 'WojciechDuklas';
   let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: getArtistProfileURL + profileName,
-    headers: {}
+    url: getArtistProfileURL,
+    headers: {'accept': 'application/json', 'Authorization': 'Bearer '+ localStorage.getItem("storageLogin"), 'Access-Control-Allow-Origin' : '*' }
   };
   let profileNameData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: getShortArtistProfileURL + profileName,
-    headers: {}
+    url: getShortArtistProfileURL,
+    headers: {'accept': 'application/json', 'Authorization': 'Bearer '+ localStorage.getItem("storageLogin"),'Access-Control-Allow-Origin' : '*' }
   };
 
   useEffect(() => {
