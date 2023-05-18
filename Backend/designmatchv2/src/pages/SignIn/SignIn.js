@@ -45,7 +45,7 @@ export const SignIn = () => {
 
   useEffect(() => {
     if(localStorage.length > 0){
-      let myKey = localStorage.getItem("key");
+        let myKey = localStorage.getItem("storageLogin");
       console.log(myKey);
       authApi.login("Michal", "pssw");
       navigate(redirectPath, {replace: true});
