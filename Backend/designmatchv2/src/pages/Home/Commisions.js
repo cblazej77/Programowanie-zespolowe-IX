@@ -43,6 +43,7 @@ import {
   CommisionTitle,
   CommisionTitleContainer,
   CommisionTop,
+  CommisionWrapper,
   LevelBubble,
   ModalCommisionBackground,
   ModalCommisionWrapper,
@@ -250,13 +251,13 @@ const Commisions = () => {
       try {
         const response = await axios
           .post(
-            '/artist/filter',
+            '/commission/filterCommissions',
             {
               level: levelsFilter,
               location: citiesFilter,
               skills: categoriesFilter,
-              languages: languagesFilter,
               tags: tagsFilter,
+              languages: languagesFilter,
             },
             {
               params: { page: 0, size: 10 },
@@ -429,6 +430,7 @@ const Commisions = () => {
   };
 
   const CModalOpen = (data) => {
+    console.log(data);
     setModalData(data);
     setShowCModal(true);
   };
@@ -522,7 +524,11 @@ const Commisions = () => {
           </CommisionTitleContainer>
           <StakeText>{props.stake} PLN</StakeText>
         </CommisionTop>
-        <div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          margin: '0.4rem 0',
+        }}>
           <CommisionText>{props.location}</CommisionText>
           <CommisionText>{props.deadline}</CommisionText>
         </div>
@@ -540,19 +546,19 @@ const Commisions = () => {
       return null;
     }
 
-    return CommisionsData.map((filter, indexF) => (
+    return filtered.content.map((filter, indexF) => (
       <CommisionElement
         key={indexF}
         avatar="/assets/cards/person1.jpg"
         name={filter.name}
         title={filter.title}
-        stake={filter.stake}
+        stake={filter.stawka}
         description={filter.description}
         deadline={filter.deadline}
         level={filter.level}
         location={filter.location}
         tags={filter.tags}
-        categories={filter.categories}
+        categories={filter.skills}
         languages={filter.languages}
       />
     ));
@@ -684,9 +690,9 @@ const Commisions = () => {
                 <StyledOption value="3">ostatnia aktywność</StyledOption>
               </StyledSelect>
             </TopSection>
-            <CardsWrapper>
+            <CommisionWrapper>
               {filteredCommisions}
-            </CardsWrapper>
+            </CommisionWrapper>
             <FilterModal showFModal={showFModal} onCloseFModal={FModalClose} />
             <CommisionModal showCModal={showCModal} />
           </RightLabel>

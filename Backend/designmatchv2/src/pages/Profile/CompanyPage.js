@@ -34,7 +34,7 @@ import {
   RightWrapper,
   TopSection
 } from './ProfileElements';
-import { CommisionBottom, CommisionBubble, CommisionCard, CommisionText, CommisionTitle, CommisionTitleContainer, CommisionTop, LevelBubble } from '../Home/CommisionsElements';
+import { CommisionBottom, CommisionBubble, CommisionCard, CommisionText, CommisionTitle, CommisionTitleContainer, CommisionTop, LevelBubble, StakeText } from '../Home/CommisionsElements';
 
 const { darkLight } = COLORS;
 
@@ -221,9 +221,13 @@ const CompanyPage = () => {
               {props.level}
             </LevelBubble>
           </CommisionTitleContainer>
-          <TitleText>{props.stake} PLN</TitleText>
+          <StakeText>{props.stake} PLN</StakeText>
         </CommisionTop>
-        <div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          margin: '0.4rem 0',
+        }}>
           <CommisionText>{props.location}</CommisionText>
           <CommisionText>{props.deadline}</CommisionText>
         </div>

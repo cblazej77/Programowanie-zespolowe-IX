@@ -30,6 +30,7 @@ export const TopSection = styled.div`
   width: 100%;
   @media screen and (max-width: 960px) {
     flex-direction: column;
+    padding: 0;
   }
 `;
 
@@ -46,8 +47,9 @@ export const LeftWrapper = styled.div`
   height: 30rem; 
   width: 30rem;
   @media screen and (max-width: 960px) {
-    width: 85vw;
+    width: 100%;
     margin: 0;
+    border-radius: 0px;
   }
 `;
 
@@ -66,9 +68,11 @@ export const RightWrapper = styled.div`
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
   overflow: auto;
   @media screen and (max-width: 960px) {
-    width: 85vw;
+    width: 100%;
     height: auto;
     margin: 2rem 0 0 0;
+    border-radius: 0px;
+    padding: 30px;
   }
 `;
 
@@ -259,6 +263,9 @@ export const DownSection = styled.div`
     @media screen and (max-width: calc(85rem + 3vw)) {
       width: calc(100% - 6vw);
     }
+    @media screen and (max-width: 960px) {
+    width: 100%;
+  }
 `;
 
 export const EditUserDownSection = styled.div`

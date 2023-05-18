@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from '../../components/Colors';
-import { TitleText } from './CardsElement';
+import { CardsWrapper, TitleText } from './CardsElement';
 
 const {
   darkLight,
@@ -12,32 +12,42 @@ const {
   secondary1
 } = COLORS;
 
+export const CommisionWrapper = styled(CardsWrapper)`
+  @media screen and (max-width: 960px) {
+    padding: 0;
+  }
+`;
+
 export const CommisionLabel = styled.div`
-    border-radius: 10px;
-    display: flex;
-    box-shadow: 4px 2px 10px 2px rgba(0, 0, 0, 0.2);
-    margin: 0.5rem 0 5vh 0;
-    margin-right: 1vw;
-    position: relative;
-    width: 95%;
-    flex-direction: column;
-    padding: 0.5rem 1rem;
-    background: ${secondary1};
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    font-size: 1rem;
-    &:hover {
-      transform: scale(1.02);
-    }
-    @media screen and (max-width: 1280px) {
-      font-size: 0.9rem;
-    }
-    @media screen and (max-width: 1080px) {
-      font-size: 0.8rem;
-    }
-    @media screen and (max-width: 960px) {
-      font-size: 0.9rem;
-    }
+  border-radius: 10px;
+  display: flex;
+  box-shadow: 4px 2px 10px 2px rgba(0, 0, 0, 0.2);
+  margin: 0.5rem 1vw 5vh 0;
+  position: relative;
+  width: 95%;
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+  background: ${secondary1};
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  font-size: 1rem;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+  
+  @media screen and (max-width: 1280px) {
+    font-size: 0.9rem;
+  }
+  
+  @media screen and (max-width: 1080px) {
+    font-size: 0.8rem;
+  }
+  
+  @media screen and (max-width: 960px) {
+    font-size: 0.9rem;
+    width: 100%;
+  }
 `;
 
 export const CommisionTop = styled.div`
@@ -47,8 +57,8 @@ export const CommisionTop = styled.div`
 
 export const CommisionTitleContainer = styled.div`
   display: flex;
-  allign-items: flex-start;
-  width: calc(100% - 13vw);
+  align-items: flex-start;
+  width: calc(100% - 9rem);
 `;
 
 export const CommisionTitle = styled(TitleText)`
@@ -58,49 +68,80 @@ export const CommisionTitle = styled(TitleText)`
   text-overflow: ellipsis;
 `;
 
-export const StakeText = styled.text`
-    color: ${darkLight};
-    font-size: 170%;
-    text-align: end;
+export const StakeText = styled.p`
+  color: ${darkLight};
+  font-size: 170%;
+  text-align: end;
+`;
+
+export const CommisionBubble = styled.p`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: ${darkLight};
+  border: 1px solid ${darkLight};
+  background: ${primary};
+  border-radius: 15px;
+  height: 1.7rem;
+  font-size: 100%;
+  margin: 0 0.3rem;
+  padding: 0 0.5rem;
+  @media screen and (max-width: 1280px) {
+    font-size: 0.9rem;
+    height: 1.4rem;
+  }
+
+  @media screen and (max-width: 960px) {
+    font-size: 0.7rem;
+    height: 1rem;
+  }
+`;
+
+export const LevelBubble = styled(CommisionBubble)`
+  background: ${darkLight2};
+  color: ${white};
+  border: 0px;
 `;
 
 export const ModalCommisionWrapper = styled.div`
-    overflow-y: auto; 
-    width: 95rem;
-    height: 80%;
-    border-radius: 15px;
-    flex-direction: column;
-    background: ${primary};
-    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-    display: flex;
-    padding: 2rem;
-    font-size: 1.5rem;
-    @media screen and (max-width: 100rem) {
-      width: 95%;
-    }
-    @media screen and (max-width: 1280px) {
-      font-size: 1.2rem;
-    }
+  overflow-y: auto;
+  width: 95rem;
+  height: 80%;
+  border-radius: 15px;
+  flex-direction: column;
+  background: ${primary};
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+  display: flex;
+  padding: 2rem;
+  font-size: 1.5rem;
+
+  @media screen and (max-width: 100rem) {
+    width: 95%;
+  }
+
+  @media screen and (max-width: 1280px) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const ModalCommisionBackground = styled.div`
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    left: 0;
-    top: 0;
-    background: rgba(255,255,255,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const CommisionLineForm = styled.div`
-    background: #CCC;
-    border-radius: 100%;
-    height: 1px;
-    width: 100%;
-    margin 1rem 0;
+  background: #CCC;
+  border-radius: 100%;
+  height: 1px;
+  width: 100%;
+  margin 1rem 0;
 `;
 
 export const CommisionCard = styled.div`
@@ -117,34 +158,9 @@ export const CommisionCard = styled.div`
   }  
 `;
 
-export const CommisionBubble = styled.p`
-  display: inline-block;
-  color: ${darkLight};
-  border: 1px solid ${darkLight};
-  border-radius: 15px;
-  height: 1.6rem;
-  font-size: 100%;
-  padding: 0.1rem 0.6rem; 
-  margin-left: 0.3rem;
-  @media screen and (max-width: 1280px) {
-    font-size: 0.9rem;
-    height: 1.4rem;
-  }
-  @media screen and (max-width: 960px) {
-    font-size: 0.8rem;
-    height: 1.3rem;
-  }
-`;
-
-export const LevelBubble = styled(CommisionBubble)`
-    background: ${darkLight2};
-    color: ${white};
-    margin-right: 1rem;
-    border: 0px;
-`;
-
-export const CommisionText = styled.text`
+export const CommisionText = styled.p`
   color: ${gray1};
+  font-size: 120%;
   margin-left: 0.5rem;
   margin-right: 1rem;
 `;

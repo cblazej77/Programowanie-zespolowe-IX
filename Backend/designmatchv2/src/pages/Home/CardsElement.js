@@ -98,6 +98,9 @@ export const FilterScroll = styled.div`
 export const TitleText = styled.text`
     color: ${darkLight};
     font-size: 2.2rem;
+    @media screen and (max-width: 960px) {
+        margin-left: 1rem;
+  }
 `;
 
 export const SubtitleText = styled.text`
