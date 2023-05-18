@@ -37,8 +37,8 @@ public class ArtistProfileMapper {
                 artistProfile.getFirstname(),
                 artistProfile.getLastname(),
                 artistProfile.getBio(),
-                artistProfile.getLevel().getDisplayName(),
-                artistProfile.getCity().getDisplayName(),
+                artistProfile.getLevel() == null ? null : artistProfile.getLevel().getDisplayName(),
+                artistProfile.getCity() == null ? null : artistProfile.getCity().getDisplayName(),
                 artistProfile.getSkills().stream()
                         .map(Skill::getDisplayName)
                         .collect(Collectors.toSet()),
@@ -65,8 +65,8 @@ public class ArtistProfileMapper {
                 artistProfile.getUser().getUsername(),
                 artistProfile.getFirstname(),
                 artistProfile.getLastname(),
-                artistProfile.getLevel().getDisplayName(),
-                artistProfile.getCity().getDisplayName(),
+                artistProfile.getLevel() == null ? null : artistProfile.getLevel().getDisplayName(),
+                artistProfile.getCity() == null ? null : artistProfile.getCity().getDisplayName(),
                 artistProfile.getSkills().stream()
                         .map(Skill::getDisplayName)
                         .collect(Collectors.toSet())
