@@ -52,13 +52,13 @@ public class ArtistProfileService {
         this.experienceMapper = experienceMapper;
     }
 
-    public ArtistProfileResponse getArtistProfile(String username) {
+    public ArtistProfileResponse getArtistProfileByUsername(String username) {
         return artistProfileRepository.findByUser_Username(username)
                 .map(artistProfileMapper::mapToDto)
                 .orElseThrow(() -> new EntityNotFoundException("Artist profile not found for username: " + username));
     }
 
-    public ShortArtistProfileResponse getShortArtistProfile(String username) {
+    public ShortArtistProfileResponse getShortArtistProfileByUsername(String username) {
         return artistProfileRepository.findByUser_Username(username)
                 .map(artistProfileMapper::mapToShortDto)
                 .orElseThrow(() -> new EntityNotFoundException("Artist profile not found for username: " + username));

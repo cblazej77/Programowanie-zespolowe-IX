@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,7 +33,7 @@ public class CommissionServiceImpl implements CommissionService {
         this.commissionMapper = commissionMapper;
     }
 
-    public CommissionResponse getCommission(Long id) {
+    public CommissionResponse getCommissionById(Long id) {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
         return commissionMapper.mapToResponse(existingCommission);
@@ -45,7 +44,7 @@ public class CommissionServiceImpl implements CommissionService {
         return commissionMapper.mapToResponse(commissionRepository.save(commission));
     }
 
-    public CommissionResponse updateCommission(Long id, CommissionRequest commissionRequest) throws EntityNotFoundException {
+    public CommissionResponse updateCommissionById(Long id, CommissionRequest commissionRequest) throws EntityNotFoundException {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
 
@@ -72,7 +71,7 @@ public class CommissionServiceImpl implements CommissionService {
         return commissionMapper.mapToResponse(commissionRepository.save(existingCommission));
     }
 
-    public CommissionResponse setCommissionCompleted(Long id) throws EntityNotFoundException {
+    public CommissionResponse setCommissionCompletedById(Long id) throws EntityNotFoundException {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
 

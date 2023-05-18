@@ -23,9 +23,9 @@ public class CommissionController {
         this.commissionService = commissionService;
     }
 
-    @GetMapping(value = "/get/{id}", produces = apiVersionAccept)
-    public ResponseEntity<CommissionResponse> getCommission(@PathVariable("id") Long id) {
-        CommissionResponse commission = commissionService.getCommission(id);
+    @GetMapping(value = "/getById/{id}", produces = apiVersionAccept)
+    public ResponseEntity<CommissionResponse> getCommissionById(@PathVariable("id") Long id) {
+        CommissionResponse commission = commissionService.getCommissionById(id);
         return ResponseEntity.ok(commission);
     }
 
@@ -35,15 +35,15 @@ public class CommissionController {
         return ResponseEntity.ok(createdCommission);
     }
 
-    @PutMapping(value = "/update/{id}", produces = apiVersionAccept, consumes = apiVersionAccept)
-    public ResponseEntity<CommissionResponse> updateCommission(@PathVariable("id") Long id, @RequestBody CommissionRequest commission) {
-        CommissionResponse updatedCommission = commissionService.updateCommission(id, commission);
+    @PutMapping(value = "/updateById/{id}", produces = apiVersionAccept, consumes = apiVersionAccept)
+    public ResponseEntity<CommissionResponse> updateCommissionById(@PathVariable("id") Long id, @RequestBody CommissionRequest commission) {
+        CommissionResponse updatedCommission = commissionService.updateCommissionById(id, commission);
         return ResponseEntity.ok(updatedCommission);
     }
 
-    @PutMapping(value = "/setCompleted/{id}", produces = apiVersionAccept)
-    public ResponseEntity<CommissionResponse> setCompletedCommission(@PathVariable("id") Long id) {
-        CommissionResponse completedCommission = commissionService.setCommissionCompleted(id);
+    @PutMapping(value = "/setCompletedById/{id}", produces = apiVersionAccept)
+    public ResponseEntity<CommissionResponse> setCompletedCommissionById(@PathVariable("id") Long id) {
+        CommissionResponse completedCommission = commissionService.setCommissionCompletedById(id);
         return ResponseEntity.ok(completedCommission);
     }
 

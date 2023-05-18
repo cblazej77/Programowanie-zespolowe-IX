@@ -25,22 +25,22 @@ public class ArtistProfileController {
         this.artistProfileService = artistProfileService;
     }
 
-    @GetMapping(value = "/getArtistProfile/{username}", produces = apiVersionAccept)
+    @GetMapping(value = "/getArtistProfileByUsername/{username}", produces = apiVersionAccept)
     public ResponseEntity<ArtistProfileResponse> getArtistProfileByUsername(@PathVariable("username") String username) {
-        ArtistProfileResponse artistProfile = artistProfileService.getArtistProfile(username);
+        ArtistProfileResponse artistProfile = artistProfileService.getArtistProfileByUsername(username);
         return ResponseEntity
                 .status(HttpStatus.OK.value())
                 .body(artistProfile);
     }
 
-    @GetMapping(value = "/getShortArtistProfile/{username}", produces = apiVersionAccept)
+    @GetMapping(value = "/getShortArtistProfileByUsername/{username}", produces = apiVersionAccept)
     public ResponseEntity<ShortArtistProfileResponse> getShortArtistProfileByUsername(@PathVariable String username) {
-        ShortArtistProfileResponse artistProfile = artistProfileService.getShortArtistProfile(username);
+        ShortArtistProfileResponse artistProfile = artistProfileService.getShortArtistProfileByUsername(username);
         return ResponseEntity.ok(artistProfile);
     }
 
-    @PutMapping(value = "/updateProfile/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
-    public ResponseEntity<ArtistProfileResponse> updateCompanyProfile(@PathVariable("username") String username, @RequestBody ArtistProfileRequest artistProfile) {
+    @PutMapping(value = "/updateProfileByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
+    public ResponseEntity<ArtistProfileResponse> updateCompanyProfileByUsername(@PathVariable("username") String username, @RequestBody ArtistProfileRequest artistProfile) {
         ArtistProfileResponse updatedArtistProfile = artistProfileService.updateArtistProfileByUsername(username, artistProfile);
         return ResponseEntity.ok(updatedArtistProfile);
     }

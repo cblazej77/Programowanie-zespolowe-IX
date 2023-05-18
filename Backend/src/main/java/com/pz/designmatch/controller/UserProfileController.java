@@ -26,7 +26,7 @@ public class UserProfileController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping(value = "/getUser", produces = apiVersionAccept)
+    @GetMapping(value = "/getUserById", produces = apiVersionAccept)
     public ResponseEntity<UserResponse> getAllUsers() {
         Optional<UserEntity> user = userRepository.findById(2L);
         if (user.isEmpty()) {

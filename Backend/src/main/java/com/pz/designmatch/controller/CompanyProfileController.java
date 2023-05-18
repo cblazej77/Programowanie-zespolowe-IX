@@ -19,14 +19,14 @@ public class CompanyProfileController {
         this.companyProfileService = companyProfileService;
     }
 
-    @PutMapping(value = "/updateProfile/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
-    public ResponseEntity<CompanyProfileResponse> updateCompanyProfile(@PathVariable("username") String username, @RequestBody CompanyProfileRequest companyProfile) {
+    @PutMapping(value = "/updateProfileByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
+    public ResponseEntity<CompanyProfileResponse> updateCompanyProfileByUsername(@PathVariable("username") String username, @RequestBody CompanyProfileRequest companyProfile) {
         CompanyProfileResponse updatedCompanyProfile = companyProfileService.updateCompanyProfileByUsername(username, companyProfile);
         return ResponseEntity.ok(updatedCompanyProfile);
     }
 
-    @GetMapping(value = "/getProfile/{username}", produces = apiVersionAccept)
-    public ResponseEntity<CompanyProfileResponse> getCompanyProfileByName(@PathVariable("username") String username) {
+    @GetMapping(value = "/getProfileByUsername/{username}", produces = apiVersionAccept)
+    public ResponseEntity<CompanyProfileResponse> getCompanyProfileByUsername(@PathVariable("username") String username) {
         CompanyProfileResponse company = companyProfileService.getCompanyProfileByUsername(username);
         return ResponseEntity.status(HttpStatus.OK.value()).body(company);
     }

@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public UserEntity findUserByEmail(final String email) {
         return userRepository.findByEmailIgnoreCase(email).orElseThrow(() -> new RuntimeException("Ten email jest już zajęty"));
     }
-
+    
     @Transactional
     @Override
     public UserEntity registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException {
