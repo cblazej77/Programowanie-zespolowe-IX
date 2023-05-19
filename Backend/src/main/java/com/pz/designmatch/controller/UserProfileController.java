@@ -1,140 +1,53 @@
 package com.pz.designmatch.controller;
 
-import com.pz.designmatch.dto.ArtistProfileDto;
-import com.pz.designmatch.dto.response.AvailableSkillsCategoriesDto;
-import com.pz.designmatch.dto.response.ShortProfileDto;
-import com.pz.designmatch.dto.response.UserDto;
-import com.pz.designmatch.exception.ArtistProfileNotFound;
-import com.pz.designmatch.model.enums.City;
-import com.pz.designmatch.model.enums.Language;
-import com.pz.designmatch.model.enums.Level;
-import com.pz.designmatch.model.enums.Tag;
+import com.pz.designmatch.dto.response.UserResponse;
 import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.UserRepository;
-import com.pz.designmatch.service.ArtistProfileService;
-import com.pz.designmatch.util.AvailableCategoriesDtoBuilder;
+import com.pz.designmatch.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.pz.designmatch.constants.Constants.apiVersionAccept;
+
 @RestController
-@RequestMapping("/api/artist")
+@RequestMapping("/api/user")
 public class UserProfileController {
-    public static final String apiVersionAccept = "application/json";
-    private final ArtistProfileService artistProfileService;
+
+    private final UserService userService;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserProfileController(ArtistProfileService artistProfileService, UserRepository userRepository) {
-        this.artistProfileService = artistProfileService;
+    public UserProfileController(UserService userService, UserRepository userRepository) {
+        this.userService = userService;
         this.userRepository = userRepository;
     }
 
-    @GetMapping(value = "/getUser", produces = apiVersionAccept)
-    public ResponseEntity<UserDto> getAllUsers() {
+    @GetMapping(value = "/getUserById", produces = apiVersionAccept)
+    public ResponseEntity<UserResponse> getAllUsers() {
         Optional<UserEntity> user = userRepository.findById(2L);
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("Nie znaleziono użytkownika o podanym id");
         }
-        UserDto userDto = mapUserEntityToDto(user.get());
-//        return ResponseEntity
-//                .status(HttpStatus.OK.value())
-//                .body(userDto);
-        return ResponseEntity.ok(userDto);
-    }
-
-    @GetMapping(value = "/getAvailableCategories", produces = apiVersionAccept)
-    public ResponseEntity<AvailableSkillsCategoriesDto> getAvailableCategories() {
-        AvailableSkillsCategoriesDto categoryOptionsDto = AvailableCategoriesDtoBuilder.getAvailableCategoriesDto();
-        return ResponseEntity.ok(categoryOptionsDto);
-    }
-
-    @GetMapping(value = "/getAvailableCities", produces = apiVersionAccept)
-    public ResponseEntity<List<String>> getAvailableCities() {
-        List<String> cities = City.getAvailableCities();
-        return ResponseEntity.ok(cities);
-    }
-
-    @GetMapping(value = "/getAvailableLevels", produces = apiVersionAccept)
-    public ResponseEntity<List<String>> getAvailableLevels() {
-        List<String> levels = Level.getAvailableLevels();
-        return ResponseEntity.ok(levels);
-    }
-
-    @GetMapping(value = "/getAvailableTags", produces = apiVersionAccept)
-    public ResponseEntity<List<String>> getAvailableTags() {
-        List<String> tags = Tag.getAvailableTags();
-        return ResponseEntity.ok(tags);
-    }
-
-    @GetMapping(value = "/getAvailableLanguages", produces = apiVersionAccept)
-    public ResponseEntity<List<String>> getAvailableLanguages() {
-        List<String> languages = Language.getAvailableLanguages();
-        return ResponseEntity.ok(languages);
+        UserResponse userResponse = mapUserEntityToDto(user.get());
+        return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping(value = "/getAllUsernames", produces = apiVersionAccept)
     public ResponseEntity<List<String>> getAllUsernames() {
-        List<String> usernames = artistProfileService.getAllUsernames();
+        List<String> usernames = userService.getAllUsernames();
         return ResponseEntity.ok(usernames);
     }
 
-    @GetMapping(value = "/getShortArtistProfile", produces = apiVersionAccept)
-    public ResponseEntity<ShortProfileDto> getShortArtistProfileByUsername(@RequestParam String username) {
-        ShortProfileDto artistProfile = artistProfileService.getShortArtistProfileDtoByUsername(username);
-        if (artistProfile == null) {
-            throw new ArtistProfileNotFound("Artist profile not found for username: " + username);
-        }
-        return ResponseEntity
-                .status(HttpStatus.OK.value())
-                .body(artistProfile);
-    }
-
-    @GetMapping(value = "/getArtistProfile", produces = apiVersionAccept)
-    public ResponseEntity<ArtistProfileDto> getArtistProfileByUsername(@RequestParam String username) {
-        ArtistProfileDto artistProfile = artistProfileService.getArtistProfileDtoByUsername(username);
-        if (artistProfile == null) {
-            throw new ArtistProfileNotFound("Artist profile not found for username: " + username);
-        }
-        return ResponseEntity
-                .status(HttpStatus.OK.value())
-                .body(artistProfile);
-    }
-//        try {
-//            ArtistProfileDto artistProfile = artistProfileService.getArtistProfileDtoByUsername(username);
-//            return ResponseEntity
-//                    .status(HttpStatus.OK.value())
-//                    .body(artistProfile);
-//        } catch (UsernameNotFoundException ex) {
-//            throw new UsernameNotFoundException("Artist profile not found for username: " + username);
-//        } catch (Exception ex) {
-//            throw new RuntimeException("Internal server error");
-//        }
-
-    @PutMapping(value = "/updateArtistProfile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = apiVersionAccept)
-    public ResponseEntity<ArtistProfileDto> updateArtistProfileByUsername(@RequestParam String username, @RequestBody ArtistProfileDto artistProfileDto) {
-        try {
-            ArtistProfileDto artistProfile = artistProfileService.updateArtistProfileByUsername(username, artistProfileDto);
-            return ResponseEntity.ok(artistProfile);
-        } catch (UsernameNotFoundException ex) {
-            throw new UsernameNotFoundException("Artist profile not found for username: " + username);
-        } catch (Exception ex) {
-            throw new RuntimeException("Internal server error");
-        }
-    }
-
-    private UserDto mapUserEntityToDto(UserEntity userEntity) {
-        return new UserDto(
+    private UserResponse mapUserEntityToDto(UserEntity userEntity) {
+        return new UserResponse(
                 userEntity.getEmail(),
-                userEntity.getUsername(),
-                userEntity.getFirstname(),
-                userEntity.getLastname());
+                userEntity.getUsername());
     }
-
 }

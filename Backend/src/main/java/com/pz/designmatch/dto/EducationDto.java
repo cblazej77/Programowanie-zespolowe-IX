@@ -9,20 +9,27 @@ import java.time.LocalDate;
 
 @Getter
 public class EducationDto {
+
     @JsonProperty("school_name")
     private String schoolName;
+
     @JsonProperty("faculty")
     private String faculty;
+
     @JsonProperty("field_of_study")
     private String fieldOfStudy;
+
     @JsonProperty("degree")
     private String degree;
+
     @JsonProperty("start_date")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
+
     @JsonProperty("end_date")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate endDate;
+
     @JsonProperty("description")
     private String description;
 

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum Level {
+
     JUNIOR("Junior"),
     MID("Mid"),
     SENIOR("Senior");
@@ -25,7 +26,6 @@ public enum Level {
 
     public static List<String> getAvailableLevels() {
         return Stream.of(Level.values()).map(Level::getDisplayName).collect(Collectors.toList());
-
     }
 
     public String getDisplayName() {

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum City {
+
     REMOTE("Zdalnie"),
     WARSZAWA("Warszawa"),
     KRAKOW("Kraków"),
@@ -37,5 +38,4 @@ public enum City {
     public String getDisplayName() {
         return displayName;
     }
-
 }

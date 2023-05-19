@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 @Getter
 public enum Skill {
+
     LOGO(SkillsCategory.LOGO_AND_IDENTITY, "Logo"),
     IDENTITY(SkillsCategory.LOGO_AND_IDENTITY, "Identyfikacja wizualna"),
     BUSINESS_CARD(SkillsCategory.LOGO_AND_IDENTITY, "Wizytówka"),
@@ -53,5 +54,4 @@ public enum Skill {
         }
         return null;
     }
-
 }

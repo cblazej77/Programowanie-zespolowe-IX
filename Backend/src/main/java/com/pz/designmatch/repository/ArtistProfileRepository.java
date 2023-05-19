@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface ArtistProfileRepository extends JpaRepository<ArtistProfile, Long> {
+
     Optional<ArtistProfile> findByUser_Username(String username);
 
     Optional<ArtistProfile> findByUser_Id(Long id);

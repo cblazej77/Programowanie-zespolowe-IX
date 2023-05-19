@@ -13,20 +13,29 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 public class Education {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "artist_profile_id")
     private ArtistProfile artistProfile;
+
     private String schoolName;
+
     private String faculty;
+
     private String fieldOfStudy;
+
     private String degree;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
     private String description;
 
     public Education(ArtistProfile artistProfile, String schoolName, String faculty, String fieldOfStudy, String degree,

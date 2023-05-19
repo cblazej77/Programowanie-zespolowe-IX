@@ -1,75 +1,108 @@
 package com.pz.designmatch.controller;
 
-import com.pz.designmatch.dto.request.LoginDto;
-import com.pz.designmatch.dto.request.RegisterDto;
-import com.pz.designmatch.dto.response.AuthResponseDto;
-import com.pz.designmatch.model.enums.Role;
-import com.pz.designmatch.repository.UserRepository;
-import com.pz.designmatch.security.CustomUserDetailsService;
-import com.pz.designmatch.security.JWTGenerator;
+import com.pz.designmatch.dto.LocalUserDto;
+import com.pz.designmatch.dto.request.ArtistRegisterRequest;
+import com.pz.designmatch.dto.request.CompanyRegisterRequest;
+import com.pz.designmatch.dto.request.LoginRequest;
+import com.pz.designmatch.dto.request.RegisterRequest;
+import com.pz.designmatch.dto.response.ApiResponse;
+import com.pz.designmatch.dto.response.JwtAuthenticationResponse;
+import com.pz.designmatch.exception.UserAlreadyExistAuthenticationException;
 import com.pz.designmatch.service.ConfirmationTokenService;
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pz.designmatch.service.UserService;
+import com.pz.designmatch.service.impl.ConfirmationTokenServiceImpl;
+import jakarta.validation.ValidationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.stream.Collectors;
+
+import static com.pz.designmatch.model.user.Role.ROLE_ARTIST;
+import static com.pz.designmatch.model.user.Role.ROLE_COMPANY;
+
+@Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
+    private final JwtEncoder encoder;
+    private final UserService userService;
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final JWTGenerator jwtGenerator;
     private final ConfirmationTokenService confirmationTokenService;
-    private final CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-                          JWTGenerator jwtGenerator, ConfirmationTokenService confirmationTokenService,
-                          CustomUserDetailsService customUserDetailsService) {
+    public AuthController(JwtEncoder encoder, UserService userService, AuthenticationManager authenticationManager,
+                          ConfirmationTokenServiceImpl confirmationTokenService) {
+        this.encoder = encoder;
+        this.userService = userService;
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.jwtGenerator = jwtGenerator;
         this.confirmationTokenService = confirmationTokenService;
-        this.customUserDetailsService = customUserDetailsService;
     }
 
-    @PostMapping("login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.getEmail(),
-                        loginDto.getPassword()));
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+                (loginRequest.getEmail(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+        LocalUserDto localUser = (LocalUserDto) authentication.getPrincipal();
+        String jwt = getToken(localUser);
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
-    @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        if (userRepository.existsByEmail(registerDto.getEmail())) {
-            return new ResponseEntity<>("This email is already taken!", HttpStatus.BAD_REQUEST);
-        }
-        if (userRepository.existsByUsername(registerDto.getUsername())) {
-            return new ResponseEntity<>("This username is already taken!", HttpStatus.BAD_REQUEST);
-        }
-        EmailValidator emailValidator = new EmailValidator();
-        if (!emailValidator.isValid(registerDto.getEmail(), null)) {
-            return new ResponseEntity<>("This email is not valid!", HttpStatus.BAD_REQUEST);
-        }
-
-        Role role = Role.ARTIST;
-        customUserDetailsService.register(registerDto, role);
-
-        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+    @PostMapping("/token")
+    public ResponseEntity<?> getToken(Authentication authentication) {
+        LocalUserDto localUser = (LocalUserDto) authentication.getPrincipal();
+        String jwt = getToken(localUser);
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
-    @GetMapping(path = "confirm")
+    @PostMapping("/registerArtist")
+    public ResponseEntity<?> registerArtist(@RequestBody ArtistRegisterRequest artistRegisterRequest) {
+        return registerUser(artistRegisterRequest, ROLE_ARTIST);
+    }
+
+    @PostMapping("/registerCompany")
+    public ResponseEntity<?> registerCompany(@RequestBody CompanyRegisterRequest companyRegisterRequest) {
+        return registerUser(companyRegisterRequest, ROLE_COMPANY);
+    }
+
+    @GetMapping(path = "/confirmEmail")
     public ResponseEntity<String> confirm(@RequestParam("token") String token) {
         return new ResponseEntity<>(confirmationTokenService.confirmToken(token), HttpStatus.OK);
+    }
+
+    private ResponseEntity<?> registerUser(RegisterRequest registerRequest, String roleName) {
+        try {
+            userService.registerNewUser(registerRequest, roleName);
+        } catch (UserAlreadyExistAuthenticationException | ValidationException e) {
+            log.error("Exception Occurred", e);
+            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok().body(new ApiResponse(true, "Pomyślnie zarejestrowano!"));
+    }
+
+    private String getToken(LocalUserDto localUser) {
+        Instant now = Instant.now();
+        long expiry = 36000L;
+        String scope = localUser.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(" "));
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("self")
+                .issuedAt(now)
+                .expiresAt(now.plusSeconds(expiry))
+                .subject(localUser.getUsername())
+                .claim("scope", scope)
+                .build();
+        return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }

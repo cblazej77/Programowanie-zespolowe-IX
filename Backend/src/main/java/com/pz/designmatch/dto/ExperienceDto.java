@@ -9,17 +9,23 @@ import java.time.LocalDate;
 
 @Getter
 public class ExperienceDto {
+
     @JsonProperty("company")
     private final String company;
+
     @JsonProperty("city")
     private final String city;
+
     @JsonProperty("position")
     private final String position;
+
     @JsonProperty("description")
     private final String description;
+
     @JsonProperty("start_date")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
+
     @JsonProperty("end_date")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate endDate;

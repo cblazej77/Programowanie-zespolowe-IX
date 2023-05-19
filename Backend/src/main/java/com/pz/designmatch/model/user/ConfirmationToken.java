@@ -13,17 +13,23 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "confirmation_token")
 public class ConfirmationToken {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(name = "token")
     private String token;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
+
     @Column(name = "confirmed_at")
     private LocalDateTime confirmedAt;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;

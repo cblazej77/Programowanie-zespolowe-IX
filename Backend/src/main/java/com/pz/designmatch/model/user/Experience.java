@@ -13,19 +13,27 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 public class Experience {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "artist_profile_id")
     private ArtistProfile artistProfile;
+
     private String company;
+
     private String city;
+
     private String position;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDate;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDate;
+
     private String description;
 
     public Experience(ArtistProfile artistProfile, String company, String city, String position, LocalDate startDate, LocalDate endDate, String description) {
