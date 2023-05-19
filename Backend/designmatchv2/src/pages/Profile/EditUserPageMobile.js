@@ -122,6 +122,9 @@ const EditUserPageMobile = () => {
   const [artistShortProfile, setArtistShortProfile] = useState(null);
   const [availableLevels, setAvailableLevels] = useState([]);
   const [availableLocations, setAvailableLocations] = useState([]);
+  const [availableLanguages, setAvailableLanguages] = useState([]);
+  const [availableCategories, setAvailableCategories] = useState([]);
+  const [availableTags, setAvailableTags] = useState([]);
 
   //Hooks for temp values when editing
   const [bio, setBio] = useState("");
@@ -158,36 +161,50 @@ const EditUserPageMobile = () => {
   if (bio) chars = bio.length;
   else chars = 0;
 
-
-
   //pobieranie danych z backendu
   const profileName = 'jakub1';
-  let levelsData = {
+
+  const profileData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableLevels",
-    headers: {}
-  };
-  let profileData = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: getArtistProfileURL + profileName,
-    headers: {}
-  };
-  let profileNameData = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: getShortArtistProfileURL + profileName,
-    headers: {}
-  };
-  let citiesData = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableCities",
+    url: '/public/api/artist/getArtistProfileByUsername/' + profileName,
     headers: {}
   };
 
+  const citiesData = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: "/public/api/filter/getAvailableCities",
+    headers: {}
+  };
 
+  const tagsData = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: "/public/api/filter/getAvailableTags",
+    headers: {}
+  };
+
+  const categoriesData = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: "/public/api/filter/getAvailableCategories",
+    headers: {}
+  };
+
+  const languagesData = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: "/public/api/filter/getAvailableLanguages",
+    headers: {}
+  };
+
+  const levelsData = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: "/public/api/filter/getAvailableLevels",
+    headers: {}
+  };
 
   const handleDeleteEducationElement = (id) => {
     setEducationList((prevList) => prevList.filter((item) => item.id !== id));
@@ -208,7 +225,6 @@ const EditUserPageMobile = () => {
       },
     ]);
   };
-
 
   function handleChangeEducationElement(
     id,
@@ -295,8 +311,6 @@ const EditUserPageMobile = () => {
     setLanguages(languages.filter((l) => l !== language));
   }
 
-
-
   //funkcje czyszczace
   function handleClearEducationList() {
     setEducationList([]);
@@ -355,7 +369,7 @@ const EditUserPageMobile = () => {
     });
     const response = await axios
       .put(
-        '/api/artist/updateArtistProfile',
+        '/api/artist/updateProfileByUsername',
         {
           bio: bio,
           level: level.value,
@@ -394,15 +408,23 @@ const EditUserPageMobile = () => {
     const fetchData = async () => {
       try {
         //odebranie wszsytkich wyników
-        const levelsResponse = await axios.request(levelsData);
-        const artistResponse = await axios.request(profileData);
-        const artistShortResponse = await axios.request(profileNameData);
-        const citiesResponse = await axios.request(citiesData);
-        setArtistShortProfile(artistShortResponse.data);
+        const [artistResponse, citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
+          [
+            axios.request(profileData),
+            axios.request(citiesData),
+            axios.request(tagsData),
+            axios.request(categoriesData),
+            axios.request(languagesData),
+            axios.request(levelsData),
+          ],
+        );
         setGet(artistResponse.data);
         setArtistProfile(artistResponse.data);
         setAvailableLevels(levelsResponse.data);
         setAvailableLocations(citiesResponse.data);
+        setAvailableTags(tagsResponse.data);
+        setAvailableCategories(categoriesResponse.data);
+        setAvailableLanguages(languagesResponse.data);
       } catch (error) {
         console.log("fetchData w useEffect ", error);
       }

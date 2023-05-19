@@ -14,7 +14,7 @@ export const SignIn = () => {
   const [password, setPassword] = useState('');
   const authApi = useAuth();
 
-    const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [checkRegexEmail, setCheckRegexEmail] = useState(true);
   const [checkRegexPassword, setCheckRegexPassword] = useState(true);
   const [allInput, setAllInput] = useState(true);
@@ -27,86 +27,86 @@ export const SignIn = () => {
   const location = useLocation()
 
   const redirectPath = location.state?.path || '/';
-  const LOGIN_URL = '/api/auth/login';
+  const LOGIN_URL = '/auth/login';
 
   const handleCheckBlockButton = () => {
-    if(email === "" || password === "") {
+    if (email === "" || password === "") {
       setAllInput(false);
       setSubmitting(false);
     }
-    else if(checkRegexEmail && checkRegexPassword){
+    else if (checkRegexEmail && checkRegexPassword) {
       handleSubmit();
     }
-    else  setSubmitting(false);
+    else setSubmitting(false);
 
   }
 
 
 
   useEffect(() => {
-    if(localStorage.length > 0){
-      let myKey = localStorage.getItem("key");
+    if (localStorage.length > 0) {
+      let myKey = localStorage.getItem("storageLogin");
       console.log(myKey);
       authApi.login("Michal", "pssw");
-      navigate(redirectPath, {replace: true});
+      navigate(redirectPath, { replace: true });
     }
     else console.log("pusty localStorage");
   }, []);
 
   const handleSubmit = async () => {
-      try {
-              setSubmitting(true);
-        const response = await axios.post(LOGIN_URL,
-          JSON.stringify({ email, password }),
-          {
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
-              setSubmitting(false);
-        console.log(response?.data);
-        console.log(response?.accessToken);
-        console.log(JSON.stringify(response));
-        authApi.login(email, password);
-        saveStorageData();
-        navigate(redirectPath, { replace: true });
-      } catch (err) {
-      setSubmitting(false);
-        if (!err?.response) {
-          console.log('No Server Response');
-        } else if (err.response?.status === 409) {
-          console.log('Username Taken');
-        } else {
-          console.log('Registration Failed')
-          console.log(err)
-          setPasswordInvalid(true);
+    try {
+      setSubmitting(true);
+      const response = await axios.post(LOGIN_URL,
+        JSON.stringify({ email, password }),
+        {
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
         }
+      );
+      setSubmitting(false);
+      console.log(response?.data);
+      console.log(response?.accessToken);
+      console.log(JSON.stringify(response));
+      authApi.login(email, password);
+      saveStorageData(response?.data.accessToken);
+      navigate(redirectPath, { replace: true });
+    } catch (err) {
+      setSubmitting(false);
+      if (!err?.response) {
+        console.log('No Server Response');
+      } else if (err.response?.status === 409) {
+        console.log('Username Taken');
+      } else {
+        console.log('Registration Failed')
+        console.log(err)
+        setPasswordInvalid(true);
       }
-     } 
-      const login = useGoogleLogin({
-        onSuccess: CodeResponse  => {
-          console.log(CodeResponse );
-          authApi.login("Michal", "pssw");
-          saveStorageData();
-          navigate(redirectPath, {replace: true});
-        },
-        flow: 'auth-code',
-      });
+    }
+  }
+  const login = useGoogleLogin({
+    onSuccess: CodeResponse => {
+      console.log(CodeResponse);
+      authApi.login("Michal", "pssw");
+      saveStorageData("Goggle");
+      navigate(redirectPath, { replace: true });
+    },
+    flow: 'auth-code',
+  });
 
-      const handleEmailChange = (value) => {
-            setEmail(value);
-            setAllInput(true);
-    if(value && emailPatternValidation(value)) setCheckRegexEmail(true);
+  const handleEmailChange = (value) => {
+    setEmail(value);
+    setAllInput(true);
+    if (value && emailPatternValidation(value)) setCheckRegexEmail(true);
     else setCheckRegexEmail(false);
-      }
+  }
 
-      const handlePasswordChange = (value) => {
-           setPassword(value);
-           setAllInput(true);
-    if(value && passwordPatternValidation(value)) setCheckRegexPassword(true);
+  const handlePasswordChange = (value) => {
+    setPassword(value);
+    setAllInput(true);
+    if (value && passwordPatternValidation(value)) setCheckRegexPassword(true);
     else setCheckRegexPassword(false);
-      }
-    
- function passwordPatternValidation(password) {
+  }
+
+  function passwordPatternValidation(password) {
     const regex = new RegExp(PASSWORD_REGEX);
     return regex.test(password);
   }
@@ -116,50 +116,50 @@ export const SignIn = () => {
     return regex.test(email);
   }
 
-    //saveStorageData
-    const saveStorageData = () => {
-      let key = 'storageLogin';
-      localStorage.setItem(key, 'Zalogowany :)');
-    };
+  //saveStorageData
+  const saveStorageData = (AccesToken) => {
+    let key = 'storageLogin';
+    localStorage.setItem(key, AccesToken);
+  };
 
   return (
     <AllPage>
       <MainName >LOGOWANIE</MainName>
       <StyledForm >
-      <LogoIcon2 />
+        <LogoIcon2 />
 
-        <InputText label="email:" name="login" id="loginId" onChange={handleEmailChange} checkRegex={checkRegexEmail}/>
-        { (!checkRegexEmail && email !=="" ) && <ErrorLabel>Wpisano email w nieprawidłowym formacie.</ErrorLabel>}
-        <PasswordInput label="hasło:" name="login" id="passwordId" onChange = {handlePasswordChange} checkRegex ={checkRegexPassword}/>
-        { (!checkRegexPassword && password!=="") && <ErrorLabel>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </ErrorLabel>}
-          { (!allInput) && <ErrorLabel>Wszystkie pola musza być zepełnione</ErrorLabel>}
+        <InputText label="email:" name="login" id="loginId" onChange={handleEmailChange} checkRegex={checkRegexEmail} />
+        {(!checkRegexEmail && email !== "") && <ErrorLabel>Wpisano email w nieprawidłowym formacie.</ErrorLabel>}
+        <PasswordInput label="hasło:" name="login" id="passwordId" onChange={handlePasswordChange} checkRegex={checkRegexPassword} />
+        {(!checkRegexPassword && password !== "") && <ErrorLabel>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </ErrorLabel>}
+        {(!allInput) && <ErrorLabel>Wszystkie pola musza być zepełnione</ErrorLabel>}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           {passwordInvalid ? <StyledAlert>Podane hasło jest nieprawidłowe.</StyledAlert> : <></>}
-          { !submitting ? <LoginButton to='##' type="submit" onClick={handleCheckBlockButton}>Zaloguj się</LoginButton> :
-          <LoginButton to='#' type="submit">Zaloguj się</LoginButton> }
+          {!submitting ? <LoginButton to='##' type="submit" onClick={handleCheckBlockButton}>Zaloguj się</LoginButton> :
+            <LoginButton to='#' type="submit">Zaloguj się</LoginButton>}
           <LineForm />
-          <GoogleButton to='#' type="button" onClick={ () => login()} >Kontynuuj z Google{' '}</GoogleButton>
+          <GoogleButton to='#' type="button" onClick={() => login()} >Kontynuuj z Google{' '}</GoogleButton>
           <FacebookLogin
-  appId="739036054553215"
-  scope={email}
-  onSuccess={(response) => {
-    console.log('Login Success!', response);
-  }}
-  onFail={(error) => {
-    console.log('Login Failed!', error);
-  }}
-  onProfileSuccess={(response) => {
-    console.log('Get Profile Success!', response);
-    authApi.login(response.name, "passwordini");
-    saveStorageData();
-    navigate(redirectPath, {replace: true});
-  }}
-  render={({ onClick }) => (
-    <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>
-  )}
-/>
+            appId="739036054553215"
+            scope={email}
+            onSuccess={(response) => {
+              console.log('Login Success!', response);
+            }}
+            onFail={(error) => {
+              console.log('Login Failed!', error);
+            }}
+            onProfileSuccess={(response) => {
+              console.log('Get Profile Success!', response);
+              authApi.login(response.name, "passwordini");
+              saveStorageData("Facebook");
+              navigate(redirectPath, { replace: true });
+            }}
+            render={({ onClick }) => (
+              <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>
+            )}
+          />
           <div style={{ fontSize: 12 }}>
-          <small>Nie masz jeszcze konta? </small>
+            <small>Nie masz jeszcze konta? </small>
             <Link to='/sign-up' type="submit">Zarejestruj się!</Link>
           </div>
         </div>

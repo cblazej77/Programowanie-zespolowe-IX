@@ -46,34 +46,23 @@ const UserPage = () => {
   const [experienceList, setExperienceList] = useState([]);
 
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
-  const [click, setClick] = useState(true);
   const [button, setButton] = useState(true);
 
-  const job = "";
   const profileName = 'jakub1';
 
   let profileData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: getArtistProfileURL + profileName,
-    headers: {}
-  };
-
-  let profileNameData = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: getShortArtistProfileURL + profileName,
+    url: '/public/api/artist/getArtistProfileByUsername/' + profileName,
     headers: {}
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result1 = await axios.request(profileData);
-        const result2 = await axios.request(profileNameData);
-        setGet(result1.data);
-        setCheckLoading(result1);
-        setShortProfile(result2.data);
+        const result = await axios.request(profileData);
+        setGet(result.data);
+        setCheckLoading(result);
       } catch (error) {
         console.log(error);
       }
@@ -277,7 +266,7 @@ const UserPage = () => {
           <LeftWrapper>
             <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
             <JobText>{get.level}</JobText>
-            <NameText>{shortProfile.firstname} {shortProfile.lastname} </NameText>
+            <NameText>{get.firstname} {get.lastname} </NameText>
             <RatingWrapper>
               <Rating
                 size="2rem"

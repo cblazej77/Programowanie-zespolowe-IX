@@ -68,12 +68,12 @@ const EditCompanyPage = () => {
 
   const maxChars = 300;
   const limitHeight = 60;
-  const companyName = 'Acme%20Corporation';
+  const companyName = 'firma1';
 
   const companyData = useMemo(() => ({
     method: 'get',
     maxBodyLength: 10000,
-    url: `/companies/getCompanyProfileByName?name=${companyName}`,
+    url: `/public/api/company/getProfileByUsername/` + companyName,
     headers: {},
   }), [companyName]);
 
@@ -108,7 +108,7 @@ const EditCompanyPage = () => {
   const handleSave = useCallback(async () => {
     try {
       console.log(get);
-      const response = await axios.put(`/companies/updateCompanyProfileByName?name=${companyName}`, get);
+      const response = await axios.put(`/api/company/updateCompanyProfileByUsername/` + companyName, get);
       console.log('Data saved successfully!');
       console.log(response.data);
     } catch (err) {
@@ -154,7 +154,7 @@ const EditCompanyPage = () => {
                 maxLength={maxChars}
                 onKeyDown={(e) => handleKeyDown(e)}
               />
-              <Nawias>({Math.min(get.description.length, maxChars)}/{maxChars})</Nawias>
+              <Nawias>{get.description ? Math.min(get.description.length, maxChars) : 0}/{maxChars}</Nawias>
               <Left>
                 <LineForm style={{ marginBottom: '3rem' }} />
                 <LeftColumn>

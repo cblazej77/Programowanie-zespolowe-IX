@@ -196,31 +196,11 @@ const Commisions = () => {
     setTagsFilter([]);
   };
 
-  const citiesData = useMemo(
-    () => ({
-      method: 'get',
-      maxBodyLength: 5000,
-      url: '/api/artist/getAvailableCities',
-      headers: {},
-    }),
-    [],
-  );
-
   const tagsData = useMemo(
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableTags',
-      headers: {},
-    }),
-    [],
-  );
-
-  const languagesData = useMemo(
-    () => ({
-      method: 'get',
-      maxBodyLength: 5000,
-      url: '/api/artist/getAvailableLanguages',
+      url: '/public/api/filter/getAvailableTags',
       headers: {},
     }),
     [],
@@ -230,7 +210,27 @@ const Commisions = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableLevels',
+      url: '/public/api/filter/getAvailableLevels',
+      headers: {},
+    }),
+    [],
+  );
+
+  const languagesData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/public/api/filter/getAvailableLanguages',
+      headers: {},
+    }),
+    [],
+  );
+
+  const citiesData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/public/api/filter/getAvailableCities',
       headers: {},
     }),
     [],
@@ -240,7 +240,7 @@ const Commisions = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableCategories',
+      url: '/public/api/filter/getAvailableCategories',
       headers: {},
     }),
     [],
@@ -251,7 +251,7 @@ const Commisions = () => {
       try {
         const response = await axios
           .post(
-            '/commission/filterCommissions',
+            '/public/api/commission/filter',
             {
               level: levelsFilter,
               location: citiesFilter,
@@ -261,7 +261,7 @@ const Commisions = () => {
             },
             {
               params: { page: 0, size: 10 },
-              headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+              headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
             },
           )
           .catch((error) => {
@@ -382,7 +382,7 @@ const Commisions = () => {
     return categories.categories.map((category, indexC) => (
       <CategoryWrapper>
         <CategoryText key={indexC}>{category.name}</CategoryText>
-        {category.subcategories.map((subcategory, indexS) => (
+        {category.skills.map((subcategory, indexS) => (
           <CheckBoxWrapper key={indexS}>
             <div>
               <CheckBox

@@ -87,15 +87,15 @@ const ModalConfirm = ({ showModal, setShowModal, navigateGo, setNavigateGo }) =>
 
   return (
     <>
-      {/* {showModal ? ( */}
-      <Background onClick={closeModal} ref={modalRef}>
-        <ModalWrapper showModal={showModal}>
-          <Label>Pomyślnie, Zarejestrowano użytkownika,</Label>
-          <label>Aby dokończyć rejestrację potwierdz email przed zalogowaniem</label>
-          <Button onClick={closeModal} ref={modalRef}>Rozumiem</Button>
-        </ModalWrapper >
-      </Background>
-      {/* ) : null} */}
+      {showModal ? (
+        <Background onClick={closeModal} ref={modalRef}>
+          <ModalWrapper showModal={showModal}>
+            <Label>Pomyślnie, Zarejestrowano użytkownika,</Label>
+            <label>Aby dokończyć rejestrację potwierdz email przed zalogowaniem</label>
+            <Button onClick={closeModal} ref={modalRef}>Rozumiem</Button>
+          </ModalWrapper >
+        </Background>
+      ) : null}
     </>
   )
 };

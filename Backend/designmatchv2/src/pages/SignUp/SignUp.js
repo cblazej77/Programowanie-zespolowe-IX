@@ -34,7 +34,6 @@ function LoginForm() {
   const location = useLocation();
 
   const redirectPath = location.state?.path || '/';
-  const REGISTER_URL = '/api/auth/register';
 
   const openModal = () => {
     setShowModal(prev => !prev);
@@ -68,7 +67,7 @@ function LoginForm() {
   const handleRegistration = async (e) => {
     try {
       setSubmitting(true);
-      const response = await axios.post(REGISTER_URL,
+      const response = await axios.post('/auth/registerArtist',
         JSON.stringify({ email, username: nick, password, firstname: name, lastname: surname }),
         {
           headers: { 'Content-Type': 'application/json' },

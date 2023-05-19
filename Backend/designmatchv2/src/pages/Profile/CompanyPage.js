@@ -57,9 +57,6 @@ import {
 
 const { darkLight } = COLORS;
 
-
-
-
 const CompanyPage = () => {
   const [cities, setCities] = useState([]);
   const [languages, setLanguages] = useState([]);
@@ -71,7 +68,6 @@ const CompanyPage = () => {
   const [modalData, setModalData] = useState([]);
   const [get, setGet] = useState("");
   const [checkLoading, setCheckLoading] = useState(null);
-  // const [languagesT, setLanguagesT] = useState([]);
   const [CommisionsData, setCommisionsData] = useState([
     {
       title: "Projekt logo dla firmy produkującej kosmetyki naturalne",
@@ -139,13 +135,13 @@ const CompanyPage = () => {
   ]);
   const maxChars = 300;
   let chars = 0;
-  const companyName = 'Acme%20Corporation';
+  const companyName = 'firma1';
 
   const citiesData = useMemo(
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableCities',
+      url: '/public/api/filter/getAvailableCities',
       headers: {},
     }),
     [],
@@ -155,7 +151,7 @@ const CompanyPage = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableTags',
+      url: '/public/api/filter/getAvailableTags',
       headers: {},
     }),
     [],
@@ -165,7 +161,7 @@ const CompanyPage = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableLanguages',
+      url: '/public/api/filter/getAvailableLanguages',
       headers: {},
     }),
     [],
@@ -175,7 +171,7 @@ const CompanyPage = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableLevels',
+      url: '/public/api/filter/getAvailableLevels',
       headers: {},
     }),
     [],
@@ -185,7 +181,7 @@ const CompanyPage = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableCategories',
+      url: '/public/api/filter/getAvailableCategories',
       headers: {},
     }),
     [],
@@ -194,7 +190,7 @@ const CompanyPage = () => {
   const companyData = useMemo(() => ({
     method: 'get',
     maxBodyLength: 10000,
-    url: '/companies/getCompanyProfileByName?name=' + companyName,
+    url: '/public/api/company/getProfileByUsername/' + companyName,
     headers: {},
   }),
     [],
@@ -268,7 +264,7 @@ const CompanyPage = () => {
     useEffect(() => {
       if (categories && categories.categories && Array.isArray(categories.categories)) {
         const updatedSkills = categories.categories.flatMap(category =>
-          category.subcategories.map(subcategory => ({
+          category.skills.map(subcategory => ({
             value: subcategory,
             label: subcategory,
           }))

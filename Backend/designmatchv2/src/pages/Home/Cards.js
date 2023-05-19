@@ -111,31 +111,11 @@ const Cards = () => {
     setTagsFilter([]);
   };
 
-  const citiesData = useMemo(
-    () => ({
-      method: 'get',
-      maxBodyLength: 5000,
-      url: '/api/artist/getAvailableCities',
-      headers: {},
-    }),
-    [],
-  );
-
   const tagsData = useMemo(
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableTags',
-      headers: {},
-    }),
-    [],
-  );
-
-  const languagesData = useMemo(
-    () => ({
-      method: 'get',
-      maxBodyLength: 5000,
-      url: '/api/artist/getAvailableLanguages',
+      url: '/public/api/filter/getAvailableTags',
       headers: {},
     }),
     [],
@@ -145,7 +125,27 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableLevels',
+      url: '/public/api/filter/getAvailableLevels',
+      headers: {},
+    }),
+    [],
+  );
+
+  const languagesData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/public/api/filter/getAvailableLanguages',
+      headers: {},
+    }),
+    [],
+  );
+
+  const citiesData = useMemo(
+    () => ({
+      method: 'get',
+      maxBodyLength: 5000,
+      url: '/public/api/filter/getAvailableCities',
       headers: {},
     }),
     [],
@@ -155,7 +155,7 @@ const Cards = () => {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: '/api/artist/getAvailableCategories',
+      url: '/public/api/filter/getAvailableCategories',
       headers: {},
     }),
     [],
@@ -166,7 +166,7 @@ const Cards = () => {
       try {
         const response = await axios
           .post(
-            '/artist/filter',
+            '/public/api/artist/filter',
             {
               level: levelsFilter,
               location: citiesFilter,
@@ -176,7 +176,7 @@ const Cards = () => {
             },
             {
               params: { page: 0, size: 10 },
-              headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+              headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
             },
           )
           .catch((error) => {
@@ -297,7 +297,7 @@ const Cards = () => {
     return categories.categories.map((category, indexC) => (
       <CategoryWrapper>
         <CategoryText key={indexC}>{category.name}</CategoryText>
-        {category.subcategories.map((subcategory, indexS) => (
+        {category.skills.map((subcategory, indexS) => (
           <CheckBoxWrapper key={indexS}>
             <CheckBoxContainter>
               <CheckBox
