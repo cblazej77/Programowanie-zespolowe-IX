@@ -25,14 +25,15 @@ public class CommissionMapper {
 
     public Commission mapToEntity(CommissionRequest commissionRequest) throws UsernameNotFoundException {
         Optional<UserEntity> client = userRepository.findByUsername(commissionRequest.getClientUsername());
-        Optional<UserEntity> contractor = userRepository.findByUsername(commissionRequest.getContractorUsername());
+        //Optional<UserEntity> contractor = userRepository.findByUsername(commissionRequest.getContractorUsername());
+        Optional<UserEntity> contractor = commissionRequest.getContractorUsername() != null ? userRepository.findByUsername(commissionRequest.getContractorUsername()) : Optional.empty();
 
-        if (client.isEmpty() || contractor.isEmpty()) {
-            throw new UsernameNotFoundException("Klient lub wykonawca nie istnieje");
+        if (client.isEmpty()) {
+            throw new UsernameNotFoundException("Klient  nie istnieje");
         }
         return new Commission(
                 client.get(),
-                contractor.get(),
+                contractor.orElse(null),
                 commissionRequest.getTitle(),
                 commissionRequest.getDescription(),
                 LocalDateTime.now(),
@@ -49,7 +50,7 @@ public class CommissionMapper {
         return new CommissionResponse(
                 commission.getId(),
                 commission.getClient().getUsername(),
-                commission.getContractor().getUsername(),
+                commission.getContractor() != null ? commission.getContractor().getUsername() : null,
                 commission.getTitle(),
                 commission.getDescription(),
                 commission.getCommissionedAt(),

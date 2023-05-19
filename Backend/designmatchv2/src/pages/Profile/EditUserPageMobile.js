@@ -368,6 +368,8 @@ const EditUserPageMobile = () => {
       .put(
           '/api/artist/updateProfileByUsername/jkasinski1',
         {
+          firstname: name,
+          lastname: surname,
           bio: bio,
           level: level.value,
           location: location.value,
@@ -429,6 +431,8 @@ const EditUserPageMobile = () => {
   useEffect(() => {
     if (artistProfile) {
       clear();
+      setName(artistProfile.firstname);
+      setSurname(artistProfile.lastname);
       setBio(artistProfile.bio);
       setLevel(artistProfile.level);
       setLocation(artistProfile.location);

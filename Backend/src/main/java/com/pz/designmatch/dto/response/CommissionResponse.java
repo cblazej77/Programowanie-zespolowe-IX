@@ -22,7 +22,7 @@ public class CommissionResponse {
     @JsonProperty("client_username")
     private String clientUsername;
 
-    @NotEmpty
+    //@NotEmpty
     @JsonProperty("contractor_username")
     private String contractorUsername;
 

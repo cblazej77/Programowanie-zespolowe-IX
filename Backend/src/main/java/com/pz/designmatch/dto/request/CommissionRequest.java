@@ -20,7 +20,7 @@ public class CommissionRequest {
     @JsonProperty("client_username")
     private String clientUsername;
 
-    @NotEmpty
+    //@NotEmpty - wydaje mi się, że nie znamy tego
     @JsonProperty("contractor_username")
     private String contractorUsername;
 

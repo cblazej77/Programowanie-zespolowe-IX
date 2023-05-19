@@ -25,10 +25,14 @@ public class CompanyProfileController {
     }
 
 
-
     @PutMapping(value = "/api/company/updateProfileByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<CompanyProfileResponse> updateCompanyProfileByUsername(@PathVariable("username") String username, @RequestBody CompanyProfileRequest companyProfile) {
         CompanyProfileResponse updatedCompanyProfile = companyProfileService.updateCompanyProfileByUsername(username, companyProfile);
         return ResponseEntity.ok(updatedCompanyProfile);
     }
+//    @PutMapping(value = "/api/company/getAllCommissionFirmByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
+//    public ResponseEntity<CompanyProfileResponse> getAllCommissionFirmByUsername(@PathVariable("username") String username, @RequestBody CompanyProfileRequest companyProfile) {
+//        CompanyProfileResponse updatedCompanyProfile = companyProfileService.updateCompanyProfileByUsername(username, companyProfile);
+//        return ResponseEntity.ok(updatedCompanyProfile);
+//    }
 }
