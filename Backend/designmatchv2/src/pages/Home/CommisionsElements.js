@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { COLORS } from '../../components/Colors';
 import { CardsWrapper, TitleText } from './CardsElement';
+import { ModalRow, StyledTextarea } from '../Profile/ProfileElements';
 
 const {
   darkLight,
   darkLight2,
+  gray,
   gray1,
   white,
   primary,
@@ -168,4 +170,58 @@ export const CommisionText = styled.p`
 export const CommisionBottom = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+export const InfoInputText = styled.text`
+  font-size: 80%;
+  color: ${gray1};
+  margin-top: 1rem;
+`;
+
+export const TitleInput = styled(StyledTextarea)`
+  color: ${darkLight};
+  font-size: 2rem;
+  min-height: 3rem;
+  padding: 0 0 0 0.5rem;
+  @media screen and (max-width: 960px) {
+    font-size: 1.5rem;
+    min-height: 2.2rem;
+  }
+`;
+
+export const AboutInput = styled(StyledTextarea)`
+  min-height: 15rem;
+  font-size: 1.2rem;
+  overflow-y: auto;
+  white-space: normal;
+  color: ${gray1};
+`;
+
+export const NumberInput = styled.textarea`
+  color: ${darkLight};
+  border-radius: 10px;
+  border: 1px solid ${gray};
+  font-size: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-right: 0.5rem;
+  resize: none;
+  text-align: right;
+  height: 2.2rem;
+  width: 12rem;
+  padding-right: 0.5rem;
+  &:hover {
+    border: 1px solid ${darkLight};
+  }
+  @media screen and (max-width: 1280px) {
+    height: 2rem;
+  }
+
+  @media screen and (max-width: 960px) {
+    height: 1.8rem;
+  }
+`;
+
+export const ModalEditRow = styled(ModalRow)`
+  align-items: center;
 `;

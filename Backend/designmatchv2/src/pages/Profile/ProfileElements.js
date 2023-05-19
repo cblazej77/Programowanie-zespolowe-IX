@@ -362,7 +362,7 @@ export const ModalBackground = styled.div`
 export const ModalWrapper = styled.div`
     overflow-y: auto; 
     width: 95rem;
-    height: 80%;
+    height: 90%;
     border-radius: 15px;
     flex-direction: column;
     background: ${primary};
@@ -375,6 +375,11 @@ export const ModalWrapper = styled.div`
     }
     @media screen and (max-width: 1280px) {
       font-size: 1.2rem;
+    }
+    @media screen and (max-width: 960px) {
+      height: 85%;
+      bottom: 0;
+      position: fixed;
     }
 `;
 
@@ -414,6 +419,7 @@ export const ModalRow = styled.div`
 
 export const ModalData = styled(ModalInfo)`
   font-weight: bold;
+  font-size: 100%;
 `;
 
 export const ModalBubbleContainer = styled.div`
