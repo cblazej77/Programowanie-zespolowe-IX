@@ -110,7 +110,7 @@ export default function HomePage({ navigation }) {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: BASE_URL + '/api/artist/getAvailableCities',
+      url: BASE_URL + '/public/api/filter/getAvailableCities',
       headers: {},
     }),
     [],
@@ -120,7 +120,7 @@ export default function HomePage({ navigation }) {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: BASE_URL + '/api/artist/getAvailableTags',
+      url: BASE_URL + '/public/api/filter/getAvailableTags',
       headers: {},
     }),
     [],
@@ -130,7 +130,7 @@ export default function HomePage({ navigation }) {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: BASE_URL + '/api/artist/getAvailableLanguages',
+      url: BASE_URL + '/public/api/filter/getAvailableLanguages',
       headers: {},
     }),
     [],
@@ -140,7 +140,7 @@ export default function HomePage({ navigation }) {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: BASE_URL + '/api/artist/getAvailableLevels',
+      url: BASE_URL + '/public/api/filter/getAvailableLevels',
       headers: {},
     }),
     [],
@@ -150,7 +150,7 @@ export default function HomePage({ navigation }) {
     () => ({
       method: 'get',
       maxBodyLength: 5000,
-      url: BASE_URL + '/api/artist/getAvailableCategories',
+      url: BASE_URL + '/public/api/filter/getAvailableCategories',
       headers: {},
     }),
     [],
@@ -162,10 +162,10 @@ export default function HomePage({ navigation }) {
         try {
           const response = await axios
             .post(
-              BASE_URL + '/artist/filter',
+              BASE_URL + '/public/api/artist/filter',
               {
-                level: levelsFiltr,
-                location: citiesFiltr,
+                levels: levelsFiltr,
+                locations: citiesFiltr,
                 skills: categoriesFiltr,
                 languages: languagesFiltr,
                 tags: tagsFiltr,
@@ -189,10 +189,10 @@ export default function HomePage({ navigation }) {
         try {
           const response = await axios
             .post(
-              BASE_URL + '/commisions/filterCommisions',
+              BASE_URL + '/public/api/commission/filter',
               {
-                level: levelsFiltr,
-                location: citiesFiltr,
+                levels: levelsFiltr,
+                locations: citiesFiltr,
                 skills: categoriesFiltr,
                 languages: languagesFiltr,
                 tags: tagsFiltr,
@@ -251,7 +251,7 @@ export default function HomePage({ navigation }) {
     const list = categories.categories.map((category, indexC) => (
       <View key={indexC}>
         <DropDownSubcategoryText>{category.name}</DropDownSubcategoryText>
-        {category.subcategories.map((subcategory, indexS) => (
+        {category.skills.map((subcategory, indexS) => (
           <View style={{ padding: 5 }} key={indexS}>
             <BouncyCheckbox
               size={25}
@@ -383,6 +383,7 @@ export default function HomePage({ navigation }) {
       return null;
     }
 
+  
     return <HomeSearchFilter data={filtered.content} input={input} setInput={setInput} navigation={navigation} />;
 
     // return filtered.content.map((filter, indexF) => (
@@ -411,7 +412,9 @@ export default function HomePage({ navigation }) {
       return null;
     }
 
-    <CommisionsSearchFilter data={commisions.content} input={input} setInput={setInput} navigation={navigation} />;
+    console.log(commisions.content);
+
+    return <CommisionsSearchFilter data={commisions.content} input={input} setInput={setInput} navigation={navigation} />;
   });
 
   return (

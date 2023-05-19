@@ -124,20 +124,24 @@ const Login = ({ navigation }) => {
     }
   };
 
-  async function getUser() {
-    const url = baseURL + '/api/artist/getUser';
+  async function getUser(token) {
+    const url = baseURL + '/api/user/getUserById';
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('user: ' + JSON.stringify(response.data));
       return JSON.stringify(response.data);
     } catch (err) {
       if (!err?.response) {
-        console.log('No Server Response');
         console.log(err);
       } else if (err.response?.status === 409) {
-        console.log('Username Taken');
         console.log(err);
       } else {
-        console.log('Login Failed');
         console.log(err);
       }
     }
@@ -148,7 +152,7 @@ const Login = ({ navigation }) => {
     setSubmitting(false);
     if (response) {
       save('accessToken', response);
-      const user = await getUser();
+      const user = await getUser(response);
       save('user', user);
       navigation.navigate('MainNavigation');
       setEmail('');
@@ -159,13 +163,15 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     handleMessage(null);
-    const url = baseURL + '/api/auth/login';
+    const url = baseURL + '/auth/login';
     try {
       const response = await axios.post(url, JSON.stringify({ email, password }), {
         headers: { 'Content-Type': 'application/json' },
       });
-      handleMessage('Zalogowano pomyślnie', 'SUCCESS');
-      return JSON.stringify(response.data.accessToken);
+      if (response.status === 200) {
+        handleMessage('Zalogowano pomyślnie', 'SUCCESS');
+        return response.data.accessToken;
+      }
     } catch (err) {
       handleMessage('Nie udało się zalogować, spróbuj ponownie.', 'FAILED');
       setEmail('');
@@ -307,7 +313,7 @@ const Login = ({ navigation }) => {
                 )}
                 <ExtraView>
                   <SmallText>Nie masz jeszcze konta? </SmallText>
-                  <TextLink onPress={() => navigation.navigate('Signup')}>
+                  <TextLink onPress={() => navigation.navigate('ArtistSignup')}>
                     <SmallText style={{ color: link }}>Zarejestruj się!</SmallText>
                   </TextLink>
                 </ExtraView>

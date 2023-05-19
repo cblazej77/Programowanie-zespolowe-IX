@@ -1,11 +1,47 @@
-import { StyleSheet, Text, View, FlatList, Touchable } from 'react-native';
+import { StyleSheet, View, ScrollView, Pressable } from 'react-native';
 import React from 'react';
-import { RegularText, StatsText } from './styles';
+import { useState } from 'react';
+import { RegularText, StatsText, Bubble, AppText, HeaderText, Line } from './styles';
 import { Colors } from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CardItem from './CardItem';
+import { CommisionElement } from './CommisionElement';
+import Modal from 'react-native-modal';
 
-const { darkLight, secondary } = Colors;
+const { darkLight, secondary, primary } = Colors;
+
+function getSelectedLevel(levels) {
+  if (levels) {
+    if (levels.length === 3) {
+      return 'Junior+';
+    } else if (levels.length === 2) {
+      return 'Mid+';
+    } else if (levels.length === 1) {
+      return levels[0];
+    }
+  }
+}
+
+const generateBoxShadowStyle = (
+  xOffset,
+  yOffset,
+  shadowColorIos,
+  shadowOpacity,
+  shadowRadius,
+  elevation,
+  shadowColorAndroid,
+) => {
+  if (Platform.OS === 'ios') {
+    styles.boxShadow = {
+      shadowColor: shadowColorIos,
+      shadowOpacity,
+      shadowRadius,
+      shadowOffset: { width: xOffset, height: yOffset },
+    };
+  } else if (Platform.OS === 'android') {
+    styles.boxShadow = { elevation, shadowColor: shadowColorAndroid };
+  }
+};
 
 export const MessagesSearchFilter = ({ data, input, setInput, navigation }) => {
   if (input === '') {
@@ -150,76 +186,247 @@ export const HomeSearchFilter = ({ data, input, setInput, navigation }) => {
 };
 
 export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) => {
+
+  generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
+
+  const [isModalVisible, setisModalVisible] = useState(false);
+  const [modalCommision, setModalCommision] = useState('');
+
   if (input === '') {
     const list = data.map((item, index) => (
-      <View style={[styles.Commision]}>
-      <View style={styles.TopContainer}>
-        <View style={styles.TitleContainer}>
-          <View style={styles.TitleText}>
-            <StatsText style={{textAlign: 'left'}}>{item.title}</StatsText>
-          </View>
-          <Bubble style={[styles.LevelBubble]}>
-            <AppText style={{ fontSize: 10, color: darkLight }}>{item.level}</AppText>
-          </Bubble>
-        </View>
-        <RegularText style={{maxWidth: '20%'}}>{item.stawka + ' PLN'}</RegularText>
-      </View>
-      <View style={styles.MiddleContainer}>
-        {item.location.length > 1 ? (
-          <RegularText style={styles.MiddleText1}>{item.location[0] + '+'}</RegularText>
-        ) : (
-          <RegularText style={styles.MiddleText1}>{item.location}</RegularText>
-        )}
-        <RegularText style={styles.MiddleText2}>{item.deadline}</RegularText>
-      </View>
-      <View style={styles.BottomContainer}>
-        {item.tags.map((tag, indexT) => (
-          <Bubble style={styles.TagBubble} key={indexT}>
-            <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
-          </Bubble>
-        ))}
-      </View>
-    </View>
+      <TouchableOpacity
+            onPress={() => {
+              setisModalVisible(true);
+              setModalCommision(item);
+            }}
+            key={index}
+          >
+      <CommisionElement
+              key={index}
+              title={item.title}
+              description={item.description}
+              stawka={item.stawka}
+              deadline={item.deadline}
+              level={getSelectedLevel(item.level)}
+              location={item.location}
+              tags={item.tags}
+            />
+            </TouchableOpacity>
     ));
-    return <View>{list}</View>;
+    return (<View><View>{list}</View>{modalCommision && (
+      <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setisModalVisible(false)}
+        onSwipeComplete={() => setisModalVisible(false)}
+        swipeDirection="right"
+        animationIn="fadeInUp"
+        animationOut="fadeOutUp"
+        animationInTiming={500}
+        animationOutTiming={500}
+        hideModalContentWhileAnimating={true}
+      >
+        <ScrollView style={{ maxHeight: '90%' }}>
+          <View style={[styles.centeredView]}>
+            <View style={styles.modalView}>
+              <HeaderText style={{ color: darkLight }}>{modalCommision.title}</HeaderText>
+              <Line style={{ width: '90%', height: 2 }} />
+              <View style={styles.ModalDescription}>
+                <RegularText style={{ color: '#6e6968' }}>{modalCommision.description}</RegularText>
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalCommisionDetails}>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%' }}>
+                    {modalCommision.stawka + ' PLN'}
+                  </RegularText>
+                </View>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Czas wykonania:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%' }}>{modalCommision.deadline}</RegularText>
+                </View>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Poziom zaawansowania:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%' }}>
+                    {getSelectedLevel(modalCommision.level)}
+                  </RegularText>
+                </View>
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Lokalizacja:</RegularText>
+                {modalCommision.location.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Tagi:</RegularText>
+                {modalCommision.tags.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Wymagane Umiejętności:</RegularText>
+                {modalCommision.skills.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Wymagane Języki:</RegularText>
+                {modalCommision.languages.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                <Pressable
+                  onPress={() => {}}
+                  style={({ pressed }) => [
+                    {
+                      backgroundColor: pressed ? 'lightgrey' : darkLight,
+                    },
+                    styles.ModalButton,
+                  ]}
+                >
+                  <AppText style={{ color: 'white' }}>Aplikuj!</AppText>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </Modal>
+    )}
+    </View>);
   } else {
     const filtred = data.filter((item) => {
-      const person = item.firstname + ' ' + item.lastname;
-      if (person.toLowerCase().includes(input.toLowerCase())) {
-        return item;
+      if(item.title.toLowerCase().includes(input.toLowerCase())) {
+      return item;
       }
     });
     const list = filtred.map((item, index) => (
-      <View style={[styles.Commision]}>
-      <View style={styles.TopContainer}>
-        <View style={styles.TitleContainer}>
-          <View style={styles.TitleText}>
-            <StatsText style={{textAlign: 'left'}}>{item.title}</StatsText>
-          </View>
-          <Bubble style={[styles.LevelBubble]}>
-            <AppText style={{ fontSize: 10, color: darkLight }}>{item.level}</AppText>
-          </Bubble>
-        </View>
-        <RegularText style={{maxWidth: '20%'}}>{item.stawka + ' PLN'}</RegularText>
-      </View>
-      <View style={styles.MiddleContainer}>
-        {item.location.length > 1 ? (
-          <RegularText style={styles.MiddleText1}>{item.location[0] + '+'}</RegularText>
-        ) : (
-          <RegularText style={styles.MiddleText1}>{item.location}</RegularText>
-        )}
-        <RegularText style={styles.MiddleText2}>{item.deadline}</RegularText>
-      </View>
-      <View style={styles.BottomContainer}>
-        {item.tags.map((tag, indexT) => (
-          <Bubble style={styles.TagBubble} key={indexT}>
-            <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
-          </Bubble>
-        ))}
-      </View>
-    </View>
+      <TouchableOpacity
+            onPress={() => {
+              setisModalVisible(true);
+              setModalCommision(item);
+            }}
+            key={index}
+          >
+      <CommisionElement
+              key={index}
+              title={item.title}
+              description={item.description}
+              stawka={item.stawka}
+              deadline={item.deadline}
+              level={getSelectedLevel(item.level)}
+              location={item.location}
+              tags={item.tags}
+            />
+            </TouchableOpacity>
     ));
-    return <View>{list}</View>;
+    return (<View><View>{list}</View>{modalCommision && (
+      <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setisModalVisible(false)}
+        onSwipeComplete={() => setisModalVisible(false)}
+        swipeDirection="right"
+        animationIn="fadeInUp"
+        animationOut="fadeOutUp"
+        animationInTiming={500}
+        animationOutTiming={500}
+        hideModalContentWhileAnimating={true}
+      >
+        <ScrollView style={{ maxHeight: '90%' }}>
+          <View style={[styles.centeredView]}>
+            <View style={styles.modalView}>
+              <HeaderText style={{ color: darkLight }}>{modalCommision.title}</HeaderText>
+              <Line style={{ width: '90%', height: 2 }} />
+              <View style={styles.ModalDescription}>
+                <RegularText style={{ color: '#6e6968' }}>{modalCommision.description}</RegularText>
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalCommisionDetails}>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%' }}>
+                    {modalCommision.stawka + ' PLN'}
+                  </RegularText>
+                </View>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Czas wykonania:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%' }}>{modalCommision.deadline}</RegularText>
+                </View>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Poziom zaawansowania:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%' }}>
+                    {getSelectedLevel(modalCommision.level)}
+                  </RegularText>
+                </View>
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Lokalizacja:</RegularText>
+                {modalCommision.location.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Tagi:</RegularText>
+                {modalCommision.tags.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Wymagane Umiejętności:</RegularText>
+                {modalCommision.skills.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Wymagane Języki:</RegularText>
+                {modalCommision.languages.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                <Pressable
+                  onPress={() => {}}
+                  style={({ pressed }) => [
+                    {
+                      backgroundColor: pressed ? 'lightgrey' : darkLight,
+                    },
+                    styles.ModalButton,
+                  ]}
+                >
+                  <AppText style={{ color: 'white' }}>Aplikuj!</AppText>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </Modal>
+    )}
+    </View>)
   }
 
   
@@ -302,5 +509,69 @@ const styles = StyleSheet.create({
     borderColor: '#a8a5a5',
     borderWidth: 1,
     
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    width: '100%',
+  },
+  modalView: {
+    width: '100%',
+    margin: 10,
+    backgroundColor: '#FFF',
+    borderRadius: 20,
+    padding: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  ModalButton: {
+    padding: 7,
+    borderRadius: 15,
+    fontSize: 16,
+    marginBottom: 10,
+    marginTop: 10,
+    alignItems: 'center',
+    marginRight: 5,
+    flexDirection: 'row',
+  },
+  ModalDescription: {
+    paddingTop: 5,
+    padding: 15,
+  },
+  ModalCommisionDetails: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
+  },
+  ModalDetail: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ModalMapping: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingLeft: 17,
+    paddingRight: 12,
+  },
+  ModalTagBubble: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingLeft: 5,
+    paddingRight: 5,
+    marginTop: 0,
+    marginBottom: 5,
+    marginHorizontal: 2,
+    backgroundColor: primary,
   },
 });

@@ -26,7 +26,7 @@ import {
   TextLinkContent,
   HeaderText,
   LinearGradientStyle,
-} from './../components/styles';
+} from '../components/styles';
 import { View, ActivityIndicator } from 'react-native';
 
 //Colors
@@ -39,16 +39,18 @@ import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 import axios from 'axios';
 import { default as baseURL } from '../components/AxiosAuth';
 
-const Signup = ({ navigation }) => {
+const CompanySignup = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [message, setMessage] = useState();
   const [messageType, setMessageType] = useState();
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [nip, setNip] = useState('');
+  const [regon, setRegon] = useState('');
+  const [krs, setKrs] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   function passwordPatternValidation(password) {
@@ -66,6 +68,22 @@ const Signup = ({ navigation }) => {
     return regex.test(name);
   }
 
+  function nipPatternValidation(name) {
+    const regex = new RegExp("^(PL[0-9]{10})+$");
+    return regex.test(name);
+  }
+
+  function regonPatternValidation(name) {
+    const regex = new RegExp("^([0-9]{9})+$");
+    return regex.test(name);
+  }
+
+  function krsPatternValidation(name) {
+    if(name === '') {return true;}
+    const regex = new RegExp("^([0-9]{10})+$");
+    return regex.test(name);
+  }
+
   function usernamesPatternValidation(name) {
     const regex = new RegExp('^([-_a-zA-ZÀ-ÿ0-9.]){4,20}$');
     return regex.test(name);
@@ -75,16 +93,26 @@ const Signup = ({ navigation }) => {
 
   const handleSignup = async () => {
     handleMessage(null);
-    const url = baseURL + '/api/auth/register';
+    const url = baseURL + '/auth/registerCompany';
     try {
       setSubmitting(true);
-      const response = await axios.post(url, JSON.stringify({ email, username, password, firstname, lastname }), {
+      const response = await axios.post(url, {
+        email: email,
+        username: username,
+        password: password,
+        name: name,
+        nip: nip,
+        regon: regon,
+        krs: krs
+      }, {
         headers: { 'Content-Type': 'application/json' },
       });
+      if(response.status === 200){
       setSubmitting(false);
       handleMessage('Zarejestrowano użytkownika, proszę potwierdź email przed zalogowaniem', 'SUCCESS');
       await sleep(1500);
       navigation.navigate('Login');
+      }
     } catch (err) {
       setSubmitting(false);
       handleMessage('Błąd podczas rejestracji: kod ' + err.response.status, 'FAILED');
@@ -108,25 +136,36 @@ const Signup = ({ navigation }) => {
       <StyledContainer>
         <StatusBar style="dark"></StatusBar>
         <InnerContainer>
-          <HeaderText style={{ fontSize: 30, color: darkLight, marginBottom: 30 }}>Rejestracja</HeaderText>
+          <HeaderText style={{ fontSize: 30, color: darkLight, marginBottom: 30 }}>Rejestracja firmy</HeaderText>
           <Formik
-            initialValues={{ email: '', username: '', password: '', firstname: '', lastname: '' }}
+          initialValues={{ email: '', username: '', password: '', name: '', nip: '', regon: '', krs: '' }}
             onSubmit={() => {
               if (
-                email == '' ||
-                password == '' ||
-                username == '' ||
-                confirmPassword == '' ||
-                firstname == '' ||
-                lastname == ''
+                email === '' ||
+                password === '' ||
+                username === '' ||
+                confirmPassword === '' ||
+                name === '' ||
+                nip === '' || 
+                regon === ''
               ) {
                 handleMessage('Proszę wypełnić wszystkie pola');
                 setSubmitting(false);
               } else if (confirmPassword !== password) {
                 handleMessage('Hasła się nie zgadzają');
                 setSubmitting(false);
-              } else if (!namesPatternValidation(firstname) || !namesPatternValidation(lastname)) {
-                handleMessage('Wpisano niedozwolone znaki w imieniu lub nazwisku', 'FAILED');
+              } else if (!namesPatternValidation(name) ) {
+                handleMessage('Wpisano niedozwolone znaki w nazwie firmy', 'FAILED');
+                setSubmitting(false);
+              } else if (!nipPatternValidation(nip) ) {
+                handleMessage('Wpisano zły NIP', 'FAILED');
+                setSubmitting(false);
+              }  else if (!regonPatternValidation(regon) ) {
+                handleMessage('Wpisano zły REGON', 'FAILED');
+                setSubmitting(false);
+              } else if (!krsPatternValidation(krs) ) {
+                console.log(krs);
+                handleMessage('Wpisano zły KRS', 'FAILED');
                 setSubmitting(false);
               } else if (!usernamesPatternValidation(username)) {
                 handleMessage('Wpisano niedozwolone znaki w nazwie użytkownika', 'FAILED');
@@ -148,22 +187,40 @@ const Signup = ({ navigation }) => {
             {({ handleBlur, handleSubmit }) => (
               <StyledFormArea>
                 <MyTextInput
-                  label="Imie"
-                  icon="person"
-                  placeholder="Jan"
+                  label="Nazwa firmy"
+                  icon="organization"
+                  placeholder="MyCompany"
                   placeholderTextColor={'#00000088'}
-                  onChangeText={setFirstname}
-                  onBlur={handleBlur('firstname')}
-                  value={firstname}
+                  onChangeText={setName}
+                  onBlur={handleBlur('name')}
+                  value={name}
                 />
                 <MyTextInput
-                  label="Nazwisko"
-                  icon="person"
-                  placeholder="Kowalski"
+                  label="NIP"
+                  icon="info"
+                  placeholder="PL1234567890"
                   placeholderTextColor={'#00000088'}
-                  onChangeText={setLastname}
-                  onBlur={handleBlur('lastname')}
-                  value={lastname}
+                  onChangeText={setNip}
+                  onBlur={handleBlur('nip')}
+                  value={nip}
+                />
+                <MyTextInput
+                  label="REGON"
+                  icon="info"
+                  placeholder="123456789"
+                  placeholderTextColor={'#00000088'}
+                  onChangeText={setRegon}
+                  onBlur={handleBlur('regon')}
+                  value={regon}
+                />
+                <MyTextInput
+                  label="KRS"
+                  icon="info"
+                  placeholder="1234567890"
+                  placeholderTextColor={'#00000088'}
+                  onChangeText={setKrs}
+                  onBlur={handleBlur('krs')}
+                  value={krs}
                 />
                 <MyTextInput
                   label="Adres Email"
@@ -225,6 +282,12 @@ const Signup = ({ navigation }) => {
                     </StyledButton>
                   </LinearGradientStyle>
                 )}
+                <ExtraView style={{flexDirection: 'column'}}>
+                  <ExtraText>Chcesz zarejestrować się jako artysta? </ExtraText>
+                  <TextLink onPress={() => navigation.navigate('ArtistSignup')}>
+                    <TextLinkContent>Kliknij tutaj!</TextLinkContent>
+                  </TextLink>
+                </ExtraView>
                 <ExtraView>
                   <ExtraText>Masz już konto? </ExtraText>
                   <TextLink onPress={() => navigation.navigate('Login')}>
@@ -257,4 +320,4 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
   );
 };
 
-export default Signup;
+export default CompanySignup;

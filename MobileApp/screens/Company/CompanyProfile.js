@@ -44,7 +44,7 @@ async function getValueFor(key) {
 const CompanyProfile = ({ route, navigation }) => {
   const [token, setToken] = useState('');
   const [companyProfile, setcompanyProfile] = useState('');
-  const companyName = 'Oracle';
+  const username = 'Ororacle';
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
@@ -86,8 +86,8 @@ const CompanyProfile = ({ route, navigation }) => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: baseURL + '/companies/getCompanyProfileByName',
-        params: { name: companyName},
+        url: baseURL + '/public/api/company/getProfileByUsername/' + username,
+        params: { },
         headers: {},
       };
 

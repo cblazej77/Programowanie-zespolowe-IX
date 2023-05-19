@@ -15,6 +15,7 @@ import {
   ModalBubble,
   MsgBox,
   HeaderText,
+  HeaderTextInput,
 } from '../../components/styles';
 import Stars from 'react-native-stars';
 //SecureStoring accessToken
@@ -101,6 +102,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   const [tagsToAdd, setTagsToAdd] = useState([]);
   const [skillsToAdd, setSkillsToAdd] = useState([]);
   const [languagesToAdd, setLanguagesToAdd] = useState([]);
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
 
   const handleMessage = (message, type = 'FAILED') => {
     setMessage(message);
@@ -108,7 +111,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   };
 
   function facebookPatternValidation(name) {
-    if (name === '') {
+    if (name === '' || name === null) {
       return true;
     }
     const regex = new RegExp(
@@ -117,35 +120,35 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
     return regex.test(name);
   }
   function instagramPatternValidation(name) {
-    if (name === '') {
+    if (name === '' || name === null) {
       return true;
     }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/);
     return regex.test(name);
   }
   function pinterestPatternValidation(name) {
-    if (name === '') {
+    if (name === '' || name === null) {
       return true;
     }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?[a-z_.]{1,3}pinterest\.com\/[A-Za-z0-9_.]{1,30}/);
     return regex.test(name);
   }
   function twitterPatternValidation(name) {
-    if (name === '') {
+    if (name === '' || name === null) {
       return true;
     }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]{5,15}(\?(\w+=\w+&?)*)?/);
     return regex.test(name);
   }
   function linkedinPatternValidation(name) {
-    if (name === '') {
+    if (name === '' || name === null) {
       return true;
     }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?linkedin\.com\/[A-Za-z0-9_.]{1,30}/);
     return regex.test(name);
   }
   function websitePatternValidation(name) {
-    if (name === '') {
+    if (name === '' || name === null) {
       return true;
     }
     const regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/);
@@ -312,6 +315,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
     setPinterest('');
     setWebsite('');
     setLinkedin('');
+    setFirstname('');
+    setLastname('');
   }
 
   async function getAccessToken() {
@@ -326,6 +331,39 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
 
   async function updateArtistProfile() {
     handleMessage('');
+    // if(bio === null) {
+    //   setBio('');
+    // }
+    // if(facebook === null) {
+    //   setFacebook('');
+    // }
+    // if(firstname === null) {
+    //   setFirstname('');
+    // }
+    // if(instagram === null) {
+    //   setInstagram('');
+    // }
+    // if(lastname === null) {
+    //   setLastname('');
+    // }
+    // if(level === null) {
+    //   setLevel('');
+    // }
+    // if(linkedin === null) {
+    //   setLinkedin('');
+    // }
+    // if(location === null) {
+    //   setLocation('');
+    // }
+    // if(pinterest === null) {
+    //   setPinterest('');
+    // }
+    // if(twitter === null) {
+    //   setTwitter('');
+    // }
+    // if(website === null) {
+    //   setWebsite('');
+    // }
     if (
       !facebookPatternValidation(facebook) ||
       !twitterPatternValidation(twitter) ||
@@ -337,11 +375,13 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
       handleMessage('Źle wpisano link', 'FAILED');
       return;
     }
-
+    
     const response = await axios
       .put(
-        baseURL + '/api/artist/updateArtistProfile',
+        baseURL + '/api/artist/updateProfileByUsername/' + userInfo.username,
         {
+          firstname: firstname,
+          lastname: lastname,
           bio: bio,
           level: level,
           location: location,
@@ -359,8 +399,13 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           twitter: twitter,
         },
         {
-          params: { username: userInfo.username },
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          params: {},
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*'
+          },
         },
       )
       .catch((error) => {
@@ -417,7 +462,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: baseURL + '/api/artist/getArtistProfile?username=' + userInfo.username,
+        url: baseURL + '/public/api/artist/getArtistProfileByUsername/' + userInfo.username,
         headers: {},
       };
 
@@ -438,35 +483,35 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
     let configTag = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableTags',
+      url: baseURL + '/public/api/filter/getAvailableTags',
       headers: {},
     };
 
     let configCities = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableCities',
+      url: baseURL + '/public/api/filter/getAvailableCities',
       headers: {},
     };
 
     let configLevels = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableLevels',
+      url: baseURL + '/public/api/filter/getAvailableLevels',
       headers: {},
     };
 
     let configLanguages = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableLanguages',
+      url: baseURL + '/public/api/filter/getAvailableLanguages',
       headers: {},
     };
 
     let configCategories = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableCategories',
+      url: baseURL + '/public/api/filter/getAvailableCategories',
       headers: {},
     };
 
@@ -579,6 +624,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   useEffect(() => {
     if (artistProfile) {
       clear();
+      setFirstname(artistProfile.firstname);
+      setLastname(artistProfile.lastname);
       setBio(artistProfile.bio);
       setLevel(artistProfile.level);
       setLocation(artistProfile.location);
@@ -626,8 +673,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   useEffect(() => {
     if (availableCategories) {
       for (let i = 0; i < availableCategories.categories.length; ++i) {
-        for (let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
-          handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
+        for (let j = 0; j < availableCategories.categories[i].skills.length; ++j) {
+          handleAddAvailableSkills(availableCategories.categories[i].skills[j]);
         }
       }
     }
@@ -1154,12 +1201,12 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
         }
       }
       const links = [
-        { id: 1, name: 'Facebook:', data: facebook, valid: true},
-        { id: 2, name: 'Instagram:', data: instagram},
-        { id: 3, name: 'LinkedIn:', data: linkedin},
-        { id: 4, name: 'Pinterest:', data: pinterest},
-        { id: 5, name: 'Twitter:', data: twitter},
-        { id: 6, name: 'Twoja strona:', data: website},
+        { id: 1, name: 'Facebook:', data: facebook },
+        { id: 2, name: 'Instagram:', data: instagram },
+        { id: 3, name: 'LinkedIn:', data: linkedin },
+        { id: 4, name: 'Pinterest:', data: pinterest },
+        { id: 5, name: 'Twitter:', data: twitter },
+        { id: 6, name: 'Twoja strona:', data: website },
       ];
       const list = links.map((item) => (
         <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }} key={item.id}>
@@ -1204,10 +1251,27 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
               </Pressable>
             </View>
           </View>
-          <View style={{ marginLeft: 15, justifyContent: 'space-between' }}>
-            <HeaderText style={{ color: darkLight, fontSize: 20 }}>
-              {userInfo.firstname + ' ' + userInfo.lastname}
-            </HeaderText>
+          <View style={{ marginLeft: 15, justifyContent: 'space-between', marginRight: 15 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
+              <HeaderText style={{ color: black, fontSize: 20 }}>Imie:</HeaderText>
+              <HeaderTextInput
+                textAlign='right'
+                maxLength={100}
+                value={firstname}
+                onChangeText={setFirstname}
+                style={{ color: darkLight, fontSize: 20, width: '70%' }}
+              />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
+              <HeaderText style={{ color: black, fontSize: 20 }}>Nazwisko:</HeaderText>
+              <HeaderTextInput
+                textAlign='right'
+                maxLength={100}
+                value={lastname}
+                onChangeText={setLastname}
+                style={{ color: darkLight, fontSize: 20, width: '70%' }}
+              />
+            </View>
           </View>
           <AppText style={styles.About}>O mnie:</AppText>
           <RegularTextInput

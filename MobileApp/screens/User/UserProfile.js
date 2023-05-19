@@ -99,7 +99,7 @@ const Profile = ({ navigation }) => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: baseURL + '/api/artist/getArtistProfile?username=' + userInfo.username,
+        url: baseURL + '/public/api/artist/getArtistProfileByUsername/' + userInfo.username,
         headers: {},
       };
 
@@ -195,16 +195,14 @@ const Profile = ({ navigation }) => {
   function ListLinks() {
     if (artistProfile) {
       const links = [
-        { id: 0, data: artistProfile.dribble },
-        { id: 1, data: artistProfile.facebook },
-        { id: 2, data: artistProfile.instagram },
-        { id: 3, data: artistProfile.linkedin },
-        { id: 4, data: artistProfile.pinterest },
-        { id: 5, data: artistProfile.twitter },
-        { id: 6, data: artistProfile.website },
+        { id: 0, data: artistProfile.facebook },
+        { id: 1, data: artistProfile.instagram },
+        { id: 2, data: artistProfile.linkedin },
+        { id: 3, data: artistProfile.pinterest },
+        { id: 4, data: artistProfile.twitter },
+        { id: 5, data: artistProfile.website },
       ];
       const names = [
-        { enum: 'dribbble', name: 'Dribbble', color: '#EA4C89' },
         { enum: 'facebook', name: 'Facebook', color: '#4267B2' },
         { enum: 'instagram', name: 'Instagram', color: '#C13584' },
         { enum: 'linkedin', name: 'LinkedIn', color: '#0072b1' },
@@ -213,7 +211,7 @@ const Profile = ({ navigation }) => {
         { enum: 'earth', name: 'Własna strona', color: darkLight },
       ];
       const avaiable = links.filter((item) => {
-        if(item.data !== 'string' && item !== null && item.data !== '' && typeof item.data !== 'undefined') {
+        if(item.data !== 'string' && item.data !== null && item.data !== '' && typeof item.data !== 'undefined') {
           return item;
         }});
       const list = avaiable.map((item) => (
@@ -282,7 +280,7 @@ const Profile = ({ navigation }) => {
             </View>
           </View>
           <View style={{ marginLeft: 15, justifyContent: 'space-between'}}>
-            <HeaderText style={{color:darkLight, fontSize: 20}}>{userInfo.firstname + ' ' + userInfo.lastname}</HeaderText>
+            <HeaderText style={{color:darkLight, fontSize: 20}}>{artistProfile.firstname + ' ' + artistProfile.lastname}</HeaderText>
           </View>
           <AppText style={styles.About}>O mnie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
