@@ -4,8 +4,11 @@ import com.pz.designmatch.dto.request.CommissionRequest;
 import com.pz.designmatch.dto.response.CommissionResponse;
 import com.pz.designmatch.model.Commission;
 import com.pz.designmatch.model.enums.*;
+import com.pz.designmatch.model.user.CompanyProfile;
 import com.pz.designmatch.model.user.UserEntity;
+import com.pz.designmatch.repository.CompanyProfileRepository;
 import com.pz.designmatch.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -17,21 +20,21 @@ import java.util.stream.Collectors;
 @Component
 public class CommissionMapper {
     private final UserRepository userRepository;
+    private final CompanyProfileRepository companyProfileRepository;
 
     @Autowired
-    public CommissionMapper(UserRepository userRepository) {
+    public CommissionMapper(UserRepository userRepository, CompanyProfileRepository companyProfileRepository) {
         this.userRepository = userRepository;
+        this.companyProfileRepository = companyProfileRepository;
     }
 
     public Commission mapToEntity(CommissionRequest commissionRequest) throws UsernameNotFoundException {
-        Optional<UserEntity> client = userRepository.findByUsername(commissionRequest.getClientUsername());
+        UserEntity client = userRepository.findByUsername(commissionRequest.getClientUsername())
+                .orElseThrow(() -> new EntityNotFoundException("Klient nie istnieje"));
         Optional<UserEntity> contractor = commissionRequest.getContractorUsername() != null ? userRepository.findByUsername(commissionRequest.getContractorUsername()) : Optional.empty();
 
-        if (client.isEmpty() ) {
-            throw new UsernameNotFoundException("Klient nie istnieje");
-        }
         return new Commission(
-                client.get(),
+                client,
                 contractor.orElse(null),
                 commissionRequest.getTitle(),
                 commissionRequest.getDescription(),
@@ -46,11 +49,14 @@ public class CommissionMapper {
     }
 
     public CommissionResponse mapToResponse(Commission commission) {
+        CompanyProfile companyProfile = companyProfileRepository.findByUser_Username(commission.getClient().getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu firmy dla nazwy użytkownika: " + commission.getClient().getUsername()));
         return new CommissionResponse(
                 commission.getId(),
                 commission.getClient().getUsername(),
                 commission.getContractor() != null ? commission.getContractor().getUsername() : null,
                 commission.getTitle(),
+                companyProfile.getName(),
                 commission.getDescription(),
                 commission.getCommissionedAt(),
                 commission.getDeadline(),
