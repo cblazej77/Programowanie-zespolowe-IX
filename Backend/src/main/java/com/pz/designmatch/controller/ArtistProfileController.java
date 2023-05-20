@@ -47,7 +47,6 @@ public class ArtistProfileController {
     }
 
 
-
     @PutMapping(value = "/api/artist/updateProfileByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<ArtistProfileResponse> updateCompanyProfileByUsername(@PathVariable("username") String username, @RequestBody ArtistProfileRequest artistProfile) {
         ArtistProfileResponse updatedArtistProfile = artistProfileServiceImpl.updateArtistProfileByUsername(username, artistProfile);

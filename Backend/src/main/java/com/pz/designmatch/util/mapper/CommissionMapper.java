@@ -27,7 +27,7 @@ public class CommissionMapper {
         Optional<UserEntity> client = userRepository.findByUsername(commissionRequest.getClientUsername());
         Optional<UserEntity> contractor = commissionRequest.getContractorUsername() != null ? userRepository.findByUsername(commissionRequest.getContractorUsername()) : Optional.empty();
 
-        if (client.isEmpty() ) {
+        if (client.isEmpty()) {
             throw new UsernameNotFoundException("Klient nie istnieje");
         }
         return new Commission(

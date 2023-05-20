@@ -4,8 +4,6 @@ import com.pz.designmatch.dto.request.ChatMessageRequest;
 import com.pz.designmatch.dto.response.ChatMessageResponse;
 import com.pz.designmatch.dto.response.ChatNotification;
 import com.pz.designmatch.service.impl.ChatMessageService;
-import com.pz.designmatch.service.impl.ChatRoomService;
-import com.pz.designmatch.util.mapper.ChatMessageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;

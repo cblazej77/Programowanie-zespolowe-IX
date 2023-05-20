@@ -25,7 +25,6 @@ public class CompanyProfileController {
     }
 
 
-
     @PutMapping(value = "/api/company/updateProfileByUsername/{username}", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<CompanyProfileResponse> updateCompanyProfileByUsername(@PathVariable("username") String username, @RequestBody CompanyProfileRequest companyProfile) {
         CompanyProfileResponse updatedCompanyProfile = companyProfileService.updateCompanyProfileByUsername(username, companyProfile);

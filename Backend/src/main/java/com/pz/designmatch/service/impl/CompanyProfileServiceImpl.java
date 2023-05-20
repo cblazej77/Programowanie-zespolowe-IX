@@ -4,7 +4,6 @@ import com.pz.designmatch.dto.request.CompanyProfileRequest;
 import com.pz.designmatch.dto.response.CompanyProfileResponse;
 import com.pz.designmatch.model.user.CompanyProfile;
 import com.pz.designmatch.repository.CompanyProfileRepository;
-import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.CompanyProfileService;
 import com.pz.designmatch.util.mapper.CompanyProfileMapper;
 import jakarta.persistence.EntityNotFoundException;

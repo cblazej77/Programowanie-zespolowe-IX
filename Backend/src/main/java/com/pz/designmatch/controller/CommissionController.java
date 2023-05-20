@@ -37,7 +37,6 @@ public class CommissionController {
     }
 
 
-
     @PostMapping(value = "/api/commission/create", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<CommissionResponse> createCommission(@RequestBody CommissionRequest commission) {
         CommissionResponse createdCommission = commissionService.createCommission(commission);

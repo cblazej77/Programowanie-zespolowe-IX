@@ -42,7 +42,7 @@ public class ChatMessageService {
 
         List<ChatMessage> messages = chatId.isEmpty() ? new ArrayList<>() : chatMessageRepository.findByChatId(chatId);
 
-        if(messages.size() > 0) {
+        if (messages.size() > 0) {
             updateStatuses(messages);
         }
         return messages;
@@ -59,8 +59,8 @@ public class ChatMessageService {
     }
 
     public void updateStatuses(List<ChatMessage> messages) {
-        for(ChatMessage message : messages) {
-            if(message.getStatus().equals(MessageStatus.RECEIVED)) {
+        for (ChatMessage message : messages) {
+            if (message.getStatus().equals(MessageStatus.RECEIVED)) {
                 message.setStatus(MessageStatus.DELIVERED);
                 chatMessageRepository.save(message);
             }

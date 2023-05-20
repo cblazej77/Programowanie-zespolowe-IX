@@ -9,7 +9,6 @@ import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.repository.EducationRepository;
 import com.pz.designmatch.repository.ExperienceRepository;
-import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.ArtistProfileService;
 import com.pz.designmatch.specification.ArtistProfileSpecification;
 import com.pz.designmatch.util.mapper.ArtistProfileMapper;
