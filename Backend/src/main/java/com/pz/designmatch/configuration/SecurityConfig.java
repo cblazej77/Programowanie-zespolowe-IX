@@ -76,8 +76,9 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PUBLIC_PATHS).permitAll()
-                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll()
+                        //.requestMatchers(PUBLIC_PATHS).permitAll()
+                        //.requestMatchers("/api/**").authenticated()
                 )
                 .exceptionHandling((exceptions) -> exceptions
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
