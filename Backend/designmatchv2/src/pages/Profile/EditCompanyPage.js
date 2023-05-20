@@ -65,24 +65,29 @@ const EditCompanyPage = () => {
   const [checkLoading, setCheckLoading] = useState(null);
   const [bio, setBio] = useState("");
   const [putData, setPutData] = useState({});
+  const [username, setUsername] = useState('');
 
   const maxChars = 300;
   const limitHeight = 60;
-  const companyName = 'firma1';
-
-  const companyData = useMemo(() => ({
-    method: 'get',
-    maxBodyLength: 10000,
-    url: `/public/api/company/getProfileByUsername/` + companyName,
-    headers: {},
-  }), [companyName]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.request(companyData);
-        setGet(result.data);
-        setCheckLoading(result);
+        const decodeResponse = await axios.request('/auth/decodeToken', {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const companyResponse = await axios.request({
+          url: '/public/api/company/getProfileByUsername/' + decodeResponse.data.username
+        });
+
+        setUsername(decodeResponse.data.username);
+        setGet(companyResponse.data);
+        setCheckLoading(companyResponse);
       } catch (err) {
         console.log(err);
       }
@@ -108,13 +113,23 @@ const EditCompanyPage = () => {
   const handleSave = useCallback(async () => {
     try {
       console.log(get);
-      const response = await axios.put(`/api/company/updateCompanyProfileByUsername/` + companyName, get);
+      const response = await axios.put(
+        `/api/company/updateProfileByUsername/` + username,
+        get,
+        {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       console.log('Data saved successfully!');
       console.log(response.data);
     } catch (err) {
       console.error('Error while saving data:', err);
     }
-  }, [companyName, get]);
+  }, [get]);
 
   return (
     <>

@@ -5,7 +5,7 @@ import axios from '../api/axios';
 
 
 //czesc elementow, na szybko pisane mozna przeniesc gdzies indziej
-    const Background = styled.div`
+const Background = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
@@ -84,7 +84,7 @@ const ButtonClose = styled.button`
     background: red;
   }
 `;
-const  ModalBubble = styled.p`
+const ModalBubble = styled.p`
   padding: 5px 10px 5px 10px;
   display: inline-flex;
   margin-right: 15px;
@@ -108,19 +108,19 @@ const Label = styled.label`
   margin-left: 10%;
 `
 
-const ModalSkills = ({showModal, setShowModal, skills, setSkills}) => {
-    const modalRef = useRef();
-    const [availableSkills, setAvailableSkills] = useState([]);
-    const [availableCategories, setAvailableCategories] = useState('');
-    const [skillsToAdd, setSkillsToAdd] = useState([]);
-    
-//zamyka modala
-    const closeModal = e => {
+const ModalSkills = ({ showModal, setShowModal, skills, setSkills }) => {
+  const modalRef = useRef();
+  const [availableSkills, setAvailableSkills] = useState([]);
+  const [availableCategories, setAvailableCategories] = useState('');
+  const [skillsToAdd, setSkillsToAdd] = useState([]);
+
+  //zamyka modala
+  const closeModal = e => {
     if (modalRef.current === e.target) {
       setShowModal(false);
     }
   };
-//wychiwytuje klawature
+  //wychiwytuje klawature
   const keyPress = useCallback(
     e => {
       if (e.key === 'Escape' && showModal) {
@@ -130,49 +130,49 @@ const ModalSkills = ({showModal, setShowModal, skills, setSkills}) => {
     },
     [setShowModal, showModal]
   );
-//pobiera dane z bazy
+  //pobiera dane z bazy
   let skillsData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableCategories",
+    url: "/public/api/filter/getAvailableCategories",
     headers: {}
   };
 
-useEffect(() => {
-    
+  useEffect(() => {
+
     const fetchData = async () => {
       try {
         const skillsResponse = await axios.request(skillsData);
         handleClearAvailableSkills();
         setAvailableCategories(skillsResponse.data);
-    } catch (error) {
+      } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-}, []);
-useEffect(() => {
-    if(availableCategories) {
-        for(let i = 0; i < availableCategories.categories.length; ++i) {
-            for(let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
-                handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
-            }
+  }, []);
+  useEffect(() => {
+    if (availableCategories) {
+      for (let i = 0; i < availableCategories.categories.length; ++i) {
+        for (let j = 0; j < availableCategories.categories[i].skills.length; ++j) {
+          handleAddAvailableSkills(availableCategories.categories[i].skills[j]);
         }
+      }
     }
   }, [availableCategories]);
 
-//wychiwytuje klawature 
-useEffect(
-  () => {
-    document.addEventListener('keydown', keyPress);
-    return () => document.removeEventListener('keydown', keyPress);
-  },
-  [keyPress]
-);
+  //wychiwytuje klawature 
+  useEffect(
+    () => {
+      document.addEventListener('keydown', keyPress);
+      return () => document.removeEventListener('keydown', keyPress);
+    },
+    [keyPress]
+  );
 
-function addSkills() {
-    for(let i = 0; i < skillsToAdd.length; ++i) {
-        handleAddSkill(skillsToAdd[i]);
+  function addSkills() {
+    for (let i = 0; i < skillsToAdd.length; ++i) {
+      handleAddSkill(skillsToAdd[i]);
     }
     handleClearSkillsToAdd();
   }
@@ -208,9 +208,9 @@ function addSkills() {
       });
       const list = available.map((item, id) => (
         <button onClick={() => {
-            if(skillsToAdd.includes(item)) {handleDeleteSkillsToAdd(item)}
-            else {handleAddSkillsToAdd(item)}
-            }} key={id}>
+          if (skillsToAdd.includes(item)) { handleDeleteSkillsToAdd(item) }
+          else { handleAddSkillsToAdd(item) }
+        }} key={id}>
           <ModalBubble
             key={id}
             checked={skillsToAdd.includes(item)}
@@ -232,19 +232,19 @@ function addSkills() {
 
   return (
     <>
-        {showModal ? ( 
-            <Background onClick={closeModal} ref={modalRef}>
-                <ModalWrapper showModal={showModal}>
-                    <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
-                    <ButtonSave onClick = {handleClickSave}> Save</ButtonSave>
-                    <ButtonClose2 onClick={() => setShowModal(prev => !prev)}> Close</ButtonClose2>
-                    <ModalContent>
-                        <ListAvailableSkills />
-                        <Label>Skille:</Label>
-                    </ModalContent>
-                </ModalWrapper >
-            </Background>
-         ) : null}
+      {showModal ? (
+        <Background onClick={closeModal} ref={modalRef}>
+          <ModalWrapper showModal={showModal}>
+            <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
+            <ButtonSave onClick={handleClickSave}> Save</ButtonSave>
+            <ButtonClose2 onClick={() => setShowModal(prev => !prev)}> Close</ButtonClose2>
+            <ModalContent>
+              <ListAvailableSkills />
+              <Label>Skille:</Label>
+            </ModalContent>
+          </ModalWrapper >
+        </Background>
+      ) : null}
     </>
   )
 };

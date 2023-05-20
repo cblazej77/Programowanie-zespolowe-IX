@@ -24,6 +24,7 @@ function Navbar() {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const [dropdown, setDropdown] = useState(false);
+  const [role, setRole] = useState('');
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -51,8 +52,6 @@ function Navbar() {
     }
   };
 
-
-
   const auth = useAuth()
   const navigate = useNavigate()
 
@@ -75,20 +74,15 @@ function Navbar() {
             <NavLogoIcon />
             DESIGNMATCH
           </NavLogo>
-
           <MobileIcon onClick={handleClick}>
             {click ? <XIcon /> : <ThreeLineIcon />}
           </MobileIcon>
-
-
-
           <NavMenu onClick={handleClick} click={click}>
             <NavItem>
               <NavLink to='/about' onClick={closeMobileMenu}>
                 Informacje
               </NavLink>
             </NavItem>
-
             <NavItem>
               <NavLink to='/commisions' onClick={closeMobileMenu}>
                 Zlecenia
@@ -99,7 +93,6 @@ function Navbar() {
                 Artyści
               </NavLink>
             </NavItem>
-
             {!auth.user ? (
               <NavItem>
                 <NavLink to='/sign-in' onClick={closeMobileMenu}>
@@ -110,7 +103,6 @@ function Navbar() {
               <NavItem>
               </NavItem>
             )}
-
             {!auth.user ? (
               <>
                 <NavItemBtn>

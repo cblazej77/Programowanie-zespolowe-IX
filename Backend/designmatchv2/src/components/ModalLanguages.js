@@ -5,7 +5,7 @@ import axios from '../api/axios';
 
 
 //czesc elementow, na szybko pisane mozna przeniesc gdzies indziej
-    const Background = styled.div`
+const Background = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
@@ -84,7 +84,7 @@ const ButtonClose = styled.button`
     background: red;
   }
 `;
-const  ModalBubble = styled.p`
+const ModalBubble = styled.p`
   padding: 5px 10px 5px 10px;
   display: inline-flex;
   margin-right: 15px;
@@ -108,18 +108,18 @@ const Label = styled.label`
   margin-left: 10%;
 `
 
-const ModalLanguages = ({showModal, setShowModal, languages, setLanguages}) => {
-    const modalRef = useRef();
-    const [availableLanguages, setAvailableLanguages] = useState('');
-    const [languagesToAdd, setLanguagesToAdd] = useState([]);
-    
-//zamyka modala
-    const closeModal = e => {
+const ModalLanguages = ({ showModal, setShowModal, languages, setLanguages }) => {
+  const modalRef = useRef();
+  const [availableLanguages, setAvailableLanguages] = useState('');
+  const [languagesToAdd, setLanguagesToAdd] = useState([]);
+
+  //zamyka modala
+  const closeModal = e => {
     if (modalRef.current === e.target) {
       setShowModal(false);
     }
   };
-//wychiwytuje klawature
+  //wychiwytuje klawature
   const keyPress = useCallback(
     e => {
       if (e.key === 'Escape' && showModal) {
@@ -129,38 +129,38 @@ const ModalLanguages = ({showModal, setShowModal, languages, setLanguages}) => {
     },
     [setShowModal, showModal]
   );
-//pobiera dane z bazy
+  //pobiera dane z bazy
   let languageData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableLanguages",
+    url: "/public/api/filter/getAvailableLanguages",
     headers: {}
   };
 
-useEffect(() => {
-    
+  useEffect(() => {
+
     const fetchData = async () => {
       try {
         const languageResponse = await axios.request(languageData);
         setAvailableLanguages(languageResponse.data);
-    } catch (error) {
+      } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-}, []);
+  }, []);
 
-//wychiwytuje klawature 
-useEffect(
-  () => {
-    document.addEventListener('keydown', keyPress);
-    return () => document.removeEventListener('keydown', keyPress);
-  },
-  [keyPress]
-);
+  //wychiwytuje klawature 
+  useEffect(
+    () => {
+      document.addEventListener('keydown', keyPress);
+      return () => document.removeEventListener('keydown', keyPress);
+    },
+    [keyPress]
+  );
 
-//potrzebne do dzialania tagow
-function handleAddLanguage(language) {
+  //potrzebne do dzialania tagow
+  function handleAddLanguage(language) {
     setLanguages((languages) => [...languages, language]);
   }
   function handleAddLanguagesToAdd(language) {
@@ -184,9 +184,9 @@ function handleAddLanguage(language) {
     }
     handleClearLanguagesToAdd();
   }
-  
 
-//wyswietla jezyki
+
+  //wyswietla jezyki
 
   function ListAvailableLanguages() {
     if (availableLanguages) {
@@ -225,19 +225,19 @@ function handleAddLanguage(language) {
 
   return (
     <>
-        {showModal ? ( 
-            <Background onClick={closeModal} ref={modalRef}>
-                <ModalWrapper showModal={showModal}>
-                    <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
-                    <ButtonSave onClick = {handleClickSave}> Save</ButtonSave>
-                    <ButtonClose2 onClick={() => setShowModal(prev => !prev)}> Close</ButtonClose2>
-                    <ModalContent>
-                        <ListAvailableLanguages />
-                        <Label>Języki:</Label>
-                    </ModalContent>
-                </ModalWrapper >
-            </Background>
-         ) : null}
+      {showModal ? (
+        <Background onClick={closeModal} ref={modalRef}>
+          <ModalWrapper showModal={showModal}>
+            <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
+            <ButtonSave onClick={handleClickSave}> Save</ButtonSave>
+            <ButtonClose2 onClick={() => setShowModal(prev => !prev)}> Close</ButtonClose2>
+            <ModalContent>
+              <ListAvailableLanguages />
+              <Label>Języki:</Label>
+            </ModalContent>
+          </ModalWrapper >
+        </Background>
+      ) : null}
     </>
   )
 };

@@ -1,5 +1,5 @@
 //Switch => Routes
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/Auth';
 import Head from './components/header/Header';
@@ -19,8 +19,32 @@ import EditCompanyPage from './pages/Profile/EditCompanyPage';
 import OtherUserPage from './pages/Profile/OtherProfile';
 import Commisions from './pages/Home/Commisions';
 import { AllPage, HeroContainer } from './pages/Home/Styles';
+import axios from './api/axios';
 
 function App() {
+  const [role, setRole] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const decodeResult = await axios.request('/auth/decodeToken', {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
+        });
+
+        console.log(decodeResult.data.role);
+        setRole(decodeResult.data.role);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -29,14 +53,19 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/account" element={<RequireAuth> {" "} <UserPage />{" "} </RequireAuth>} />
+          <Route path="/account" element={
+            <RequireAuth>
+              {" "}
+              {role === 'ARTIST' ? <UserPage /> : null}
+              {role === 'COMPANY' ? <CompanyPage /> : null}
+              {" "}
+            </RequireAuth>} />
           <Route path="/other-account/:argument" element={<OtherUserPage />} />
           <Route path="/sign-in" element={
             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
               {" "} <SignIn />{" "}
             </GoogleOAuthProvider>}
           />
-
           <Route path="/sign-up" element={
             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
               {" "} <SignUp />{" "}
@@ -46,14 +75,15 @@ function App() {
             path="/accountEdit"
             element={
               <RequireAuth>
-                <EditUserPageMobile />
+                {" "}
+                {role === 'ARTIST' ? <EditUserPageMobile /> : null}
+                {role === 'COMPANY' ? <EditCompanyPage /> : null}
+                {" "}
               </RequireAuth>}
           />
           <Route path="/test" element={<EditUserPageMobile />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/1" element={<Modal />} />
-          <Route path="/company" element={<CompanyPage />} />
-          <Route path="/companyEdit" element={<EditCompanyPage />} />
           <Route path="/commisions"
             element={
               <>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { TitleText } from '../Home/CardsElement';
 import { COLORS } from '../../components/Colors';
 import axios from '../../api/axios';
@@ -54,6 +54,7 @@ import {
   StakeText,
   TitleInput
 } from '../Home/CommisionsElements';
+import LoadingPage from '../LoadingPage';
 
 const { darkLight } = COLORS;
 
@@ -67,75 +68,75 @@ const CompanyPage = () => {
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [modalData, setModalData] = useState([]);
   const [get, setGet] = useState("");
-  const [checkLoading, setCheckLoading] = useState(null);
-  const [CommisionsData, setCommisionsData] = useState([
-    {
-      title: "Projekt logo dla firmy produkującej kosmetyki naturalne",
-      description: "Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości.",
-      stake: 2000,
-      deadline: "2 tyg.",
-      level: "Mid",
-      location: "Zdalnie",
-      tags: [
-        "Design logo",
-        "Kosmetyki",
-        "Ekologia",
-      ],
-      skills: [
-        "logo",
-        "Aobe Illustrator",
-      ],
-      languages: [
-        "Polski",
-        "Angielski",
-      ],
-    },
-    {
-      title: "Projekt opakowań dla nowej marki herbat ekologicznych",
-      description: "Szukamy doświadczonego projektanta graficznego, który zaprojektuje dla nas opakowania do naszych herbat ekologicznych. Zależy nam na kreatywnym podejściu, które pozwoli wyróżnić nasze produkty na rynku. Oferujemy konkurencyjne wynagrodzenie oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.",
-      stake: 3000,
-      deadline: "3 tyg.",
-      level: "Senior",
-      location: "Zdalnie",
-      tags: [
-        "Design opakowań",
-        "Herbaty",
-        "Ekologia",
-      ],
-      skills: [
-        "logo",
-        "Aobe Illustrator",
-      ],
-      languages: [
-        "Polski",
-        "Angielski",
-      ],
-    },
-    {
-      title: "Projekt plakatu promującego wystawę sztuki nowoczesnej",
-      description: "Jesteśmy galerią sztuki i poszukujemy projektanta graficznego, który zaprojektuje dla nas plakat promujący zbliżającą się wystawę sztuki nowoczesnej. Zależy nam na ciekawym i oryginalnym projekcie, który przyciągnie uwagę potencjalnych zwiedzających. Oferujemy dobrą stawkę oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.",
-      stake: 2500,
-      deadline: "2 tyg.",
-      level: "Senior",
-      location: "Zdalnie",
-      tags: [
-        "Design plakatu",
-        "Sztuka",
-        "Wystawa",
-      ],
-      skills: [
-        "logo",
-        "Aobe Illustrator",
-      ],
-      languages: [
-        "Polski",
-        "Angielski",
-      ],
-    },
-  ]);
+  // const [CommisionsData, setCommisionsData] = useState([
+  //   {
+  //     title: "Projekt logo dla firmy produkującej kosmetyki naturalne",
+  //     description: "Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości.",
+  //     stake: 2000,
+  //     deadline: "2 tyg.",
+  //     level: "Mid",
+  //     location: "Zdalnie",
+  //     tags: [
+  //       "Design logo",
+  //       "Kosmetyki",
+  //       "Ekologia",
+  //     ],
+  //     skills: [
+  //       "logo",
+  //       "Aobe Illustrator",
+  //     ],
+  //     languages: [
+  //       "Polski",
+  //       "Angielski",
+  //     ],
+  //   },
+  //   {
+  //     title: "Projekt opakowań dla nowej marki herbat ekologicznych",
+  //     description: "Szukamy doświadczonego projektanta graficznego, który zaprojektuje dla nas opakowania do naszych herbat ekologicznych. Zależy nam na kreatywnym podejściu, które pozwoli wyróżnić nasze produkty na rynku. Oferujemy konkurencyjne wynagrodzenie oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.",
+  //     stake: 3000,
+  //     deadline: "3 tyg.",
+  //     level: "Senior",
+  //     location: "Zdalnie",
+  //     tags: [
+  //       "Design opakowań",
+  //       "Herbaty",
+  //       "Ekologia",
+  //     ],
+  //     skills: [
+  //       "logo",
+  //       "Aobe Illustrator",
+  //     ],
+  //     languages: [
+  //       "Polski",
+  //       "Angielski",
+  //     ],
+  //   },
+  //   {
+  //     title: "Projekt plakatu promującego wystawę sztuki nowoczesnej",
+  //     description: "Jesteśmy galerią sztuki i poszukujemy projektanta graficznego, który zaprojektuje dla nas plakat promujący zbliżającą się wystawę sztuki nowoczesnej. Zależy nam na ciekawym i oryginalnym projekcie, który przyciągnie uwagę potencjalnych zwiedzających. Oferujemy dobrą stawkę oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.",
+  //     stake: 2500,
+  //     deadline: "2 tyg.",
+  //     level: "Senior",
+  //     location: "Zdalnie",
+  //     tags: [
+  //       "Design plakatu",
+  //       "Sztuka",
+  //       "Wystawa",
+  //     ],
+  //     skills: [
+  //       "logo",
+  //       "Aobe Illustrator",
+  //     ],
+  //     languages: [
+  //       "Polski",
+  //       "Angielski",
+  //     ],
+  //   },
+  // ]);
+  const [CommisionsData, setCommisionsData] = useState([]);
+  const [username, setUsername] = useState('');
+
   const maxChars = 300;
-  let chars = 0;
-  const companyName = 'firma1';
 
   const citiesData = useMemo(
     () => ({
@@ -187,21 +188,32 @@ const CompanyPage = () => {
     [],
   );
 
-  const companyData = useMemo(() => ({
-    method: 'get',
-    maxBodyLength: 10000,
-    url: '/public/api/company/getProfileByUsername/' + companyName,
-    headers: {},
-  }),
-    [],
-  );
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [companyResponse, citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
+        const decodeResponse = await axios.request('/auth/decodeToken', {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const companyResponse = await axios.request({
+          url: '/public/api/company/getProfileByUsername/' + decodeResponse.data.username,
+        });
+
+        const commissionResponse = await axios.request({
+          url: '/api/commission/getAllCommissionFirmByUsername/' + decodeResponse.data.username,
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
           [
-            axios.request(companyData),
             axios.request(citiesData),
             axios.request(tagsData),
             axios.request(categoriesData),
@@ -209,6 +221,8 @@ const CompanyPage = () => {
             axios.request(levelsData),
           ],
         );
+        setUsername(decodeResponse.data.username);
+        setCommisionsData(commissionResponse.data);
         setGet(companyResponse.data);
         setCities(citiesResponse.data);
         setTags(tagsResponse.data);
@@ -221,7 +235,7 @@ const CompanyPage = () => {
     };
 
     fetchData();
-  }, [companyData, citiesData, tagsData, categoriesData, languagesData, levelsData]);
+  }, [citiesData, tagsData, categoriesData, languagesData, levelsData]);
 
   const openModalEditClick = () => {
     setShowModalEdit(true);
@@ -246,12 +260,13 @@ const CompanyPage = () => {
 
   const ModalEdit = ({ showModalEdit }) => {
     const [modalEditData, setModalEditData] = useState({
+      client_username: username,
       title: "",
       description: "",
-      stake: "",
       deadline: "",
-      level: "",
-      location: "",
+      level: [],
+      rate: 0,
+      location: [],
       tags: [],
       skills: [],
       languages: [],
@@ -260,6 +275,8 @@ const CompanyPage = () => {
     const [skillsT, setSkillsT] = useState([])
     const [languagesT, setLanguagesT] = useState(languages);
     const [tagsT, setTagsT] = useState(tags);
+    const [locationT, setLocationT] = useState(cities);
+    const [levelT, setLevelT] = useState(levels);
 
     useEffect(() => {
       if (categories && categories.categories && Array.isArray(categories.categories)) {
@@ -269,16 +286,33 @@ const CompanyPage = () => {
             label: subcategory,
           }))
         );
-        console.log(updatedSkills);
         setSkillsT(updatedSkills);
       }
     }, []);
 
-    const handleAddCommission = () => {
+    const handleAddCommission = useCallback(async () => {
       console.log(modalEditData);
-      setCommisionsData((prevData) => [...prevData, modalEditData]);
+      try {
+        const response = await axios.post(
+          `/api/commission/create`,
+          modalEditData,
+          {
+            headers: {
+              accept: 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        console.log('Data saved successfully!');
+        console.log(response.data);
+      } catch (err) {
+        console.error('Error while saving data:', err);
+      }
+      console.log(modalEditData);
+      //setCommisionsData((prevData) => [...prevData, modalEditData]);
       setShowModalEdit(false);
-    };
+    },);
 
     return (
       <>
@@ -308,9 +342,9 @@ const CompanyPage = () => {
                       <NumberInput
                         type="number"
                         maxLength={12}
-                        value={modalEditData.stake}
+                        value={modalEditData.rate}
                         onChange={({ target }) =>
-                          setModalEditData({ ...modalEditData, stake: target.value, })}
+                          setModalEditData({ ...modalEditData, rate: parseInt(target.value) })}
                       />
                       <ModalData style={{ color: darkLight }}>PLN</ModalData>
                     </div>
@@ -325,24 +359,68 @@ const CompanyPage = () => {
                   </ModalEditRow>
                   <ModalEditRow>
                     <ModalInfo>Poziom zaawansowania:</ModalInfo>
-                    <StyledDropDown
-                      options={levels}
+                    <BubblesDropDown
+                      options={levelT}
                       value={modalEditData.level}
-                      placeholder='Wybierz...'
-                      onChange={(e) =>
-                        setModalEditData({ ...modalEditData, level: e.value, })}
+                      placeHolder={modalEditData.level}
+                      onChange={(e) => {
+                        const selectedLevel = e.value;
+                        setLevelT((prevLevel) => prevLevel.filter((lev) => lev !== selectedLevel));
+                        setModalEditData((prevData) => ({
+                          ...prevData,
+                          level: [...prevData.level, selectedLevel]
+                        }));
+                      }}
                     />
                   </ModalEditRow>
+                  <ModalBubbleContainer>
+                    {Array.isArray(modalEditData.level) && modalEditData.level.map((lev, index) => (
+                      <CommisionEditBubble
+                        key={index}
+                        onClick={() => {
+                          setLevelT((prevLevel) => [...prevLevel, lev]);
+                          setModalEditData((prevData) => ({
+                            ...prevData,
+                            level: prevData.level.filter((s) => s !== lev)
+                          }));
+                        }}
+                      >
+                        {lev}
+                      </CommisionEditBubble>
+                    ))}
+                  </ModalBubbleContainer>
                   <ModalEditRow>
                     <ModalInfo>Lokalizacja:</ModalInfo>
-                    <StyledDropDown
-                      options={cities}
+                    <BubblesDropDown
+                      options={locationT}
                       value={modalEditData.location}
-                      placeholder='Wybierz...'
-                      onChange={(e) =>
-                        setModalEditData({ ...modalEditData, location: e.value, })}
+                      placeHolder={modalEditData.location}
+                      onChange={(e) => {
+                        const selectedLocation = e.value;
+                        setLocationT((prevLocation) => prevLocation.filter((loc) => loc !== selectedLocation));
+                        setModalEditData((prevData) => ({
+                          ...prevData,
+                          location: [...prevData.location, selectedLocation]
+                        }));
+                      }}
                     />
                   </ModalEditRow>
+                  <ModalBubbleContainer>
+                    {Array.isArray(modalEditData.location) && modalEditData.location.map((loc, index) => (
+                      <CommisionEditBubble
+                        key={index}
+                        onClick={() => {
+                          setLocationT((prevLocation) => [...prevLocation, loc]);
+                          setModalEditData((prevData) => ({
+                            ...prevData,
+                            location: prevData.location.filter((s) => s !== loc)
+                          }));
+                        }}
+                      >
+                        {loc}
+                      </CommisionEditBubble>
+                    ))}
+                  </ModalBubbleContainer>
                   <LineForm />
                 </ModalColumn>
                 <ModalColumn>
@@ -471,7 +549,7 @@ const CompanyPage = () => {
                 <ModalColumn>
                   <ModalRow>
                     <ModalInfo>Stawka:</ModalInfo>
-                    <ModalData style={{ color: darkLight }}>{modalData.stake} PLN</ModalData>
+                    <ModalData style={{ color: darkLight }}>{modalData.rate} PLN</ModalData>
                   </ModalRow>
                   <ModalRow>
                     <ModalInfo>Czas wykonania:</ModalInfo>
@@ -529,7 +607,7 @@ const CompanyPage = () => {
               {props.level}
             </LevelBubble>
           </CommisionTitleContainer>
-          <StakeText>{props.stake} PLN</StakeText>
+          <StakeText>{props.rate} PLN</StakeText>
         </CommisionTop>
         <div style={{
           display: 'flex',
@@ -550,75 +628,77 @@ const CompanyPage = () => {
 
   return (
     <>
-      <ProfileWrapper>
-        <TopSection>
-          <LeftWrapper>
-            <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-            <NameText>{get.name}</NameText>
-            <LineForm />
-            <Button>Napisz wiadomość</Button>
-            <Button onClick={() => openModalEditClick()}>
-              Dodaj zlecenie
-            </Button>
-          </LeftWrapper>
-          <RightWrapper>
-            <BoldLabel>O firmie:</BoldLabel>
-            <AboutMe>{get.description}</AboutMe>
-            <Left>
+      {get ? (
+        <ProfileWrapper>
+          <TopSection>
+            <LeftWrapper>
+              <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
+              <NameText>{get.name}</NameText>
               <LineForm />
-              <InfoRow>
-                <LeftColumn>
-                  <InfoText>Linki:</InfoText>
-                  <BubbleWrap>
-                    <Bubble>{get.website}</Bubble>
-                    <Bubble>{get.linkedin}</Bubble>
-                    <Bubble>{get.facebook}</Bubble>
-                    <Bubble>{get.instagram}</Bubble>
-                    <Bubble>{get.twitter}</Bubble>
-                  </BubbleWrap>
-                </LeftColumn>
-                <RightColumn>
-                  <LeftInfoRow>
-                    <InfoText>Adres:</InfoText>
-                    <DataText>{get.companyAdress}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>NIP:</InfoText>
-                    <DataText>{get.nip}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>REGON:</InfoText>
-                    <DataText>{get.regon}</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
-                    <InfoText>KRS:</InfoText>
-                    <DataText>{get.krs}</DataText>
-                  </LeftInfoRow>
-                </RightColumn>
-              </InfoRow>
-            </Left>
-          </RightWrapper>
-        </TopSection>
-        <DownSection>
-          <TitleText>Zlecenia</TitleText>
-          {CommisionsData.map((com, indexC) => (
-            <CommisionElement
-              key={indexC}
-              title={com.title}
-              description={com.description}
-              stake={com.stake}
-              deadline={com.deadline}
-              level={com.level}
-              location={com.location}
-              languages={com.languages}
-              tags={com.tags}
-              skills={com.skills}
-            />
-          ))}
-        </DownSection>
-      </ProfileWrapper>
+              <Button>Napisz wiadomość</Button>
+              <Button onClick={() => openModalEditClick()}>
+                Dodaj zlecenie
+              </Button>
+            </LeftWrapper>
+            <RightWrapper>
+              <BoldLabel>O firmie:</BoldLabel>
+              <AboutMe>{get.description}</AboutMe>
+              <Left>
+                <LineForm />
+                <InfoRow>
+                  <LeftColumn>
+                    <InfoText>Linki:</InfoText>
+                    <BubbleWrap>
+                      <Bubble>{get.website}</Bubble>
+                      <Bubble>{get.linkedin}</Bubble>
+                      <Bubble>{get.facebook}</Bubble>
+                      <Bubble>{get.instagram}</Bubble>
+                      <Bubble>{get.twitter}</Bubble>
+                    </BubbleWrap>
+                  </LeftColumn>
+                  <RightColumn>
+                    <LeftInfoRow>
+                      <InfoText>Adres:</InfoText>
+                      <DataText>{get.companyAdress}</DataText>
+                    </LeftInfoRow>
+                    <LeftInfoRow>
+                      <InfoText>NIP:</InfoText>
+                      <DataText>{get.nip}</DataText>
+                    </LeftInfoRow>
+                    <LeftInfoRow>
+                      <InfoText>REGON:</InfoText>
+                      <DataText>{get.regon}</DataText>
+                    </LeftInfoRow>
+                    <LeftInfoRow>
+                      <InfoText>KRS:</InfoText>
+                      <DataText>{get.krs}</DataText>
+                    </LeftInfoRow>
+                  </RightColumn>
+                </InfoRow>
+              </Left>
+            </RightWrapper>
+          </TopSection>
+          <DownSection>
+            <TitleText>Zlecenia</TitleText>
+            {CommisionsData.map((com, indexC) => (
+              <CommisionElement
+                key={indexC}
+                title={com.title}
+                description={com.description}
+                rate={com.rate}
+                deadline={com.deadline}
+                level={com.level}
+                location={com.location}
+                languages={com.languages}
+                tags={com.tags}
+                skills={com.skills}
+              />
+            ))}
+          </DownSection>
+        </ProfileWrapper>) : (<LoadingPage />)}
       <ModalEdit showModalEdit={showModalEdit} />
       <Modal showModal={showModal} data={modalData} />
+
     </>
   );
 };

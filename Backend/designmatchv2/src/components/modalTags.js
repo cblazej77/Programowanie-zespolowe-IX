@@ -5,7 +5,7 @@ import axios from '../api/axios';
 
 
 //czesc elementow, na szybko pisane mozna przeniesc gdzies indziej
-    const Background = styled.div`
+const Background = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
@@ -84,7 +84,7 @@ const ButtonClose = styled.button`
     background: red;
   }
 `;
-const  ModalBubble = styled.p`
+const ModalBubble = styled.p`
   padding: 5px 10px 5px 10px;
   display: inline-flex;
   margin-right: 15px;
@@ -108,18 +108,18 @@ const Label = styled.label`
   margin-left: 10%;
 `
 
-const ModalTags = ({showModal, setShowModal, tags, setTags}) => {
-    const modalRef = useRef();
-    const [availableTags, setAvailableTags] = useState('');
-    const [tagsToAdd, setTagsToAdd] = useState([]);
-    
-//zamyka modala
-    const closeModal = e => {
+const ModalTags = ({ showModal, setShowModal, tags, setTags }) => {
+  const modalRef = useRef();
+  const [availableTags, setAvailableTags] = useState('');
+  const [tagsToAdd, setTagsToAdd] = useState([]);
+
+  //zamyka modala
+  const closeModal = e => {
     if (modalRef.current === e.target) {
       setShowModal(false);
     }
   };
-//wychiwytuje klawature
+  //wychiwytuje klawature
   const keyPress = useCallback(
     e => {
       if (e.key === 'Escape' && showModal) {
@@ -129,38 +129,38 @@ const ModalTags = ({showModal, setShowModal, tags, setTags}) => {
     },
     [setShowModal, showModal]
   );
-//pobiera dane z bazy
+  //pobiera dane z bazy
   let tagsData = {
     method: 'get',
     maxBodyLength: Infinity,
-    url: "/api/artist/getAvailableTags",
+    url: "/public/api/filter/getAvailableTags",
     headers: {}
   };
 
-useEffect(() => {
-    
+  useEffect(() => {
+
     const fetchData = async () => {
       try {
         const tagsResponse = await axios.request(tagsData);
         setAvailableTags(tagsResponse.data);
-    } catch (error) {
+      } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-}, []);
+  }, []);
 
-//wychiwytuje klawature 
-useEffect(
-  () => {
-    document.addEventListener('keydown', keyPress);
-    return () => document.removeEventListener('keydown', keyPress);
-  },
-  [keyPress]
-);
+  //wychiwytuje klawature 
+  useEffect(
+    () => {
+      document.addEventListener('keydown', keyPress);
+      return () => document.removeEventListener('keydown', keyPress);
+    },
+    [keyPress]
+  );
 
-//potrzebne do dzialania tagow
-function addTags() {
+  //potrzebne do dzialania tagow
+  function addTags() {
     for (let i = 0; i < tagsToAdd.length; ++i) {
       handleAddTag(tagsToAdd[i]);
     }
@@ -180,17 +180,17 @@ function addTags() {
     setTags((tags) => [...tags, tag]);
   }
 
-//wyswietla tagi
-function ListAvailableTags() {
+  //wyswietla tagi
+  function ListAvailableTags() {
     if (availableTags) {
       const available = availableTags.filter((item) => {
         if (!tags.includes(item)) return item;
       });
       const list = available.map((item, id) => (
         <button onClick={() => {
-            if(tagsToAdd.includes(item)) {handleDeleteTagsToAdd(item)}
-            else {handleAddTagsToAdd(item)}
-            }} key={id}>
+          if (tagsToAdd.includes(item)) { handleDeleteTagsToAdd(item) }
+          else { handleAddTagsToAdd(item) }
+        }} key={id}>
           <ModalBubble
             key={id}
             checked={tagsToAdd.includes(item)}
@@ -212,19 +212,19 @@ function ListAvailableTags() {
 
   return (
     <>
-        {showModal ? ( 
-            <Background onClick={closeModal} ref={modalRef}>
-                <ModalWrapper showModal={showModal}>
-                    <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
-                    <ButtonSave onClick = {handleClickSave}> Save</ButtonSave>
-                    <ButtonClose2 onClick={() => setShowModal(prev => !prev)}> Close</ButtonClose2>
-                    <ModalContent>
-                        <ListAvailableTags />
-                        <Label>Tagi:</Label>
-                    </ModalContent>
-                </ModalWrapper >
-            </Background>
-         ) : null}
+      {showModal ? (
+        <Background onClick={closeModal} ref={modalRef}>
+          <ModalWrapper showModal={showModal}>
+            <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
+            <ButtonSave onClick={handleClickSave}> Save</ButtonSave>
+            <ButtonClose2 onClick={() => setShowModal(prev => !prev)}> Close</ButtonClose2>
+            <ModalContent>
+              <ListAvailableTags />
+              <Label>Tagi:</Label>
+            </ModalContent>
+          </ModalWrapper >
+        </Background>
+      ) : null}
     </>
   )
 };

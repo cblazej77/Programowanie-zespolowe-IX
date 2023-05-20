@@ -44,27 +44,30 @@ const UserPage = () => {
   const [shortProfile, setShortProfile] = useState("");
   const [educationList, setEducationList] = useState([]);
   const [experienceList, setExperienceList] = useState([]);
-
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
   const [button, setButton] = useState(true);
-
-  const profileName = 'jakub1';
-
-  let profileData = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: '/public/api/artist/getArtistProfileByUsername/' + profileName,
-    headers: {}
-  };
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.request(profileData);
-        setGet(result.data);
-        setCheckLoading(result);
-      } catch (error) {
-        console.log(error);
+        const decodeResult = await axios.request('/auth/decodeToken', {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const userResult = await axios.request({
+          url: '/public/api/artist/getArtistProfileByUsername/' + decodeResult.data.username
+        });
+
+        console.log(decodeResult.data.username);
+        setGet(userResult.data);
+        setCheckLoading(userResult);
+      } catch (err) {
+        console.log(err);
       }
     };
 
@@ -262,7 +265,7 @@ const UserPage = () => {
   return (
     <>{checkLoading && get ? (
       <ProfileWrapper>
-        <TopSection>      {console.log(shortProfile)}
+        <TopSection>
           <LeftWrapper>
             <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
             <JobText>{get.level}</JobText>
@@ -321,10 +324,12 @@ const UserPage = () => {
                   </BubbleWrap>
                   <ListLinks />
                 </LeftColumn>
-                <RightColumn>
-                  <ListEducation />
-                  <ListExperience />
-                </RightColumn>
+                {get.education || get.experience &&
+                  <RightColumn>
+                    <ListEducation />
+                    <ListExperience />
+                  </RightColumn>
+                }
               </InfoRow>
             </Left>
           </RightWrapper>

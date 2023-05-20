@@ -93,6 +93,7 @@ const ButtonEdit = styled.button`
 const EditUserPageMobile = () => {
   const [get, setGet] = useState(null);//przechwytuje dane i na ich podstawie loguje // juz nie
   const [height, setHeight] = useState("20px");//do zmiejszającego się textarena
+  const [username, setUsername] = useState('');
 
   //popUp - modal
   const [showModalTags, setShowModalTags] = useState(false);
@@ -369,11 +370,11 @@ const EditUserPageMobile = () => {
     });
     const response = await axios
       .put(
-        '/api/artist/updateProfileByUsername',
+        '/api/artist/updateProfileByUsername/' + username,
         {
           bio: bio,
-          level: level.value,
-          location: location.value,
+          level: level,
+          location: location,
           skills: skills,
           tags: tags,
           languages: languages,
@@ -388,8 +389,11 @@ const EditUserPageMobile = () => {
           twitter: twitter,
         },
         {
-          params: { username: profileName },
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
         },
       )
       .catch((error) => {
@@ -408,9 +412,20 @@ const EditUserPageMobile = () => {
     const fetchData = async () => {
       try {
         //odebranie wszsytkich wyników
-        const [artistResponse, citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
+        const decodeResponse = await axios.request('/auth/decodeToken', {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const artistResponse = await axios.request({
+          url: '/public/api/artist/getArtistProfileByUsername/' + decodeResponse.data.username
+        });
+
+        const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
           [
-            axios.request(profileData),
             axios.request(citiesData),
             axios.request(tagsData),
             axios.request(categoriesData),
@@ -418,6 +433,7 @@ const EditUserPageMobile = () => {
             axios.request(levelsData),
           ],
         );
+        setUsername(decodeResponse.data.username);
         setGet(artistResponse.data);
         setArtistProfile(artistResponse.data);
         setAvailableLevels(levelsResponse.data);
