@@ -11,21 +11,24 @@ import com.pz.designmatch.exception.UserAlreadyExistAuthenticationException;
 import com.pz.designmatch.service.ConfirmationTokenService;
 import com.pz.designmatch.service.UserService;
 import com.pz.designmatch.service.impl.ConfirmationTokenServiceImpl;
+import com.pz.designmatch.util.JWTUtil;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.pz.designmatch.model.user.Role.ROLE_ARTIST;
@@ -39,6 +42,12 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
+
+//    @Autowired
+//    private JwtDecoder jwtDecoder;
+//    @Autowired
+//    private JdbcTemplate jdbcTemplate;
+    private com.pz.designmatch.util.JWTUtil JWTUtil;
 
     public AuthController(JwtEncoder encoder, UserService userService, AuthenticationManager authenticationManager,
                           ConfirmationTokenServiceImpl confirmationTokenService) {
@@ -78,6 +87,28 @@ public class AuthController {
     @GetMapping(path = "/confirmEmail")
     public ResponseEntity<String> confirm(@RequestParam("token") String token) {
         return new ResponseEntity<>(confirmationTokenService.confirmToken(token), HttpStatus.OK);
+    }
+
+
+    @GetMapping(path = "/decodeToken")
+    public ResponseEntity<?> decodeToken() {
+        //String token = authorizationHeader.substring("Bearer ".length());
+        // Jwt jwt = jwtDecoder.decode(token);
+        //String email = jwt.getClaimAsString("sub");
+        //String query = "SELECT username FROM users WHERE email = ?";
+        //String username = jdbcTemplate.queryForObject(query, String.class, email);
+
+
+        String email = JWTUtil.getLoggedUserEmail();
+        String role = JWTUtil.getRoleFromToken();
+
+
+        Map<String, Object> responseJson = new HashMap<>();
+
+        responseJson.put("role", role);
+        responseJson.put("email", email);
+
+        return ResponseEntity.ok(responseJson);
     }
 
     private ResponseEntity<?> registerUser(RegisterRequest registerRequest, String roleName) {

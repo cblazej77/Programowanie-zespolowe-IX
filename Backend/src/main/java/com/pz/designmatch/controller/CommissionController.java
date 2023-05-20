@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.pz.designmatch.constants.Constants.apiVersionAccept;
 
 @RestController
@@ -37,7 +39,6 @@ public class CommissionController {
     }
 
 
-
     @PostMapping(value = "/api/commission/create", produces = apiVersionAccept, consumes = apiVersionAccept)
     public ResponseEntity<CommissionResponse> createCommission(@RequestBody CommissionRequest commission) {
         CommissionResponse createdCommission = commissionService.createCommission(commission);
@@ -55,4 +56,11 @@ public class CommissionController {
         CommissionResponse completedCommission = commissionService.setCommissionCompletedById(id);
         return ResponseEntity.ok(completedCommission);
     }
+
+    @GetMapping(value = "/api/commission/getAllCommissionFirmByUsername/{username}", produces = apiVersionAccept)
+    public ResponseEntity<List<CommissionResponse>> getCommissionsByUsername(@PathVariable("username") String username) {
+        List<CommissionResponse> commissionsResponse = commissionService.getCommissionsByUsername(username);
+        return ResponseEntity.ok(commissionsResponse);
+    }
+
 }

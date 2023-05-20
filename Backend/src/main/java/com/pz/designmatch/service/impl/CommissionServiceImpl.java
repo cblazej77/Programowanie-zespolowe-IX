@@ -44,6 +44,17 @@ public class CommissionServiceImpl implements CommissionService {
         return commissionMapper.mapToResponse(commissionRepository.save(commission));
     }
 
+
+    @Override
+    public List<CommissionResponse> getCommissionsByUsername(String username) {
+        List<Commission> commissions = commissionRepository.findAllByUserUsername(username);
+        return commissions.stream()
+                .map(commissionMapper::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+
+
     public CommissionResponse updateCommissionById(Long id, CommissionRequest commissionRequest) throws EntityNotFoundException {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
