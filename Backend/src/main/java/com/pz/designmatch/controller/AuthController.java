@@ -43,10 +43,10 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
 
-//    @Autowired
-//    private JwtDecoder jwtDecoder;
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JwtDecoder jwtDecoder;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     private com.pz.designmatch.util.JWTUtil JWTUtil;
 
     public AuthController(JwtEncoder encoder, UserService userService, AuthenticationManager authenticationManager,
@@ -91,22 +91,22 @@ public class AuthController {
 
 
     @GetMapping(path = "/decodeToken")
-    public ResponseEntity<?> decodeToken() {
-        //String token = authorizationHeader.substring("Bearer ".length());
-        // Jwt jwt = jwtDecoder.decode(token);
-        //String email = jwt.getClaimAsString("sub");
-        //String query = "SELECT username FROM users WHERE email = ?";
-        //String username = jdbcTemplate.queryForObject(query, String.class, email);
+    public ResponseEntity<?> decodeToken(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring("Bearer ".length());
+         Jwt jwt = jwtDecoder.decode(token);
+        String email = jwt.getClaimAsString("sub");
+        String query = "SELECT username FROM users WHERE email = ?";
+        String username = jdbcTemplate.queryForObject(query, String.class, email);
 
 
-        String email = JWTUtil.getLoggedUserEmail();
+        //String email = JWTUtil.getLoggedUserEmail();
         String role = JWTUtil.getRoleFromToken();
 
 
         Map<String, Object> responseJson = new HashMap<>();
 
         responseJson.put("role", role);
-        responseJson.put("email", email);
+        responseJson.put("username", username);
 
         return ResponseEntity.ok(responseJson);
     }
