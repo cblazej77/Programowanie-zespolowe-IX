@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -87,7 +88,7 @@ public class CommissionServiceImpl implements CommissionService {
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
 
         existingCommission.setCompleted(true);
-        existingCommission.setCompletedAt(LocalDateTime.now());
+        existingCommission.setCompletedAt(LocalDate.now());
         return commissionMapper.mapToResponse(commissionRepository.save(existingCommission));
     }
 

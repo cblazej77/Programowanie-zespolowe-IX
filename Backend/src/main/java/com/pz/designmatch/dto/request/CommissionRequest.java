@@ -9,6 +9,7 @@ import com.pz.designmatch.util.DefaultLocalDateTimeDeserializer;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -33,9 +34,8 @@ public class CommissionRequest {
     private String description;
 
     @JsonProperty("deadline")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Zagreb")
-    @JsonDeserialize(using = DefaultLocalDateTimeDeserializer.class)
-    private LocalDateTime deadline;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate deadline;
 
     @JsonProperty("level")
     private Set<String> level;

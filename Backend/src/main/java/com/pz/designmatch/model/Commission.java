@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -37,10 +38,10 @@ public class Commission {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime commissionedAt;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime deadline;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate deadline;
 
-    private LocalDateTime completedAt;
+    private LocalDate completedAt;
 
     @ElementCollection(targetClass = Level.class)
     @Enumerated(EnumType.STRING)
@@ -68,7 +69,7 @@ public class Commission {
     private boolean isCompleted = false;
 
     public Commission(UserEntity client, UserEntity contractor, String title, String description,
-                      LocalDateTime commissionedAt, LocalDateTime deadline, Set<Level> level, Set<City> location,
+                      LocalDateTime commissionedAt, LocalDate deadline, Set<Level> level, Set<City> location,
                       Set<Skill> skills, Set<Tag> tags, Set<Language> languages, Integer rate) {
         this.client = client;
         this.contractor = contractor;
