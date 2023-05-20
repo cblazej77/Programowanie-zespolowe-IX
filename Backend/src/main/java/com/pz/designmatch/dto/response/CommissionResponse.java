@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.pz.designmatch.util.DefaultLocalDateTimeDeserializer;
 import jakarta.validation.constraints.NotEmpty;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -41,14 +42,12 @@ public class CommissionResponse {
     private LocalDateTime commissionedAt;
 
     @JsonProperty("deadline")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Zagreb")
-    @JsonDeserialize(using = DefaultLocalDateTimeDeserializer.class)
-    private LocalDateTime deadline;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate deadline;
 
     @JsonProperty("completed_at")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Zagreb")
-    @JsonDeserialize(using = DefaultLocalDateTimeDeserializer.class)
-    private LocalDateTime completedAt;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate completedAt;
 
     @JsonProperty("level")
     private Set<String> level;
@@ -73,7 +72,7 @@ public class CommissionResponse {
 
     @JsonCreator
     public CommissionResponse(Long id, String clientUsername, String contractorUsername, String title, String description,
-                              LocalDateTime commissionedAt, LocalDateTime deadline, LocalDateTime completedAt, Set<String> level,
+                              LocalDateTime commissionedAt, LocalDate deadline, LocalDate completedAt, Set<String> level,
                               Set<String> location, Set<String> skills, Set<String> tags, Set<String> languages, Integer rate, Boolean isCompleted) {
         this.id = id;
         this.clientUsername = clientUsername;
