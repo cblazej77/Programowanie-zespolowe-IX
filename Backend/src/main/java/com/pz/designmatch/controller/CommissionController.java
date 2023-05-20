@@ -57,7 +57,7 @@ public class CommissionController {
         return ResponseEntity.ok(completedCommission);
     }
 
-    @GetMapping(value = "/api/commission/getAllCommissionFirmByUsername/{username}", produces = apiVersionAccept)
+    @GetMapping(value = "/public/api/commission/getAllCommissionFirmByUsername/{username}", produces = apiVersionAccept)
     public ResponseEntity<List<CommissionResponse>> getCommissionsByUsername(@PathVariable("username") String username) {
         List<CommissionResponse> commissionsResponse = commissionService.getCommissionsByUsername(username);
         return ResponseEntity.ok(commissionsResponse);

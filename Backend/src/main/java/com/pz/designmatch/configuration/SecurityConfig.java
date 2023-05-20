@@ -73,12 +73,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors().disable()
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(PUBLIC_PATHS).permitAll()
-//                        .requestMatchers("/api/**").authenticated()
-                                .anyRequest().permitAll()
+                        .requestMatchers(PUBLIC_PATHS).permitAll()
+                        .requestMatchers("/api/**").authenticated()
+//                                .anyRequest().permitAll()
                 )
                 .exceptionHandling((exceptions) -> exceptions
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
