@@ -3,6 +3,7 @@ package com.pz.designmatch.service;
 import com.pz.designmatch.dto.request.RegisterRequest;
 import com.pz.designmatch.exception.UserAlreadyExistAuthenticationException;
 import com.pz.designmatch.model.user.UserEntity;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public interface UserService {
 
     List<String> getAllUsernames();
 
+    @Transactional
     UserEntity registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException, ValidationException;
 }

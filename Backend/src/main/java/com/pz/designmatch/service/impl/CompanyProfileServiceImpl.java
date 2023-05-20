@@ -18,14 +18,11 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     private final CompanyProfileRepository companyProfileRepository;
     private final CompanyProfileMapper companyProfileMapper;
-    private final UserRepository userRepository;
 
     @Autowired
-    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileMapper companyProfileMapper,
-                                     UserRepository userRepository) {
+    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileMapper companyProfileMapper) {
         this.companyProfileRepository = companyProfileRepository;
         this.companyProfileMapper = companyProfileMapper;
-        this.userRepository = userRepository;
     }
 
     @Override

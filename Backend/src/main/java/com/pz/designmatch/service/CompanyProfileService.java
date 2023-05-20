@@ -8,6 +8,5 @@ public interface CompanyProfileService {
 
     CompanyProfileResponse updateCompanyProfileByUsername(String username, CompanyProfileRequest companiesDto);
 
-    @Transactional(readOnly = true)
     CompanyProfileResponse getCompanyProfileByUsername(String username);
 }

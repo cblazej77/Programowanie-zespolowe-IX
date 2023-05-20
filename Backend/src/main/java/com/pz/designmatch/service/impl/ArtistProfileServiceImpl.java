@@ -34,19 +34,17 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
     private final ArtistProfileRepository artistProfileRepository;
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
-    private final UserRepository userRepository;
     private final ArtistProfileMapper artistProfileMapper;
     private final EducationMapper educationMapper;
     private final ExperienceMapper experienceMapper;
 
     @Autowired
     public ArtistProfileServiceImpl(ArtistProfileRepository artistProfileRepository, ExperienceRepository experienceRepository,
-                                    EducationRepository educationRepository, UserRepository userRepository, ArtistProfileMapper artistProfileMapper,
+                                    EducationRepository educationRepository, ArtistProfileMapper artistProfileMapper,
                                     EducationMapper educationMapper, ExperienceMapper experienceMapper) {
         this.artistProfileRepository = artistProfileRepository;
         this.experienceRepository = experienceRepository;
         this.educationRepository = educationRepository;
-        this.userRepository = userRepository;
         this.artistProfileMapper = artistProfileMapper;
         this.educationMapper = educationMapper;
         this.experienceMapper = experienceMapper;

@@ -1,0 +1,69 @@
+package com.pz.designmatch.service.impl;
+
+import com.pz.designmatch.dto.request.ChatMessageRequest;
+import com.pz.designmatch.dto.response.ChatMessageResponse;
+import com.pz.designmatch.model.chat.ChatMessage;
+import com.pz.designmatch.model.enums.MessageStatus;
+import com.pz.designmatch.repository.ChatMessageRepository;
+import com.pz.designmatch.util.mapper.ChatMessageMapper;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class ChatMessageService {
+    private final ChatMessageRepository chatMessageRepository;
+    private final ChatMessageMapper chatMessageMapper;
+    private final ChatRoomService chatRoomService;
+
+    @Autowired
+    public ChatMessageService(ChatMessageRepository chatMessageRepository, ChatMessageMapper chatMessageMapper, ChatRoomService chatRoomService) {
+        this.chatMessageRepository = chatMessageRepository;
+        this.chatMessageMapper = chatMessageMapper;
+        this.chatRoomService = chatRoomService;
+    }
+
+    public ChatMessageResponse saveChatMessage(ChatMessageRequest chatMessageRequest) {
+        ChatMessage chatMessage = chatMessageMapper.mapToEntity(chatMessageRequest, true);
+        return chatMessageMapper.mapToDto(chatMessageRepository.save(chatMessage));
+    }
+
+    public long countNewMessages(String senderId, String recipientId) {
+        return chatMessageRepository.countBySenderIdAndRecipientIdAndStatus(
+                senderId, recipientId, MessageStatus.RECEIVED);
+    }
+
+    public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
+        String chatId = chatRoomService.getChatId(senderId, recipientId, false)
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + senderId + "_" + recipientId));
+
+        List<ChatMessage> messages = chatId.isEmpty() ? new ArrayList<>() : chatMessageRepository.findByChatId(chatId);
+
+        if(messages.size() > 0) {
+            updateStatuses(messages);
+        }
+        return messages;
+    }
+
+    public ChatMessage findById(Long id) {
+        return chatMessageRepository.findById(id)
+                .map(chatMessage -> {
+                    chatMessage.setStatus(MessageStatus.DELIVERED);
+                    return chatMessageRepository.save(chatMessage);
+                })
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Nie znaleziono wiadomości o id: " + id));
+    }
+
+    public void updateStatuses(List<ChatMessage> messages) {
+        for(ChatMessage message : messages) {
+            if(message.getStatus().equals(MessageStatus.RECEIVED)) {
+                message.setStatus(MessageStatus.DELIVERED);
+                chatMessageRepository.save(message);
+            }
+        }
+    }
+}

@@ -18,7 +18,6 @@ public class CommissionResponse {
     @JsonProperty("id")
     private Long id;
 
-    //@NotEmpty zeby nie dodawać go pdoczas dodawania zlecenia
     @JsonProperty("client_username")
     private String clientUsername;
 
