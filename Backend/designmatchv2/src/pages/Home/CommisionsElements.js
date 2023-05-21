@@ -63,11 +63,12 @@ export const CommisionTitleContainer = styled.div`
   width: calc(100% - 9rem);
 `;
 
-export const CommisionTitle = styled(TitleText)`
+export const CommisionTitle = styled.text`
+  color: ${darkLight};
   font-size: 170%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 `;
 
 export const StakeText = styled.p`
@@ -150,6 +151,7 @@ export const CommisionLineForm = styled.div`
 `;
 
 export const CommisionCard = styled.div`
+  font-size: 0.85rem;
   display: flex;
   padding: 1rem 1.5rem;
   border-radius: 15px;

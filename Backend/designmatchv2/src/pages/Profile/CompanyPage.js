@@ -55,8 +55,9 @@ import {
   TitleInput
 } from '../Home/CommisionsElements';
 import LoadingPage from '../LoadingPage';
+import { FiBriefcase, FiClock, FiMapPin } from 'react-icons/fi';
 
-const { darkLight } = COLORS;
+const { darkLight, gray1 } = COLORS;
 
 const CompanyPage = () => {
   const [cities, setCities] = useState([]);
@@ -68,71 +69,6 @@ const CompanyPage = () => {
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [modalData, setModalData] = useState([]);
   const [get, setGet] = useState("");
-  // const [CommisionsData, setCommisionsData] = useState([
-  //   {
-  //     title: "Projekt logo dla firmy produkującej kosmetyki naturalne",
-  //     description: "Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości.",
-  //     stake: 2000,
-  //     deadline: "2 tyg.",
-  //     level: "Mid",
-  //     location: "Zdalnie",
-  //     tags: [
-  //       "Design logo",
-  //       "Kosmetyki",
-  //       "Ekologia",
-  //     ],
-  //     skills: [
-  //       "logo",
-  //       "Aobe Illustrator",
-  //     ],
-  //     languages: [
-  //       "Polski",
-  //       "Angielski",
-  //     ],
-  //   },
-  //   {
-  //     title: "Projekt opakowań dla nowej marki herbat ekologicznych",
-  //     description: "Szukamy doświadczonego projektanta graficznego, który zaprojektuje dla nas opakowania do naszych herbat ekologicznych. Zależy nam na kreatywnym podejściu, które pozwoli wyróżnić nasze produkty na rynku. Oferujemy konkurencyjne wynagrodzenie oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.",
-  //     stake: 3000,
-  //     deadline: "3 tyg.",
-  //     level: "Senior",
-  //     location: "Zdalnie",
-  //     tags: [
-  //       "Design opakowań",
-  //       "Herbaty",
-  //       "Ekologia",
-  //     ],
-  //     skills: [
-  //       "logo",
-  //       "Aobe Illustrator",
-  //     ],
-  //     languages: [
-  //       "Polski",
-  //       "Angielski",
-  //     ],
-  //   },
-  //   {
-  //     title: "Projekt plakatu promującego wystawę sztuki nowoczesnej",
-  //     description: "Jesteśmy galerią sztuki i poszukujemy projektanta graficznego, który zaprojektuje dla nas plakat promujący zbliżającą się wystawę sztuki nowoczesnej. Zależy nam na ciekawym i oryginalnym projekcie, który przyciągnie uwagę potencjalnych zwiedzających. Oferujemy dobrą stawkę oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.",
-  //     stake: 2500,
-  //     deadline: "2 tyg.",
-  //     level: "Senior",
-  //     location: "Zdalnie",
-  //     tags: [
-  //       "Design plakatu",
-  //       "Sztuka",
-  //       "Wystawa",
-  //     ],
-  //     skills: [
-  //       "logo",
-  //       "Aobe Illustrator",
-  //     ],
-  //     languages: [
-  //       "Polski",
-  //       "Angielski",
-  //     ],
-  //   },
-  // ]);
   const [CommisionsData, setCommisionsData] = useState([]);
   const [username, setUsername] = useState('');
 
@@ -204,12 +140,8 @@ const CompanyPage = () => {
         });
 
         const commissionResponse = await axios.request({
-          url: '/api/commission/getAllCommissionFirmByUsername/' + decodeResponse.data.username,
-          headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
-            'Content-Type': 'application/json',
-          },
+          url: '/public/api/commission/getAllCommissionFirmByUsername/' + decodeResponse.data.username,
+          headers: {},
         });
 
         const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
@@ -310,7 +242,6 @@ const CompanyPage = () => {
         console.error('Error while saving data:', err);
       }
       console.log(modalEditData);
-      //setCommisionsData((prevData) => [...prevData, modalEditData]);
       setShowModalEdit(false);
     },);
 
@@ -613,8 +544,11 @@ const CompanyPage = () => {
           display: 'flex',
           flexDirection: 'row',
           margin: '0.4rem 0',
+          alignItems: 'center',
         }}>
+          <FiMapPin size={18} style={{ color: gray1 }} />
           <CommisionText>{props.location}</CommisionText>
+          <FiClock size={18} style={{ color: gray1 }} />
           <CommisionText>{props.deadline}</CommisionText>
         </div>
         <CommisionBottom>

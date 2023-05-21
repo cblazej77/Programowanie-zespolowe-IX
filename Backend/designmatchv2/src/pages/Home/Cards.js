@@ -168,8 +168,8 @@ const Cards = () => {
           .post(
             '/public/api/artist/filter',
             {
-              level: levelsFilter,
-              location: citiesFilter,
+              levels: levelsFilter,
+              locations: citiesFilter,
               skills: categoriesFilter,
               languages: languagesFilter,
               tags: tagsFilter,
@@ -317,7 +317,7 @@ const Cards = () => {
   });
 
   const filteredCards = useMemo(() => {
-    if (!filtered || !filtered.content) {
+    if (!Array.isArray(filtered.content)) {
       return null;
     }
 

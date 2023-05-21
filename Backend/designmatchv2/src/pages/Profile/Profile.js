@@ -324,12 +324,11 @@ const UserPage = () => {
                   </BubbleWrap>
                   <ListLinks />
                 </LeftColumn>
-                {get.education || get.experience &&
+                {get.education.length > 0 || get.experience.length > 0 ? (
                   <RightColumn>
                     <ListEducation />
                     <ListExperience />
-                  </RightColumn>
-                }
+                  </RightColumn>) : null}
               </InfoRow>
             </Left>
           </RightWrapper>

@@ -10,7 +10,6 @@ import {
   FilterLabel,
   StyledSelect,
   StyledOption,
-  CardsWrapper,
   CategoryText,
   RightLabel,
   TopSection,
@@ -50,8 +49,9 @@ import {
   StakeText
 } from './CommisionsElements';
 import { ModalBottomSection, ModalBubbleContainer, ModalColumn, ModalData, ModalInfo, ModalRow, ModalTitle } from '../Profile/ProfileElements';
+import { FiBriefcase, FiClock, FiMapPin } from 'react-icons/fi';
 
-const { darkLight } = COLORS;
+const { darkLight, gray1 } = COLORS;
 
 const CommisionsData = [
   {
@@ -253,8 +253,8 @@ const Commisions = () => {
           .post(
             '/public/api/commission/filter',
             {
-              level: levelsFilter,
-              location: citiesFilter,
+              levels: levelsFilter,
+              locations: citiesFilter,
               skills: categoriesFilter,
               tags: tagsFilter,
               languages: languagesFilter,
@@ -528,8 +528,13 @@ const Commisions = () => {
           display: 'flex',
           flexDirection: 'row',
           margin: '0.4rem 0',
+          alignItems: 'center',
         }}>
+          <FiBriefcase size={18} style={{ color: gray1 }} />
+          <CommisionText>{props.name}</CommisionText>
+          <FiMapPin size={18} style={{ color: gray1 }} />
           <CommisionText>{props.location}</CommisionText>
+          <FiClock size={18} style={{ color: gray1 }} />
           <CommisionText>{props.deadline}</CommisionText>
         </div>
         <CommisionBottom>
@@ -550,7 +555,7 @@ const Commisions = () => {
       <CommisionElement
         key={indexF}
         avatar="/assets/cards/person1.jpg"
-        name={filter.name}
+        name={filter.company_name}
         title={filter.title}
         stake={filter.stawka}
         description={filter.description}

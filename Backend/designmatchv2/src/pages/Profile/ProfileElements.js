@@ -18,6 +18,7 @@ export const ProfileWrapper = styled.div`
   height: 96vh;
   align-items: center;
   box-sizing: border-box;
+  padding: 0 0.5rem;
 `;
 
 export const TopSection = styled.div`
@@ -87,6 +88,7 @@ export const AboutMe = styled.text`
 
 export const ProfileImage = styled.div`
   width: 11rem;
+  height: 11rem;
   align-items: center;
 `;
 
@@ -97,6 +99,18 @@ export const Image = styled.img`
   border-radius: 50%;
   background: white;
   border: 3px solid #1d1d1f;
+  object-fit: cover;
+`;
+
+export const EditImage = styled(Image)`
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #1d1d1f;
+  cursor: pointer;
 `;
 
 export const LineForm = styled.div`

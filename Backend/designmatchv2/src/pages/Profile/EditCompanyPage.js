@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AboutInput,
+  EditImage,
   EditNameText,
   Image,
   InfoInputWrapper,
@@ -19,6 +20,7 @@ import styled from 'styled-components';
 import axios from '../../api/axios';
 import LoadingPage from '../LoadingPage';
 import { COLORS } from '../../components/Colors';
+import { useRef } from 'react';
 
 const { secondary } = COLORS;
 
@@ -66,6 +68,8 @@ const EditCompanyPage = () => {
   const [bio, setBio] = useState("");
   const [putData, setPutData] = useState({});
   const [username, setUsername] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const fileInputRef = useRef(null);
 
   const maxChars = 300;
   const limitHeight = 60;
@@ -131,13 +135,35 @@ const EditCompanyPage = () => {
     }
   }, [get]);
 
+  const handleEditImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileInputChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+  };
+
   return (
     <>
       {checkLoading ? (
         <ProfileWrapper>
           <TopSection>
             <LeftWrapper>
-              <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
+              <ProfileImage>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleFileInputChange}
+                />
+                {selectedImage ? (
+                  <EditImage src={URL.createObjectURL(selectedImage)} alt="Profile" onClick={handleEditImageClick} />
+                ) : (
+                  <EditImage src="/assets/test.jpg" alt="Profile" onClick={handleEditImageClick} />
+                )}
+              </ProfileImage>
               <InfoInputWrapper>
                 <InputInfoText>Nazwa firmy: </InputInfoText>
                 <EditNameText
