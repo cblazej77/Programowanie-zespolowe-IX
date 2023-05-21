@@ -36,7 +36,7 @@ public class ChatMessageService {
                 senderId, recipientId, MessageStatus.RECEIVED);
     }
 
-    public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
+    public List<ChatMessageResponse> findChatMessages(String senderId, String recipientId) {
         String chatId = chatRoomService.getChatId(senderId, recipientId, false)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + senderId + "_" + recipientId));
         List<ChatMessage> messages = chatId.isEmpty() ? new ArrayList<>() : chatMessageRepository.findByChatId(chatId);
@@ -44,7 +44,12 @@ public class ChatMessageService {
         if (messages.size() > 0) {
             updateStatuses(messages);
         }
-        return messages;
+
+        List<ChatMessageResponse> result = new ArrayList<>();
+        for (ChatMessage message : messages) {
+            result.add(chatMessageMapper.mapToDto(message));
+        }
+        return result;
     }
 
     public ChatMessageResponse findById(Long id) {
