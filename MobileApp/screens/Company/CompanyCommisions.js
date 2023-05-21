@@ -4,6 +4,7 @@ import { View, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { HeaderText, Colors, AppText, StatsText, RegularText, Bubble, Line } from '../../components/styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
+import CommisionElement from '../../components/CommisionElement';
 
 const { black, primary, gray, darkLight } = Colors;
 
@@ -72,36 +73,36 @@ const commisionsData = [
   },
 ];
 
-const CommisionElement = (props) => {
-  generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
+// const CommisionElement = (props) => {
+//   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
-  return (
-    <View style={[styles.Commision, styles.boxShadow]}>
-      <View style={styles.TopContainer}>
-        <View style={styles.TitleContainer}>
-          <View style={styles.TitleText}>
-            <StatsText>{props.title}</StatsText>
-          </View>
-          <Bubble style={[styles.LevelBubble]}>
-            <AppText style={{ fontSize: 10, color: darkLight }}>{props.level}</AppText>
-          </Bubble>
-        </View>
-        <RegularText>{props.stake + ' PLN'}</RegularText>
-      </View>
-      <View style={styles.MiddleContainer}>
-        <RegularText style={styles.MiddleText}>{props.location}</RegularText>
-        <RegularText style={styles.MiddleText}>{props.deadline}</RegularText>
-      </View>
-      <View style={styles.BottomContainer}>
-        {props.tags.map((tag, indexT) => (
-          <Bubble style={styles.TagBubble} key={indexT}>
-            <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
-          </Bubble>
-        ))}
-      </View>
-    </View>
-  );
-};
+//   return (
+//     <View style={[styles.Commision, styles.boxShadow]}>
+//       <View style={styles.TopContainer}>
+//         <View style={styles.TitleContainer}>
+//           <View style={styles.TitleText}>
+//             <StatsText>{props.title}</StatsText>
+//           </View>
+//           <Bubble style={[styles.LevelBubble]}>
+//             <AppText style={{ fontSize: 10, color: darkLight }}>{props.level}</AppText>
+//           </Bubble>
+//         </View>
+//         <RegularText>{props.stake + ' PLN'}</RegularText>
+//       </View>
+//       <View style={styles.MiddleContainer}>
+//         <RegularText style={styles.MiddleText}>{props.location}</RegularText>
+//         <RegularText style={styles.MiddleText}>{props.deadline}</RegularText>
+//       </View>
+//       <View style={styles.BottomContainer}>
+//         {props.tags.map((tag, indexT) => (
+//           <Bubble style={styles.TagBubble} key={indexT}>
+//             <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+//           </Bubble>
+//         ))}
+//       </View>
+//     </View>
+//   );
+// };
 
 const CompanyProfile = ({ route, navigation }) => {
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
@@ -215,69 +216,69 @@ const CompanyProfile = ({ route, navigation }) => {
 export default CompanyProfile;
 
 const styles = StyleSheet.create({
-  Commision: {
-    borderRadius: 15,
-    borderColor: gray,
-    padding: 5,
-    margin: 5,
-    marginRight: 5,
-    marginBottom: 10,
-    width: '98%',
-  },
-  TopContainer: {
-    flexDirection: 'row',
-    maxWidth: '100%',
-    justifyContent: 'space-evenly',
-  },
-  TitleContainer: {
-    flexDirection: 'row',
-    maxWidth: '80%',
-    width: '80%',
-    marginLeft: 5,
-  },
-  TitleText: {
-    maxWidth: '92%',
-  },
-  LevelBubble: {
-    maxHeight: 20,
-    maxWidth: 40,
-    paddingTop: 2,
-    paddingBottom: 2,
-    paddingLeft: 3,
-    paddingRight: 3,
-    marginTop: 0,
-    marginBottom: 0,
-    borderColor: '#a8a5a5',
-    borderWidth: 1,
-  },
-  MiddleText: {
-    color: '#a8a5a5',
-    fontSize: 12,
-    marginHorizontal: 10,
-  },
-  MiddleContainer: {
-    flexDirection: 'row',
-    maxWidth: '80%',
-    justifyContent: 'flex-start',
-  },
-  BottomContainer: {
-    flexDirection: 'row',
-    maxWidth: '100%',
-    justifyContent: 'flex-end',
-    flexWrap: 'wrap-reverse',
-  },
-  TagBubble: {
-    maxHeight: 20,
-    paddingTop: 2,
-    paddingBottom: 2,
-    paddingLeft: 3,
-    paddingRight: 3,
-    marginTop: 3,
-    marginBottom: 5,
-    marginHorizontal: 2,
-    borderColor: '#a8a5a5',
-    borderWidth: 1,
-  },
+  // Commision: {
+  //   borderRadius: 15,
+  //   borderColor: gray,
+  //   padding: 5,
+  //   margin: 5,
+  //   marginRight: 5,
+  //   marginBottom: 10,
+  //   width: '98%',
+  // },
+  // TopContainer: {
+  //   flexDirection: 'row',
+  //   maxWidth: '100%',
+  //   justifyContent: 'space-evenly',
+  // },
+  // TitleContainer: {
+  //   flexDirection: 'row',
+  //   maxWidth: '80%',
+  //   width: '80%',
+  //   marginLeft: 5,
+  // },
+  // TitleText: {
+  //   maxWidth: '92%',
+  // },
+  // LevelBubble: {
+  //   maxHeight: 20,
+  //   maxWidth: 40,
+  //   paddingTop: 2,
+  //   paddingBottom: 2,
+  //   paddingLeft: 3,
+  //   paddingRight: 3,
+  //   marginTop: 0,
+  //   marginBottom: 0,
+  //   borderColor: '#a8a5a5',
+  //   borderWidth: 1,
+  // },
+  // MiddleText: {
+  //   color: '#a8a5a5',
+  //   fontSize: 12,
+  //   marginHorizontal: 10,
+  // },
+  // MiddleContainer: {
+  //   flexDirection: 'row',
+  //   maxWidth: '80%',
+  //   justifyContent: 'flex-start',
+  // },
+  // BottomContainer: {
+  //   flexDirection: 'row',
+  //   maxWidth: '100%',
+  //   justifyContent: 'flex-end',
+  //   flexWrap: 'wrap-reverse',
+  // },
+  // TagBubble: {
+  //   maxHeight: 20,
+  //   paddingTop: 2,
+  //   paddingBottom: 2,
+  //   paddingLeft: 3,
+  //   paddingRight: 3,
+  //   marginTop: 3,
+  //   marginBottom: 5,
+  //   marginHorizontal: 2,
+  //   borderColor: '#a8a5a5',
+  //   borderWidth: 1,
+  // },
   centeredView: {
     flex: 1,
     justifyContent: 'center',

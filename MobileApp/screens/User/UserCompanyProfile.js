@@ -43,18 +43,24 @@ async function getValueFor(key) {
 
 const CompanyProfile = ({ route, navigation }) => {
   const [token, setToken] = useState('');
+  const [userInfo, setUserInfo] = useState('');
   const [companyProfile, setcompanyProfile] = useState('');
-  const companyName = 'Oracle';
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // async function getAccessToken() {
-  //   const t = await getValueFor('accessToken');
-  //   setToken(t);
-  //   console.log(t);
-  // }
+  async function getAccessToken() {
+    const t = await getValueFor('accessToken');
+    setToken(t);
+    console.log(t);
+  }
+
+  async function getUserInfo() {
+    const u = await getValueFor('user');
+    setUserInfo(JSON.parse(u));
+    console.log(u);
+  }
 
   const OpenLinkElement = ({ link, children1, children2, color }) => {
     const handlePress = useCallback(async () => {
@@ -80,17 +86,17 @@ const CompanyProfile = ({ route, navigation }) => {
     );
   };
 
-  // useEffect(() => {
-  //   getAccessToken();
-  // }, []);
+  useEffect(() => {
+    getAccessToken();
+    getUserInfo();
+  }, []);
 
   useEffect(() => {
-    if (companyName) {
+    if (userInfo) {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: baseURL + '/companies/getCompanyProfileByName',
-        params: { name: companyName},
+        url: baseURL + '/public/api/company/getProfileByUsername/' + userInfo.username,
         headers: {},
       };
 
@@ -106,7 +112,7 @@ const CompanyProfile = ({ route, navigation }) => {
 
       fetchData();
     }
-  }, [companyName]);
+  }, [userInfo]);
 
   function ListLinks() {
     if (companyProfile) {
@@ -125,7 +131,7 @@ const CompanyProfile = ({ route, navigation }) => {
         { enum: 'earth', name: 'Własna strona', color: darkLight },
       ];
       const avaiable = links.filter((item) => {
-        if (item.data !== 'string' && item !== null && item.data !== '' && typeof item.data !== 'undefined') {
+        if (item.data !== 'string' && item.data !== null && item.data !== '' && typeof item.data !== 'undefined') {
           return item;
         }
       });
@@ -151,7 +157,7 @@ const CompanyProfile = ({ route, navigation }) => {
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
             <Avatar resizeMode="contain" source={require('../../assets/img/avatar1.png')}></Avatar>
             <View style={{ width: '65%', alignItems: 'flex-start', justifyContent: 'center' }}>
-              <HeaderText style={{ width: '100%', marginLeft: 10, color: darkLight, fontSize: 22 }}>
+              <HeaderText style={{ width: '100%', marginLeft: 10, color: darkLight }} isLong={(companyProfile.name.length > 30)}>
                 {companyProfile.name}
               </HeaderText>
             </View>

@@ -7,7 +7,7 @@ import {
   RegularTextInput,
   Colors,
   AppText,
-  StatsText,
+  MsgBox,
   RegularText,
   Bubble,
   Line,
@@ -17,11 +17,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 import SelectDropdown from 'react-native-select-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import moment, { lang } from 'moment';
+import moment from 'moment';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { CommisionElement } from '../../components/CommisionElement';
+import * as SecureStore from 'expo-secure-store';
 
 const { black, primary, grey, darkLight } = Colors;
 
@@ -46,107 +48,84 @@ const generateBoxShadowStyle = (
   }
 };
 
-const commisionsData = [
-  {
-    id: 1,
-    title: 'Projekt logo dla firmy produkującej kosmetyki naturalne',
-    description:
-      'Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości',
-    stawka: 2000,
-    deadline: '2 tyg.',
-    level: ['Mid'],
-    location: ['Zdalnie'],
-    tags: ['Design logo', 'Kosmetyki', 'Ekologia'],
-    skills: ['Maskotka'],
-    languages: ['Polski', 'Angielski'],
-  },
-  {
-    id: 2,
-    title: 'Projekt opakowań dla nowej marki herbat ekologicznych',
-    description:
-      'Szukamy doświadczonego projektanta graficznego, który zaprojektuje dla nas opakowania do naszych herbat ekologicznych. Zależy nam na kreatywnym podejściu, które pozwoli wyróżnić nasze produkty na rynku. Oferujemy konkurencyjne wynagrodzenie oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.',
-    stawka: 3000,
-    deadline: '3 tyg.',
-    level: ['Senior'],
-    location: ['Zdalnie'],
-    tags: ['Design opakowań', 'Herbaty', 'Ekologia'],
-    skills: ['Maskotka'],
-    languages: ['Polski', 'Angielski'],
-  },
-  {
-    id: 3,
-    title: 'Projekt plakatu promującego wystawę sztuki nowoczesnej',
-    description:
-      'Jesteśmy galerią sztuki i poszukujemy projektanta graficznego, który zaprojektuje dla nas plakat promujący zbliżającą się wystawę sztuki nowoczesnej. Zależy nam na ciekawym i oryginalnym projekcie, który przyciągnie uwagę potencjalnych zwiedzających. Oferujemy dobrą stawkę oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.',
-    stawka: 2500,
-    deadline: '2 tyg.',
-    level: ['Junior', 'Mid', 'Senior'],
-    location: ['Bydgoszcz', 'Torun', 'Warszawa', 'Zdalnie'],
-    tags: [
-      'Design plakatu',
-      'Sztuka',
-      'Wystawa',
-      'Sztukaaaaaa',
-      'Design plakatu',
-      'Sztuka',
-      'Wystawa',
-      'Design plakatu',
-      'Sztuka',
-      'Wystawa',
-    ],
-    skills: ['Maskotka'],
-    languages: ['Polski', 'Angielski'],
-  },
-];
-
-const CommisionElement = (props) => {
-  generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
-
-  return (
-    <View style={[styles.Commision, styles.boxShadow]}>
-      <View style={styles.TopContainer}>
-        <View style={styles.TitleContainer}>
-          <View style={styles.TitleText}>
-            <StatsText style={{ textAlign: 'left' }}>{props.title}</StatsText>
-          </View>
-          <Bubble style={[styles.LevelBubble]}>
-            <AppText style={{ fontSize: 10, color: darkLight }}>{props.level}</AppText>
-          </Bubble>
-        </View>
-        <RegularText style={{ maxWidth: '20%', textAlign: 'right' }}>{props.stawka + ' PLN'}</RegularText>
-      </View>
-      <View style={styles.MiddleContainer}>
-        {props.location.length > 1 ? (
-          <RegularText style={styles.MiddleText1}>{props.location[0] + '+'}</RegularText>
-        ) : (
-          <RegularText style={styles.MiddleText1}>{props.location}</RegularText>
-        )}
-        <RegularText style={styles.MiddleText2}>{props.deadline}</RegularText>
-      </View>
-      <View style={styles.BottomContainer}>
-        {props.tags.map((tag, indexT) => (
-          <Bubble style={styles.TagBubble} key={indexT}>
-            <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
-          </Bubble>
-        ))}
-      </View>
-    </View>
-  );
+async function getValueFor(key) {
+  let result = await SecureStore.getItemAsync(key);
+  if (!result) {
+    alert('Nie uzyskano danych z klucza: ' + key);
+  }
+  return result;
 };
+
+// const commisionsData = [
+//   {
+//     id: 1,
+//     title: 'Projekt logo dla firmy produkującej kosmetyki naturalne',
+//     description:
+//       'Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości',
+//     stawka: 2000,
+//     deadline: '2 tyg.',
+//     level: ['Mid'],
+//     location: ['Zdalnie'],
+//     tags: ['Design logo', 'Kosmetyki', 'Ekologia'],
+//     skills: ['Maskotka'],
+//     languages: ['Polski', 'Angielski'],
+//   },
+//   {
+//     id: 2,
+//     title: 'Projekt opakowań dla nowej marki herbat ekologicznych',
+//     description:
+//       'Szukamy doświadczonego projektanta graficznego, który zaprojektuje dla nas opakowania do naszych herbat ekologicznych. Zależy nam na kreatywnym podejściu, które pozwoli wyróżnić nasze produkty na rynku. Oferujemy konkurencyjne wynagrodzenie oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.',
+//     stawka: 3000,
+//     deadline: '3 tyg.',
+//     level: ['Senior'],
+//     location: ['Zdalnie'],
+//     tags: ['Design opakowań', 'Herbaty', 'Ekologia'],
+//     skills: ['Maskotka'],
+//     languages: ['Polski', 'Angielski'],
+//   },
+//   {
+//     id: 3,
+//     title: 'Projekt plakatu promującego wystawę sztuki nowoczesnej',
+//     description:
+//       'Jesteśmy galerią sztuki i poszukujemy projektanta graficznego, który zaprojektuje dla nas plakat promujący zbliżającą się wystawę sztuki nowoczesnej. Zależy nam na ciekawym i oryginalnym projekcie, który przyciągnie uwagę potencjalnych zwiedzających. Oferujemy dobrą stawkę oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.',
+//     stawka: 2500,
+//     deadline: '2 tyg.',
+//     level: ['Junior', 'Mid', 'Senior'],
+//     location: ['Bydgoszcz', 'Torun', 'Warszawa', 'Zdalnie'],
+//     tags: [
+//       'Design plakatu',
+//       'Sztuka',
+//       'Wystawa',
+//       'Sztukaaaaaa',
+//       'Design plakatu',
+//       'Sztuka',
+//       'Wystawa',
+//       'Design plakatu',
+//       'Sztuka',
+//       'Wystawa',
+//     ],
+//     skills: ['Maskotka'],
+//     languages: ['Polski', 'Angielski'],
+//   },
+// ];
 
 const CompanyCommisionsEditing = ({ route, navigation }) => {
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
   const availableLevels = ['Junior', 'Mid', 'Senior', 'Junior+', 'Mid+'];
 
+  const [token, setToken] = useState('');
+  const [userInfo, setUserInfo] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isModalVisible, setisModalVisible] = useState(false);
   const [tagsModalVisible, setTagsModalVisible] = useState(false);
   const [skillsModalVisible, setSkillsModalVisible] = useState(false);
   const [languagesModalVisible, setLanguagesModalVisible] = useState(false);
   const [locationsModalVisible, setLocationsModalVisible] = useState(false);
-  const [commisions, setCommisions] = useState(commisionsData);
+  const [commisions, setCommisions] = useState([]);
   const [isNewElement, setIsNewElement] = useState(false);
+  const [message, setMessage] = useState();
+  const [messageType, setMessageType] = useState();
 
   //available data from server
   const [availableLocations, setAvailableLocations] = useState([]);
@@ -165,13 +144,19 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   //objects added to sended JSON
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
-  const [stake, setStake] = useState(0);
+  const [rate, setRate] = useState(0);
   const [deadline, setDeadline] = useState('01/01/1990');
   const [skills, setSkills] = useState([]);
   const [tags, setTags] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [levels, setLevels] = useState([]);
   const [locations, setLocations] = useState([]);
+
+  const handleMessage = (message, type = 'FAILED') => {
+    setMessage(message);
+    setMessageType(type);
+  };
+
 
   //handling hooks
 
@@ -185,7 +170,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     skills,
     tags,
     languages,
-    stawka,
+    rate,
   ) {
     setCommisions((commisions) => [
       ...commisions,
@@ -199,7 +184,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
         skills: skills,
         tags: tags,
         languages: languages,
-        stawka: stawka,
+        rate: rate,
       },
     ]);
   }
@@ -214,7 +199,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     skills,
     tags,
     languages,
-    stawka,
+    rate,
   ) {
     setCommisions(
       commisions.map((c) => {
@@ -227,7 +212,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
           c.skills = skills;
           c.tags = tags;
           c.languages = languages;
-          c.stawka = stawka;
+          c.rate = rate;
         }
         return c;
       }),
@@ -352,7 +337,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     setLanguages([]);
     setSkills([]);
     setTags([]);
-    setStake(0);
+    setRate(0);
     //setModalCommision('');
   }
 
@@ -400,7 +385,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   //   console.log(modalCommision);
   // }
 
-  function setModalCommision(id, title, description, deadline, level, location, languages, skills, tags, stawka) {
+  function setModalCommision(id, title, description, deadline, level, location, languages, skills, tags, rate) {
     console.log({
       'id:': id,
       'title:': title,
@@ -411,7 +396,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
       'languages:': languages,
       'skills:': skills,
       'tags:': tags,
-      'stawka:': stawka,
+      'rate:': rate,
     });
     setId(id);
     setTitle(title);
@@ -422,7 +407,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     setLanguages(languages);
     setSkills(skills);
     setTags(tags);
-    setStake(stawka);
+    setRate(rate);
   }
 
   function saveCommision() {
@@ -437,10 +422,10 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
         skills,
         tags,
         languages,
-        stake,
+        rate,
       );
     } else {
-      handleAddCommisionsElement(id, title, description, deadline, levels, locations, skills, tags, languages, stake);
+      handleAddCommisionsElement(id, title, description, deadline, levels, locations, skills, tags, languages, rate);
     }
     clear();
     setisModalVisible(false);
@@ -486,6 +471,23 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
       }
     }
   }
+
+  async function getAccessToken() {
+    const t = await getValueFor('accessToken');
+    setToken(t);
+    console.log(t);
+  }
+
+  async function getUserInfo() {
+    const u = await getValueFor('user');
+    setUserInfo(JSON.parse(u));
+    console.log(u);
+  }
+
+  useEffect(() => {
+    getAccessToken();
+    getUserInfo();
+  }, []);
 
   //listing bubbles
 
@@ -735,31 +737,30 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     let configTag = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableTags',
+      url: baseURL + '/public/api/filter/getAvailableTags',
       headers: {},
     };
 
     let configCities = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableCities',
+      url: baseURL + '/public/api/filter/getAvailableCities',
       headers: {},
     };
 
     let configLanguages = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableLanguages',
+      url: baseURL + '/public/api/filter/getAvailableLanguages',
       headers: {},
     };
 
     let configCategories = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: baseURL + '/api/artist/getAvailableCategories',
+      url: baseURL + '/public/api/filter/getAvailableCategories',
       headers: {},
     };
-
     const fetchData = async () => {
       try {
         const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse] = await Promise.all([
@@ -784,12 +785,74 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   useEffect(() => {
     if (availableCategories) {
       for (let i = 0; i < availableCategories.categories.length; ++i) {
-        for (let j = 0; j < availableCategories.categories[i].subcategories.length; ++j) {
-          handleAddAvailableSkills(availableCategories.categories[i].subcategories[j]);
+        for (let j = 0; j < availableCategories.categories[i].skills.length; ++j) {
+          handleAddAvailableSkills(availableCategories.categories[i].skills[j]);
         }
       }
     }
   }, [availableCategories]);
+
+  useEffect(() => {
+    if (userInfo) {
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: baseURL + '/public/api/commission/getAllCommissionFirmByUsername/' + userInfo.username,
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const fetchData = async () => {
+        try {
+          const result = await axios.request(config);
+          console.log(result.data);
+          setCommisions(result.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [userInfo]);
+
+  async function apiCommissionCreate() {
+
+    const response = await axios.post(
+        baseURL + '/api/commission/create',
+        {
+          client_username: userInfo.username,
+          title: title,
+          description: description,
+          deadline: deadline,
+          level: levels,
+          location: locations,
+          skills: skills,
+          tags: tags,
+          languages: languages,
+          rate: rate
+        },
+        {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        },
+      )
+      .catch((error) => {
+        handleMessage('Wystąpił błąd', 'FAILED');
+        console.log(error);
+      });
+    if ((response.status = 200)) {
+      handleMessage('Zapisano zmiany!', 'SUCCESS');
+      clear();
+      setisModalVisible(false);
+    }
+  };
 
   // useEffect(() => {
   //   if (modalCommision) {
@@ -840,25 +903,33 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                         textAlign="right"
                         keyboardType="number-pad"
                         style={{ color: darkLight, width: '30%' }}
-                        value={stake.toString()}
+                        value={rate.toString()}
                         onChangeText={(newText) => {
                           if (newText === '' || newText === 'NaN') {
-                            setStake(0);
+                            setRate(0);
                           }
-                          setStake(parseInt(newText));
+                          setRate(parseInt(newText));
                         }}
                         placeholder="Wpisz stawke"
                       ></RegularTextInput>
                       <RegularText> PLN</RegularText>
                     </View>
                     <View style={styles.ModalDetail}>
-                      <RegularText style={{ width: '60%' }}>Czas wykonania:</RegularText>
+                      <RegularText style={{ width: '66%' }}>Czas wykonania:</RegularText>
                       <TouchableOpacity
                         onPress={() => {
                           setShowDatePicker(true);
                         }}
                       >
-                        <RegularText style={{ fontSize: 16, marginLeft: 5 }}>{deadline}</RegularText>
+                        <RegularText
+                          style={{
+                            fontSize: 16,
+                            marginLeft: 5,
+                            textAlign: 'right',
+                          }}
+                        >
+                          {deadline}
+                        </RegularText>
                       </TouchableOpacity>
 
                       {showDatePicker && (
@@ -874,7 +945,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                       )}
                     </View>
                     <View style={styles.ModalDetail}>
-                      <RegularText style={{ width: '60%' }}>Poziom zaawansowania:</RegularText>
+                      <RegularText style={{ width: '65%' }}>Poziom zaawansowania:</RegularText>
                       <SelectDropdown
                         data={availableLevels}
                         onSelect={(selectedItem, index) => {
@@ -1107,10 +1178,14 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                       </ScrollView>
                     </Modal>
                   </View>
+                  <MsgBox type={messageType}>{message}</MsgBox>
                   <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                     <Pressable
                       onPress={() => {
-                        saveCommision();
+                        //saveCommision();
+                        if(isNewElement) {
+                          apiCommissionCreate();
+                        }
                         setIsNewElement(false);
                       }}
                       style={({ pressed }) => [
@@ -1165,7 +1240,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                           cms.languages,
                           cms.skills,
                           cms.tags,
-                          cms.stawka,
+                          cms.rate,
                         );
                       }}
                       key={indexC}
@@ -1174,7 +1249,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                         key={indexC}
                         title={cms.title}
                         description={cms.description}
-                        stawka={cms.stawka}
+                        rate={cms.rate}
                         deadline={cms.deadline}
                         level={getSelectedLevel(cms.level)}
                         location={cms.location}
@@ -1274,76 +1349,6 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
 export default CompanyCommisionsEditing;
 
 const styles = StyleSheet.create({
-  Commision: {
-    borderRadius: 15,
-    borderColor: grey,
-    padding: 5,
-    margin: 5,
-    marginRight: 5,
-    marginBottom: 10,
-    width: '98%',
-  },
-  TopContainer: {
-    flexDirection: 'row',
-    maxWidth: '100%',
-    justifyContent: 'space-evenly',
-  },
-  TitleContainer: {
-    flexDirection: 'row',
-    maxWidth: '80%',
-    width: '80%',
-    marginLeft: 5,
-  },
-  TitleText: {
-    maxWidth: '92%',
-    textAlign: 'left',
-  },
-  LevelBubble: {
-    maxHeight: 20,
-    maxWidth: 46,
-    paddingTop: 2,
-    paddingBottom: 2,
-    paddingLeft: 3,
-    paddingRight: 3,
-    marginTop: 0,
-    marginBottom: 0,
-    borderColor: '#a8a5a5',
-    borderWidth: 1,
-  },
-  MiddleText1: {
-    color: '#a8a5a5',
-    fontSize: 12,
-    marginHorizontal: 10,
-    marginRight: 20,
-  },
-  MiddleText2: {
-    color: '#a8a5a5',
-    fontSize: 12,
-    marginRight: 20,
-  },
-  MiddleContainer: {
-    flexDirection: 'row',
-    maxWidth: '80%',
-    justifyContent: 'flex-start',
-  },
-  BottomContainer: {
-    flexDirection: 'row',
-    maxWidth: '100%',
-    justifyContent: 'flex-end',
-    flexWrap: 'wrap-reverse',
-  },
-  TagBubble: {
-    maxHeight: 20,
-    paddingTop: 2,
-    paddingBottom: 2,
-    paddingLeft: 3,
-    paddingRight: 3,
-    marginTop: 3,
-    marginBottom: 5,
-    marginHorizontal: 2,
-    borderColor: '#a8a5a5',
-    borderWidth: 1,
-  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -1383,29 +1388,31 @@ const styles = StyleSheet.create({
   },
   ModalCommisionDetails: {
     alignItems: 'flex-start',
-    alignContent: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
   },
   ModalDetail: {
-    alignSelf: 'stretch',
+    alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10,
+    marginVertical: 3,
   },
   ModalMapping: {
+    alignSelf: 'flex-start',
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingLeft: 17,
-    paddingRight: 12,
+    paddingRight: 17,
   },
   ModalTagBubble: {
-    paddingTop: 4,
+    paddingTop: 3,
     paddingBottom: 4,
     paddingLeft: 5,
     paddingRight: 5,
     marginTop: 0,
     marginBottom: 5,
     marginHorizontal: 2,
+    borderColor: '#0F0F0F33',
+    borderWidth: 1.6,
   },
 });

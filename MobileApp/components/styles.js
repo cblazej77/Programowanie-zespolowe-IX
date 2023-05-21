@@ -70,6 +70,9 @@ export const HeaderText = styled(AppText)`
     ${(props) => props.bold == true && `
         fontFamily: 'LexendDeca-SemiBold';
     `}
+    ${(props) => props.isLong == true && `
+        fontSize: 18px;
+    `}
 `;
 
 export const HeaderTextInput = styled(AppTextInput)`

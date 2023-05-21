@@ -60,6 +60,7 @@ export default function ProfileScreen({ navigation }) {
   async function logout() {
     save('accessToken', '');
     save('user', '');
+    console.log("potwierdzono wylogowanie");
     navigation.navigate('Login');
   }
 

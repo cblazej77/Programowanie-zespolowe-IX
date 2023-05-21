@@ -50,7 +50,7 @@ const CompanySignup = ({ navigation }) => {
   const [name, setName] = useState('');
   const [nip, setNip] = useState('');
   const [regon, setRegon] = useState('');
-  const [krs, setKrs] = useState('');
+  const [krs, setKrs] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   function passwordPatternValidation(password) {
@@ -69,18 +69,27 @@ const CompanySignup = ({ navigation }) => {
   }
 
   function nipPatternValidation(name) {
-    const regex = new RegExp("^(PL[0-9]{10})+$");
+    const regex = new RegExp('^(PL[0-9]{10})+$');
     return regex.test(name);
   }
 
   function regonPatternValidation(name) {
-    const regex = new RegExp("^([0-9]{9})+$");
-    return regex.test(name);
+    if (name.length === 9) {
+      const regex = new RegExp('^([0-9]{9})+$');
+      return regex.test(name);
+    } else if (name.length === 14) {
+      const regex = new RegExp('^([0-9]{14})+$');
+      return regex.test(name);
+    } else {
+      return false;
+    }
   }
 
   function krsPatternValidation(name) {
-    if(name === '') {return true;}
-    const regex = new RegExp("^([0-9]{10})+$");
+    if (name === '' || krs === null) {
+      return true;
+    }
+    const regex = new RegExp('^([0-9]{10})+$');
     return regex.test(name);
   }
 
@@ -89,29 +98,101 @@ const CompanySignup = ({ navigation }) => {
     return regex.test(name);
   }
 
+  function isNipValid(nip) {
+    const weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+
+    function getOnlyDigits(value) {
+      return value.replace(/[^0-9]/gi, '');
+    }
+
+    nip = getOnlyDigits(nip);
+
+    let sum = 0;
+    for (let i = 0; i < weights.length; i++) {
+      sum += weights[i] * parseInt(nip[i]);
+    }
+
+    const checkSum = sum % 11;
+
+    if (checkSum !== parseInt(nip[9])) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function isRegonValid(regon) {
+    const weights9 = [8, 9, 2, 3, 4, 5, 6, 7];
+    const weights14 = [2, 4, 8, 5, 0, 9, 7, 3, 6, 1, 2, 4, 8];
+
+    function getOnlyDigits(value) {
+      return value.replace(/[^0-9]/gi, '');
+    }
+
+    regon = getOnlyDigits(regon);
+
+    function isCorrect(value, weights) {
+      let sum = 0;
+
+      for (let i = 0; i < weights.length; i++) {
+        sum += weights[i] * parseInt(value[i]);
+      }
+
+      const checkValue = parseInt(value[weights.length]);
+      const checkSum = sum % 11;
+
+      if (checkSum === 10) {
+        return checkValue === 0;
+      }
+
+      return checkSum === checkValue;
+    }
+
+    let isValid;
+
+    if (regon.length === 9) {
+      isValid = isCorrect(regon, weights9);
+    } else {
+      isValid = isCorrect(regon, weights14);
+    }
+
+    if (!isValid) {
+      return false;
+    }
+
+    return true;
+  }
+
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleSignup = async () => {
+    if(krs === '') {
+      setKrs(null);
+    }
     handleMessage(null);
     const url = baseURL + '/auth/registerCompany';
     try {
       setSubmitting(true);
-      const response = await axios.post(url, {
-        email: email,
-        username: username,
-        password: password,
-        name: name,
-        nip: nip,
-        regon: regon,
-        krs: krs
-      }, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if(response.status === 200){
-      setSubmitting(false);
-      handleMessage('Zarejestrowano użytkownika, proszę potwierdź email przed zalogowaniem', 'SUCCESS');
-      await sleep(1500);
-      navigation.navigate('Login');
+      const response = await axios.post(
+        url,
+        {
+          email: email,
+          username: username,
+          password: password,
+          name: name,
+          nip: nip,
+          regon: regon,
+          krs: krs,
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+      if (response.status === 200) {
+        setSubmitting(false);
+        handleMessage('Zarejestrowano użytkownika, proszę potwierdź email przed zalogowaniem', 'SUCCESS');
+        await sleep(1500);
+        navigation.navigate('Login');
       }
     } catch (err) {
       setSubmitting(false);
@@ -138,7 +219,7 @@ const CompanySignup = ({ navigation }) => {
         <InnerContainer>
           <HeaderText style={{ fontSize: 30, color: darkLight, marginBottom: 30 }}>Rejestracja firmy</HeaderText>
           <Formik
-          initialValues={{ email: '', username: '', password: '', name: '', nip: '', regon: '', krs: '' }}
+            initialValues={{ email: '', username: '', password: '', name: '', nip: '', regon: '', krs: '' }}
             onSubmit={() => {
               if (
                 email === '' ||
@@ -146,7 +227,7 @@ const CompanySignup = ({ navigation }) => {
                 username === '' ||
                 confirmPassword === '' ||
                 name === '' ||
-                nip === '' || 
+                nip === '' ||
                 regon === ''
               ) {
                 handleMessage('Proszę wypełnić wszystkie pola');
@@ -154,16 +235,16 @@ const CompanySignup = ({ navigation }) => {
               } else if (confirmPassword !== password) {
                 handleMessage('Hasła się nie zgadzają');
                 setSubmitting(false);
-              } else if (!namesPatternValidation(name) ) {
+              } else if (!namesPatternValidation(name)) {
                 handleMessage('Wpisano niedozwolone znaki w nazwie firmy', 'FAILED');
                 setSubmitting(false);
-              } else if (!nipPatternValidation(nip) ) {
+              } else if (!nipPatternValidation(nip) || !isNipValid(nip)) {
                 handleMessage('Wpisano zły NIP', 'FAILED');
                 setSubmitting(false);
-              }  else if (!regonPatternValidation(regon) ) {
+              } else if (!regonPatternValidation(regon) || !isRegonValid(regon)) {
                 handleMessage('Wpisano zły REGON', 'FAILED');
                 setSubmitting(false);
-              } else if (!krsPatternValidation(krs) ) {
+              } else if (!krsPatternValidation(krs)) {
                 console.log(krs);
                 handleMessage('Wpisano zły KRS', 'FAILED');
                 setSubmitting(false);
@@ -282,7 +363,7 @@ const CompanySignup = ({ navigation }) => {
                     </StyledButton>
                   </LinearGradientStyle>
                 )}
-                <ExtraView style={{flexDirection: 'column'}}>
+                <ExtraView style={{ flexDirection: 'column' }}>
                   <ExtraText>Chcesz zarejestrować się jako artysta? </ExtraText>
                   <TextLink onPress={() => navigation.navigate('ArtistSignup')}>
                     <TextLinkContent>Kliknij tutaj!</TextLinkContent>

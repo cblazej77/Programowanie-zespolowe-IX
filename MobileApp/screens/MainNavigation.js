@@ -1,12 +1,15 @@
 import * as React from 'react';
+import {useState, useEffect} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as SecureStore from 'expo-secure-store';
 //import { useContext } from 'react';
 
 //Screens
 import HomePage from './navigation_screens/HomePage';
 import MessagesScreen from './navigation_screens/MessagesScreen';
 import ProfileScreen from './User/UserProfileScreen';
+import UserCompanyScreen from './User/UserCompanyScreen';
 
 import { SafeAreaView } from 'react-native';
 
@@ -17,12 +20,46 @@ const { secondary, darkLight } = Colors;
 
 //Screen names
 const homeName = 'Strona główna';
-const profileName = 'Profil';
+const artistProfileName = 'Profil Artysty';
+const companyProfileName = 'Profil firmy';
 const messagesName = 'Wiadomości';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainNavigation() {
+async function getValueFor(key) {
+  let result = await SecureStore.getItemAsync(key);
+  if (!result) {
+    alert('Nie uzyskano danych z klucza: ' + key);
+  }
+  return result;
+}
+
+export default function MainNavigation({navigation}) {
+
+  const [token, setToken] = useState('');
+  const [userInfo, setUserInfo] = useState('');
+  const [isArtist, setIsArtist] = useState(true);
+
+  async function getAccessToken() {
+    const t = await getValueFor('accessToken');
+    setToken(t);
+  }
+
+  async function getUserInfo() {
+    const u = await getValueFor('user');
+    setUserInfo(JSON.parse(u));
+  }
+
+  useEffect(() => {
+    getAccessToken();
+    getUserInfo();
+  }, []);
+
+  useEffect(() => {
+    if(userInfo.role === 'ARTIST') {setIsArtist(true);}
+    else {setIsArtist(false)};
+  }, [userInfo]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Tab.Navigator
@@ -36,10 +73,12 @@ export default function MainNavigation() {
 
             if (rn == homeName) {
               iconName = focused ? 'home' : 'home-outline';
-            } else if (rn == profileName) {
+            } else if (rn == artistProfileName) {
               iconName = focused ? 'person' : 'person-outline';
             } else if (rn == messagesName) {
               iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
+            } else if (rn == companyProfileName) {
+              iconName = focused ? 'people' : 'people-outline';
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -59,6 +98,7 @@ export default function MainNavigation() {
             },
             null,
           ],
+          gestureEnabled: false,
         })}
         //Chowanie paska nawigacji po wysunięciu klawiatury
         /*tabBarOptions={{
@@ -71,7 +111,8 @@ export default function MainNavigation() {
                  style: {padding: 10, height: 70}
             }}*/
       >
-        <Tab.Screen name={profileName} component={ProfileScreen} />
+        
+        <Tab.Screen name={isArtist ? artistProfileName : companyProfileName} component={isArtist ? ProfileScreen : UserCompanyScreen} />
         <Tab.Screen name={homeName} component={HomePage} />
         <Tab.Screen name={messagesName} component={MessagesScreen} />
       </Tab.Navigator>

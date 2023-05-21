@@ -30,7 +30,7 @@ export const CommisionElement = (props) => {
     generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
   
     return (
-      <View style={[styles.Commision]}>
+      <View style={[styles.Commision, styles.boxShadow]}>
         <View style={styles.TopContainer}>
           <View style={styles.TitleContainer}>
             <View style={styles.TitleText}>
@@ -40,7 +40,7 @@ export const CommisionElement = (props) => {
               <AppText style={{ fontSize: 10, color: '#FFF' }}>{props.level}</AppText>
             </Bubble>
           </View>
-          <RegularText style={{maxWidth: '20%', textAlign: 'right'}}>{props.stawka + ' PLN'}</RegularText>
+          <RegularText style={{maxWidth: '20%', textAlign: 'right'}}>{props.rate + ' PLN'}</RegularText>
         </View>
         <View style={styles.MiddleContainer}>
           {props.location.length > 1 ? (
@@ -76,7 +76,7 @@ export const CommisionElement = (props) => {
       marginBottom: 10,
       width: '98%',
       minWidth: '98%',
-      backgroundColor: '#FFF',
+      backgroundColor: primary,
     },
     TopContainer: {
       flexDirection: 'row',
@@ -93,12 +93,12 @@ export const CommisionElement = (props) => {
       maxWidth: '92%',
     },
     LevelBubble: {
-      maxHeight: 20,
-      maxWidth: 46,
+      maxHeight: 22,
+      maxWidth: 50,
       paddingTop: 2,
-      paddingBottom: 2,
-      paddingLeft: 3,
-      paddingRight: 3,
+      paddingBottom: 0,
+      paddingLeft: 4,
+      paddingRight: 4,
       marginTop: 0,
       marginBottom: 0,
       borderColor: '#a8a5a5',
@@ -129,11 +129,11 @@ export const CommisionElement = (props) => {
       flexWrap: 'wrap-reverse',
     },
     TagBubble: {
-      maxHeight: 20,
+      maxHeight: 22,
       paddingTop: 2,
-      paddingBottom: 2,
-      paddingLeft: 3,
-      paddingRight: 3,
+      paddingBottom: 4,
+      paddingLeft: 4,
+      paddingRight: 4,
       marginTop: 3,
       marginBottom: 5,
       marginHorizontal: 2,

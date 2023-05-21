@@ -124,10 +124,13 @@ const Login = ({ navigation }) => {
     }
   };
 
-  async function getUser(token) {
-    const url = baseURL + '/api/user/getUserById';
+  async function getUserInfo(token) {
+    const url = baseURL + '/auth/decodeToken';
     try {
       const response = await axios.get(url, {
+        params: {
+          Authorization: token
+        },
         headers: {
           accept: 'application/json',
           Authorization: 'Bearer ' + token,
@@ -152,9 +155,9 @@ const Login = ({ navigation }) => {
     setSubmitting(false);
     if (response) {
       save('accessToken', response);
-      const user = await getUser(response);
+      const user = await getUserInfo(response);
       save('user', user);
-      navigation.navigate('MainNavigation');
+      navigation.replace('MainNavigation');
       setEmail('');
       setPassword('');
       handleMessage('');

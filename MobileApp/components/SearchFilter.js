@@ -205,7 +205,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
               key={index}
               title={item.title}
               description={item.description}
-              stawka={item.stawka}
+              rate={item.rate}
               deadline={item.deadline}
               level={getSelectedLevel(item.level)}
               location={item.location}
@@ -238,7 +238,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
                 <View style={styles.ModalDetail}>
                   <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
                   <RegularText style={{ color: '#6e6968', width: '30%' }}>
-                    {modalCommision.stawka + ' PLN'}
+                    {modalCommision.rate + ' PLN'}
                   </RegularText>
                 </View>
                 <View style={styles.ModalDetail}>
@@ -325,7 +325,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
               key={index}
               title={item.title}
               description={item.description}
-              stawka={item.stawka}
+              rate={item.rate}
               deadline={item.deadline}
               level={getSelectedLevel(item.level)}
               location={item.location}
@@ -358,7 +358,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
                 <View style={styles.ModalDetail}>
                   <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
                   <RegularText style={{ color: '#6e6968', width: '30%' }}>
-                    {modalCommision.stawka + ' PLN'}
+                    {modalCommision.rate + ' PLN'}
                   </RegularText>
                 </View>
                 <View style={styles.ModalDetail}>

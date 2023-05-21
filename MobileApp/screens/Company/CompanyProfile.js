@@ -44,7 +44,7 @@ async function getValueFor(key) {
 const CompanyProfile = ({ route, navigation }) => {
   const [token, setToken] = useState('');
   const [companyProfile, setcompanyProfile] = useState('');
-  const username = 'Ororacle';
+  const username = route.params.username;
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
@@ -82,7 +82,7 @@ const CompanyProfile = ({ route, navigation }) => {
   // }, []);
 
   useEffect(() => {
-    if (companyName) {
+    if (username) {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
@@ -103,7 +103,7 @@ const CompanyProfile = ({ route, navigation }) => {
 
       fetchData();
     }
-  }, [companyName]);
+  }, [username]);
 
   function ListLinks() {
     if (companyProfile) {
@@ -122,7 +122,7 @@ const CompanyProfile = ({ route, navigation }) => {
         { enum: 'earth', name: 'Własna strona', color: darkLight },
       ];
       const avaiable = links.filter((item) => {
-        if (item.data !== 'string' && item !== null && item.data !== '' && typeof item.data !== 'undefined') {
+        if (item.data !== 'string' && item.data !== null && item.data !== '' && typeof item.data !== 'undefined') {
           return item;
         }
       });
@@ -148,7 +148,7 @@ const CompanyProfile = ({ route, navigation }) => {
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
             <Avatar resizeMode="contain" source={require('../../assets/img/avatar1.png')}></Avatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
-              <HeaderText numberOfLines={1} style={{ width: '75%', marginLeft: 10, color: darkLight , fontSize: 22}}>
+              <HeaderText numberOfLines={1} style={{ width: '75%', marginLeft: 10, color: darkLight}} isLong={(companyProfile.name.length > 30)}>
                 {companyProfile.name}
               </HeaderText>
             </View>

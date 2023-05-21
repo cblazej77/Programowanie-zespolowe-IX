@@ -56,6 +56,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
   const [message, setMessage] = useState();
   const [messageType, setMessageType] = useState();
   const [token, setToken] = useState('');
+  const [userInfo, setUserInfo] = useState('');
   const [companyProfile, setcompanyProfile] = useState('');
   const [facebook, setFacebook] = useState('');
   const [instagram, setInstagram] = useState('');
@@ -67,49 +68,153 @@ const CompanyProfileEditing = ({ route, navigation }) => {
   const [REGON, setREGON] = useState('');
   const [KRS, setKRS] = useState('');
   const [adress, setAdress] = useState('');
-  const [companyName, setCompanyName] = useState('Oracle');
+  const [companyName, setCompanyName] = useState('');
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // async function getAccessToken() {
-  //   const t = await getValueFor('accessToken');
-  //   setToken(t);
-  //   console.log(t);
-  // }
+  async function getAccessToken() {
+    const t = await getValueFor('accessToken');
+    setToken(t);
+  }
+
+  async function getUserInfo() {
+    const u = await getValueFor('user');
+    setUserInfo(JSON.parse(u));
+  }
 
   const handleMessage = (message, type = 'FAILED') => {
     setMessage(message);
     setMessageType(type);
   };
 
+  function nipPatternValidation(name) {
+    const regex = new RegExp('^(PL[0-9]{10})+$');
+    return regex.test(name);
+  }
+
+  function regonPatternValidation(name) {
+    if (name.length === 9) {
+      const regex = new RegExp('^([0-9]{9})+$');
+      return regex.test(name);
+    } else if (name.length === 14) {
+      const regex = new RegExp('^([0-9]{14})+$');
+      return regex.test(name);
+    } else {
+      return false;
+    }
+  }
+
+  function krsPatternValidation(name) {
+    if (name === '' || name === null) {
+      return true;
+    }
+    const regex = new RegExp('^([0-9]{10})+$');
+    return regex.test(name);
+  }
+
   function facebookPatternValidation(name) {
-    if(name === '') {return true;}
+    if (name === '' || name === null) {
+      return true;
+    }
     const regex = new RegExp(
       /(?:https?:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/,
     );
     return regex.test(name);
   }
   function instagramPatternValidation(name) {
-    if(name === '') {return true;}
+    if (name === '' || name === null) {
+      return true;
+    }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?/);
     return regex.test(name);
   }
   function twitterPatternValidation(name) {
-    if(name === '') {return true;}
+    if (name === '' || name === null) {
+      return true;
+    }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]{5,15}(\?(\w+=\w+&?)*)?/);
     return regex.test(name);
   }
   function linkedinPatternValidation(name) {
-    if(name === '') {return true;}
+    if (name === '' || name === null) {
+      return true;
+    }
     const regex = new RegExp(/(https?:\/\/)?(www\.)?linkedin\.com\/[A-Za-z0-9_.]{1,30}/);
     return regex.test(name);
   }
   function websitePatternValidation(name) {
-    if(name === '') {return true;}
+    if (name === '' || name === null) {
+      return true;
+    }
     const regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/);
     return regex.test(name);
+  }
+
+  function isNipValid(nip) {
+    const weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+
+    function getOnlyDigits(value) {
+      return value.replace(/[^0-9]/gi, '');
+    }
+
+    nip = getOnlyDigits(nip);
+
+    let sum = 0;
+    for (let i = 0; i < weights.length; i++) {
+      sum += weights[i] * parseInt(nip[i]);
+    }
+
+    const checkSum = sum % 11;
+
+    if (checkSum !== parseInt(nip[9])) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function isRegonValid(regon) {
+    const weights9 = [8, 9, 2, 3, 4, 5, 6, 7];
+    const weights14 = [2, 4, 8, 5, 0, 9, 7, 3, 6, 1, 2, 4, 8];
+
+    function getOnlyDigits(value) {
+      return value.replace(/[^0-9]/gi, '');
+    }
+
+    regon = getOnlyDigits(regon);
+
+    function isCorrect(value, weights) {
+      let sum = 0;
+
+      for (let i = 0; i < weights.length; i++) {
+        sum += weights[i] * parseInt(value[i]);
+      }
+
+      const checkValue = parseInt(value[weights.length]);
+      const checkSum = sum % 11;
+
+      if (checkSum === 10) {
+        return checkValue === 0;
+      }
+
+      return checkSum === checkValue;
+    }
+
+    let isValid;
+
+    if (regon.length === 9) {
+      isValid = isCorrect(regon, weights9);
+    } else {
+      isValid = isCorrect(regon, weights14);
+    }
+
+    if (!isValid) {
+      return false;
+    }
+
+    return true;
   }
 
   const OpenLinkElement = ({ link, children1, children2, color }) => {
@@ -133,17 +238,17 @@ const CompanyProfileEditing = ({ route, navigation }) => {
     );
   };
 
-  // useEffect(() => {
-  //   getAccessToken();
-  // }, []);
+  useEffect(() => {
+    getAccessToken();
+    getUserInfo();
+  }, []);
 
   useEffect(() => {
-    if (companyName) {
+    if (userInfo) {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: baseURL + '/companies/getCompanyProfileByName',
-        params: { name: companyName},
+        url: baseURL + '/public/api/company/getProfileByUsername/' + userInfo.username,
         headers: {},
       };
 
@@ -159,9 +264,10 @@ const CompanyProfileEditing = ({ route, navigation }) => {
 
       fetchData();
     }
-  }, [companyName]);
+  }, [userInfo]);
 
   useEffect(() => {
+    setCompanyName(companyProfile.name);
     setAdress(companyProfile.companyAdress);
     setDescription(companyProfile.description);
     setFacebook(companyProfile.facebook);
@@ -176,23 +282,35 @@ const CompanyProfileEditing = ({ route, navigation }) => {
 
   async function updateCompanyProfile() {
     handleMessage('');
-    if(!facebookPatternValidation(facebook) ||
-    !twitterPatternValidation(twitter) ||
-    !instagramPatternValidation(instagram) ||
-    !websitePatternValidation(website) ||
-    !linkedinPatternValidation(linkedin)) {
-      handleMessage('Źle wpisano link','FAILED');
+    if (
+      !facebookPatternValidation(facebook) ||
+      !twitterPatternValidation(twitter) ||
+      !instagramPatternValidation(instagram) ||
+      !websitePatternValidation(website) ||
+      !linkedinPatternValidation(linkedin) 
+    ) {
+      handleMessage('Źle wpisano link', 'FAILED');
+      return;
+    }
+    if(!nipPatternValidation(NIP) || !isNipValid(NIP)) {
+      handleMessage('Źle wpisano NIP', 'FAILED');
+      return;
+    }
+    if(!regonPatternValidation(REGON) || !isRegonValid(REGON)) {
+      handleMessage('Źle wpisano REGON', 'FAILED');
+      return;
+    }
+    if(!krsPatternValidation(KRS)) {
+      handleMessage('Źle wpisano KRS', 'FAILED');
       return;
     }
 
     const response = await axios
       .put(
-        baseURL + '/companies/updateCompanyProfileByName',
+        baseURL + '/api/company/updateProfileByUsername/' + userInfo.username,
         {
           name: companyName,
           description: description,
-          profileImageUrl: '',
-          profileBannerUrl: '',
           nip: NIP,
           regon: REGON,
           krs: KRS,
@@ -201,11 +319,16 @@ const CompanyProfileEditing = ({ route, navigation }) => {
           linkedin: linkedin,
           twitter: twitter,
           instagram: instagram,
-          companyAdress: adress
+          address: adress,
         },
         {
-          params: { name: companyName },
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          params: { username: userInfo.username },
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
         },
       )
       .catch((error) => {
@@ -254,11 +377,11 @@ const CompanyProfileEditing = ({ route, navigation }) => {
         }
       }
       const links = [
-        { id: 1, name: 'Facebook:', data: facebook},
-        { id: 2, name: 'Instagram:', data: instagram},
-        { id: 3, name: 'LinkedIn:', data: linkedin},
-        { id: 5, name: 'Twitter:', data: twitter},
-        { id: 6, name: 'Twoja strona:', data: website},
+        { id: 1, name: 'Facebook:', data: facebook },
+        { id: 2, name: 'Instagram:', data: instagram },
+        { id: 3, name: 'LinkedIn:', data: linkedin },
+        { id: 5, name: 'Twitter:', data: twitter },
+        { id: 6, name: 'Twoja strona:', data: website },
       ];
       const list = links.map((item) => (
         <View flexDirection="row" alignItems="center" style={{ marginBottom: 10 }} key={item.id}>
@@ -310,10 +433,10 @@ const CompanyProfileEditing = ({ route, navigation }) => {
               <HeaderTextInput
                 multiline={true}
                 maxLength={100}
-                style={{ width: '100%', marginLeft: 10, marginRight: 10, color: black, fontSize: 22}}
+                style={{ width: '100%', marginLeft: 10, marginRight: 10, color: black, fontSize: 22 }}
                 value={companyName}
                 onChangeText={setCompanyName}
-                placeholder='Wpisz nazwę firmy'
+                placeholder="Wpisz nazwę firmy"
               />
             </View>
           </View>
@@ -402,8 +525,8 @@ const CompanyProfileEditing = ({ route, navigation }) => {
               marginBottom: 15,
             }}
           >
-             <MsgBox type={messageType}>{message}</MsgBox>
-          <Pressable
+            <MsgBox type={messageType}>{message}</MsgBox>
+            <Pressable
               onPress={() => {
                 updateCompanyProfile();
               }}
@@ -416,7 +539,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
             >
               <AppText style={{ color: primary, fontSize: 16 }}>Zapisz</AppText>
             </Pressable>
-            </View>
+          </View>
         </ScrollView>
       ) : (
         <Loading />

@@ -31,32 +31,33 @@ export default function UserCompanyScreen({ navigation }) {
   const [userInfo, setUserInfo] = useState('jakis tam cos ');
   const [editing, setEditing] = useState(false);
 
-  // async function getAccessToken() {
-  //   const t = await getValueFor('accessToken');
-  //   setToken(t);
-  // }
+  async function getAccessToken() {
+    const t = await getValueFor('accessToken');
+    setToken(t);
+  }
 
-  // async function getUserInfo() {
-  //   const u = await getValueFor('user');
-  //   setUserInfo(JSON.parse(u));
-  // }
+  async function getUserInfo() {
+    const u = await getValueFor('user');
+    setUserInfo(JSON.parse(u));
+  }
 
-  // useEffect(() => {
-  //   getAccessToken();
-  //   getUserInfo();
-  // }, []);
+  useEffect(() => {
+    getAccessToken();
+    getUserInfo();
+  }, []);
 
-  // async function save(key, value) {
-  //   await SecureStore.setItemAsync(key, value).catch((error) => {
-  //     console.log(error);
-  //   });
-  // }
+  async function save(key, value) {
+    await SecureStore.setItemAsync(key, value).catch((error) => {
+      console.log(error);
+    });
+  }
 
-  // async function logout() {
-  //   save('accessToken', '');
-  //   save('user', '');
-  //   navigation.navigate('Login');
-  // }
+  async function logout() {
+    save('accessToken', '');
+    save('user', '');
+    console.log("potwierdzono wylogowanie");
+    navigation.navigate('Login');
+  }
 
   return (
     <>
@@ -65,16 +66,9 @@ export default function UserCompanyScreen({ navigation }) {
           <ChatLabel
             style={{
               height: '8%',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-end',
             }}
           >
-             <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-            >
-              <Ionicons name="arrow-back" size={38} style={{ color: primary, marginLeft: 5 }} />
-            </TouchableOpacity>
             <View style={[styles.HeaderViewStyle]}>
               {editing ? (
                 <SelectDropdown
