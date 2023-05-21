@@ -32,6 +32,10 @@ public class CommissionResponse {
     private String title;
 
     @NotEmpty
+    @JsonProperty("company_name")
+    private String companyName;
+
+    @NotEmpty
     @JsonProperty("description")
     private String description;
 
@@ -71,13 +75,14 @@ public class CommissionResponse {
     private Boolean isCompleted;
 
     @JsonCreator
-    public CommissionResponse(Long id, String clientUsername, String contractorUsername, String title, String description,
+    public CommissionResponse(Long id, String clientUsername, String contractorUsername, String title,  String companyName, String description,
                               LocalDateTime commissionedAt, LocalDate deadline, LocalDate completedAt, Set<String> level,
                               Set<String> location, Set<String> skills, Set<String> tags, Set<String> languages, Integer rate, Boolean isCompleted) {
         this.id = id;
         this.clientUsername = clientUsername;
         this.contractorUsername = contractorUsername;
         this.title = title;
+        this.companyName = companyName;
         this.description = description;
         this.commissionedAt = commissionedAt;
         this.deadline = deadline;
