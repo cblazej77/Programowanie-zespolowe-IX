@@ -46,7 +46,7 @@ const UserPage = () => {
   const [experienceList, setExperienceList] = useState([]);
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
   const [button, setButton] = useState(true);
-  const [username, setUsername] = useState('');
+  const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,9 +63,21 @@ const UserPage = () => {
           url: '/public/api/artist/getArtistProfileByUsername/' + decodeResult.data.username
         });
 
-        console.log(decodeResult.data.username);
+        const avatarResult = await axios.request(
+          '/public/api/artist/images/getProfileImage', {
+          params: { username: decodeResult.data.username },
+          responseType: 'arraybuffer',
+        });
+
+        const imageType = avatarResult.headers['content-type']; // Pobranie typu zawartości obrazka z nagłówka odpowiedzi
+        const imageBlob = new Blob([avatarResult.data], { type: imageType });
+        const imageUrl = URL.createObjectURL(imageBlob);
+
+        setAvatar(imageUrl);
+
         setGet(userResult.data);
         setCheckLoading(userResult);
+
       } catch (err) {
         console.log(err);
       }
@@ -267,7 +279,9 @@ const UserPage = () => {
       <ProfileWrapper>
         <TopSection>
           <LeftWrapper>
-            <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
+            <ProfileImage>
+              {avatar && <Image src={avatar} alt="Profile" />}
+            </ProfileImage>
             <JobText>{get.level}</JobText>
             <NameText>{get.firstname} {get.lastname} </NameText>
             <RatingWrapper>
@@ -302,7 +316,7 @@ const UserPage = () => {
                   </LeftInfoRow>
                   <LeftInfoRow>
                     <InfoText>Miejscowość:</InfoText>
-                    <DataText>{shortProfile.city}</DataText>
+                    <DataText>{get.location}</DataText>
                   </LeftInfoRow>
                   <LeftInfoRow>
                     <InfoText>Prace:</InfoText>

@@ -87,14 +87,15 @@ export const AboutMe = styled.text`
 `;
 
 export const ProfileImage = styled.div`
-  width: 11rem;
-  height: 11rem;
+  width: 10rem;
+  height: 10rem;
   align-items: center;
 `;
 
 export const Image = styled.img`
   margin: 0 auto;
   width: 100%;
+  height: 100%;
   max-width: 400px;
   border-radius: 50%;
   background: white;
