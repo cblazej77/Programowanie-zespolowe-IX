@@ -6,6 +6,7 @@ import com.pz.designmatch.dto.response.CommissionResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public interface CommissionService {
     CommissionResponse setCommissionCompletedById(Long id) throws EntityNotFoundException;
 
     Page<CommissionResponse> filterCommissions(CommissionFilterRequest filterRequest, Pageable pageable);
+    CommissionResponse deleteCommissionById(Long id);
 
 
 }
