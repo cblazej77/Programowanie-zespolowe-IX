@@ -69,7 +69,7 @@ const UserPage = () => {
           responseType: 'arraybuffer',
         });
 
-        const imageType = avatarResult.headers['content-type']; // Pobranie typu zawartości obrazka z nagłówka odpowiedzi
+        const imageType = avatarResult.headers['content-type'];
         const imageBlob = new Blob([avatarResult.data], { type: imageType });
         const imageUrl = URL.createObjectURL(imageBlob);
 

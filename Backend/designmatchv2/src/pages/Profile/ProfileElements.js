@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../../components/Colors";
 import Dropdown from 'react-dropdown';
+import { FaEdit } from "react-icons/fa";
 
 const {
   darkLight,
@@ -19,6 +20,9 @@ export const ProfileWrapper = styled.div`
   align-items: center;
   box-sizing: border-box;
   padding: 0 0.5rem;
+  @media screen and (max-width: 960px) {
+    padding: 0;
+  }
 `;
 
 export const TopSection = styled.div`
@@ -32,6 +36,7 @@ export const TopSection = styled.div`
   @media screen and (max-width: 960px) {
     flex-direction: column;
     padding: 0;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -62,18 +67,18 @@ export const RightWrapper = styled.div`
   margin-left: 1.5vw;
   display: flex;
   padding: 60px;
-  height: 30rem;
-  width: 55rem;
   flex-direction: column;
   border-radius: 15px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
-  overflow: auto;
+  overflow-y: auto;
+  width: 55rem;
+  height: 30rem;
   @media screen and (max-width: 960px) {
+    overflow: hidden;
+    height: fit-content;
     width: 100%;
-    height: auto;
-    margin: 2rem 0 0 0;
     border-radius: 0px;
-    padding: 30px;
+    margin: 2rem 0 0 0;
   }
 `;
 
@@ -92,6 +97,13 @@ export const ProfileImage = styled.div`
   align-items: center;
 `;
 
+export const EditIcon = styled(FaEdit)`
+  position: fixed;
+  opacity: 0;
+  transition: 0.4s;
+  color: ${gray1};
+`;
+
 export const Image = styled.img`
   margin: 0 auto;
   width: 100%;
@@ -101,6 +113,20 @@ export const Image = styled.img`
   background: white;
   border: 3px solid #1d1d1f;
   object-fit: cover;
+`;
+
+export const EditProfileImage = styled(ProfileImage)`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  cursor: pointer;
+  &:hover > ${Image}{
+    transition: 0.4s;
+    opacity: 0.25;
+  }
+  &:hover > ${EditIcon} {
+    opacity: 1;
+  }
 `;
 
 export const EditImage = styled(Image)`

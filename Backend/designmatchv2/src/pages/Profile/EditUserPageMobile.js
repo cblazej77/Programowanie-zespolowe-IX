@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import { default as axios } from '../../api/axios';
 import { COLORS } from '../../components/Colors';
@@ -33,13 +33,22 @@ import {
   StyledDropDown,
   AboutInput,
   Bracket,
-  EditNameText
+  EditNameText,
+  NameText,
+  RightWrapper,
+  EditProfileImage,
+  EditIcon
 
 } from './ProfileElements'
 import LoadingPage from '../LoadingPage';
+import { FaEdit } from 'react-icons/fa';
 
 const {
   secondary,
+  darkLight,
+  darkLight2,
+  primary,
+  gray1
 } = COLORS;
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
@@ -64,15 +73,18 @@ const ButtonSave = styled.button`
   margin-top: 0;
   margin-left: 80vw;
   display: flex;
-  color: white;
+  color: ${primary};
   border-radius: 15px;
-  border: 1px solid black;
-  background: ${secondary};
-  transform: translateY(2.5rem);
+  border: none;
+  background: ${darkLight};
+  cursor: pointer;
+  transition: 0.5s;
   &:hover {
-    transition: 0.3s;
-    border: 2px solid rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+  }
+  @media screen and (max-width: 960px) {
+    margin: 0;
   }
 `;
 const ButtonEdit = styled.button`
@@ -81,12 +93,12 @@ const ButtonEdit = styled.button`
   border: none;
   border-radius: 15px;
   box-shadow: 0px 2px 6px 0 rgba(0, 0, 0, 0.4);
-  }
   &:hover{
     transition: 0.3s;
     border: 2px solid rgba(0, 0, 0, 0.5);
     box-shadow: 0px 4px 12px 0 rgba(0, 0, 0, 0.4);
   }
+  
 `;
 
 //UserName/UserInfo/MessageButton
@@ -94,6 +106,9 @@ const EditUserPageMobile = () => {
   const [get, setGet] = useState(null);//przechwytuje dane i na ich podstawie loguje // juz nie
   const [height, setHeight] = useState("20px");//do zmiejszającego się textarena
   const [username, setUsername] = useState('');
+  const fileInputRef = useRef(null);
+  const [avatar, setAvatar] = useState('');
+  const [blob, setBlob] = useState('');
 
   //popUp - modal
   const [showModalTags, setShowModalTags] = useState(false);
@@ -368,6 +383,20 @@ const EditUserPageMobile = () => {
     experience.map((item, index) => {
       delete item.id;
     });
+
+
+    const formData = new FormData();
+    formData.append('image', blob, blob.name);
+    axios.post('/public/api/artist/images/uploadImages', formData, {
+      params: {
+        username: username,
+        isBanner: false,
+      },
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
     const response = await axios
       .put(
         '/api/artist/updateProfileByUsername/' + username,
@@ -424,6 +453,12 @@ const EditUserPageMobile = () => {
           url: '/public/api/artist/getArtistProfileByUsername/' + decodeResponse.data.username
         });
 
+        const avatarResponse = await axios.request(
+          '/public/api/artist/images/getProfileImage', {
+          params: { username: decodeResponse.data.username },
+          responseType: 'arraybuffer',
+        });
+
         const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
           [
             axios.request(citiesData),
@@ -433,6 +468,13 @@ const EditUserPageMobile = () => {
             axios.request(levelsData),
           ],
         );
+
+        const imageType = avatarResponse.headers['content-type'];
+        const imageBlob = new Blob([avatarResponse.data], { type: imageType });
+        const imageUrl = URL.createObjectURL(imageBlob);
+
+        setBlob(imageBlob);
+        setAvatar(imageUrl);
         setUsername(decodeResponse.data.username);
         setGet(artistResponse.data);
         setArtistProfile(artistResponse.data);
@@ -821,6 +863,18 @@ const EditUserPageMobile = () => {
 
   };
 
+  const handleEditImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileInputChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setAvatar(URL.createObjectURL(file));
+      setBlob(file);
+    }
+  };
+
   window.addEventListener('resize', showButton);
 
   const reviewCount = 15;
@@ -845,15 +899,20 @@ const EditUserPageMobile = () => {
                   flexDirection: 'column',
                   alignItems: 'center'
                 }}>
-                <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
-                <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie(ND)</ButtonEdit>
+                <EditProfileImage onClick={handleEditImageClick}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={handleFileInputChange}
+                  />
+                  {avatar && <Image src={avatar} alt="Profile" />}
+                  <EditIcon size={40} />
+                </EditProfileImage>
+                {/* <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie(ND)</ButtonEdit> */}
+                <NameText style={{ marginTop: '1rem' }}>{get.firstname} {get.lastname}</NameText>
               </div>
-              {/* <div>
-                <InputInfoText>Imię:</InputInfoText>
-                <EditNameText value={name} onChange={(e) => setName(e.target.value)} />
-                <InputInfoText>Nazwisko:</InputInfoText>
-                <EditNameText value={surname} onChange={(e) => setSurname(e.target.value)} />
-              </div> */}
               {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
               <div style={{ width: '100%' }}>
                 <InputInfoText>Poziom doświadczenia:</InputInfoText>
