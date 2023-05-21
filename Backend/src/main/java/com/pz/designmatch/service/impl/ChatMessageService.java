@@ -39,7 +39,6 @@ public class ChatMessageService {
     public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
         String chatId = chatRoomService.getChatId(senderId, recipientId, false)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + senderId + "_" + recipientId));
-
         List<ChatMessage> messages = chatId.isEmpty() ? new ArrayList<>() : chatMessageRepository.findByChatId(chatId);
 
         if (messages.size() > 0) {
@@ -48,11 +47,11 @@ public class ChatMessageService {
         return messages;
     }
 
-    public ChatMessage findById(Long id) {
+    public ChatMessageResponse findById(Long id) {
         return chatMessageRepository.findById(id)
                 .map(chatMessage -> {
                     chatMessage.setStatus(MessageStatus.DELIVERED);
-                    return chatMessageRepository.save(chatMessage);
+                    return chatMessageMapper.mapToDto(chatMessageRepository.save(chatMessage));
                 })
                 .orElseThrow(() ->
                         new EntityNotFoundException("Nie znaleziono wiadomości o id: " + id));

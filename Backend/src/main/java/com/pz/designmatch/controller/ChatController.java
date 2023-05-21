@@ -29,14 +29,14 @@ public class ChatController {
     public void processMessage(@Payload ChatMessageRequest chatMessageRequest) {
         ChatMessageResponse saved = chatMessageService.saveChatMessage(chatMessageRequest);
         messagingTemplate.convertAndSendToUser(
-                saved.getRecipientId(), "/queue/messages",
+                saved.getRecipientUsername(), "/queue/messages",
                 new ChatNotification(
                         saved.getId(),
                         saved.getSenderUsername(),
                         saved.getRecipientUsername()));
     }
 
-    @GetMapping("/messages/{senderId}/{recipientId}/count")
+    @GetMapping("/messages/{senderId}/{recipientId}/count")//powiadomienia
     public ResponseEntity<Long> countNewMessages(
             @PathVariable String senderId,
             @PathVariable String recipientId) {
@@ -45,14 +45,14 @@ public class ChatController {
                 .ok(chatMessageService.countNewMessages(senderId, recipientId));
     }
 
-    @GetMapping("/messages/{senderId}/{recipientId}")
+    @GetMapping("/messages/{senderId}/{recipientId}")//wszystkie wiadomośći
     public ResponseEntity<?> findChatMessages(@PathVariable String senderId,
                                               @PathVariable String recipientId) {
         return ResponseEntity
                 .ok(chatMessageService.findChatMessages(senderId, recipientId));
     }
 
-    @GetMapping("/messages/{id}")
+    @GetMapping("/messages/{id}")//?odczytanie wiadomości?
     public ResponseEntity<?> findMessage(@PathVariable Long id) {
         return ResponseEntity.ok(chatMessageService.findById(id));
     }

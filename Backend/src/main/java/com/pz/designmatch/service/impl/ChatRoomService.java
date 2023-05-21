@@ -28,7 +28,7 @@ public class ChatRoomService {
         UserEntity existingRecipient = userRepository.findByUsername(recipientUsername)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono użytkownika o nazwie: " + recipientUsername));
 
-        var chatId = String.format("%s_%s", existingRecipient.getId(), existingRecipient.getId());
+        var chatId = String.format("%d_%d", existingSender.getId(), existingRecipient.getId());
         Optional<ChatRoom> existingChatRoom = chatRoomRepository.findBySenderAndRecipient(existingSender, existingRecipient);
         if (existingChatRoom.isEmpty()) {
             if (!createIfNotExist) {

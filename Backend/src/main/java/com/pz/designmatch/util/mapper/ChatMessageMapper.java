@@ -9,11 +9,14 @@ import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.ChatRoomRepository;
 import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.impl.ChatRoomService;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ChatMessageMapper {
@@ -22,6 +25,8 @@ public class ChatMessageMapper {
     private final UserRepository userRepository;
     private final ChatRoomService chatRoomService;
 
+    @Autowired
+    private EntityManager entityManager;
     @Autowired
     public ChatMessageMapper(ChatRoomRepository chatRoomRepository, ChatRoomService chatRoomService, UserRepository userRepository) {
         this.chatRoomRepository = chatRoomRepository;
@@ -35,8 +40,8 @@ public class ChatMessageMapper {
                 chatMessage.getId(),
                 chatMessage.getChat().getId(),
                 chatMessage.getSender().getId().toString(),
-                chatMessage.getRecipient().getId().toString(),
                 chatMessage.getSender().getUsername(),
+                chatMessage.getRecipient().getId().toString(),
                 chatMessage.getRecipient().getUsername(),
                 chatMessage.getContent(),
                 chatMessage.getTimestamp());
@@ -51,15 +56,25 @@ public class ChatMessageMapper {
         String chatId = chatRoomService.getChatId(chatMessageRequest.getSenderUsername(), chatMessageRequest.getRecipientUsername(), createIfNotExist)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + chatMessageRequest.getSenderUsername() + "_" + chatMessageRequest.getRecipientUsername()));
 
-        ChatRoom chatRoom = chatRoomRepository.findByChatId(chatId)
-                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + chatMessageRequest.getSenderUsername() + "_" + chatMessageRequest.getRecipientUsername()));
-        return new ChatMessage(
-                chatRoom,
-                sender,
-                recipient,
-                chatMessageRequest.getContent(),
-                LocalDateTime.now(),
-                MessageStatus.DELIVERED
-        );
+        TypedQuery<ChatRoom> query = entityManager.createQuery("SELECT cr FROM ChatRoom cr WHERE cr.chatId = :chatId", ChatRoom.class);
+        query.setParameter("chatId", chatId);
+        query.setMaxResults(1); // Ustawienie maksymalnej liczby wyników na 1
+
+        List<ChatRoom> resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+            ChatRoom chatRoom = resultList.get(0);
+            return new ChatMessage(
+                    chatRoom,
+                    sender,
+                    recipient,
+                    chatMessageRequest.getContent(),
+                    LocalDateTime.now(),
+                    MessageStatus.DELIVERED
+            );
+        } else {
+            throw new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + chatMessageRequest.getSenderUsername() + "_" + chatMessageRequest.getRecipientUsername());
+        }
     }
+
 }

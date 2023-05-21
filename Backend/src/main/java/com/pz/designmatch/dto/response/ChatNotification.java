@@ -1,6 +1,7 @@
 package com.pz.designmatch.dto.response;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ChatNotification {
@@ -14,6 +15,7 @@ public class ChatNotification {
     @JsonProperty("senderName")
     private String senderName;
 
+    @JsonCreator
     public ChatNotification(Long id, String senderId, String senderName) {
         this.id = id;
         this.senderId = senderId;

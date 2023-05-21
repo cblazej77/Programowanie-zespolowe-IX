@@ -1,5 +1,6 @@
 package com.pz.designmatch.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -37,6 +38,7 @@ public class ChatMessageResponse {
     @JsonDeserialize(using = DefaultLocalDateTimeDeserializer.class)
     private LocalDateTime timestamp;
 
+    @JsonCreator
     public ChatMessageResponse(Long id, Long chatId, String senderId, String senderUsername, String recipientId,
                                String recipientUsername, String content, LocalDateTime timestamp) {
         this.id = id;
