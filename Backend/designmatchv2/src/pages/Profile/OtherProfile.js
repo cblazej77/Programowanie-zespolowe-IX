@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import {
   AboutMe,
   BoldLabel,
+  BottomWrapper,
   Bubble,
   BubbleLinks,
   BubbleWrap,
@@ -31,6 +32,8 @@ import {
   SmallButton,
   TopSection
 } from './ProfileElements';
+import { TitleText } from '../Home/CardsElement';
+import Portfolio from './Portfolio';
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
@@ -193,8 +196,6 @@ const OtherUserPage = () => {
         </div>
       );
     });
-
-
     return (
       <>
         {list}
@@ -282,7 +283,14 @@ const OtherUserPage = () => {
       <ProfileWrapper>
         <TopSection>
           <LeftWrapper>
-            <ProfileImage><Image src={'http://localhost:8080/public/api/artist/images/getProfileImage?username=' + get.username} alt="Profile" /></ProfileImage>
+            <ProfileImage>
+              <Image
+                src={'/public/api/artist/getProfileImageByUsername/' + get.username}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/assets/cards/defaultavatar.png";
+                }} alt="Profile" />
+            </ProfileImage>
             <JobText>{get.level}</JobText>
             <NameText>{get.firstname} {get.lastname} </NameText>
             {/* <RatingWrapper>
@@ -348,6 +356,10 @@ const OtherUserPage = () => {
           </RightWrapper>
         </TopSection>
         <DownSection>
+          <TitleText>Portfolio</TitleText>
+          <BottomWrapper>
+            <Portfolio username={get.username} />
+          </BottomWrapper>
         </DownSection>
       </ProfileWrapper>
     ) : (<LoadingPage />)}

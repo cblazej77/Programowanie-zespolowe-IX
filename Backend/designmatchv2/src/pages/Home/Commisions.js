@@ -647,12 +647,12 @@ const Commisions = () => {
           <RightLabel>
             <TopSection>
               <FilterButton onClick={FModalOpen}>Filtruj</FilterButton>
-              <StyledSelect>
+              {/* <StyledSelect>
                 <StyledOption value="">Sortuj po...</StyledOption>
                 <StyledOption value="1">najlepsza ocena</StyledOption>
                 <StyledOption value="2">najwięcej prac</StyledOption>
                 <StyledOption value="3">ostatnia aktywność</StyledOption>
-              </StyledSelect>
+              </StyledSelect> */}
             </TopSection>
             <CommisionWrapper>
               {filteredCommisions}

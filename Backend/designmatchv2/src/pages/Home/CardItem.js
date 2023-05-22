@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import {
@@ -16,11 +16,15 @@ import {
   SecondPhoto,
   SimpleInfoContainer,
   ThirdPhoto,
+  TitleText,
 } from "./CardsElement";
 import { Rating } from "react-simple-star-rating";
 import { useNavigate } from "react-router-dom";
+import { ModalBackground, ModalImageContainer, ModalInfo, ModalWrapper, PortfolioImage } from '../Profile/ProfileElements';
+import axios from '../../api/axios';
 
 function CardItem(props) {
+
   const navigate = useNavigate();
 
   const handleGoProfile = () => {
@@ -38,20 +42,17 @@ function CardItem(props) {
     <>
       <CardLabel>
         <SimpleInfoContainer>
-          <CardAvatar src={'http://localhost:8080/public/api/artist/images/getProfileImage?username=' + props.username} onClick={handleGoProfile} />
+          <CardAvatar onClick={handleGoProfile}
+            src={'/public/api/artist/getProfileImageByUsername/' + props.username}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/assets/cards/defaultavatar.png";
+            }}
+          />
           <LevelText>{props.level}</LevelText>
           <NameText>
             {props.name} {props.surname}
           </NameText>
-          {/* <div>
-          <Rating
-            initialValue={props.rating}
-            readonly={true}
-            precision={0.5}
-            size="1.6rem"
-          />
-          <RatingText>({props.ratingCount} opinii)</RatingText>
-        </div> */}
         </SimpleInfoContainer>
         <DetailedInfoContainer>
           <CityText>{props.city}, PL</CityText>
@@ -66,13 +67,36 @@ function CardItem(props) {
             {props.skills[3]}
           </CategoryText>
         </DetailedInfoContainer>
-        <FirstPhoto src={props.project1} />
-        <SecondPhoto src={props.project2} />
-        <ThirdPhoto src={props.project3} />
-        <FourthPhoto src={props.project4} />
+        <FirstPhoto
+          src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + 1}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/assets/cards/background1.png";
+          }}
+        />
+        <SecondPhoto
+          src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + 2}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/assets/cards/background2.png";
+          }}
+        />
+        <ThirdPhoto
+          src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + 3}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/assets/cards/background3.png";
+          }}
+        />
+        <FourthPhoto
+          src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + 4}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/assets/cards/background4.png";
+          }}
+        />
       </CardLabel>
     </>
-
   );
 }
 

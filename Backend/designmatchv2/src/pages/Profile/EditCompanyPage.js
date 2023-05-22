@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AboutInput,
+  EditIcon,
   EditImage,
   EditNameText,
+  EditProfileImage,
   Image,
   InfoInputWrapper,
   InputInfoText,
@@ -21,8 +23,10 @@ import axios from '../../api/axios';
 import LoadingPage from '../LoadingPage';
 import { COLORS } from '../../components/Colors';
 import { useRef } from 'react';
+import { FaUser } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
-const { secondary } = COLORS;
+const { secondary, darkLight } = COLORS;
 
 const ButtonSave = styled.button`
   padding: 20px 50px;
@@ -32,14 +36,9 @@ const ButtonSave = styled.button`
   display: flex;
   color: white;
   border-radius: 15px;
-  border: 1px solid black;
   background: ${secondary};
   transform: translateY(2.5rem);
-  &:hover {
-    transition: 0.3s;
-    border: 2px solid rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-  }
+  cursor: pointer;
 `;
 
 const Nawias = styled.p`
@@ -70,6 +69,10 @@ const EditCompanyPage = () => {
   const [username, setUsername] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
+  const [avatar, setAvatar] = useState('');
+  const [blob, setBlob] = useState('');
+
+  const navigate = useNavigate();
 
   const maxChars = 300;
   const limitHeight = 60;
@@ -89,6 +92,17 @@ const EditCompanyPage = () => {
           url: '/public/api/company/getProfileByUsername/' + decodeResponse.data.username
         });
 
+        const avatarResponse = await axios.request(
+          '/public/api/company/getProfileImageByUsername/' + decodeResponse.data.username, {
+          responseType: 'arraybuffer',
+        });
+
+        const imageType = avatarResponse.headers['content-type'];
+        const imageBlob = new Blob([avatarResponse.data], { type: imageType });
+        const imageUrl = URL.createObjectURL(imageBlob);
+
+        setBlob(avatarResponse.data);
+        setAvatar(imageUrl);
         setUsername(decodeResponse.data.username);
         setGet(companyResponse.data);
         setCheckLoading(companyResponse);
@@ -130,6 +144,7 @@ const EditCompanyPage = () => {
       );
       console.log('Data saved successfully!');
       console.log(response.data);
+      navigate('/account');
     } catch (err) {
       console.error('Error while saving data:', err);
     }
@@ -141,7 +156,22 @@ const EditCompanyPage = () => {
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
-    setSelectedImage(file);
+    if (file) {
+      setAvatar(URL.createObjectURL(file));
+      const formData = new FormData();
+      formData.append('file', file, file.name);
+      setBlob(formData);
+      console.log(username);
+      axios.post('/api/company/uploadProfileImage/' + username,
+        formData,
+        {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+    }
   };
 
   return (
@@ -150,7 +180,7 @@ const EditCompanyPage = () => {
         <ProfileWrapper>
           <TopSection>
             <LeftWrapper>
-              <ProfileImage>
+              <EditProfileImage onClick={handleEditImageClick}>
                 <input
                   type="file"
                   accept="image/*"
@@ -158,12 +188,12 @@ const EditCompanyPage = () => {
                   style={{ display: 'none' }}
                   onChange={handleFileInputChange}
                 />
-                {selectedImage ? (
-                  <EditImage src={URL.createObjectURL(selectedImage)} alt="Profile" onClick={handleEditImageClick} />
-                ) : (
-                  <EditImage src="/assets/test.jpg" alt="Profile" onClick={handleEditImageClick} />
+                {avatar ? (
+                  <Image src={avatar} alt="Profile" />) : (
+                  <Image src={"/assets/cards/defaultavatar.png"} alt="Profile" />
                 )}
-              </ProfileImage>
+                <EditIcon size={40} />
+              </EditProfileImage>
               <InfoInputWrapper>
                 <InputInfoText>Nazwa firmy: </InputInfoText>
                 <EditNameText
@@ -243,7 +273,7 @@ const EditCompanyPage = () => {
               </Left>
             </RightWrapper>
           </TopSection>
-          <ButtonSave onClick={handleSave}>Zapisz</ButtonSave>
+          <ButtonSave style={{ background: darkLight }} onClick={handleSave}>Zapisz</ButtonSave>
         </ProfileWrapper>
       ) : (
         <LoadingPage />

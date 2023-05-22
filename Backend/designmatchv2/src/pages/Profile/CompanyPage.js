@@ -589,7 +589,15 @@ const CompanyPage = () => {
         <ProfileWrapper>
           <TopSection>
             <LeftWrapper>
-              <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
+              <ProfileImage>
+                <Image
+                  src={'/public/api/company/getProfileImageByUsername/' + get.username}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/assets/cards/defaultavatar.png";
+                  }}
+                  alt="Profile" />
+              </ProfileImage>
               <NameText>{get.name}</NameText>
               <LineForm />
               <Button onClick={() => openModalEditClick()}>

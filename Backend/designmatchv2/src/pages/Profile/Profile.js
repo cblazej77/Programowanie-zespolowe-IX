@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Rating } from 'react-simple-star-rating';
 import { default as axios } from '../../api/axios'
 import LoadingPage from '../LoadingPage';
 import {
+  AboutInput,
   AboutMe,
   BoldLabel,
   BottomSection,
   BottomWrapper,
+  Bracket,
   Bubble,
   BubbleLinks,
   BubbleWrap,
@@ -22,6 +24,9 @@ import {
   LeftInfoRow,
   LeftWrapper,
   LineForm,
+  ModalBackground,
+  ModalInfo,
+  ModalWrapper,
   NameText,
   ProfileImage,
   ProfileWrapper,
@@ -34,6 +39,7 @@ import {
 } from './ProfileElements';
 import { TitleText } from '../Home/CardsElement';
 import Portfolio from './Portfolio';
+import { TitleInput } from '../Home/CommisionsElements';
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
@@ -51,6 +57,8 @@ const UserPage = () => {
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
   const [button, setButton] = useState(true);
   const [username, setUsername] = useState('');
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -268,6 +276,104 @@ const UserPage = () => {
   const ratingCount = 2.5; //pobrac z bazy
   const Default = "...";
 
+  const openModalEditClick = () => {
+    setShowModalEdit(true);
+  };
+
+  const closeModalEditClick = () => {
+    setShowModalEdit(false);
+  };
+  const handleWrapperClick = (event) => {
+    event.stopPropagation();
+  };
+  const ModalEdit = ({ showModalEdit }) => {
+    const [avatar, setAvatar] = useState('');
+    const [blob, setBlob] = useState('');
+
+
+
+
+    const [modalEditData, setModalEditData] = useState({
+      name: '',
+      description: '',
+    });
+
+    const handleAddPhoto = useCallback(async () => {
+      try {
+        const response = await axios.post(
+          '/api/artist/createPortfolioEntry/' + username, blob,
+          {
+            params: {
+              name: modalEditData.name,
+              description: modalEditData.description,
+            },
+            headers: {
+              accept: 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        )
+      } catch (err) {
+        console.error('Error while saving data:', err);
+      }
+      setShowModalEdit(false);
+    },);
+
+    const handleEditImageClick = () => {
+      fileInputRef.current.click();
+    };
+
+    const handleFileInputChange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        setAvatar(URL.createObjectURL(file));
+        const formData = new FormData();
+        formData.append('image', file, file.name);
+        setBlob(formData);
+      }
+    };
+
+    return (
+      <>
+        {showModalEdit && (
+          <ModalBackground onClick={closeModalEditClick}>
+            <ModalWrapper onClick={handleWrapperClick}>
+              <ModalInfo>Tytuł:</ModalInfo>
+              <TitleInput
+                value={modalEditData.name}
+                onChange={({ target }) =>
+                  setModalEditData({ ...modalEditData, name: target.value, })}
+              />
+              <ModalInfo>Opis:</ModalInfo>
+              <AboutInput
+                maxLength={300}
+                value={modalEditData.description}
+                onChange={({ target }) =>
+                  setModalEditData({ ...modalEditData, description: target.value, })}
+              />
+              {modalEditData.description && (<Bracket>({Math.min(modalEditData.description.length, 300)}/{300})</Bracket>)}
+              <div style={{ height: '100%', justifyContent: 'end', display: 'flex', flexDirection: 'column' }}>
+                <Button onClick={handleEditImageClick}>Wybierz zdjęcie</Button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleFileInputChange}
+                />
+                <Button
+                  onClick={handleAddPhoto}>
+                  Dodaj
+                </Button>
+              </div>
+            </ModalWrapper>
+          </ModalBackground>
+        )}
+      </>
+    );
+  };
+
   return (
     <>{checkLoading && get ? (
       <ProfileWrapper>
@@ -275,29 +381,16 @@ const UserPage = () => {
           <LeftWrapper>
             <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               <ProfileImage>
-                {username && <Image src={'http://localhost:8080/public/api/artist/getProfileImageByUsername/' + username} alt="Profile" />}
+                {username && <Image src={'/public/api/artist/getProfileImageByUsername/' + username}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/assets/cards/defaultavatar.png";
+                  }} alt="Profile" />}
               </ProfileImage>
               <JobText>{get.level}</JobText>
             </div>
             <NameText>{get.firstname} {get.lastname} </NameText>
-            {/* <RatingWrapper>
-              <Rating
-                size="2rem"
-                allowFraction={true}
-                initialValue={ratingCount}
-                onClick={handleRating}
-              onPointerEnter={() => console.log('Enter')}
-              onPointerLeave={() => console.log('Leave')}
-              onPointerMove={(value, index) => console.log(value, index)}
-              />
-              <RatingText>({reviewCount} opinii)</RatingText>
-            </RatingWrapper> */}
-            {/* <LineForm />
-            <Button>Napisz wiadomość</Button>
-            <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-              <SmallButton>Napisz opinię</SmallButton>
-              <SmallButton>Like</SmallButton>
-            </div> */}
+            <Button onClick={() => openModalEditClick()}>Dodaj zdjęcie</Button>
           </LeftWrapper>
           <RightWrapper>
             <BoldLabel>O mnie:</BoldLabel>
@@ -349,6 +442,7 @@ const UserPage = () => {
             <Portfolio username={username} />
           </BottomWrapper>
         </BottomSection>
+        <ModalEdit showModalEdit={showModalEdit} />
       </ProfileWrapper>
     ) : (<LoadingPage />)}
     </>
