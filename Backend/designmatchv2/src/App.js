@@ -20,6 +20,7 @@ import OtherUserPage from './pages/Profile/OtherProfile';
 import Commisions from './pages/Home/Commisions';
 import { AllPage, HeroContainer } from './pages/Home/Styles';
 import axios from './api/axios';
+import OtherCompanyPage from './pages/Profile/OtherCompanyPage';
 
 function App() {
   const [role, setRole] = useState('');
@@ -59,6 +60,7 @@ function App() {
               {role === 'COMPANY' ? <CompanyPage /> : null}
               {" "}
             </RequireAuth>} />
+          <Route path="/other-company/:argument" element={<OtherCompanyPage />} />
           <Route path="/other-account/:argument" element={<OtherUserPage />} />
           <Route path="/sign-in" element={
             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >

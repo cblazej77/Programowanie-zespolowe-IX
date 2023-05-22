@@ -4,8 +4,8 @@ import { closeEye, openEye } from "../../assets/img/svg/SvgIcons";
 export const LabelInput = styled.label`
   position: absolute;
   background: none;
-  font-size: 1.3rem;
-  top: 10px;
+  font-size: 1.2rem;
+  top: 1rem;
   left: 25px;
   transition: 0.3s;
   cursor: text;
@@ -14,8 +14,7 @@ export const LabelInput = styled.label`
 
 export const InputGroup = styled.div`
     position: relative;
-    padding-bottom: 15px;
-    margin: 0px 0.3vw 0px 0.3vw;
+    padding: 0.4rem 0;
 `;
 
 export const Input = styled.input`
@@ -26,9 +25,9 @@ width: 100%;
 border-radius: 10px;
 color: rgb(1, 1, 1);
 padding: 12px 24px;
-
-border-bottom: 2px solid ${({value, checkRegex}) => value ? (checkRegex ? 'black' : 'red') : 'none'};
-padding-right: ${({isWithButton}) => isWithButton ? '45px' : '10px'};
+border-bottom: 2px solid white;
+border-bottom: 2px solid ${({ value, checkRegex }) => value ? (checkRegex ? 'black' : 'red') : 'none'};
+padding-right: ${({ isWithButton }) => isWithButton ? '45px' : '10px'};
 &:valid + ${LabelInput}
 {
   left: 250px;
@@ -39,7 +38,7 @@ padding-right: ${({isWithButton}) => isWithButton ? '45px' : '10px'};
   display: none
 }
 &:focus{
-  border-bottom: 2px solid ${({value, checkRegex}) => value ? (checkRegex ? 'black' : 'red') : 'black'};//tutaj dziala po kliknieciu, a po wpisaniu dziala wyzej
+  border-bottom: 2px solid ${({ value, checkRegex }) => value ? (checkRegex ? 'black' : 'red') : 'black'};//tutaj dziala po kliknieciu, a po wpisaniu dziala wyzej
 }
 
 &:focus + ${LabelInput}

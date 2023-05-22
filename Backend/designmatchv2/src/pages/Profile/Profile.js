@@ -5,6 +5,8 @@ import LoadingPage from '../LoadingPage';
 import {
   AboutMe,
   BoldLabel,
+  BottomSection,
+  BottomWrapper,
   Bubble,
   BubbleLinks,
   BubbleWrap,
@@ -30,6 +32,7 @@ import {
   SmallButton,
   TopSection
 } from './ProfileElements';
+import { TitleText } from '../Home/CardsElement';
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
@@ -46,7 +49,7 @@ const UserPage = () => {
   const [experienceList, setExperienceList] = useState([]);
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
   const [button, setButton] = useState(true);
-  const [avatar, setAvatar] = useState('');
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,18 +66,7 @@ const UserPage = () => {
           url: '/public/api/artist/getArtistProfileByUsername/' + decodeResult.data.username
         });
 
-        const avatarResult = await axios.request(
-          '/public/api/artist/images/getProfileImage', {
-          params: { username: decodeResult.data.username },
-          responseType: 'arraybuffer',
-        });
-
-        const imageType = avatarResult.headers['content-type'];
-        const imageBlob = new Blob([avatarResult.data], { type: imageType });
-        const imageUrl = URL.createObjectURL(imageBlob);
-
-        setAvatar(imageUrl);
-
+        setUsername(decodeResult.data.username);
         setGet(userResult.data);
         setCheckLoading(userResult);
 
@@ -274,28 +266,29 @@ const UserPage = () => {
   const reviewCount = 15; //pobrac to z bazy
   const ratingCount = 2.5; //pobrac z bazy
   const Default = "...";
+
   return (
     <>{checkLoading && get ? (
       <ProfileWrapper>
         <TopSection>
           <LeftWrapper>
             <ProfileImage>
-              {avatar && <Image src={avatar} alt="Profile" />}
+              {username && <Image src={'http://localhost:8080/public/api/artist/images/getProfileImage?username=' + username} alt="Profile" />}
             </ProfileImage>
             <JobText>{get.level}</JobText>
             <NameText>{get.firstname} {get.lastname} </NameText>
-            <RatingWrapper>
+            {/* <RatingWrapper>
               <Rating
                 size="2rem"
                 allowFraction={true}
                 initialValue={ratingCount}
                 onClick={handleRating}
-                onPointerEnter={() => console.log('Enter')}
-                onPointerLeave={() => console.log('Leave')}
-                onPointerMove={(value, index) => console.log(value, index)}
+              onPointerEnter={() => console.log('Enter')}
+              onPointerLeave={() => console.log('Leave')}
+              onPointerMove={(value, index) => console.log(value, index)}
               />
               <RatingText>({reviewCount} opinii)</RatingText>
-            </RatingWrapper>
+            </RatingWrapper> */}
             <LineForm />
             <Button>Napisz wiadomość</Button>
             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
@@ -347,6 +340,12 @@ const UserPage = () => {
             </Left>
           </RightWrapper>
         </TopSection>
+        <BottomSection>
+          <TitleText>Portfolio</TitleText>
+          <BottomWrapper>
+            hej
+          </BottomWrapper>
+        </BottomSection>
       </ProfileWrapper>
     ) : (<LoadingPage />)}
     </>

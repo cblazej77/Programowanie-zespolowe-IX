@@ -48,79 +48,11 @@ import {
   ModalCommisionWrapper,
   StakeText
 } from './CommisionsElements';
-import { ModalBottomSection, ModalBubbleContainer, ModalColumn, ModalData, ModalInfo, ModalRow, ModalTitle } from '../Profile/ProfileElements';
+import { Button, ModalBottomSection, ModalBubbleContainer, ModalColumn, ModalData, ModalInfo, ModalRow, ModalTitle } from '../Profile/ProfileElements';
 import { FiBriefcase, FiClock, FiMapPin } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const { darkLight, gray1 } = COLORS;
-
-const CommisionsData = [
-  {
-    name: 'PixelScape',
-    title: "Projekt logo dla firmy produkującej kosmetyki naturalne text1 text2 text3 text4",
-    description: "Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości.",
-    stake: 20000,
-    deadline: "2 tyg.",
-    level: "Mid",
-    location: "Zdalnie",
-    tags: [
-      "Design logo",
-      "Kosmetyki",
-      "Ekologia",
-    ],
-    categories: [
-      "logo",
-      "Aobe Illustrator",
-    ],
-    languages: [
-      "Polski",
-      "Angielski",
-    ],
-  },
-  {
-    name: 'AquaWorks',
-    title: "Projekt opakowań dla nowej marki herbat ekologicznych",
-    description: "Szukamy doświadczonego projektanta graficznego, który zaprojektuje dla nas opakowania do naszych herbat ekologicznych. Zależy nam na kreatywnym podejściu, które pozwoli wyróżnić nasze produkty na rynku. Oferujemy konkurencyjne wynagrodzenie oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.",
-    stake: 3000,
-    deadline: "3 tyg.",
-    level: "Senior",
-    location: "Zdalnie",
-    tags: [
-      "Design opakowań",
-      "Herbaty",
-      "Ekologia",
-    ],
-    categories: [
-      "logo",
-      "Aobe Illustrator",
-    ],
-    languages: [
-      "Polski",
-      "Angielski",
-    ],
-  },
-  {
-    name: 'Sunstone Solutions',
-    title: "Projekt plakatu promującego wystawę sztuki nowoczesnej",
-    description: "Jesteśmy galerią sztuki i poszukujemy projektanta graficznego, który zaprojektuje dla nas plakat promujący zbliżającą się wystawę sztuki nowoczesnej. Zależy nam na ciekawym i oryginalnym projekcie, który przyciągnie uwagę potencjalnych zwiedzających. Oferujemy dobrą stawkę oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.",
-    stake: 2500,
-    deadline: "2 tyg.",
-    level: "Senior",
-    location: "Zdalnie",
-    tags: [
-      "Design plakatu",
-      "Sztuka",
-      "Wystawa",
-    ],
-    categories: [
-      "logo",
-      "Aobe Illustrator",
-    ],
-    languages: [
-      "Polski",
-      "Angielski",
-    ],
-  },
-];
 
 const Commisions = () => {
   const [cities, setCities] = useState([]);
@@ -142,6 +74,8 @@ const Commisions = () => {
   const [showFModal, setShowFModal] = useState(false);
   const [showCModal, setShowCModal] = useState(false);
   const [modalData, setModalData] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleCityChange = (e) => {
     const city = e.target.id;
@@ -522,7 +456,7 @@ const Commisions = () => {
               {props.level}
             </LevelBubble>
           </CommisionTitleContainer>
-          <StakeText>{props.stake} PLN</StakeText>
+          <StakeText>{props.rate} PLN</StakeText>
         </CommisionTop>
         <div style={{
           display: 'flex',
@@ -557,7 +491,7 @@ const Commisions = () => {
         avatar="/assets/cards/person1.jpg"
         name={filter.company_name}
         title={filter.title}
-        stake={filter.stawka}
+        rate={filter.rate}
         description={filter.description}
         deadline={filter.deadline}
         level={filter.level}
@@ -565,11 +499,21 @@ const Commisions = () => {
         tags={filter.tags}
         categories={filter.skills}
         languages={filter.languages}
+        username={filter.client_username}
       />
     ));
   });
 
+
   const CommisionModal = ({ showCModal }) => {
+    const handleCompanyNavigation = () => {
+      navigate(`/other-company/${modalData.username}`, {
+        state: {
+          argument: modalData.username,
+        }
+      });
+    };
+
     return (
       <>
         {showCModal && (
@@ -582,7 +526,7 @@ const Commisions = () => {
                 <ModalColumn>
                   <ModalRow>
                     <ModalInfo>Stawka:</ModalInfo>
-                    <ModalData style={{ color: darkLight }}>{modalData.stake} PLN</ModalData>
+                    <ModalData style={{ color: darkLight }}>{modalData.rate} PLN</ModalData>
                   </ModalRow>
                   <ModalRow>
                     <ModalInfo>Czas wykonania:</ModalInfo>
@@ -595,6 +539,10 @@ const Commisions = () => {
                   <ModalRow>
                     <ModalInfo>Lokalizacja:</ModalInfo>
                     <ModalData>{modalData.location}</ModalData>
+                  </ModalRow>
+                  <ModalRow>
+                    <ModalInfo>Firma:</ModalInfo>
+                    <ModalData>{modalData.name}</ModalData>
                   </ModalRow>
                   <CommisionLineForm />
                 </ModalColumn>
@@ -621,6 +569,17 @@ const Commisions = () => {
                   </ModalBubbleContainer>
                 </ModalColumn>
               </ModalBottomSection>
+              <div style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'end',
+              }}>
+                <button style={{ width: '8rem', height: '2rem' }} onClick={handleCompanyNavigation}>
+                  Odwiedź firmę
+                </button>
+              </div>
             </ModalCommisionWrapper>
           </ModalCommisionBackground>
         )}

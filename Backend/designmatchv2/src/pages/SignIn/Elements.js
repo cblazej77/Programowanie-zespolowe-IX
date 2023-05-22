@@ -31,16 +31,15 @@ export const StyledForm = styled.form`
     margin: 15px auto;
     transform: translateY(3rem);
     border-radius: 5px;
-    min-width: 300px;
-    max-width: 400px;
+    width: 25rem;
     padding: 24px;
     text-align: center;
     position: absolute;
     scale: 1.3;
-    @media screen and (max-width: 540px) {
-        padding: 35px 24px;
+    @media screen and (max-width: 960px) {
+      width: 100%;
     }
-`
+`;
 
 export const StyledLabel = styled.label`
   display: block;
@@ -73,7 +72,7 @@ export const MainName = styled.div`
     transform: translateY(-3rem);
     @media screen and (max-width: 960px) {
        font-size: 0px;
-      }
+    }
   `
 
 export const LogoIcon = styled(logo)`
@@ -85,7 +84,7 @@ export const LogoIcon = styled(logo)`
   border: solid 1px rgba(255, 255, 2555, 1);
   overflow: hidden;
   `;
-  export const LogoIcon2 = styled(logo)`
+export const LogoIcon2 = styled(logo)`
   transform: translateY(-0.3rem);
   height: 200px;
   width: auto;
@@ -109,10 +108,6 @@ export const CenterButton = styled.div`
   padding-bottom: 15px;
   font-size: 0.8rem;
   height: 100%;
-  @media screen and (max-width: 540px) {
-    padding-bottom: 0px;
-    padding-top: 0px;
-  }
 `;
 
 export const Button = styled(Link)`
@@ -129,43 +124,19 @@ export const Button = styled(Link)`
       to top,
       #4A4E69,
       #555978
-  );
-    @media screen and (max-width: 540px) {
-      display: fixed;
-      transform: translateY(2.5rem);
-      &:hover{
-        transform: scale(1.05) translateY(2.5rem);
-        transition: 0.3s;
-        border: 1px solid rgba(0, 0, 0, 0.5);
-        box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-      }
+    );
+    transition: 0.3s;
+    &:hover{
+    transform: scale(1.05);
     }
-    @media screen and (min-width: 540px) {
-      &:hover{
-       border: 1px solid rgba(0, 0, 0, 0.5);
-        transform: scale(1.05) ;
-        transition: 0.3s;
-        box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-      }
-    }
-    
-`
+`;
 
 
 
 export const LoginButton = styled(Button)`
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
     margin-top: 20px;
-    @media screen and (max-width: 540px) {
-      display: fixed;
-      transform: translateX(0px);
-      transform: translateY(-3rem);
-      &:hover{
-        transform: scale(1.05) translateY(-3rem);
-      }
-    }
-    
-`
+`;
 
 export const GoogleButton = styled(Button)`
     background: linear-gradient(
@@ -173,14 +144,7 @@ export const GoogleButton = styled(Button)`
       #3dc428,
       #5ad946
     );
-    @media screen and (max-width: 540px) {
-      display: fixed;
-      transform: translateY(0.7rem);
-      &:hover{
-        transform: scale(1.05) translateY(0.7rem);
-      }
-    }
-`
+`;
 
 export const FacebookButton = styled(Button)`
     background: linear-gradient(
@@ -188,11 +152,4 @@ export const FacebookButton = styled(Button)`
       #4267B2,
       #5074be
     );
-    @media screen and (max-width: 540px) {
-      display: fixed;
-      transform: translateY(1.3rem);
-      &:hover{
-        transform: scale(1.05) translateY(1.3rem);
-      }
-    }
-`
+`;

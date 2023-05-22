@@ -54,7 +54,6 @@ const OtherUserPage = () => {
 
 
   useEffect(() => {
-    //let profileName = 'WojciechDuklas';
     let profileName = "";
     console.log(argument);
     console.log({ argument });
@@ -283,10 +282,10 @@ const OtherUserPage = () => {
       <ProfileWrapper>
         <TopSection>
           <LeftWrapper>
-            <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
+            <ProfileImage><Image src={'http://localhost:8080/public/api/artist/images/getProfileImage?username=' + get.username} alt="Profile" /></ProfileImage>
             <JobText>{get.level}</JobText>
-            <NameText>{shortProfile.firstname} {shortProfile.lastname} </NameText>
-            <RatingWrapper>
+            <NameText>{get.firstname} {get.lastname} </NameText>
+            {/* <RatingWrapper>
               <Rating
                 size="2rem"
                 allowFraction={true}
@@ -297,13 +296,13 @@ const OtherUserPage = () => {
                 onPointerMove={(value, index) => console.log(value, index)}
               />
               <RatingText>({reviewCount} opinii)</RatingText>
-            </RatingWrapper>
+            </RatingWrapper> */}
             <LineForm />
             <Button>Napisz wiadomość</Button>
-            <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            {/* <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
               <SmallButton>Napisz opinię</SmallButton>
               <SmallButton> Like</SmallButton>
-            </div>
+            </div> */}
           </LeftWrapper>
           <RightWrapper>
             <BoldLabel>O mnie:</BoldLabel>
@@ -353,10 +352,7 @@ const OtherUserPage = () => {
       </ProfileWrapper>
     ) : (<LoadingPage />)}
     </>
-
   );
-
-
 };
 
 export default OtherUserPage;

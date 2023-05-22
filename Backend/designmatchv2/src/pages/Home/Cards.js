@@ -323,7 +323,6 @@ const Cards = () => {
 
     return filtered.content.map((filter, indexF) => (
       <CardItem key={indexF}
-        avatar="/assets/cards/person1.jpg"
         name={filter.firstname}
         surname={filter.lastname}
         username={filter.username}

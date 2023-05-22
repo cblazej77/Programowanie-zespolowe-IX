@@ -84,13 +84,13 @@ function Navbar() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to='/commisions' onClick={closeMobileMenu}>
-                Zlecenia
+              <NavLink to='/' onClick={closeMobileMenu}>
+                Artyści
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to='/' onClick={closeMobileMenu}>
-                Artyści
+              <NavLink to='/commisions' onClick={closeMobileMenu}>
+                Zlecenia
               </NavLink>
             </NavItem>
             {!auth.user ? (

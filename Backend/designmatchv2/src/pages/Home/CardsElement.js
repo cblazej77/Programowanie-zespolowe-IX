@@ -126,9 +126,6 @@ export const CheckBoxLabel = styled.label`
     &:hover {
         background: ${darkLight};
     }
-    ${CheckBox}:checked + & {
-        background: ${darkLight};
-    }
     ${CheckBox}:focus + & {
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
     }

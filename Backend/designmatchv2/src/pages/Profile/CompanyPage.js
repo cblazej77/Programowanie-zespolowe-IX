@@ -283,6 +283,7 @@ const CompanyPage = () => {
                   <ModalEditRow>
                     <ModalInfo>Czas wykonania:</ModalInfo>
                     <NumberInput
+                      placeHolder={'dzień/miesiąc/rok'}
                       value={modalEditData.deadline}
                       onChange={({ target }) =>
                         setModalEditData({ ...modalEditData, deadline: target.value, })}

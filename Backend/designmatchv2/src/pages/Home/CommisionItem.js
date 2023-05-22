@@ -22,7 +22,7 @@ function CommisionItem(props) {
                         {props.level}
                     </LevelBubble>
                 </CommisionTitleContainer>
-                <TitleText>{props.stake} PLN</TitleText>
+                <TitleText>{props.rate} PLN</TitleText>
             </CommisionTop>
             <div>
                 <CommisionText>{props.location}</CommisionText>

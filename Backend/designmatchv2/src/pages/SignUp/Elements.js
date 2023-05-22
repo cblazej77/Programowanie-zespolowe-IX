@@ -1,8 +1,14 @@
 import styled from "styled-components"
 import { Link } from 'react-router-dom';
-
 import { logo } from "../../assets/img/svg/SvgIcons"
 
+import { COLORS } from "../../components/Colors";
+
+const {
+  gray1,
+  darkLight,
+  white,
+} = COLORS;
 
 export const AllPage = styled.div`
     display: flex;
@@ -25,24 +31,25 @@ export const AllPage = styled.div`
 /*zwieksza caly formularz bez loga*/
 export const StyledForm = styled.form`
     background: linear-gradient(
-    to left,
-    rgba(255, 255, 255, 0.05),
-    rgba(255, 255, 255, 0.35)
+      to left,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.35)
     );
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
     margin: 15px auto;
     border-radius: 5px;
     transform: translateY(3rem);
-    min-width: 300px;
-    max-width: 500px;
+    width: 25rem;
     padding: 24px;
     text-align: center;
     position: absolute;
     scale: 1.15;
-    @media screen and (max-width: 540px) {
-      padding: 36px 24px;
-  }
-`
+    display: flex;
+    flex-direction: column;
+    @media screen and (max-width: 960px) {
+      width: 80vw;
+    };
+`;
 
 export const StyledLabel = styled.label`
   display: block;
@@ -81,7 +88,7 @@ export const MainName = styled.div`
       }
   `
 
-  export const LogoIcon = styled(logo)`
+export const LogoIcon = styled(logo)`
   transform: translateY(-0.3rem);
   height: 200px;
   width: auto;
@@ -133,37 +140,28 @@ export const InputField = styled.input`
     transition: 0.3s;
   }
 `;
+
 export const CenterInput = styled.div`
-display: flex;
-padding-bottom: 15px;
-height: 100%;
-position: relative;
-@media screen and (max-width: 540px) {
-  padding-bottom: 0px;
-  padding-top: 0px;
-}
-`
+  display: flex;
+  padding-bottom: 15px;
+  height: 100%;
+  position: relative;
+`;
+
 export const InputGroup = styled.div`
   position: relative;
   top: 15px;
   padding-bottom: 15px;
   width: 100%;
-  @media screen and (max-width: 540px) {
-    padding-bottom: 60px;
-  }
 `;
+
 export const InputGroupSecond = styled.div`
   position: relative;
   top: 15px;
   padding-bottom: 15px;
   width: 100%;
   margin-left: 10px;
-  @media screen and (max-width: 540px) {
-    position: absolute;
-    top: 65%;
-  }
 `;
-
 
 export const CenterButton = styled.div`
   position: relative;
@@ -171,12 +169,7 @@ export const CenterButton = styled.div`
   padding-bottom: 15px;
   font-size: 0.9rem;
   height: 100%;
-  @media screen and (max-width: 540px) {
-    padding-bottom: 0px;
-    padding-top: 0px;
-  }
-`
-
+`;
 
 export const Button = styled(Link)`
     background: transparent;
@@ -190,33 +183,17 @@ export const Button = styled(Link)`
     text-decoration: none;
     width: 70%;
     font-size: 16px;
+    transition: 0.3s;
     background: linear-gradient(
       to top,
       #4A4E69,
       #555978
-  );
-  margin: 5px 0px;
-    @media screen and (max-width: 540px) {
-      display: fixed;
-      transform: translateY(2.5rem);
-      &:hover{
-        transform: scale(1.05) translateY(2.5rem);
-        transition: 0.3s;
-        border: 1px solid rgba(0, 0, 0, 0.5);
-        box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-      }
+    );
+    margin: 5px 0px;
+    &:hover {
+      transform: scale(1.05);
     }
-    @media screen and (min-width: 540px) {
-      &:hover{
-       border: 1px solid rgba(0, 0, 0, 0.5);
-        transform: scale(1.05);
-        transition: 0.3s;
-        box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-      }
-    }
-    
-`
-
+`;
 
 export const SignUpButton = styled(Button)`
     background: linear-gradient(
@@ -226,16 +203,8 @@ export const SignUpButton = styled(Button)`
     );
     margin: 5px 0px;
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.35);
-    @media screen and (max-width: 540px) {
-      display: fixed;
-      margin-left: 5px; 
-      transform: translateY(-3rem);
-      &:hover{
-        transform: scale(1.05) translateY(-3rem);
-      }
-    }
-    
-`
+`;
+
 export const DisabledButton = styled(SignUpButton)`
 color: currentColor;
   cursor: not-allowed;
@@ -249,14 +218,8 @@ export const GoogleButton = styled(Button)`
     #5ad946
   );
   margin-bottom: 15px;
-  @media screen and (max-width: 540px) {
-      display: fixed;
-      transform: translateY(0.7rem);
-      &:hover{
-        transform: scale(1.05) translateY(0.7rem);
-      }
-    }
-`
+`;
+
 export const FacebookButton = styled(Button)`
   background: linear-gradient(
     to top,
@@ -264,25 +227,73 @@ export const FacebookButton = styled(Button)`
     #5074be
   );
   margin-bottom: 10px;
-    @media screen and (max-width: 540px) {
-      display: fixed;
-      transform: translateY(1.3rem);
-      &:hover{
-        transform: scale(1.05) translateY(1.3rem);
-      }
-  }
-
-
-`
+`;
 
 export const ErrorLabel = styled.label`
-color: red;
-font-size: 0.8rem;
-left: 0;
-`
+  color: red;
+  font-size: 0.8rem;
+`;
 
 export const ErrorLabel2 = styled(ErrorLabel)`
-margin-left: 50px;
-margin-right: 50px;
-transform:  translateX(0);
-`
+  margin-left: 50px;
+  margin-right: 50px;
+  transform:  translateX(0);
+`;
+
+export const InputsWrapper = styled.div`
+`;
+
+export const InfoText = styled.text`
+  font-size: 1.3rem;
+  color: ${gray1};
+  margin: 1rem 0 0.5rem 0;
+`;
+
+export const RoleText = styled.text`
+  font-size: 1rem;
+  color: ${darkLight};
+  margin: 0rem 0 0rem 0;
+`;
+
+export const RolesWrapper = styled.div`
+  height: 10rem;
+  justify-content: space-evenly;
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  padding: 0 2rem 3rem 2rem;
+`;
+
+export const CheckBoxWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+export const CheckBox = styled.input`
+    display: none;
+`;
+
+export const CheckBoxLabel = styled.label`
+    display: inline-block;
+    margin-right: 1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    background: ${white};
+    border: 2px solid ${darkLight};
+    transition: all 150ms;
+    cursor: pointer;
+    &:hover {
+        background: ${darkLight};
+    }
+    ${CheckBox}:checked + & {
+        background: ${darkLight};
+    }
+    ${CheckBox}:focus + & {
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+    }
+    @media screen and (max-width: 960px) {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+`;

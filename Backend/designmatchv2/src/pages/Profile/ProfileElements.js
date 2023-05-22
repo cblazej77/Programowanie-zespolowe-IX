@@ -40,6 +40,31 @@ export const TopSection = styled.div`
   }
 `;
 
+export const BottomSection = styled.div`
+  display: flex;
+  padding: 0 3vw;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  @media screen and (max-width: 960px) {
+    padding: 0;
+  }
+`;
+
+export const BottomWrapper = styled.div`
+  width: 88rem;
+  border-radius: 15px;
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  @media screen and (max-width: 95rem) {
+    width: calc(100% - 0.5rem);
+  }
+  @media screen and (max-width: 960px) {
+    width: 100%;
+    border-radius: 0px;
+  }
+`;
+
 export const LeftWrapper = styled.div`
   display: flex;
   margin-right: 1.5vw;
@@ -84,6 +109,9 @@ export const RightWrapper = styled.div`
 
 export const EditRightWrapper = styled(RightWrapper)`
   height: 35rem;
+  @media screen and (max-width: 960px) {
+    height: fit-content;
+  }
 `;
 
 export const AboutMe = styled.text`

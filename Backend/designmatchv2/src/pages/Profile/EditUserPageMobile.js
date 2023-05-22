@@ -9,7 +9,8 @@ import ModalLanguages from '../../components/ModalLanguages';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import './Dropdown.css';
-
+import { FaUser } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import {
   RightColumn,
   InfoRow,
@@ -19,7 +20,6 @@ import {
   Image,
   EditLeftWrapper,
   LineForm,
-  ProfileImage,
   ProfileWrapper,
   EditRightWrapper,
   TopSection,
@@ -33,15 +33,12 @@ import {
   StyledDropDown,
   AboutInput,
   Bracket,
-  EditNameText,
   NameText,
-  RightWrapper,
   EditProfileImage,
   EditIcon
 
 } from './ProfileElements'
 import LoadingPage from '../LoadingPage';
-import { FaEdit } from 'react-icons/fa';
 
 const {
   secondary,
@@ -89,16 +86,16 @@ const ButtonSave = styled.button`
 `;
 const ButtonEdit = styled.button`
   padding: 5px 20px;
-  color: black;
+  background: ${darkLight};
+  color: ${primary};
+  cursor: pointer;
   border: none;
   border-radius: 15px;
   box-shadow: 0px 2px 6px 0 rgba(0, 0, 0, 0.4);
-  &:hover{
-    transition: 0.3s;
-    border: 2px solid rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 4px 12px 0 rgba(0, 0, 0, 0.4);
+  display: none;
+  @media screen and (max-width: 960px) {
+    display: flex;
   }
-  
 `;
 
 //UserName/UserInfo/MessageButton
@@ -159,7 +156,7 @@ const EditUserPageMobile = () => {
   const [tags, setTags] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [skillsToAdd, setSkillsToAdd] = useState([]);
-
+  const navigate = useNavigate();
 
   //edycja profilu
   //const [bio, setBio] = useState("");
@@ -167,7 +164,6 @@ const EditUserPageMobile = () => {
   const [surname, setSurname] = useState("");
   const [date, setDate] = useState("20.07.2001");//nie siciaga z bazy
 
-  const [click, setClick] = useState(true);
   const [button, setButton] = useState(true);
 
   //do textarea
@@ -176,16 +172,6 @@ const EditUserPageMobile = () => {
   let chars;
   if (bio) chars = bio.length;
   else chars = 0;
-
-  //pobieranie danych z backendu
-  const profileName = 'jakub1';
-
-  const profileData = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: '/public/api/artist/getArtistProfileByUsername/' + profileName,
-    headers: {}
-  };
 
   const citiesData = {
     method: 'get',
@@ -384,10 +370,7 @@ const EditUserPageMobile = () => {
       delete item.id;
     });
 
-
-    const formData = new FormData();
-    formData.append('image', blob, blob.name);
-    axios.post('/public/api/artist/images/uploadImages', formData, {
+    axios.post('/public/api/artist/images/uploadImages', blob, {
       params: {
         username: username,
         isBanner: false,
@@ -432,10 +415,9 @@ const EditUserPageMobile = () => {
     if ((response.status = 200)) {
       experience = null;
       education = null;
+      navigate('/account');
     }
   }
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -473,7 +455,7 @@ const EditUserPageMobile = () => {
         const imageBlob = new Blob([avatarResponse.data], { type: imageType });
         const imageUrl = URL.createObjectURL(imageBlob);
 
-        setBlob(imageBlob);
+        setBlob(avatarResponse.data);
         setAvatar(imageUrl);
         setUsername(decodeResponse.data.username);
         setGet(artistResponse.data);
@@ -871,14 +853,14 @@ const EditUserPageMobile = () => {
     const file = event.target.files[0];
     if (file) {
       setAvatar(URL.createObjectURL(file));
-      setBlob(file);
+      const formData = new FormData();
+      formData.append('image', file, file.name);
+      setBlob(formData);
     }
   };
 
   window.addEventListener('resize', showButton);
 
-  const reviewCount = 15;
-  const ratingCount = 2.5; //pobrac z bazy
   return (
 
     <>
@@ -907,10 +889,13 @@ const EditUserPageMobile = () => {
                     style={{ display: 'none' }}
                     onChange={handleFileInputChange}
                   />
-                  {avatar && <Image src={avatar} alt="Profile" />}
+                  {avatar ? (
+                    <Image src={avatar} alt="Profile" />) : (
+                    <FaUser size={40} />
+                  )}
                   <EditIcon size={40} />
                 </EditProfileImage>
-                {/* <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie(ND)</ButtonEdit> */}
+                <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie</ButtonEdit>
                 <NameText style={{ marginTop: '1rem' }}>{get.firstname} {get.lastname}</NameText>
               </div>
               {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}

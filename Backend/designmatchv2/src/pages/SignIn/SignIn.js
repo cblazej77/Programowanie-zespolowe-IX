@@ -3,7 +3,24 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../components/Auth';
 import { default as axios } from "../../api/axios"
 import { useGoogleLogin } from '@react-oauth/google';
-import { LogoIcon2, ErrorLabel, FacebookButton, CenterButton, Button, LoginButton, GoogleButton, LineForm, StyledForm, StyledInput, StyledButton, StyledAlert, StyledLabel, MainName, AllPage, LogoIcon } from './Elements';
+import {
+  LogoIcon2,
+  ErrorLabel,
+  FacebookButton,
+  CenterButton,
+  Button,
+  LoginButton,
+  GoogleButton,
+  LineForm,
+  StyledForm,
+  StyledInput,
+  StyledButton,
+  StyledAlert,
+  StyledLabel,
+  MainName,
+  AllPage,
+  LogoIcon
+} from './Elements';
 import InputText from '../../components/Input/InputText';
 import PasswordInput from '../../components/Input/PasswordInput';
 import FacebookLogin from '@greatsumini/react-facebook-login';
@@ -40,8 +57,6 @@ export const SignIn = () => {
     else setSubmitting(false);
 
   }
-
-
 
   useEffect(() => {
     if (localStorage.length > 0) {
@@ -124,10 +139,9 @@ export const SignIn = () => {
 
   return (
     <AllPage>
-      <MainName >LOGOWANIE</MainName>
-      <StyledForm >
+      <MainName>LOGOWANIE</MainName>
+      <StyledForm>
         <LogoIcon2 />
-
         <InputText label="email:" name="login" id="loginId" onChange={handleEmailChange} checkRegex={checkRegexEmail} />
         {(!checkRegexEmail && email !== "") && <ErrorLabel>Wpisano email w nieprawidłowym formacie.</ErrorLabel>}
         <PasswordInput label="hasło:" name="login" id="passwordId" onChange={handlePasswordChange} checkRegex={checkRegexPassword} />
