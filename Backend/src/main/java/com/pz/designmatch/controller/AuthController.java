@@ -11,7 +11,6 @@ import com.pz.designmatch.exception.UserAlreadyExistAuthenticationException;
 import com.pz.designmatch.service.ConfirmationTokenService;
 import com.pz.designmatch.service.UserService;
 import com.pz.designmatch.service.impl.ConfirmationTokenServiceImpl;
-import com.pz.designmatch.util.JWTUtil;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

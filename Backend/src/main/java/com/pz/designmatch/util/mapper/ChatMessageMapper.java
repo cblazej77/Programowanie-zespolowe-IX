@@ -27,6 +27,7 @@ public class ChatMessageMapper {
 
     @Autowired
     private EntityManager entityManager;
+
     @Autowired
     public ChatMessageMapper(ChatRoomRepository chatRoomRepository, ChatRoomService chatRoomService, UserRepository userRepository) {
         this.chatRoomRepository = chatRoomRepository;

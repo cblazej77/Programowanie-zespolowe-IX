@@ -86,7 +86,7 @@ public class ArtistProfileController {
 
     @PostMapping(value = "/api/artist/createPortfolioEntry/{username}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = apiVersionAccept)
     public ResponseEntity<ApiResponse> uploadPortfolioImageByUsername(@PathVariable("username") String username, @RequestParam("image") MultipartFile image,
-                                                            @RequestParam String name, @RequestParam String description) {
+                                                                      @RequestParam String name, @RequestParam String description) {
         artistProfileServiceImpl.uploadPortfolioImage(username, image, name, description);
         return ResponseEntity.ok(new ApiResponse(true, "Pomyślnie dodano zdjęcie do portfolio"));
     }

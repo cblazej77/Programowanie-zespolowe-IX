@@ -3,7 +3,6 @@ package com.pz.designmatch.repository;
 import com.pz.designmatch.model.user.ArtistProfile;
 import com.pz.designmatch.model.user.PortfolioEntry;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -45,7 +45,7 @@ public class UserEntity {
     @JoinColumn(name = "company_profile_id", referencedColumnName = "id")
     private CompanyProfile companyProfile;
 
-    public UserEntity(String email, String username, String password) {
+    public UserEntity(String email, String username, @NotNull String password) {
         this.email = email;
         this.username = username;
         this.password = password;

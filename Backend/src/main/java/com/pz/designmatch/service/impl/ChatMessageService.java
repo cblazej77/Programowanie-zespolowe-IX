@@ -2,8 +2,11 @@ package com.pz.designmatch.service.impl;
 
 import com.pz.designmatch.dto.request.ChatMessageRequest;
 import com.pz.designmatch.dto.response.ChatMessageResponse;
+import com.pz.designmatch.dto.response.InterlocutorResponse;
 import com.pz.designmatch.model.chat.ChatMessage;
+import com.pz.designmatch.model.chat.ChatRoom;
 import com.pz.designmatch.model.enums.MessageStatus;
+import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.ChatMessageRepository;
 import com.pz.designmatch.util.mapper.ChatMessageMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,5 +72,22 @@ public class ChatMessageService {
                 chatMessageRepository.save(message);
             }
         }
+    }
+
+    public List<InterlocutorResponse> findConversations(String username) {
+        List<InterlocutorResponse> result = new ArrayList<>();
+        List<ChatRoom> chatRooms = chatRoomService.findChatBySender(username)
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu dla użytkownika: " + username));
+        for (ChatRoom chatRoom : chatRooms) {
+            UserEntity interlocutor = chatRoom.getRecipient();
+            ChatMessage lastMessage = chatMessageRepository.findFirstByIdOrderByTimestampDesc(chatRoom.getChatId())
+                    .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono wiadomości dla czatu: " + chatRoom.getChatId()));
+            if (interlocutor.getArtistProfile() != null)
+                result.add(new InterlocutorResponse(interlocutor.getUsername(), interlocutor.getArtistProfile().getFirstname(),
+                        interlocutor.getArtistProfile().getLastname(), lastMessage.getContent()));
+            else
+                result.add(new InterlocutorResponse(interlocutor.getUsername(), interlocutor.getCompanyProfile().getName(), lastMessage.getContent()));
+        }
+        return result;
     }
 }

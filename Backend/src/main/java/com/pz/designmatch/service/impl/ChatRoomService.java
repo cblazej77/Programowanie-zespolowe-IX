@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,5 +42,11 @@ public class ChatRoomService {
             return Optional.of(chatId);
         }
         return existingChatRoom.map(ChatRoom::getChatId);
+    }
+
+    public Optional<List<ChatRoom>> findChatBySender(String username) {
+        UserEntity existingUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono użytkownika o nazwie: " + username));
+        return chatRoomRepository.findChatBySender(existingUser);
     }
 }
