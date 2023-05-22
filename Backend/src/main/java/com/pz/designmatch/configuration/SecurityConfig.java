@@ -46,7 +46,8 @@ public class SecurityConfig {
             "/auth/**",
             "/public/**",
             "/docs/**",
-            "/ws/**"
+            "/ws/**",
+            "/messages/**"
     };
 
     @Value("classpath:pubkey.pem")

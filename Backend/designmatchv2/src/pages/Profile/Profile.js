@@ -56,9 +56,9 @@ const UserPage = () => {
       try {
         const decodeResult = await axios.request('/auth/decodeToken', {
           headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            'accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
           },
         });
 
@@ -273,7 +273,7 @@ const UserPage = () => {
         <TopSection>
           <LeftWrapper>
             <ProfileImage>
-              {username && <Image src={'http://localhost:8080/public/api/artist/images/getProfileImage?username=' + username} alt="Profile" />}
+              {/*{username && <Image src={'http://localhost:8080/public/api/artist/images/getProfileImage?username=' + username} alt="Profile" />}*/}
             </ProfileImage>
             <JobText>{get.level}</JobText>
             <NameText>{get.firstname} {get.lastname} </NameText>

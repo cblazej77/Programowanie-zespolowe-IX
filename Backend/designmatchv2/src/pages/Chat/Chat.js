@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
+import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
 import {
   Avatar,
   ChatWrapper,
@@ -25,6 +27,7 @@ import {
 } from "./ChatElements";
 import { COLORS } from "../../components/Colors";
 import styled from "styled-components";
+import { default as axios } from '../../api/axios';
 
 const { darkLight, white, black } = COLORS;
 
@@ -53,9 +56,10 @@ const conversation = [
 const reversedConversation = conversation.reverse();
 
 const MessagesElement = (props) => {
+
   return (
     <>
-      <ElementContainer>
+      <ElementContainer onClick={props.onClick}>
         <Avatar src={props.avatar} />
         <BasicInfoContainer>
           <SmallNameText>
@@ -91,18 +95,125 @@ const DMElement = (props) => {
 };
 
 const Chat = () => {
+  const [get, setGet] = useState("");
+  const [username, setUsername] = useState('');
+  const [second, setSecond] = useState('JulkaMazowiecka');
+  const [message, setMessage] = useState('');
+
+  const stompClientRef = useRef(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const decodeResult = await axios.request('/auth/decodeToken', {
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
+          },
+        });
+        setUsername(decodeResult.data.username);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const keyPress = useCallback(
+      e => {
+        if (e.key === 'Enter' && message.length > 0) {
+          console.log('Wiadomośc wysłana');
+          sendMessage();
+        }
+      },
+      [message]
+  );
+
+  useEffect(
+      () => {
+        document.addEventListener('keydown', keyPress);
+        return () => document.removeEventListener('keydown', keyPress);
+      },
+      [keyPress]
+  );
+
+
+  useEffect(() => {
+    if(username) {
+      const socket = new SockJS('http://localhost:8080/ws');
+      const stompClient = Stomp.over(socket);
+      const onMessageReceived = (msg) => {
+        const notification = JSON.parse(msg.body);
+        console.log("odebrana wiadomość" + JSON.stringify(notification.id));
+      }
+      const onConnected = () => {
+        console.log('Connected to WebSocket');
+        stompClient.subscribe('/user/' + username + '/queue/messages', onMessageReceived);
+      };
+
+      const onError = (error) => {
+        console.error('WebSocket error:', error);
+      };
+
+      stompClient.connect({}, onConnected, onError);
+      stompClientRef.current = stompClient;
+
+      return () => {
+        console.log("DISCONNECT...")
+        stompClient.disconnect();
+      };
+    }
+  }, [username, second]);
+
+  const sendMessage = () => {
+    const newMessage = {
+      sender_username: username,
+      recipient_username: second,
+      content: message,
+    };
+
+    const stompClient = stompClientRef.current;
+
+    if (stompClient) {
+      if (stompClient.connected) {
+        console.log("wysłana:", newMessage);
+        stompClient.send('/app/chat', {}, JSON.stringify(newMessage));
+        setMessage('');
+      } else {
+        console.log("błąd wysyłania: brak połączenia z WebSocket");
+        // WebSocket na nowo
+      }
+    } else {
+      console.log("błąd wysyłania: stompClient niezdefiniowany");
+      // stompClient zainicjować na nowo
+    }
+  };
+
+
   return (
     <ChatWrapper>
       <MessagesLabel>
         <TitleText>Wiadomości</TitleText>
         <MessagesWrapper>
           <MessagesElement
-            name="Agnieszka"
-            surname="Bielicka"
+            name="Julka"
+            surname="Mazowiecka"
             avatar="/assets/cards/person1.jpg"
             lastMessage="Ale zajmę się tym."
             unseenMessages={32}
             lastOnline="1 godz."
+            onClick={() => setSecond("JulkaMazowiecka")}
+          />
+          <MessagesElement
+              name="Michal"
+              surname="Mostowiak"
+              avatar="/assets/cards/person1.jpg"
+              lastMessage="zywy."
+              unseenMessages={32}
+              lastOnline="1 godz."
+              onClick={() => setSecond("MichalMostowiak")}
           />
         </MessagesWrapper>
       </MessagesLabel>
@@ -122,7 +233,7 @@ const Chat = () => {
         </DMMessagesContainer>
         <LineForm />
         <DMInputContainter>
-          <Input placeholder="Napisz wiadomość" />
+          <Input type="text" placeholder="Napisz wiadomość" value={message}  onChange={(e) => setMessage(e.target.value)}/>
         </DMInputContainter>
       </DMWrapper>
     </ChatWrapper>
