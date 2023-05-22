@@ -79,14 +79,17 @@ const MessagesElement = (props) => {
 };
 
 
+
+var stompClient = null;
 const Chat = () => {
   const [get, setGet] = useState("");
   const [username, setUsername] = useState('');
-  const [second, setSecond] = useState('wybierz');
-  const [message, setMessage] = useState('');
-  const [conversation, setConversation] = useState(conv);
-
-  const stompClientRef = useRef(null);
+  const [messageAxos, setMessageAxios] = useState("");
+  const [second, setSecond] = useState('');
+  const [message, setMessage] = useState("");
+  const [conversation, setConversation] = useState("");
+  const [checkMess, setCheckMess] = useState(false);
+  //const stompClientRef = useRef(null);
 
   const DMElement = (props) => {
     if (props.sender === username) {
@@ -105,6 +108,7 @@ const Chat = () => {
     }
   };
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -116,18 +120,20 @@ const Chat = () => {
           },
         });
         setUsername(decodeResult.data.username);
+
       } catch (err) {
         console.log(err);
       }
     };
-
+    if(username !== '' && second !== ''){
+      connect();
+    }
     fetchData();
-  }, []);
+  }, [username, second]);
 
   const keyPress = useCallback(
     e => {
-      if (e.key === 'Enter' && message.length > 0) {
-        console.log('Wiadomośc wysłana');
+      if (e.key === 'Enter' && message.length > 0 && second.length > 0) {
         sendMessage();
       }
     },
@@ -142,45 +148,41 @@ const Chat = () => {
     [keyPress]
   );
 
+  const connect= () => {
+    const Stomp = require("stompjs");
+    let SockJS = require("sockjs-client");
+    SockJS = new SockJS("http://localhost:8080/ws");
+    stompClient = Stomp.over(SockJS);
+    stompClient.connect({}, onConnected, onError());
+  };
 
-  useEffect(() => {
-    if (username) {
-      const socket = new SockJS('http://localhost:8080/ws');
-      const stompClient = Stomp.over(socket);
-      const onMessageReceived = (msg) => {
-        const notification = JSON.parse(msg.body);
-        console.log("odebrana wiadomość " + JSON.stringify(notification.id));
+  const onError = (error) => {
+    console.error('WebSocket error:', error);
+  };
 
-        const receivedMessage = {
-          sender_username: notification.senderId,
-          recipient_username: notification.senderName,
-          content: notification.id,
+        const onConnected = () => {
+          console.log('Connected to WebSocket');
+          stompClient.subscribe('/user/' + username + '/queue/messages', onMessageReceived);
         };
 
-        const updatedConversation = [...conversation];
-        updatedConversation.unshift(receivedMessage);
-        setConversation(updatedConversation);
-        console.log(conversation);
+        const onMessageReceived = (msg) => {
+          const notification = JSON.parse(msg.body);
+          const chujCiWDupe = second;
+          if(second == notification.senderId){
+          const receivedMessage = {
+            sender_username: notification.senderId,
+            recipient_username: notification.senderName,
+            content: notification.id,
+          };
+         console.log(receivedMessage);
+          // const updatedConversation = [...conversation];
+          // updatedConversation.unshift(receivedMessage);
+          // setConversation(updatedConversation);
 
+            window.localStorage.setItem("message", JSON.stringify(receivedMessage));
+        }
+        else console.log("nowa wiadomość od " + notification.senderId +", a ty patrzysz na chat: " + second);
       }
-      const onConnected = () => {
-        console.log('Connected to WebSocket');
-        stompClient.subscribe('/user/' + username + '/queue/messages', onMessageReceived);
-      };
-
-      const onError = (error) => {
-        console.error('WebSocket error:', error);
-      };
-
-      stompClient.connect({}, onConnected, onError);
-      stompClientRef.current = stompClient;
-
-      return () => {
-        console.log("DISCONNECT...")
-        stompClient.disconnect();
-      };
-    }
-  }, [username, second]);
 
   const sendMessage = () => {
     if (message.length > 0) {
@@ -190,24 +192,15 @@ const Chat = () => {
         content: message,
       };
 
-      const stompClient = stompClientRef.current;
 
       if (stompClient) {
         if (stompClient.connected) {
-          console.log("wysłana:", newMessage);
           stompClient.send('/app/chat', {}, JSON.stringify(newMessage));
-          const sentMessage = {
-            sender_username: newMessage.sender_username,
-            recipient_username: newMessage.recipient_username,
-            content: newMessage.content
-          };
-
           const updatedConversation = [...conversation];
-          updatedConversation.unshift(sentMessage);
+          updatedConversation.unshift(newMessage);
           setConversation(updatedConversation);
-          //console.log(conversation);
-
           setMessage('');
+
         } else {
           console.log("błąd wysyłania: brak połączenia z WebSocket");
           // WebSocket na nowo
@@ -217,8 +210,137 @@ const Chat = () => {
         // stompClient zainicjować na nowo
       }
     }
-
   };
+
+
+  // const sendMessage = () => {
+  //   if (message.length > 0) {
+  //     const newMessage = {
+  //       sender_username: username,
+  //       recipient_username: second,
+  //       content: message,
+  //     };
+  //
+  //     const stompClient = stompClientRef.current;
+  //
+  //     if (stompClient) {
+  //       if (stompClient.connected) {
+  //         console.log("wysłana:", newMessage);
+  //         stompClient.send('/app/chat', {}, JSON.stringify(newMessage));
+  //         const sentMessage = {
+  //           sender_username: newMessage.sender_username,
+  //           recipient_username: newMessage.recipient_username,
+  //           content: newMessage.content
+  //         };
+  //
+  //         const updatedConversation = [...conversation];
+  //         updatedConversation.unshift(sentMessage);
+  //         setConversation(updatedConversation);
+  //         //console.log(conversation);
+  //
+  //         setMessage('');
+  //       } else {
+  //         console.log("błąd wysyłania: brak połączenia z WebSocket");
+  //         // WebSocket na nowo
+  //       }
+  //     } else {
+  //       console.log("błąd wysyłania: stompClient niezdefiniowany");
+  //       // stompClient zainicjować na nowo
+  //     }
+  //   }
+  //
+  // };
+  // useEffect(() => {
+  //   if (username) {
+  //     const socket = new SockJS('http://localhost:8080/ws');
+  //     const stompClient = Stomp.over(socket);
+  //     const onMessageReceived = (msg) => {
+  //       const notification = JSON.parse(msg.body);
+  //       //
+  //       // try {
+  //       //   const messageAxiosReceived = await axios.request('/messages/' + notification.id, {
+  //       //     headers: {
+  //       //       'accept': 'application/json',
+  //       //       'Content-Type': 'application/json',
+  //       //     },
+  //       //   });
+  //       //
+  //       //
+  //       //   setMessageAxios(messageAxiosReceived.data);
+  //       //
+  //       // } catch (err) {
+  //       //   console.log(err);
+  //       // }
+  //       const receivedMessage = {
+  //         sender_username: notification.senderId,
+  //         recipient_username: notification.senderName,
+  //         content: notification.id,
+  //       };
+  //       console.log("JAJOBAJO");
+  //       console.log(conversation);
+  //       const updatedConversation = [...conversation];
+  //       updatedConversation.unshift(receivedMessage);
+  //       setConversation(updatedConversation);
+  //       console.log(conversation);
+  //
+  //     }
+  //
+  //     const onConnected = () => {
+  //       console.log('Connected to WebSocket');
+  //       stompClient.subscribe('/user/' + username + '/queue/messages', onMessageReceived);
+  //     };
+  //
+  //     const onError = (error) => {
+  //       console.error('WebSocket error:', error);
+  //     };
+  //
+  //     stompClient.connect({}, onConnected, onError);
+  //     stompClientRef.current = stompClient;
+  //
+  //     return () => {
+  //       console.log("DISCONNECT...")
+  //       stompClient.disconnect();
+  //     };
+  //   }
+  // }, [username, second]);
+
+  // const sendMessage = () => {
+  //   if (message.length > 0) {
+  //     const newMessage = {
+  //       sender_username: username,
+  //       recipient_username: second,
+  //       content: message,
+  //     };
+  //
+  //     const stompClient = stompClientRef.current;
+  //
+  //     if (stompClient) {
+  //       if (stompClient.connected) {
+  //         console.log("wysłana:", newMessage);
+  //         stompClient.send('/app/chat', {}, JSON.stringify(newMessage));
+  //         const sentMessage = {
+  //           sender_username: newMessage.sender_username,
+  //           recipient_username: newMessage.recipient_username,
+  //           content: newMessage.content
+  //         };
+  //
+  //         const updatedConversation = [...conversation];
+  //         updatedConversation.unshift(sentMessage);
+  //         setConversation(updatedConversation);
+  //         //console.log(conversation);
+  //
+  //         setMessage('');
+  //       } else {
+  //         console.log("błąd wysyłania: brak połączenia z WebSocket");
+  //         // WebSocket na nowo
+  //       }
+  //     } else {
+  //       console.log("błąd wysyłania: stompClient niezdefiniowany");
+  //       // stompClient zainicjować na nowo
+  //     }
+  //   }
+  //
+  // };
 
   return (
     <>
@@ -227,24 +349,53 @@ const Chat = () => {
           <MessagesLabel>
             <TitleText>Wiadomości {username}</TitleText>
             <MessagesWrapper>
-              <MessagesElement
-                name="zabkaCompany"
-                surname=""
+              {!(username === "WojciechDuklas") && <MessagesElement
+                name="Wojciech"
+                surname="Duklas"
                 avatar="/assets/cards/person1.jpg"
                 lastMessage="Ale zajmę się tym."
                 unseenMessages={32}
                 lastOnline="1 godz."
-                onClick={() => setSecond("zabkaCompany")}
-              />
-              <MessagesElement
-                name="jakub1"
-                surname=""
+                onClick={() => {
+                  try{
+                    stompClient.disconnect();
+                  }catch(e){ console.log(e);}
+                    setSecond("WojciechDuklas")
+                }}
+              />}
+              {!(username === "JulkaMazowiecka") && <MessagesElement
+                  name="Julka"
+                  surname="COś tam"
+                  avatar="/assets/cards/person1.jpg"
+                  lastMessage="Ale zajmę się tym."
+                  unseenMessages={32}
+                  lastOnline="1 godz."
+                  onClick={() => {
+                    try{
+                      stompClient.disconnect();
+                    }catch(e){ console.log(e);}
+                    setSecond("JulkaMazowiecka")
+                    //  stompClient.disconnect();
+
+                  }}
+              />}
+              {!(username === "MichalMostowiak") && <MessagesElement
+                name="Michal"
+                surname="Mostowia"
                 avatar="/assets/cards/person1.jpg"
                 lastMessage="zywy."
                 unseenMessages={32}
                 lastOnline="1 godz."
-                onClick={() => setSecond("jakub1")}
-              />
+                onClick={() => {
+                  try{
+                    stompClient.disconnect();
+                  }catch(e){ console.log(e);}
+
+                  setSecond("MichalMostowiak")
+                    //stompClient.disconnect();
+
+                }}
+              />}
             </MessagesWrapper>
           </MessagesLabel>
           <DMWrapper>
@@ -254,9 +405,12 @@ const Chat = () => {
             </DMHeaderContainer>
             <LineForm />
             <DMMessagesContainer>
-              {conversation.map((msg, index) => (
-                <DMElement key={index} recipient={msg.recipient_username} sender={msg.sender_username} message={msg.content} />
-              ))}
+              {conversation && <>
+                {conversation.map((msg, index) => (
+                    <DMElement key={index} recipient={msg.recipient_username} sender={msg.sender_username} message={msg.content} />
+                ))}
+              </>
+            }
             </DMMessagesContainer>
             <LineForm />
             <DMInputContainter>
