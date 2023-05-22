@@ -172,6 +172,10 @@ export const Avatar = styled.Image`
     border-radius: 50px;
     border-width: 2px;
     border-color: ${darkLight};
+
+    ${(props) => props.so !== null && `
+        ;
+    `}
 `;
 
 export const MediumAvatar = styled.Image`
