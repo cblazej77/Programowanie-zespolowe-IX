@@ -370,13 +370,10 @@ const EditUserPageMobile = () => {
       delete item.id;
     });
 
-    axios.post('/public/api/artist/images/uploadImages', blob, {
-      params: {
-        username: username,
-        isBanner: false,
-      },
+    axios.post('/api/artist/updateProfileImage/' + username, blob, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
       },
     })
 
@@ -436,8 +433,7 @@ const EditUserPageMobile = () => {
         });
 
         const avatarResponse = await axios.request(
-          '/public/api/artist/images/getProfileImage', {
-          params: { username: decodeResponse.data.username },
+          '/public/api/artist/getProfileImageByUsername/' + decodeResponse.data.username, {
           responseType: 'arraybuffer',
         });
 
@@ -895,7 +891,7 @@ const EditUserPageMobile = () => {
                   )}
                   <EditIcon size={40} />
                 </EditProfileImage>
-                <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie</ButtonEdit>
+                {/* <ButtonEdit style={{ marginTop: "5px", marginBottom: "10px" }}>Zmień zdjęcie</ButtonEdit> */}
                 <NameText style={{ marginTop: '1rem' }}>{get.firstname} {get.lastname}</NameText>
               </div>
               {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}

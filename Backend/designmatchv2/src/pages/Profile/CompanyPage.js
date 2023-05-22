@@ -469,6 +469,27 @@ const CompanyPage = () => {
   };
 
   const Modal = ({ showModal }) => {
+    const handleDeleteCommission = useCallback(async () => {
+      console.log(modalData.id);
+      try {
+        const response = await axios.delete(
+          `/public/api/deleteCommission/` + modalData.id,
+          {
+            headers: {
+              accept: 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        console.log('Data saved successfully!');
+        console.log(response.data);
+      } catch (err) {
+        console.error('Error while saving data:', err);
+      }
+      setShowModal(false);
+    },);
+
     return (
       <>
         {showModal && (
@@ -518,6 +539,7 @@ const CompanyPage = () => {
                       <CommisionBubble key={index}>{tag}</CommisionBubble>
                     ))}
                   </ModalBubbleContainer>
+                  <Button onClick={handleDeleteCommission} style={{ marginTop: '4rem' }}>Usuń zlecenie</Button>
                 </ModalColumn>
               </ModalBottomSection>
             </ModalWrapper>
@@ -570,7 +592,6 @@ const CompanyPage = () => {
               <ProfileImage><Image src="/assets/test.jpg" alt="Profile" /></ProfileImage>
               <NameText>{get.name}</NameText>
               <LineForm />
-              <Button>Napisz wiadomość</Button>
               <Button onClick={() => openModalEditClick()}>
                 Dodaj zlecenie
               </Button>
@@ -627,6 +648,7 @@ const CompanyPage = () => {
                 languages={com.languages}
                 tags={com.tags}
                 skills={com.skills}
+                id={com.id}
               />
             ))}
           </DownSection>

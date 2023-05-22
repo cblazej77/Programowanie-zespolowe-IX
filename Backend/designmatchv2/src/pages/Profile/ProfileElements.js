@@ -136,7 +136,6 @@ export const Image = styled.img`
   margin: 0 auto;
   width: 100%;
   height: 100%;
-  max-width: 400px;
   border-radius: 50%;
   background: white;
   border: 3px solid #1d1d1f;
@@ -530,4 +529,35 @@ export const SmallTextArea = styled(StyledTextarea)`
   font-size: 1rem;
   height: 1.8rem;
   padding: 0.1rem 0 0 0.5rem;
+`;
+
+export const PortfolioImageContainer = styled.div`
+  width: 32%;
+  margin: 0.5rem;
+  height: 20rem;
+  transition: 0.4s;
+  cursor: pointer;
+  &:hover{
+    transform: scale(1.05);
+  }
+  @media (max-width: 960px) {
+    width: 100%;
+  }
+`;
+
+export const PortfolioImage = styled(Image)`
+  border-radius: 0px;
+  border: none;
+`;
+
+export const PortfolioWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 0.5rem;
+`;
+
+export const ModalImageContainer = styled.div`
+  width: 100%;
+  height: 100%;
 `;

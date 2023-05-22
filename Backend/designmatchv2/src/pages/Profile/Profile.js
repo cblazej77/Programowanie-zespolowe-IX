@@ -33,6 +33,7 @@ import {
   TopSection
 } from './ProfileElements';
 import { TitleText } from '../Home/CardsElement';
+import Portfolio from './Portfolio';
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
@@ -272,10 +273,12 @@ const UserPage = () => {
       <ProfileWrapper>
         <TopSection>
           <LeftWrapper>
-            <ProfileImage>
-              {/*{username && <Image src={'http://localhost:8080/public/api/artist/images/getProfileImage?username=' + username} alt="Profile" />}*/}
-            </ProfileImage>
-            <JobText>{get.level}</JobText>
+            <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+              <ProfileImage>
+                {username && <Image src={'http://localhost:8080/public/api/artist/getProfileImageByUsername/' + username} alt="Profile" />}
+              </ProfileImage>
+              <JobText>{get.level}</JobText>
+            </div>
             <NameText>{get.firstname} {get.lastname} </NameText>
             {/* <RatingWrapper>
               <Rating
@@ -289,12 +292,12 @@ const UserPage = () => {
               />
               <RatingText>({reviewCount} opinii)</RatingText>
             </RatingWrapper> */}
-            <LineForm />
+            {/* <LineForm />
             <Button>Napisz wiadomość</Button>
             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
               <SmallButton>Napisz opinię</SmallButton>
               <SmallButton>Like</SmallButton>
-            </div>
+            </div> */}
           </LeftWrapper>
           <RightWrapper>
             <BoldLabel>O mnie:</BoldLabel>
@@ -343,7 +346,7 @@ const UserPage = () => {
         <BottomSection>
           <TitleText>Portfolio</TitleText>
           <BottomWrapper>
-            hej
+            <Portfolio username={username} />
           </BottomWrapper>
         </BottomSection>
       </ProfileWrapper>

@@ -125,7 +125,9 @@ export const DMMessagesContainer = styled.div`
 
 export const DMInputContainter = styled.div`
   width: 100%;
-  padding: 1rem 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
 `;
 
 export const Input = styled.input`
@@ -141,8 +143,13 @@ export const Input = styled.input`
 `;
 
 export const ElementContainer = styled.div`
+  cursor: pointer;
   display: flex;
   padding: 0.5rem;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
 `;
 
 export const Avatar = styled.img`

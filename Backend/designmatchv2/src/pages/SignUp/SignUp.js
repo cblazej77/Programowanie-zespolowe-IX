@@ -106,8 +106,9 @@ function LoginForm() {
         }
       );
       setSubmitting(false);
-      console.log(response?.data);
-      console.log(response?.accessToken);
+      console.log(response);
+      console.log(response.data);
+      console.log(response.accessToken);
       console.log(JSON.stringify(response));
       openModal();
       clear();
