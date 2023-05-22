@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, Pressable, Linking } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Colors, RegularText, StatsText, AppText, Avatar, Bubble, Line, HeaderText } from '../../components/styles';
+import { Colors, RegularText, StatsText, AppText, Bubble, Line, HeaderText, Avatar } from '../../components/styles';
 import Stars from 'react-native-stars';
 //SecureStoring accessToken
 import * as SecureStore from 'expo-secure-store';
@@ -10,6 +10,8 @@ import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
 import Loading from '../../components/Loading';
 import { Fontisto } from '@expo/vector-icons';
+import { checkImageURL } from '../../components/checkImageURL';
+import Awatar from '../../components/Avatar';
 
 const { darkLight, link, black, primary } = Colors;
 
@@ -243,7 +245,8 @@ const ArtistProfile = ({ route, navigation }) => {
       {artistProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-            <Avatar resizeMode="contain" source={require('../../assets/img/avatar1.png')}></Avatar>
+            {/* <Avatar source={{uri: baseURL + '/public/api/artist/getProfileImageByUsername/' + username + '?date' + new Date(), cache: 'reload'}}></Avatar> */}
+            <Awatar avatar={baseURL + '/public/api/artist/getProfileImageByUsername/' + username + '?date' + new Date()}></Awatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
               <Stars
                 default={3.5}

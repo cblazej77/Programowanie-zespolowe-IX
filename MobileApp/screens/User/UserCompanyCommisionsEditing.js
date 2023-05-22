@@ -126,6 +126,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [isNewElement, setIsNewElement] = useState(false);
   const [message, setMessage] = useState();
   const [messageType, setMessageType] = useState();
+  const [refresh, setRefresh] = useState(false);
 
   //available data from server
   const [availableLocations, setAvailableLocations] = useState([]);
@@ -139,9 +140,10 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [skillsToAdd, setSkillsToAdd] = useState([]);
   const [languagesToAdd, setLanguagesToAdd] = useState([]);
   const [locationsToAdd, setLocationsToAdd] = useState([]);
-  const [id, setId] = useState(0);
+  
 
   //objects added to sended JSON
+  const [id, setId] = useState(0);
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [rate, setRate] = useState(0);
@@ -155,6 +157,10 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const handleMessage = (message, type = 'FAILED') => {
     setMessage(message);
     setMessageType(type);
+  };
+
+  const toggleRefresh = () => {
+    setRefresh(!refresh);
   };
 
 
@@ -489,6 +495,168 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     getUserInfo();
   }, []);
 
+
+  //API handling
+
+  useEffect(() => {
+    let configTag = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: baseURL + '/public/api/filter/getAvailableTags',
+      headers: {},
+    };
+
+    let configCities = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: baseURL + '/public/api/filter/getAvailableCities',
+      headers: {},
+    };
+
+    let configLanguages = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: baseURL + '/public/api/filter/getAvailableLanguages',
+      headers: {},
+    };
+
+    let configCategories = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: baseURL + '/public/api/filter/getAvailableCategories',
+      headers: {},
+    };
+    const fetchData = async () => {
+      try {
+        const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse] = await Promise.all([
+          axios.request(configCities),
+          axios.request(configTag),
+          axios.request(configCategories),
+          axios.request(configLanguages),
+        ]);
+        setAvailableTags(tagsResponse.data);
+        setAvailableLanguages(languagesResponse.data);
+        setAvailableLocations(citiesResponse.data);
+        handleClearAvailableSkills();
+        setAvailableCategories(categoriesResponse.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (availableCategories) {
+      for (let i = 0; i < availableCategories.categories.length; ++i) {
+        for (let j = 0; j < availableCategories.categories[i].skills.length; ++j) {
+          handleAddAvailableSkills(availableCategories.categories[i].skills[j]);
+        }
+      }
+    }
+  }, [availableCategories]);
+
+  useEffect(() => {
+    if (userInfo) {
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: baseURL + '/public/api/commission/getAllCommissionFirmByUsername/' + userInfo.username,
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const fetchData = async () => {
+        try {
+          const result = await axios.request(config);
+          console.log(result.data);
+          setCommisions(result.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [userInfo, refresh]);
+
+  async function apiCommissionUpdate() {
+
+    const response = await axios.put(
+        baseURL + '/api/commission/updateById/' + id.toString(),
+        {
+          client_username: userInfo.username,
+          title: title,
+          description: description,
+          deadline: deadline,
+          level: levels,
+          location: locations,
+          skills: skills,
+          tags: tags,
+          languages: languages,
+          rate: rate
+        },
+        {
+          params: { id: id},
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        },
+      )
+      .catch((error) => {
+        handleMessage('Wystąpił błąd', 'FAILED');
+        console.log(error);
+      });
+    if ((response.status = 200)) {
+      handleMessage('Zapisano zmiany!', 'SUCCESS');
+      clear();
+      setisModalVisible(false);
+    }
+  };
+
+  async function apiCommissionCreate() {
+
+    const response = await axios.post(
+        baseURL + '/api/commission/create',
+        {
+          client_username: userInfo.username,
+          title: title,
+          description: description,
+          deadline: deadline,
+          level: levels,
+          location: locations,
+          skills: skills,
+          tags: tags,
+          languages: languages,
+          rate: rate
+        },
+        {
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        },
+      )
+      .catch((error) => {
+        handleMessage('Wystąpił błąd', 'FAILED');
+        console.log(error);
+      });
+    if ((response.status = 200)) {
+      handleMessage('Zapisano zmiany!', 'SUCCESS');
+      clear();
+      setisModalVisible(false);
+      toggleRefresh();
+    }
+  };
+
   //listing bubbles
 
   function ListLocations() {
@@ -731,128 +899,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     }
   }
 
-  //API handling
-
-  useEffect(() => {
-    let configTag = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: baseURL + '/public/api/filter/getAvailableTags',
-      headers: {},
-    };
-
-    let configCities = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: baseURL + '/public/api/filter/getAvailableCities',
-      headers: {},
-    };
-
-    let configLanguages = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: baseURL + '/public/api/filter/getAvailableLanguages',
-      headers: {},
-    };
-
-    let configCategories = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: baseURL + '/public/api/filter/getAvailableCategories',
-      headers: {},
-    };
-    const fetchData = async () => {
-      try {
-        const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse] = await Promise.all([
-          axios.request(configCities),
-          axios.request(configTag),
-          axios.request(configCategories),
-          axios.request(configLanguages),
-        ]);
-        setAvailableTags(tagsResponse.data);
-        setAvailableLanguages(languagesResponse.data);
-        setAvailableLocations(citiesResponse.data);
-        handleClearAvailableSkills();
-        setAvailableCategories(categoriesResponse.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (availableCategories) {
-      for (let i = 0; i < availableCategories.categories.length; ++i) {
-        for (let j = 0; j < availableCategories.categories[i].skills.length; ++j) {
-          handleAddAvailableSkills(availableCategories.categories[i].skills[j]);
-        }
-      }
-    }
-  }, [availableCategories]);
-
-  useEffect(() => {
-    if (userInfo) {
-      let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: baseURL + '/public/api/commission/getAllCommissionFirmByUsername/' + userInfo.username,
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      };
-
-      const fetchData = async () => {
-        try {
-          const result = await axios.request(config);
-          console.log(result.data);
-          setCommisions(result.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      fetchData();
-    }
-  }, [userInfo]);
-
-  async function apiCommissionCreate() {
-
-    const response = await axios.post(
-        baseURL + '/api/commission/create',
-        {
-          client_username: userInfo.username,
-          title: title,
-          description: description,
-          deadline: deadline,
-          level: levels,
-          location: locations,
-          skills: skills,
-          tags: tags,
-          languages: languages,
-          rate: rate
-        },
-        {
-          headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        },
-      )
-      .catch((error) => {
-        handleMessage('Wystąpił błąd', 'FAILED');
-        console.log(error);
-      });
-    if ((response.status = 200)) {
-      handleMessage('Zapisano zmiany!', 'SUCCESS');
-      clear();
-      setisModalVisible(false);
-    }
-  };
+  
 
   // useEffect(() => {
   //   if (modalCommision) {
@@ -870,7 +917,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   // }, [modalCommision]);
 
   return (
-    <SafeAreaView style={{ backgroundColor: primary, justifyContent: 'center' }}>
+    <SafeAreaView style={{ backgroundColor: primary, justifyContent: 'center', height: '100%' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           {isModalVisible ? (
@@ -1185,6 +1232,8 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                         //saveCommision();
                         if(isNewElement) {
                           apiCommissionCreate();
+                        } else {
+                          apiCommissionUpdate();
                         }
                         setIsNewElement(false);
                       }}
@@ -1228,20 +1277,20 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                   <View key={indexC} style={{ alignItems: 'center' }}>
                     <TouchableOpacity
                       onPress={() => {
-                        setisModalVisible(true);
-                        setIsNewElement(false);
-                        setModalCommision(
-                          cms.id,
-                          cms.title,
-                          cms.description,
-                          cms.deadline,
-                          cms.level,
-                          cms.location,
-                          cms.languages,
-                          cms.skills,
-                          cms.tags,
-                          cms.rate,
-                        );
+                        // setisModalVisible(true);
+                        // setIsNewElement(false);
+                        // setModalCommision(
+                        //   cms.id,
+                        //   cms.title,
+                        //   cms.description,
+                        //   cms.deadline,
+                        //   cms.level,
+                        //   cms.location,
+                        //   cms.languages,
+                        //   cms.skills,
+                        //   cms.tags,
+                        //   cms.rate,
+                        // );
                       }}
                       key={indexC}
                     >
@@ -1319,24 +1368,6 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                   marginBottom: 15,
                 }}
               >
-                <Pressable
-                  onPress={() => {}}
-                  style={({ pressed }) => [
-                    {
-                      backgroundColor: pressed ? 'lightgrey' : darkLight,
-                      marginRight: 0,
-                      padding: 7,
-                      borderRadius: 15,
-                      fontSize: 16,
-                      marginBottom: 10,
-                      marginTop: 10,
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                    },
-                  ]}
-                >
-                  <AppText style={{ color: primary, fontSize: 16 }}>Zapisz</AppText>
-                </Pressable>
               </View>
             </View>
           )}

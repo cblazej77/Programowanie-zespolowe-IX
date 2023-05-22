@@ -10,6 +10,7 @@ import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
 import Loading from '../../components/Loading';
 import { Fontisto } from '@expo/vector-icons';
+import Awatar from '../../components/Avatar';
 
 const { darkLight, link, black, primary } = Colors;
 
@@ -48,6 +49,7 @@ const Profile = ({ navigation }) => {
   const [artistProfile, setArtistProfile] = useState('');
   const [isExperienceShown, setIsExperienceShown] = useState(false);
   const [isEducationShown, setIsEducationShown] = useState(false);
+  const [avatar, setAvatar] = useState('');
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
@@ -67,7 +69,7 @@ const Profile = ({ navigation }) => {
 
   const OpenLinkElement = ({ link, children1, children2, color }) => {
     const handlePress = useCallback(async () => {
-      if(!link.startsWith('https://')) {
+      if (!link.startsWith('https://')) {
         link = 'https://' + link;
       }
       const supported = await Linking.canOpenURL(link);
@@ -81,7 +83,7 @@ const Profile = ({ navigation }) => {
 
     return (
       <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10, paddingLeft: 0 }}>
-          <AppText style={{fontSize: 18, marginRight: 15}}>{children1}</AppText>
+        <AppText style={{ fontSize: 18, marginRight: 15 }}>{children1}</AppText>
         <TouchableOpacity onPress={handlePress}>
           <Fontisto name={children2} color={color} size={22} />
         </TouchableOpacity>
@@ -121,12 +123,12 @@ const Profile = ({ navigation }) => {
   function ListEducation() {
     if (artistProfile.education) {
       const list = artistProfile.education.map((item, id) => (
-        <View style={[styles.ListElement, {marginBottom: 7, marginLeft: 25}]} key={id}>
-          <AppText style={{marginBottom: 2}}>{'Kierunek: ' + item.faculty}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Uczelnia: ' + item.school_name}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Stopień: ' + item.degree}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Od: ' + item.start_date}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Do: ' + item.end_date}</AppText>
+        <View style={[styles.ListElement, { marginBottom: 7, marginLeft: 25 }]} key={id}>
+          <AppText style={{ marginBottom: 2 }}>{'Kierunek: ' + item.faculty}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Uczelnia: ' + item.school_name}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Stopień: ' + item.degree}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Od: ' + item.start_date}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Do: ' + item.end_date}</AppText>
         </View>
       ));
       return <>{list}</>;
@@ -138,13 +140,13 @@ const Profile = ({ navigation }) => {
   function ListExperience() {
     if (artistProfile.experience) {
       const list = artistProfile.experience.map((item, id) => (
-        <View style={[styles.ListElement, {marginBottom: 7, marginLeft: 25}]} key={id}>
-          <AppText style={{marginBottom: 2}}>{'Nazwa firmy: ' + item.company}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Miasto: ' + item.city}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Stanowsko: ' + item.position}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Opis obowiązków: ' + item.description}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Od: ' + item.start_date}</AppText>
-          <AppText style={{marginBottom: 2}}>{'Do: ' + item.end_date}</AppText>
+        <View style={[styles.ListElement, { marginBottom: 7, marginLeft: 25 }]} key={id}>
+          <AppText style={{ marginBottom: 2 }}>{'Nazwa firmy: ' + item.company}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Miasto: ' + item.city}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Stanowsko: ' + item.position}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Opis obowiązków: ' + item.description}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Od: ' + item.start_date}</AppText>
+          <AppText style={{ marginBottom: 2 }}>{'Do: ' + item.end_date}</AppText>
         </View>
       ));
       return <>{list}</>;
@@ -211,9 +213,10 @@ const Profile = ({ navigation }) => {
         { enum: 'earth', name: 'Własna strona', color: darkLight },
       ];
       const avaiable = links.filter((item) => {
-        if(item.data !== 'string' && item.data !== null && item.data !== '' && typeof item.data !== 'undefined') {
+        if (item.data !== 'string' && item.data !== null && item.data !== '' && typeof item.data !== 'undefined') {
           return item;
-        }});
+        }
+      });
       const list = avaiable.map((item) => (
         <OpenLinkElement
           key={item.id}
@@ -250,7 +253,7 @@ const Profile = ({ navigation }) => {
       {artistProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-            <Avatar resizeMode="contain" source={require('../../assets/img/avatar1.png')}></Avatar>
+          <Awatar avatar={baseURL + '/public/api/artist/getProfileImageByUsername/' + userInfo.username + '?date' + new Date()}></Awatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
               <Stars
                 default={3.5}
@@ -279,8 +282,10 @@ const Profile = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <View style={{ marginLeft: 15, justifyContent: 'space-between'}}>
-            <HeaderText style={{color:darkLight, fontSize: 20}}>{artistProfile.firstname + ' ' + artistProfile.lastname}</HeaderText>
+          <View style={{ marginLeft: 15, justifyContent: 'space-between' }}>
+            <HeaderText style={{ color: darkLight, fontSize: 20 }}>
+              {artistProfile.firstname + ' ' + artistProfile.lastname}
+            </HeaderText>
           </View>
           <AppText style={styles.About}>O mnie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
@@ -327,7 +332,9 @@ const Profile = ({ navigation }) => {
             <AppText style={{ fontSize: 19, color: black }}>Umiejętności:</AppText>
             <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>{ListSkills()}</View>
             <AppText style={{ fontSize: 19, color: black }}>Języki:</AppText>
-            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>{ListLanguages()}</View>
+            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>
+              {ListLanguages()}
+            </View>
             <AppText style={{ fontSize: 19, color: black }}>Tagi:</AppText>
             <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap', marginLeft: 15 }}>{ListTags()}</View>
             <AppText style={{ fontSize: 19, color: black }}>Media Społecznościowe: </AppText>

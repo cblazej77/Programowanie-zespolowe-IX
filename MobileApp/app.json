@@ -22,6 +22,9 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
+      },
+      "infoPlist": { 
+        "NSAllowsArbitraryLoads": true
       }
     },
     "android": {

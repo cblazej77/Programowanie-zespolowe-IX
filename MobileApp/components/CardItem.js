@@ -1,18 +1,32 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { AppText, RegularText } from './styles';
 import { Image, StyleSheet, View } from 'react-native';
 import { Colors } from './styles';
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { checkImageURL } from './checkImageURL';
+import { default as baseURL } from './AxiosAuth';
+import { Awatar } from './Avatar';
 
 const { secondary1, darkLight, gray1, grey } = Colors;
 
 function CardItem(props) {
+
+  const [uri, setUri] = useState(baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date())
+  const [isValid, setIsValid] = useState(true);
+
+  useEffect(() => {
+    setIsValid(checkImageURL(baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date()));
+    if(isValid === false) setUri('../assets/img/avatar1.png');
+    else setUri(baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date());
+  }, [uri]);
+
   return (
     <View style={styles.PostStyle}>
       <View style={styles.SimpleInfoContainer}>
-        <Image style={styles.Avatar} resizeMode="cover" source={require('./../assets/img/avatar1.png')} />
+        <Image style={styles.Avatar} resizeMode="cover" source={{uri: uri, cache: 'reload'}}/>
         <AppText style={{ color: gray1 }}>{props.level}</AppText>
         <TouchableOpacity
           onPress={() => {

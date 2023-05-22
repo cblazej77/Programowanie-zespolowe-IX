@@ -202,6 +202,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
             key={index}
           >
       <CommisionElement
+              name={item.company_name}
               key={index}
               title={item.title}
               description={item.description}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable, Alert } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Colors,
@@ -30,6 +30,9 @@ import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import * as ImagePicker from 'expo-image-picker';
+import Awatar from '../../components/Avatar';
+
 const { darkLight, grey, black, primary, red } = Colors;
 
 const generateBoxShadowStyle = (
@@ -104,6 +107,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   const [languagesToAdd, setLanguagesToAdd] = useState([]);
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
+  const [photo, setPhoto] = useState('');
+  const [uri, setUri] = useState();
 
   const handleMessage = (message, type = 'FAILED') => {
     setMessage(message);
@@ -331,39 +336,6 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
 
   async function updateArtistProfile() {
     handleMessage('');
-    // if(bio === null) {
-    //   setBio('');
-    // }
-    // if(facebook === null) {
-    //   setFacebook('');
-    // }
-    // if(firstname === null) {
-    //   setFirstname('');
-    // }
-    // if(instagram === null) {
-    //   setInstagram('');
-    // }
-    // if(lastname === null) {
-    //   setLastname('');
-    // }
-    // if(level === null) {
-    //   setLevel('');
-    // }
-    // if(linkedin === null) {
-    //   setLinkedin('');
-    // }
-    // if(location === null) {
-    //   setLocation('');
-    // }
-    // if(pinterest === null) {
-    //   setPinterest('');
-    // }
-    // if(twitter === null) {
-    //   setTwitter('');
-    // }
-    // if(website === null) {
-    //   setWebsite('');
-    // }
     if (
       !facebookPatternValidation(facebook) ||
       !twitterPatternValidation(twitter) ||
@@ -375,7 +347,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
       handleMessage('Źle wpisano link', 'FAILED');
       return;
     }
-    
+
     const response = await axios
       .put(
         baseURL + '/api/artist/updateProfileByUsername/' + userInfo.username,
@@ -404,7 +376,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
             accept: 'application/json',
             Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin' : '*'
+            'Access-Control-Allow-Origin': '*',
           },
         },
       )
@@ -465,6 +437,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
         url: baseURL + '/public/api/artist/getArtistProfileByUsername/' + userInfo.username,
         headers: {},
       };
+
+      setUri(baseURL + '/public/api/artist/getProfileImageByUsername/' + userInfo.username + '?date' + new Date());
 
       const fetchData = async () => {
         try {
@@ -539,87 +513,6 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
 
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   let config = {
-  //     method: 'get',
-  //     maxBodyLength: Infinity,
-  //     url: baseURL + '/api/artist/getAvailableLanguages',
-  //     headers: {},
-  //   };
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.request(config);
-  //       setAvailableLanguages(result.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   let config = {
-  //     method: 'get',
-  //     maxBodyLength: Infinity,
-  //     url: baseURL + '/api/artist/getAvailableLevels',
-  //     headers: {},
-  //   };
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.request(config);
-  //       setAvailableLevels(result.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   let config = {
-  //     method: 'get',
-  //     maxBodyLength: Infinity,
-  //     url: baseURL + '/api/artist/getAvailableCities',
-  //     headers: {},
-  //   };
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.request(config);
-  //       setAvailableLocations(result.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   let config = {
-  //     method: 'get',
-  //     maxBodyLength: Infinity,
-  //     url: baseURL + '/api/artist/getAvailableCategories',
-  //     headers: {},
-  //   };
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.request(config);
-  //       handleClearAvailableSkills();
-  //       setAvailableCategories(result.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   useEffect(() => {
     if (artistProfile) {
@@ -1231,15 +1124,61 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
     }
   }
 
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      console.log(result);
+      //setPhoto(result);
+      let localUri = result.uri;
+      setUri(localUri);
+      let filename = localUri.split('/').pop();
+
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+
+      let formData = new FormData();
+      formData.append('image', { uri: localUri, name: filename, type });
+
+      setPhoto(formData);
+    } else {
+      alert('Nie wybrano zdjęcia');
+    }
+  };
+
+  async function uploadProfileImage() {
+    const response = await axios
+      .post(baseURL + '/api/artist/updateProfileImage/' + userInfo.username, photo, {
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+      .then((res) => {
+        setPhoto(res.data.photo.photo);
+      })
+      .catch((err) => {
+        handleMessage('Wystąpił błąd przy zmianie zdjęcia!','FAILED');
+        console.log(err.response);
+      });
+  }
+
   return (
     <>
       {artistProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-            <Avatar resizeMode="contain" source={require('../../assets/img/avatar.png')}></Avatar>
+            <Awatar avatar={uri}></Awatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
               <Pressable
-                onPress={() => {}}
+                onPress={() => {
+                  pickImageAsync();
+                }}
                 style={({ pressed }) => [
                   {
                     backgroundColor: pressed ? 'lightgrey' : darkLight,
@@ -1252,20 +1191,24 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
             </View>
           </View>
           <View style={{ marginLeft: 15, justifyContent: 'space-between', marginRight: 15 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}
+            >
               <HeaderText style={{ color: black, fontSize: 20 }}>Imie:</HeaderText>
               <HeaderTextInput
-                textAlign='right'
+                textAlign="right"
                 maxLength={100}
                 value={firstname}
                 onChangeText={setFirstname}
                 style={{ color: darkLight, fontSize: 20, width: '70%' }}
               />
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}
+            >
               <HeaderText style={{ color: black, fontSize: 20 }}>Nazwisko:</HeaderText>
               <HeaderTextInput
-                textAlign='right'
+                textAlign="right"
                 maxLength={100}
                 value={lastname}
                 onChangeText={setLastname}
@@ -1494,6 +1437,9 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
             <Pressable
               onPress={() => {
                 updateArtistProfile();
+                if (photo) {
+                  uploadProfileImage();
+                }
               }}
               style={({ pressed }) => [
                 {

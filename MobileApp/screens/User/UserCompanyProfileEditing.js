@@ -20,6 +20,9 @@ import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
 import Loading from '../../components/Loading';
 import { Fontisto } from '@expo/vector-icons';
+import Awatar from '../../components/Avatar';
+import * as ImagePicker from 'expo-image-picker';
+
 
 const { darkLight, link, black, primary } = Colors;
 
@@ -64,11 +67,10 @@ const CompanyProfileEditing = ({ route, navigation }) => {
   const [twitter, setTwitter] = useState('');
   const [website, setWebsite] = useState('');
   const [description, setDescription] = useState('');
-  const [NIP, setNIP] = useState('');
-  const [REGON, setREGON] = useState('');
-  const [KRS, setKRS] = useState('');
   const [adress, setAdress] = useState('');
   const [companyName, setCompanyName] = useState('');
+  const [photo, setPhoto] = useState('');
+  const [uri, setUri] = useState();
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
@@ -88,31 +90,6 @@ const CompanyProfileEditing = ({ route, navigation }) => {
     setMessage(message);
     setMessageType(type);
   };
-
-  function nipPatternValidation(name) {
-    const regex = new RegExp('^(PL[0-9]{10})+$');
-    return regex.test(name);
-  }
-
-  function regonPatternValidation(name) {
-    if (name.length === 9) {
-      const regex = new RegExp('^([0-9]{9})+$');
-      return regex.test(name);
-    } else if (name.length === 14) {
-      const regex = new RegExp('^([0-9]{14})+$');
-      return regex.test(name);
-    } else {
-      return false;
-    }
-  }
-
-  function krsPatternValidation(name) {
-    if (name === '' || name === null) {
-      return true;
-    }
-    const regex = new RegExp('^([0-9]{10})+$');
-    return regex.test(name);
-  }
 
   function facebookPatternValidation(name) {
     if (name === '' || name === null) {
@@ -152,71 +129,6 @@ const CompanyProfileEditing = ({ route, navigation }) => {
     return regex.test(name);
   }
 
-  function isNipValid(nip) {
-    const weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
-
-    function getOnlyDigits(value) {
-      return value.replace(/[^0-9]/gi, '');
-    }
-
-    nip = getOnlyDigits(nip);
-
-    let sum = 0;
-    for (let i = 0; i < weights.length; i++) {
-      sum += weights[i] * parseInt(nip[i]);
-    }
-
-    const checkSum = sum % 11;
-
-    if (checkSum !== parseInt(nip[9])) {
-      return false;
-    }
-
-    return true;
-  }
-
-  function isRegonValid(regon) {
-    const weights9 = [8, 9, 2, 3, 4, 5, 6, 7];
-    const weights14 = [2, 4, 8, 5, 0, 9, 7, 3, 6, 1, 2, 4, 8];
-
-    function getOnlyDigits(value) {
-      return value.replace(/[^0-9]/gi, '');
-    }
-
-    regon = getOnlyDigits(regon);
-
-    function isCorrect(value, weights) {
-      let sum = 0;
-
-      for (let i = 0; i < weights.length; i++) {
-        sum += weights[i] * parseInt(value[i]);
-      }
-
-      const checkValue = parseInt(value[weights.length]);
-      const checkSum = sum % 11;
-
-      if (checkSum === 10) {
-        return checkValue === 0;
-      }
-
-      return checkSum === checkValue;
-    }
-
-    let isValid;
-
-    if (regon.length === 9) {
-      isValid = isCorrect(regon, weights9);
-    } else {
-      isValid = isCorrect(regon, weights14);
-    }
-
-    if (!isValid) {
-      return false;
-    }
-
-    return true;
-  }
-
   const OpenLinkElement = ({ link, children1, children2, color }) => {
     const handlePress = useCallback(async () => {
       const supported = await Linking.canOpenURL('https://' + link);
@@ -252,6 +164,8 @@ const CompanyProfileEditing = ({ route, navigation }) => {
         headers: {},
       };
 
+      setUri(baseURL + '/public/api/company/getProfileImageByUsername/' + userInfo.username + '?date' + new Date());
+
       const fetchData = async () => {
         try {
           const result = await axios.request(config);
@@ -272,10 +186,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
     setDescription(companyProfile.description);
     setFacebook(companyProfile.facebook);
     setInstagram(companyProfile.instagram);
-    setKRS(companyProfile.krs);
     setLinkedin(companyProfile.linkedin);
-    setNIP(companyProfile.nip);
-    setREGON(companyProfile.regon);
     setTwitter(companyProfile.twitter);
     setWebsite(companyProfile.website);
   }, [companyProfile]);
@@ -287,33 +198,17 @@ const CompanyProfileEditing = ({ route, navigation }) => {
       !twitterPatternValidation(twitter) ||
       !instagramPatternValidation(instagram) ||
       !websitePatternValidation(website) ||
-      !linkedinPatternValidation(linkedin) 
+      !linkedinPatternValidation(linkedin)
     ) {
       handleMessage('Źle wpisano link', 'FAILED');
       return;
     }
-    if(!nipPatternValidation(NIP) || !isNipValid(NIP)) {
-      handleMessage('Źle wpisano NIP', 'FAILED');
-      return;
-    }
-    if(!regonPatternValidation(REGON) || !isRegonValid(REGON)) {
-      handleMessage('Źle wpisano REGON', 'FAILED');
-      return;
-    }
-    if(!krsPatternValidation(KRS)) {
-      handleMessage('Źle wpisano KRS', 'FAILED');
-      return;
-    }
-
     const response = await axios
       .put(
         baseURL + '/api/company/updateProfileByUsername/' + userInfo.username,
         {
           name: companyName,
           description: description,
-          nip: NIP,
-          regon: REGON,
-          krs: KRS,
           website: website,
           facebook: facebook,
           linkedin: linkedin,
@@ -338,6 +233,50 @@ const CompanyProfileEditing = ({ route, navigation }) => {
     if ((response.status = 200)) {
       handleMessage('Zapisano zmiany!', 'SUCCESS');
     }
+  }
+
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      console.log(result);
+      //setPhoto(result);
+      let localUri = result.uri;
+      setUri(localUri);
+      let filename = localUri.split('/').pop();
+
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+
+      let formData = new FormData();
+      formData.append('file', { uri: localUri, name: filename, type });
+
+      setPhoto(formData);
+    } else {
+      alert('Nie wybrano zdjęcia');
+    }
+  };
+
+  async function uploadProfileImage() {
+    const response = await axios
+      .post(baseURL + '/api/company/uploadProfileImage/' + userInfo.username, photo, {
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+      .then((res) => {
+        //setPhoto(res.data.photo.photo);
+      })
+      .catch((err) => {
+        handleMessage('Wystąpił błąd przy zmianie zdjęcia!','FAILED');
+        console.log(err.response);
+      });
   }
 
   function ListLinks() {
@@ -405,31 +344,14 @@ const CompanyProfileEditing = ({ route, navigation }) => {
       return <View></View>;
     }
   }
+
   return (
     <>
       {companyProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-            <Avatar resizeMode="contain" source={require('../../assets/img/avatar1.png')}></Avatar>
+          <Awatar avatar={uri}></Awatar>
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
-              <Pressable
-                onPress={() => {}}
-                style={({ pressed }) => [
-                  {
-                    backgroundColor: pressed ? 'lightgrey' : darkLight,
-                    marginTop: 0,
-                    padding: 7,
-                    borderRadius: 15,
-                    fontSize: 16,
-                    marginBottom: 10,
-                    alignItems: 'center',
-                    marginRight: 5,
-                    flexDirection: 'row',
-                  },
-                ]}
-              >
-                <AppText style={{ color: primary }}>Zmień zdjęcie profilowe</AppText>
-              </Pressable>
               <HeaderTextInput
                 multiline={true}
                 maxLength={100}
@@ -440,7 +362,25 @@ const CompanyProfileEditing = ({ route, navigation }) => {
               />
             </View>
           </View>
-
+          <Pressable
+            onPress={() => {pickImageAsync()}}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed ? 'lightgrey' : darkLight,
+                marginTop: 0,
+                padding: 7,
+                borderRadius: 15,
+                fontSize: 16,
+                marginBottom: 10,
+                alignItems: 'center',
+                marginRight: 5,
+                width: '50%',
+                alignSelf: 'center',
+              },
+            ]}
+          >
+            <AppText style={{ color: primary }}>Zmień zdjęcie profilowe</AppText>
+          </Pressable>
           <AppText style={styles.About}>O firmie:</AppText>
           <RegularTextInput
             maxLength={255}
@@ -466,48 +406,6 @@ const CompanyProfileEditing = ({ route, navigation }) => {
                 placeholder="Wpisz adres"
               />
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-              <AppText style={styles.ListHeader}>NIP:</AppText>
-              <AppTextInput
-                maxLength={10}
-                keyboardType="number-pad"
-                multiline={true}
-                style={{ flexWrap: 'wrap', width: '75%' }}
-                defaultValue={NIP}
-                onChangeText={(newText) => {
-                  setNIP(newText);
-                }}
-                placeholder="Wpisz NIP"
-              />
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-              <AppText style={styles.ListHeader}>REGON:</AppText>
-              <AppTextInput
-                maxLength={14}
-                keyboardType="number-pad"
-                multiline={true}
-                style={{ flexWrap: 'wrap', width: '75%' }}
-                defaultValue={REGON}
-                onChangeText={(newText) => {
-                  setREGON(newText);
-                }}
-                placeholder="Wpisz REGON"
-              />
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-              <AppText style={styles.ListHeader}>KRS:</AppText>
-              <AppTextInput
-                maxLength={10}
-                keyboardType="number-pad"
-                multiline={true}
-                style={{ flexWrap: 'wrap', width: '75%' }}
-                defaultValue={KRS}
-                onChangeText={(newText) => {
-                  setKRS(newText);
-                }}
-                placeholder="Wpisz numer KRS"
-              />
-            </View>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Line style={{ width: '90%' }} />
             </View>
@@ -529,6 +427,9 @@ const CompanyProfileEditing = ({ route, navigation }) => {
             <Pressable
               onPress={() => {
                 updateCompanyProfile();
+                if(photo) {
+                  uploadProfileImage();
+                }
               }}
               style={({ pressed }) => [
                 {

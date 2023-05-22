@@ -9,6 +9,7 @@ import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
 import Loading from '../../components/Loading';
 import { Fontisto } from '@expo/vector-icons';
+import Awatar from '../../components/Avatar';
 
 const { darkLight, link, black, primary } = Colors;
 
@@ -155,7 +156,7 @@ const CompanyProfile = ({ route, navigation }) => {
       {companyProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-            <Avatar resizeMode="contain" source={require('../../assets/img/avatar1.png')}></Avatar>
+          <Awatar avatar={baseURL + '/public/api/company/getProfileImageByUsername/' + userInfo.username + '?date' + new Date()}></Awatar>
             <View style={{ width: '65%', alignItems: 'flex-start', justifyContent: 'center' }}>
               <HeaderText style={{ width: '100%', marginLeft: 10, color: darkLight }} isLong={(companyProfile.name.length > 30)}>
                 {companyProfile.name}
