@@ -45,7 +45,8 @@ public class SecurityConfig {
     public static final String[] PUBLIC_PATHS = {
             "/auth/**",
             "/public/**",
-            "/docs/**"
+            "/docs/**",
+            "/ws/**"
     };
 
     @Value("classpath:pubkey.pem")
@@ -73,7 +74,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(Customizer.withDefaults())
+                .cors().configurationSource(corsConfigurationSource()).and()
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_PATHS).permitAll()
