@@ -4,12 +4,13 @@ import com.pz.designmatch.dto.request.CompanyProfileRequest;
 import com.pz.designmatch.dto.response.CompanyProfileResponse;
 import com.pz.designmatch.model.user.CompanyProfile;
 import com.pz.designmatch.repository.CompanyProfileRepository;
-import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.CompanyProfileService;
+import com.pz.designmatch.util.ImageUtils;
 import com.pz.designmatch.util.mapper.CompanyProfileMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -18,14 +19,11 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     private final CompanyProfileRepository companyProfileRepository;
     private final CompanyProfileMapper companyProfileMapper;
-    private final UserRepository userRepository;
 
     @Autowired
-    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileMapper companyProfileMapper,
-                                     UserRepository userRepository) {
+    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileMapper companyProfileMapper) {
         this.companyProfileRepository = companyProfileRepository;
         this.companyProfileMapper = companyProfileMapper;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -51,5 +49,24 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     public CompanyProfileResponse getCompanyProfileByUsername(String username) {
         return companyProfileMapper.mapToResponse(companyProfileRepository.findByUser_Username(username)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu firmy dla użytkownika " + username)));
+    }
+
+    @Override
+    public byte[] getProfileImageByUsername(String username) {
+        String imagePath = companyProfileRepository.findByUser_Username(username)
+                .map(CompanyProfile::getProfileImageUrl)
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
+
+        return ImageUtils.getImageFromPath(imagePath);
+    }
+
+    @Override
+    public void uploadProfileImage(String username, MultipartFile image) {
+        CompanyProfile companyProfile = companyProfileRepository.findByUser_Username(username)
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu firmy dla użytkownika " + username));
+        String imagePath = ImageUtils.generateImagePath(image);
+
+        companyProfile.setProfileImageUrl(imagePath);
+        companyProfileRepository.save(companyProfile);
     }
 }

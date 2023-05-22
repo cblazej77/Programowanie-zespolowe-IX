@@ -55,7 +55,6 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
 
-
     public CommissionResponse updateCommissionById(Long id, CommissionRequest commissionRequest) throws EntityNotFoundException {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
@@ -140,7 +139,7 @@ public class CommissionServiceImpl implements CommissionService {
     }
 
     @Transactional
-    public CommissionResponse deleteCommissionById(Long id) throws EntityNotFoundException{
+    public CommissionResponse deleteCommissionById(Long id) throws EntityNotFoundException {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
         commissionRepository.delete(existingCommission);

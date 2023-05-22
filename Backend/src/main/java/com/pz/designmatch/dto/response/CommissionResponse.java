@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.pz.designmatch.util.DefaultLocalDateTimeDeserializer;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,11 +16,9 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class CommissionResponse {
 
-    @NotEmpty
     @JsonProperty("id")
     private Long id;
 
-    //@NotEmpty zeby nie dodawać go pdoczas dodawania zlecenia
     @JsonProperty("client_username")
     private String clientUsername;
 
@@ -75,7 +74,7 @@ public class CommissionResponse {
     private Boolean isCompleted;
 
     @JsonCreator
-    public CommissionResponse(Long id, String clientUsername, String contractorUsername, String title,  String companyName, String description,
+    public CommissionResponse(@NotNull Long id, String clientUsername, String contractorUsername, String title, String companyName, String description,
                               LocalDateTime commissionedAt, LocalDate deadline, LocalDate completedAt, Set<String> level,
                               Set<String> location, Set<String> skills, Set<String> tags, Set<String> languages, Integer rate, Boolean isCompleted) {
         this.id = id;

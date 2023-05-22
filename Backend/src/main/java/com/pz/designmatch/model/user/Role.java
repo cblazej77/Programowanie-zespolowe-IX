@@ -20,10 +20,4 @@ public class Role {
 
     @Column(unique = true)
     private String name;
-
-    public static Role valueOf(String string) {
-        Role role = new Role();
-        role.setName(string);
-        return role;
-    }
 }

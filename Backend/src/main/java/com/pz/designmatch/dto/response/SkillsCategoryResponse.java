@@ -4,10 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Objects;
 
-public record SkillsCategoryResponse(@JsonProperty("name") String name, @JsonProperty("skills") List<String> skills) {
+public final class SkillsCategoryResponse {
 
-    @JsonCreator
+    @JsonProperty("name")
+    private final String name;
+
+    @JsonProperty("skills")
+    private final List<String> skills;
+
     public SkillsCategoryResponse(String name, List<String> skills) {
         this.name = name;
         this.skills = skills;

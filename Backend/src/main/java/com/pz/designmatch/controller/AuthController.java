@@ -93,14 +93,14 @@ public class AuthController {
     @GetMapping(path = "/decodeToken")
     public ResponseEntity<?> decodeToken(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.substring("Bearer ".length());
-         Jwt jwt = jwtDecoder.decode(token);
+        Jwt jwt = jwtDecoder.decode(token);
         String email = jwt.getClaimAsString("sub");
         String query = "SELECT username FROM users WHERE email = ?";
         String username = jdbcTemplate.queryForObject(query, String.class, email);
 
 
         //String email = JWTUtil.getLoggedUserEmail();
-        String role = JWTUtil.getRoleFromToken();
+        String role = com.pz.designmatch.util.JWTUtil.getRoleFromToken();
 
 
         Map<String, Object> responseJson = new HashMap<>();

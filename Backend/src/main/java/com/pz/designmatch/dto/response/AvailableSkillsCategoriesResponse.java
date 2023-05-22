@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Objects;
 
-public record AvailableSkillsCategoriesResponse(
-        @JsonProperty("categories") List<SkillsCategoryResponse> skillsCategoryResponseList) {
+public final class AvailableSkillsCategoriesResponse {
 
-    @JsonCreator
+    @JsonProperty("categories")
+    private final List<SkillsCategoryResponse> skillsCategoryResponseList;
+
+
     public AvailableSkillsCategoriesResponse(List<SkillsCategoryResponse> skillsCategoryResponseList) {
         this.skillsCategoryResponseList = skillsCategoryResponseList;
     }

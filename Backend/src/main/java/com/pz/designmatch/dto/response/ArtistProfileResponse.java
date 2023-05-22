@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pz.designmatch.dto.EducationDto;
 import com.pz.designmatch.dto.ExperienceDto;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
 @SuppressWarnings({"unused"})
 public class ArtistProfileResponse {
 
-    @NotEmpty
     @JsonProperty("id")
     private final Long id;
 
@@ -73,7 +73,7 @@ public class ArtistProfileResponse {
     private final String twitter;
 
     @JsonCreator
-    public ArtistProfileResponse(Long id, String username, String firstname, String lastname, String bio, String level,
+    public ArtistProfileResponse(@NotNull Long id, String username, String firstname, String lastname, String bio, String level,
                                  String location, Set<String> skills, Set<String> tags, Set<String> languages,
                                  Set<EducationDto> education, Set<ExperienceDto> experience, String website, String facebook,
                                  String linkedin, String instagram, String dribble, String pinterest, String twitter) {

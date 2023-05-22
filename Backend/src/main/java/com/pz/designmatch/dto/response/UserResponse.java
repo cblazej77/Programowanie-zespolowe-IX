@@ -13,7 +13,6 @@ public class UserResponse {
     @JsonProperty("username")
     private String username;
 
-    @JsonCreator
     public UserResponse(String email, String username) {
         this.email = email;
         this.username = username;

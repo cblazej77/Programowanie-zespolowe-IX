@@ -64,7 +64,7 @@ public class CommissionController {
     }
 
     @DeleteMapping(value = "/public/api/deleteCommission/{id}", produces = apiVersionAccept)
-    public ResponseEntity<String> deleteCommission(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteCommission(@PathVariable("id") Long id) {
         commissionService.deleteCommissionById(id);
         return ResponseEntity.ok().body("Zlecenie usunięte");
     }

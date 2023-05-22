@@ -31,13 +31,6 @@ public class ArtistProfile {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-    @Column(name = "profile_banner_url")
-    private String profileBannerUrl;
-
-//    @ElementCollection
-//    @CollectionTable(name = "portfolio_images", joinColumns = @JoinColumn(name = "user_profile_id"))
-//    @Column(name = "portfolio_image_url")
-//    private Set<String> portfolioImagesUrls;
 
     @Enumerated(EnumType.STRING)
     private Level level;

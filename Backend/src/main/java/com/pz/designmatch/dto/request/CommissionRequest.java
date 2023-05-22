@@ -4,13 +4,10 @@ package com.pz.designmatch.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.pz.designmatch.util.DefaultLocalDateTimeDeserializer;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -21,7 +18,6 @@ public class CommissionRequest {
     @JsonProperty("client_username")
     private String clientUsername;
 
-    //@NotEmpty zeby nie dodawać go pdoczas dodawania zlecenia
     @JsonProperty("contractor_username")
     private String contractorUsername;
 

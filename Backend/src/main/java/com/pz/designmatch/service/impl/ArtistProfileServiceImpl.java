@@ -3,15 +3,18 @@ package com.pz.designmatch.service.impl;
 import com.pz.designmatch.dto.request.ArtistFilterRequest;
 import com.pz.designmatch.dto.request.ArtistProfileRequest;
 import com.pz.designmatch.dto.response.ArtistProfileResponse;
+import com.pz.designmatch.dto.response.PortfolioEntryResponse;
 import com.pz.designmatch.dto.response.ShortArtistProfileResponse;
 import com.pz.designmatch.model.enums.*;
 import com.pz.designmatch.model.user.ArtistProfile;
+import com.pz.designmatch.model.user.PortfolioEntry;
 import com.pz.designmatch.repository.ArtistProfileRepository;
 import com.pz.designmatch.repository.EducationRepository;
 import com.pz.designmatch.repository.ExperienceRepository;
-import com.pz.designmatch.repository.UserRepository;
+import com.pz.designmatch.repository.PortfolioImagesRepository;
 import com.pz.designmatch.service.ArtistProfileService;
 import com.pz.designmatch.specification.ArtistProfileSpecification;
+import com.pz.designmatch.util.ImageUtils;
 import com.pz.designmatch.util.mapper.ArtistProfileMapper;
 import com.pz.designmatch.util.mapper.EducationMapper;
 import com.pz.designmatch.util.mapper.ExperienceMapper;
@@ -19,9 +22,11 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,19 +39,19 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
     private final ArtistProfileRepository artistProfileRepository;
     private final ExperienceRepository experienceRepository;
     private final EducationRepository educationRepository;
-    private final UserRepository userRepository;
+    private final PortfolioImagesRepository portfolioImagesRepository;
     private final ArtistProfileMapper artistProfileMapper;
     private final EducationMapper educationMapper;
     private final ExperienceMapper experienceMapper;
 
     @Autowired
     public ArtistProfileServiceImpl(ArtistProfileRepository artistProfileRepository, ExperienceRepository experienceRepository,
-                                    EducationRepository educationRepository, UserRepository userRepository, ArtistProfileMapper artistProfileMapper,
+                                    EducationRepository educationRepository, PortfolioImagesRepository portfolioImagesRepository, ArtistProfileMapper artistProfileMapper,
                                     EducationMapper educationMapper, ExperienceMapper experienceMapper) {
         this.artistProfileRepository = artistProfileRepository;
         this.experienceRepository = experienceRepository;
         this.educationRepository = educationRepository;
-        this.userRepository = userRepository;
+        this.portfolioImagesRepository = portfolioImagesRepository;
         this.artistProfileMapper = artistProfileMapper;
         this.educationMapper = educationMapper;
         this.experienceMapper = experienceMapper;
@@ -64,6 +69,40 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
         return artistProfileRepository.findByUser_Username(username)
                 .map(artistProfileMapper::mapToShortDto)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
+    }
+
+    public byte[] getProfileImageByUsername(String username) {
+        String imagePath = artistProfileRepository.findByUser_Username(username)
+                .map(ArtistProfile::getProfileImageUrl)
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
+
+        return ImageUtils.getImageFromPath(imagePath);
+    }
+
+    public byte[] getPortfolioImage(String username, Long imageId) {
+        ArtistProfile artistProfile = artistProfileRepository.findByUser_Username(username)
+                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono profilu artysty dla użytkownika " + username));
+
+        PortfolioEntry portfolioEntry = portfolioImagesRepository.findById(imageId)
+                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono zdjęcia o id " + imageId));
+
+        if (!portfolioEntry.getArtistProfile().equals(artistProfile)) {
+            throw new IllegalArgumentException("Zdjęcie nie należy do użytkownika " + username);
+        }
+
+        String imagePath = portfolioEntry.getImageUrl();
+        return ImageUtils.getImageFromPath(imagePath);
+    }
+
+    public Page<PortfolioEntryResponse> getPortfolioEntries(String username, Pageable pageable) {
+        ArtistProfile artistProfile = artistProfileRepository.findByUser_Username(username)
+                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono profilu artysty dla użytkownika " + username));
+
+        Page<PortfolioEntry> portfolioEntries = portfolioImagesRepository.findAllByArtistProfile(artistProfile, pageable);
+
+        return new PageImpl<>(portfolioEntries.stream()
+                .map(portfolioEntry -> new PortfolioEntryResponse(portfolioEntry.getId(), portfolioEntry.getName(), portfolioEntry.getDescription()))
+                .collect(Collectors.toList()), portfolioEntries.getPageable(), portfolioEntries.getTotalElements());
     }
 
     @Override
@@ -174,5 +213,23 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
 
         Page<ArtistProfile> artistProfilePage = artistProfileRepository.findAll(specification, pageable);
         return artistProfilePage.map(artistProfileMapper::mapToShortDto);
+    }
+
+    public void uploadProfileImage(String username, MultipartFile image) {
+        ArtistProfile artistProfile = artistProfileRepository.findByUser_Username(username)
+                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono profilu artysty dla użytkownika " + username));
+        String imagePath = ImageUtils.generateImagePath(image);
+
+        artistProfile.setProfileImageUrl(imagePath);
+        artistProfileRepository.save(artistProfile);
+    }
+
+    public void uploadPortfolioImage(String username, MultipartFile image, String name, String description) {
+        ArtistProfile artistProfile = artistProfileRepository.findByUser_Username(username)
+                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono profilu artysty dla użytkownika " + username));
+        String imagePath = ImageUtils.generateImagePath(image);
+
+        PortfolioEntry newPortfolioImage = new PortfolioEntry(artistProfile, imagePath, name, description);
+        portfolioImagesRepository.save(newPortfolioImage);
     }
 }

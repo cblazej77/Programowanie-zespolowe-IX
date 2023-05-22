@@ -3,11 +3,11 @@ package com.pz.designmatch.dto.response;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 public class CompanyProfileResponse {
 
-    @NotEmpty
     @JsonProperty("id")
     private Long id;
 
@@ -52,7 +52,7 @@ public class CompanyProfileResponse {
     private String instagram;
 
     @JsonCreator
-    public CompanyProfileResponse(Long id, String username, String name, String description, String address, String nip, String regon,
+    public CompanyProfileResponse(@NotNull Long id, String username, String name, String description, String address, String nip, String regon,
                                   String krs, String website, String facebook, String linkedin, String twitter, String instagram) {
         this.id = id;
         this.username = username;

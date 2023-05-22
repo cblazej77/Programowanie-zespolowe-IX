@@ -27,9 +27,6 @@ public class CompanyProfile {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-    @Column(name = "profile_banner_url")
-    private String profileBannerUrl;
-
     private String address;
 
     @Column(unique = true)
