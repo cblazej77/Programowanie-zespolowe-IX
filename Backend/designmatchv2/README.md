@@ -3,7 +3,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
-
+##https://www.youtube.com/watch?v=0qvT3EujjWw
+##https://github.com/amrkhaledccd/One-to-One-WebSockets-Chat
+##https://medium.com/javarevisited/building-persistable-one-to-one-chat-application-using-spring-boot-and-websockets-303ba5d30bb0
 In the project directory, you can run:
 
 ### `npm start`
