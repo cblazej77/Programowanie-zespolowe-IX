@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { COLORS } from './Colors';
 import { Button } from '../pages/Profile/ProfileElements';
 
-const { primary } = COLORS;
+const { primary, darkLight } = COLORS;
 
 const Background = styled.div`
   width: 100%;
@@ -84,15 +84,19 @@ const ModalConfirm = ({ showModal, setShowModal, navigateGo, setNavigateGo }) =>
     [keyPress]
   );
 
+  const closeModalClick = () => {
+    setShowModal(false);
+  }
 
   return (
     <>
       {showModal ? (
         <Background onClick={closeModal} ref={modalRef}>
-          <ModalWrapper showModal={showModal}>
-            <Label>Pomyślnie, Zarejestrowano użytkownika,</Label>
-            <label>Aby dokończyć rejestrację potwierdz email przed zalogowaniem</label>
-            <Button onClick={closeModal} ref={modalRef}>Rozumiem</Button>
+          <ModalWrapper showModal={showModal} style={{ padding: '1rem' }}>
+            <div style={{ textAlign: 'center', height: '100%', fontSize: '2rem', color: darkLight }}>
+              Pomyślnie, Zarejestrowano użytkownika. Aby dokończyć rejestrację potwierdz email przed zalogowaniem.
+            </div>
+            <Button onClick={closeModalClick} ref={modalRef}>Rozumiem</Button>
           </ModalWrapper >
         </Background>
       ) : null}

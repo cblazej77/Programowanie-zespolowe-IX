@@ -30,7 +30,7 @@ function LoginForm() {
   const [KRS, setKRS] = useState('');
   const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
-  const [showModal, setShowModal] = useState(false);//
+  const [showModal, setShowModal] = useState(true);//
   const [navigateGo, setNavigateGo] = useState(false);//po zamknięciu modala przekierowywuje na stronę główną
   const [submitting, setSubmitting] = useState(false);
   const [checkRegexEmail, setCheckRegexEmail] = useState(true);
@@ -343,6 +343,10 @@ function LoginForm() {
   const handleArtistOption = () => {
     setUserRole("ARTIST");
   };
+
+  const closeModal = () => {
+    setShowModal(false);
+  }
 
   return (
     <>
