@@ -472,6 +472,37 @@ export const ModalBackground = styled.div`
 export const ModalWrapper = styled.div`
     width: 100%;
     height: 75%;
+    animation: modalFadeIn 0.5s ease;
+
+    @keyframes modalFadeIn {
+        from {
+        opacity: 0;
+        transform: translateY(-100px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
+    background: ${primary};
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+`;
+
+export const FilterModalWrapper = styled.div`
+    width: 100%;
+    height: 75%;
+    animation: modalFilter 0.5s ease;
+
+    @keyframes modalFilter {
+        from {
+        opacity: 0;
+        transform: translateY(200px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
     background: ${primary};
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
 `;

@@ -80,6 +80,12 @@ function CardItem(props) {
     }
   };
 
+  const handleAvatarError = (e, fallbackSrc) => {
+    if (e.target.src !== fallbackSrc) {
+      e.target.src = fallbackSrc;
+    }
+  };
+
   const PhotoModal = ({ showModal }) => {
     return (
       <>
@@ -105,7 +111,7 @@ function CardItem(props) {
           <SimpleInfoContainer>
             <CardAvatar onClick={handleGoProfile}
               src={'/public/api/artist/getProfileImageByUsername/' + props.username}
-              onError={(e) => handleImageError(e, "/assets/cards/defaultavatar.png")}
+              onError={(e) => handleAvatarError(e, "/assets/cards/defaultavatar.png")}
             />
             <LevelText>{props.level}</LevelText>
             <NameText>

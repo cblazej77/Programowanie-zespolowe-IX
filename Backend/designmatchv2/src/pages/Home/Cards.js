@@ -29,6 +29,7 @@ import {
   LineForm,
   ModalScroll,
   CheckBoxContainter,
+  FilterModalWrapper,
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
@@ -376,7 +377,7 @@ const Cards = () => {
       <>
         {showModal && (
           <ModalBackground onClick={onCloseModal}>
-            <ModalWrapper onClick={handleWrapperClick}>
+            <FilterModalWrapper onClick={handleWrapperClick}>
               <ModalIconContainer onClick={onCloseModal}>
                 <FontAwesomeIcon style={{ color: darkLight }} icon={faChevronDown} />
               </ModalIconContainer>
@@ -431,7 +432,7 @@ const Cards = () => {
                   </>
                 )}
               </ModalScroll>
-            </ModalWrapper>
+            </FilterModalWrapper>
           </ModalBackground>
         )}
       </>

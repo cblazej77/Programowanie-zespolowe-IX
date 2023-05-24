@@ -193,6 +193,11 @@ export const Button = styled(Link)`
     );
 `;
 
+export const AddCommissionButton = styled(Button)`
+    margin: 1rem;
+    width: 10rem;
+`;
+
 export const SmallButton = styled(Button)`
   width: 45%;
 `;
@@ -439,39 +444,51 @@ export const Bracket = styled.p`
 `;
 
 export const ModalBackground = styled.div`
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    left: 0;
-    top: 0;
-    background: rgba(255,255,255,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  min-height: 100vh;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background: rgba(255,255,255,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: auto;
 `;
 
+
 export const ModalWrapper = styled.div`
-    overflow-y: auto; 
-    width: 95rem;
-    height: 90%;
-    border-radius: 15px;
-    flex-direction: column;
-    background: ${primary};
-    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
-    display: flex;
-    padding: 2rem;
-    font-size: 1.5rem;
-    @media screen and (max-width: 100rem) {
-      width: 95%;
+  height: fit-content;
+  border-radius: 0px;
+  margin: 3rem 0 0 0;
+  border-radius: 15px;
+  width: 95rem;
+  flex-direction: column;
+  background: ${primary};
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+  display: flex;
+  padding: 2rem;
+  font-size: 1.5rem;
+  animation: modalFadeIn 0.5s ease;
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-100px);
     }
-    @media screen and (max-width: 1280px) {
-      font-size: 1.2rem;
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-    @media screen and (max-width: 960px) {
-      height: 85%;
-      bottom: 0;
-      position: fixed;
-    }
+  }
+  max-height: calc(100vh - 7rem); /* dostosowana maksymalna wysokość do dostępnej przestrzeni */
+  overflow-y: auto; /* dodaje pasek przewijania, jeśli zawartość jest zbyt duża */
+  @media screen and (max-width: 100rem) {
+    width: 95%;
+  }
+  @media screen and (max-width: 1280px) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const ModalTitle = styled.text`

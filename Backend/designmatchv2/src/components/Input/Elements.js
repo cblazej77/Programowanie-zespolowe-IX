@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { closeEye, openEye } from "../../assets/img/svg/SvgIcons";
+import { COLORS } from "../Colors";
+
+const { gray1, darkLight } = COLORS;
 
 export const LabelInput = styled.label`
   position: absolute;
@@ -65,10 +68,9 @@ export const NotButton = styled.div`
     display: inline;
     cursor: pointer;
     padding: 2px 5px;
-    &:hover
-    {
-        border-radius: 0 10px 10px 0;
-        background: lightgrey;
+    color: ${gray1};
+    &:hover{
+        color: ${darkLight};
     }
 `;
 

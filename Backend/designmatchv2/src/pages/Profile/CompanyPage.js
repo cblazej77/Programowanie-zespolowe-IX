@@ -4,6 +4,7 @@ import { COLORS } from '../../components/Colors';
 import axios from '../../api/axios';
 import {
   AboutMe,
+  AddCommissionButton,
   BoldLabel,
   Bracket,
   Bubble,
@@ -56,8 +57,9 @@ import {
 } from '../Home/CommisionsElements';
 import LoadingPage from '../LoadingPage';
 import { FiBriefcase, FiClock, FiMapPin } from 'react-icons/fi';
+import { FaTimes } from 'react-icons/fa';
 
-const { darkLight, gray1 } = COLORS;
+const { darkLight, gray1, secondary } = COLORS;
 
 const CompanyPage = () => {
   const [cities, setCities] = useState([]);
@@ -137,11 +139,14 @@ const CompanyPage = () => {
 
         const companyResponse = await axios.request({
           url: '/public/api/company/getProfileByUsername/' + decodeResponse.data.username,
+          headers: {
+            accept: 'application/json',
+          }
         });
 
         const commissionResponse = await axios.request({
           url: '/public/api/commission/getAllCommissionFirmByUsername/' + decodeResponse.data.username,
-          headers: {},
+          headers: { accept: 'application/json', },
         });
 
         const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
@@ -384,7 +389,7 @@ const CompanyPage = () => {
                           }));
                         }}
                       >
-                        {skill}
+                        {skill} <FaTimes />
                       </CommisionEditBubble>
                     ))}
                   </ModalBubbleContainer>
@@ -455,13 +460,18 @@ const CompanyPage = () => {
                     ))}
                   </ModalBubbleContainer>
                   <LineForm />
-                  <Button
-                    onClick={handleAddCommission}>
-                    Dodaj
-                  </Button>
                 </ModalColumn>
               </ModalBottomSection>
             </ModalWrapper>
+
+            <div style={{ width: '100%', justifyContent: 'center', display: 'flex' }}>
+              <AddCommissionButton onClick={handleAddCommission}>
+                Dodaj zlecenie
+              </AddCommissionButton>
+              <AddCommissionButton style={{ background: secondary }} onClick={closeModalEditClick}>
+                Anuluj
+              </AddCommissionButton>
+            </div>
           </ModalBackground>
         )}
       </>
@@ -539,10 +549,12 @@ const CompanyPage = () => {
                       <CommisionBubble key={index}>{tag}</CommisionBubble>
                     ))}
                   </ModalBubbleContainer>
-                  <Button onClick={handleDeleteCommission} style={{ marginTop: '4rem' }}>Usuń zlecenie</Button>
                 </ModalColumn>
               </ModalBottomSection>
             </ModalWrapper>
+            <AddCommissionButton onClick={handleDeleteCommission}>
+              Usuń zlecenie
+            </AddCommissionButton>
           </ModalBackground>
         )}
       </>
@@ -644,21 +656,28 @@ const CompanyPage = () => {
           </TopSection>
           <DownSection>
             <TitleText>Zlecenia</TitleText>
-            {CommisionsData.map((com, indexC) => (
-              <CommisionElement
-                key={indexC}
-                title={com.title}
-                description={com.description}
-                rate={com.rate}
-                deadline={com.deadline}
-                level={com.level}
-                location={com.location}
-                languages={com.languages}
-                tags={com.tags}
-                skills={com.skills}
-                id={com.id}
-              />
-            ))}
+            {CommisionsData.length > 0 ? (
+              CommisionsData.map((com, indexC) => (
+                <CommisionElement
+                  key={indexC}
+                  title={com.title}
+                  description={com.description}
+                  rate={com.rate}
+                  deadline={com.deadline}
+                  level={com.level}
+                  location={com.location}
+                  languages={com.languages}
+                  tags={com.tags}
+                  skills={com.skills}
+                  id={com.id}
+                />
+              ))
+
+            ) : (
+              <CommisionCard style={{ alignItems: 'center', cursor: 'default' }}>
+                <text style={{ color: gray1, fontSize: '1.2rem' }}>Firma nie posiada obecnie żadnych zleceń</text>
+              </CommisionCard>
+            )}
           </DownSection>
           <ModalEdit showModalEdit={showModalEdit} />
           <Modal showModal={showModal} data={modalData} />
