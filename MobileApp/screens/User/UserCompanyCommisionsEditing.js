@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Pressable, SafeAreaView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Pressable, SafeAreaView, Alert } from 'react-native';
 import {
   HeaderText,
   HeaderTextInput,
@@ -25,7 +25,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CommisionElement } from '../../components/CommisionElement';
 import * as SecureStore from 'expo-secure-store';
 
-const { black, primary, grey, darkLight } = Colors;
+const { black, primary, grey, darkLight, white } = Colors;
 
 const generateBoxShadowStyle = (
   xOffset,
@@ -54,60 +54,7 @@ async function getValueFor(key) {
     alert('Nie uzyskano danych z klucza: ' + key);
   }
   return result;
-};
-
-// const commisionsData = [
-//   {
-//     id: 1,
-//     title: 'Projekt logo dla firmy produkującej kosmetyki naturalne',
-//     description:
-//       'Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości',
-//     stawka: 2000,
-//     deadline: '2 tyg.',
-//     level: ['Mid'],
-//     location: ['Zdalnie'],
-//     tags: ['Design logo', 'Kosmetyki', 'Ekologia'],
-//     skills: ['Maskotka'],
-//     languages: ['Polski', 'Angielski'],
-//   },
-//   {
-//     id: 2,
-//     title: 'Projekt opakowań dla nowej marki herbat ekologicznych',
-//     description:
-//       'Szukamy doświadczonego projektanta graficznego, który zaprojektuje dla nas opakowania do naszych herbat ekologicznych. Zależy nam na kreatywnym podejściu, które pozwoli wyróżnić nasze produkty na rynku. Oferujemy konkurencyjne wynagrodzenie oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.',
-//     stawka: 3000,
-//     deadline: '3 tyg.',
-//     level: ['Senior'],
-//     location: ['Zdalnie'],
-//     tags: ['Design opakowań', 'Herbaty', 'Ekologia'],
-//     skills: ['Maskotka'],
-//     languages: ['Polski', 'Angielski'],
-//   },
-//   {
-//     id: 3,
-//     title: 'Projekt plakatu promującego wystawę sztuki nowoczesnej',
-//     description:
-//       'Jesteśmy galerią sztuki i poszukujemy projektanta graficznego, który zaprojektuje dla nas plakat promujący zbliżającą się wystawę sztuki nowoczesnej. Zależy nam na ciekawym i oryginalnym projekcie, który przyciągnie uwagę potencjalnych zwiedzających. Oferujemy dobrą stawkę oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.',
-//     stawka: 2500,
-//     deadline: '2 tyg.',
-//     level: ['Junior', 'Mid', 'Senior'],
-//     location: ['Bydgoszcz', 'Torun', 'Warszawa', 'Zdalnie'],
-//     tags: [
-//       'Design plakatu',
-//       'Sztuka',
-//       'Wystawa',
-//       'Sztukaaaaaa',
-//       'Design plakatu',
-//       'Sztuka',
-//       'Wystawa',
-//       'Design plakatu',
-//       'Sztuka',
-//       'Wystawa',
-//     ],
-//     skills: ['Maskotka'],
-//     languages: ['Polski', 'Angielski'],
-//   },
-// ];
+}
 
 const CompanyCommisionsEditing = ({ route, navigation }) => {
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
@@ -118,6 +65,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [userInfo, setUserInfo] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isModalVisible, setisModalVisible] = useState(false);
+  const [contractorModalVisible, setContractorModalVisible] = useState(false);
   const [tagsModalVisible, setTagsModalVisible] = useState(false);
   const [skillsModalVisible, setSkillsModalVisible] = useState(false);
   const [languagesModalVisible, setLanguagesModalVisible] = useState(false);
@@ -127,6 +75,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [message, setMessage] = useState();
   const [messageType, setMessageType] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [commisionToUpdate, setCommisionToUpdate] = useState('');
 
   //available data from server
   const [availableLocations, setAvailableLocations] = useState([]);
@@ -140,7 +89,6 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [skillsToAdd, setSkillsToAdd] = useState([]);
   const [languagesToAdd, setLanguagesToAdd] = useState([]);
   const [locationsToAdd, setLocationsToAdd] = useState([]);
-  
 
   //objects added to sended JSON
   const [id, setId] = useState(0);
@@ -153,6 +101,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [languages, setLanguages] = useState([]);
   const [levels, setLevels] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [contractorUsername, setContractorUsername] = useState('');
 
   const handleMessage = (message, type = 'FAILED') => {
     setMessage(message);
@@ -162,7 +111,6 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const toggleRefresh = () => {
     setRefresh(!refresh);
   };
-
 
   //handling hooks
 
@@ -344,7 +292,9 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     setSkills([]);
     setTags([]);
     setRate(0);
-    //setModalCommision('');
+    setContractorUsername('');
+    setCommisionToUpdate('');
+    setMessage('');
   }
 
   // Adding temp values to objects creating commision
@@ -376,20 +326,20 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     handleClearLocationsToAdd();
   }
 
-  // function saveModalCommision() {
-  //   console.log(modalCommision);
-  //   modalCommision.id = id;
-  //   modalCommision.title = title;
-  //   modalCommision.deadline = deadline;
-  //   modalCommision.description = description;
-  //   modalCommision.level = levels;
-  //   modalCommision.location = locations;
-  //   modalCommision.languages = languages;
-  //   modalCommision.skills = skills;
-  //   modalCommision.tags = tags;
-  //   modalCommision.stawka = stake;
-  //   console.log(modalCommision);
-  // }
+  function createCommisionToUpdate() {
+    console.log(commisionToUpdate);
+    commisionToUpdate.id = id;
+    commisionToUpdate.title = title;
+    commisionToUpdate.deadline = deadline;
+    commisionToUpdate.description = description;
+    commisionToUpdate.level = levels;
+    commisionToUpdate.location = locations;
+    commisionToUpdate.languages = languages;
+    commisionToUpdate.skills = skills;
+    commisionToUpdate.tags = tags;
+    commisionToUpdate.rate = rate;
+    console.log(commisionToUpdate);
+  }
 
   function setModalCommision(id, title, description, deadline, level, location, languages, skills, tags, rate) {
     console.log({
@@ -418,18 +368,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
 
   function saveCommision() {
     if (!isNewElement) {
-      handleChangeCommisionsElement(
-        id,
-        title,
-        description,
-        deadline,
-        levels,
-        locations,
-        skills,
-        tags,
-        languages,
-        rate,
-      );
+      handleChangeCommisionsElement(id, title, description, deadline, levels, locations, skills, tags, languages, rate);
     } else {
       handleAddCommisionsElement(id, title, description, deadline, levels, locations, skills, tags, languages, rate);
     }
@@ -494,7 +433,6 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     getAccessToken();
     getUserInfo();
   }, []);
-
 
   //API handling
 
@@ -583,24 +521,42 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     }
   }, [userInfo, refresh]);
 
-  async function apiCommissionUpdate() {
+  async function deleteCommision(id) {
+    const response = await axios.delete(
+      baseURL + '/public/api/deleteCommission/' + id.toString(),
+      {
+        params: { id: id },
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      }
+    ).catch((error) => {
+      Alert("Nie udało się usunąć zlecenia");
+      console.log(error);
+    });
+  }
 
-    const response = await axios.put(
-        baseURL + '/api/commission/updateById/' + id.toString(),
+  async function apiCommissionUpdate() {
+    const response = await axios
+      .put(
+        baseURL + '/api/commission/updateById/' + commisionToUpdate.id.toString(),
         {
           client_username: userInfo.username,
-          title: title,
-          description: description,
-          deadline: deadline,
-          level: levels,
-          location: locations,
-          skills: skills,
-          tags: tags,
-          languages: languages,
-          rate: rate
+          contractor_username: contractorUsername,
+          title: commisionToUpdate.title,
+          description: commisionToUpdate.description,
+          deadline: commisionToUpdate.deadline,
+          level: commisionToUpdate.levels,
+          location: commisionToUpdate.locations,
+          skills: commisionToUpdate.skills,
+          tags: commisionToUpdate.tags,
+          languages: commisionToUpdate.languages,
+          rate: commisionToUpdate.rate,
         },
         {
-          params: { id: id},
+          params: { id: commisionToUpdate.id },
           headers: {
             accept: 'application/json',
             Authorization: 'Bearer ' + token,
@@ -618,11 +574,11 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
       clear();
       setisModalVisible(false);
     }
-  };
+  }
 
   async function apiCommissionCreate() {
-
-    const response = await axios.post(
+    const response = await axios
+      .post(
         baseURL + '/api/commission/create',
         {
           client_username: userInfo.username,
@@ -634,7 +590,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
           skills: skills,
           tags: tags,
           languages: languages,
-          rate: rate
+          rate: rate,
         },
         {
           headers: {
@@ -655,7 +611,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
       setisModalVisible(false);
       toggleRefresh();
     }
-  };
+  }
 
   //listing bubbles
 
@@ -899,29 +855,90 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     }
   }
 
-  
-
-  // useEffect(() => {
-  //   if (modalCommision) {
-  //     setId(modalCommision.id);
-  //     setTitle(modalCommision.title);
-  //     setDescription(modalCommision.description);
-  //     setDeadline(modalCommision.deadline);
-  //     setLocations(modalCommision.location);
-  //     setLevels(modalCommision.level);
-  //     setLanguages(modalCommision.languages);
-  //     setTags(modalCommision.tags);
-  //     setSkills(modalCommision.skills);
-  //     setStake(parseInt(modalCommision.stawka));
-  //   }
-  // }, [modalCommision]);
-
   return (
     <SafeAreaView style={{ backgroundColor: primary, justifyContent: 'center', height: '100%' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
+          {contractorModalVisible && (
+            <Modal
+              isVisible={contractorModalVisible}
+              onBackdropPress={() => setContractorModalVisible(false)}
+              onSwipeComplete={() => setContractorModalVisible(false)}
+              swipeDirection="right"
+              animationInTiming={500}
+              animationOutTiming={500}
+              hideModalContentWhileAnimating={true}
+            >
+              <View
+                style={{
+                  backgroundColor: primary,
+                  borderRadius: 20,
+                  padding: 15,
+                  alignItems: 'center',
+                  maxWidth: '100%',
+                  width: '90%',
+                  alignSelf: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    marginBottom: 15,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <RegularText style={{ color: black }}>Dodaj zleceniobiorcę dla: </RegularText>
+                  <RegularText>{commisionToUpdate.title}</RegularText>
+                </View>
+                <View style={{ marginBottom: 10 }}>
+                  <RegularText>Nazwa użytkownika zleceniobiorcy:</RegularText>
+                  <RegularTextInput
+                    maxLength={40}
+                    style={{ color: darkLight, textAlign: 'center' }}
+                    value={contractorUsername}
+                    onChangeText={setContractorUsername}
+                    placeholder="Wpisz zleceniobiorcę"
+                  />
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Pressable
+                    onPress={() => {
+                      apiCommissionUpdate();
+                      setContractorModalVisible(false);
+                      clear();
+
+                    }}
+                    style={({ pressed }) => [
+                      {
+                        backgroundColor: pressed ? 'lightgrey' : darkLight,
+                      },
+                      styles.ModalButton,
+                    ]}
+                  >
+                    <AppText style={{ color: white }}>Dodaj</AppText>
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      setContractorModalVisible(false);
+                      clear();
+                    }}
+                    style={({ pressed }) => [
+                      {
+                        backgroundColor: pressed ? 'lightgrey' : darkLight,
+                      },
+                      styles.ModalButton,
+                    ]}
+                  >
+                    <AppText style={{ color: white }}>Anuluj</AppText>
+                  </Pressable>
+                </View>
+              </View>
+            </Modal>
+          )}
           {isModalVisible ? (
-            <View style={{ maxHeight: '90%' }}>
+            <View style={{ height: '100%' }}>
               <View style={[styles.centeredView]}>
                 <View style={styles.modalView}>
                   <HeaderTextInput
@@ -1230,7 +1247,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                     <Pressable
                       onPress={() => {
                         //saveCommision();
-                        if(isNewElement) {
+                        if (isNewElement) {
                           apiCommissionCreate();
                         } else {
                           apiCommissionUpdate();
@@ -1295,6 +1312,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                       key={indexC}
                     >
                       <CommisionElement
+                        name={cms.company_name}
                         key={indexC}
                         title={cms.title}
                         description={cms.description}
@@ -1305,24 +1323,49 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                         tags={cms.tags}
                       />
                     </TouchableOpacity>
-                    <Pressable
-                      onPress={() => {
-                        handleDeleteCommisionsElement(cms.id);
-                      }}
-                      style={({ pressed }) => [
-                        {
-                          backgroundColor: pressed ? 'lightgrey' : darkLight,
-                          padding: 5,
-                          borderRadius: 15,
-                          fontSize: 16,
-                          marginBottom: 10,
-                          alignItems: 'center',
-                          flexDirection: 'row',
-                        },
-                      ]}
-                    >
-                      <AppText style={{ color: 'white' }}>Usuń</AppText>
-                    </Pressable>
+                    <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-evenly', width: '90%' }}>
+                      <Pressable
+                        onPress={() => {
+                          setCommisionToUpdate(cms);
+                          setContractorModalVisible(true);
+                        }}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                            padding: 5,
+                            paddingHorizontal: 7,
+                            borderRadius: 15,
+                            fontSize: 16,
+                            marginBottom: 10,
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          },
+                        ]}
+                        disabled={cms.contractor_username !== null}
+                      >
+                        <AppText style={{ color: 'white' }}>Dodaj zleceniobiorcę</AppText>
+                      </Pressable>
+                      <Pressable
+                        onPress={() => {
+                          handleDeleteCommisionsElement(cms.id);
+                          deleteCommision(cms.id);
+                        }}
+                        style={({ pressed }) => [
+                          {
+                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                            padding: 5,
+                            paddingHorizontal: 7,
+                            borderRadius: 15,
+                            fontSize: 16,
+                            marginBottom: 10,
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          },
+                        ]}
+                      >
+                        <AppText style={{ color: 'white' }}>Usuń</AppText>
+                      </Pressable>
+                    </View>
                     <Line style={{ width: '90%', height: 1 }} />
                   </View>
                 ))}
@@ -1367,8 +1410,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                   alignContent: 'center',
                   marginBottom: 15,
                 }}
-              >
-              </View>
+              ></View>
             </View>
           )}
         </View>
@@ -1384,14 +1426,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
     width: '100%',
   },
   modalView: {
     width: '100%',
-    margin: 10,
     backgroundColor: primary,
-    borderRadius: 20,
     padding: 15,
     alignItems: 'center',
     shadowColor: '#000',

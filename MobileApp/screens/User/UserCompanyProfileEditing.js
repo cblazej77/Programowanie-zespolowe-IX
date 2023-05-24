@@ -244,7 +244,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
     if (!result.canceled) {
       console.log(result);
       //setPhoto(result);
-      let localUri = result.uri;
+      let localUri = result.assets[0].uri;
       setUri(localUri);
       let filename = localUri.split('/').pop();
 

@@ -1,74 +1,175 @@
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, View, ScrollView, Image } from 'react-native';
 import React from 'react';
+import { useState, useEffect } from 'react';
+import Modal from 'react-native-modal';
+import axios from 'axios';
+import { default as baseURL } from '../../components/AxiosAuth';
+import Loading from '../../components/Loading';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { HeaderText, Colors, RegularText, Line } from '../../components/styles';
+import * as SecureStore from 'expo-secure-store';
 
-const DATA_images = [
-    {
-        id: "1",
-        image: "#2b5057"
-    },
-    {
-        id: "2",
-        image: "#aad618"
-    },
-    {
-        id: "3",
-        image: "#b79d94"
-    },
-    {
-        id: "4",
-        image: "#5825dc"
-    },
-    {
-        id: "5",
-        image: "#5c7be9"
-    },
-    {
-        id: "6",
-        image: "#4cf8c2"
-    },
-    {
-        id: "7",
-        image: "#8fd075"
-    },
-    {
-        id: "8",
-        image: "#ab6ea6"
-    },
-    {
-        id: "9",
-        image: "#3e18f5"
-    },
-    {
-        id: "10",
-        image: "#f7a9ac"
-    },
+const { black, primary, gray, darkLight } = Colors;
 
-];
-
-const Gallery = ({ data, input, setInput }) => {
-    return (
-        <FlatList
-            style={{ margin: 2 }}
-            numColumns={2}
-            columnWrapperStyle={{ flex: 1, justifyContent: "space-evenly" }}
-            data={DATA_images}
-            nestedScrollEnabled={true}
-            keyExtractor={(item, index) => index}
-            ItemSeparatorComponent={<View style={{ width: "100%", height: 2 }} />}
-            renderItem={({ item }) => {
-                return (
-                    <View style={{
-                        backgroundColor: item.image,
-                        width: "49%",
-                        height: 100,
-                    }} />
-                )
-            }}>
-
-        </FlatList>
-    )
+async function getValueFor(key) {
+  let result = await SecureStore.getItemAsync(key);
+  if (!result) {
+    alert('Nie uzyskano danych z klucza: ' + key);
+  }
+  return result;
 }
 
-export default Gallery
+const Gallery = () => {
+  const [entries, setEntries] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState([]);
+  const [token, setToken] = useState('');
+  const [userInfo, setUserInfo] = useState('');
 
-const styles = StyleSheet.create({})
+  async function getAccessToken() {
+    const t = await getValueFor('accessToken');
+    setToken(t);
+  }
+
+  async function getUserInfo() {
+    const u = await getValueFor('user');
+    setUserInfo(JSON.parse(u));
+  }
+
+  useEffect(() => {
+    getAccessToken();
+    getUserInfo();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const portfolioEntriesResponse = await axios.request(
+          baseURL + '/public/api/artist/getPortfolioEntries/' + userInfo.username,
+          {
+            params: { page: 0, size: 10 },
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+          },
+        );
+        setEntries(portfolioEntriesResponse.data.content);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(entries);
+  }, [entries])
+
+  const ModalOpen = (data) => {
+    console.log(data);
+    setModalData(data);
+    setShowModal(true);
+  };
+
+  const ModalClose = () => {
+    setModalData([]);
+    setShowModal(false);
+  };
+
+  return (
+    <View style={{ backgroundColor: primary }}>
+      {entries ? (
+        <View style={{ backgroundColor: primary, height: '100%', width: '100%' }}>
+          {/* <ScrollView style={{height: '100%', width: '100%'}}> */}
+            <View style={{height: '100%', width: '100%'}}>
+            {entries.map((entry, index) => (
+              <View style={{ maxWidth: 300, maxHeight: 200 }} key={index}>
+                <TouchableOpacity
+                  onPress={() => {
+                    ModalOpen(entry);
+                  }}
+                >
+                  <Image
+                    resizeMode='cover'
+                    source={{
+                      uri: baseURL + '/public/api/artist/getPortfolioImage/' + userInfo.username + '/' + entry.id
+                    }}
+                    style={{ width: '95%', height: '95%' }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ))}
+            </View>
+          {/* </ScrollView> */}
+          {modalData && <Modal
+            isVisible={showModal}
+            onBackdropPress={() => ModalClose()}
+            onSwipeComplete={() => ModalClose()}
+            swipeDirection="right"
+            animationIn="fadeInUp"
+            animationOut="fadeOutUp"
+            animationInTiming={200}
+            animationOutTiming={200}
+            hideModalContentWhileAnimating={true}
+          >
+            <View style={[styles.centeredView]}>
+              <View style={styles.modalView}>
+                <HeaderText style={{ color: darkLight }}>{modalData.name}</HeaderText>
+                <Line style={{ width: '100%', height: 1 }} />
+                <View style={styles.ModalDescription}>
+                  <RegularText style={{ color: '#6e6968' }}>{modalData.description}</RegularText>
+                </View>
+                <Line style={{ width: '100%', height: 1 }} />
+                <Image
+                  resizeMode='contain'
+                  source={{
+                    uri:
+                      baseURL +
+                      '/public/api/artist/getPortfolioImage/' +
+                      userInfo.username +
+                      '/' +
+                      modalData.id +
+                      '?' +
+                      new Date(),
+                  }}
+                  style={{ width: '100%', height: '90%' }}
+                />
+              </View>
+            </View>
+          </Modal>}
+        </View>
+      ) : (
+        <Loading />
+      )}
+    </View>
+  );
+};
+
+export default Gallery;
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    marginTop: 22,
+    minWidth: '50%',
+    maxwidth: '100%',
+    minheight: '40%',
+    maxHeight: '80%',
+  },
+  modalView: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: primary,
+    borderRadius: 20,
+    padding: 10,
+    alignItems: 'center',
+  },
+  ModalDescription: {
+    paddingTop: 5,
+    padding: 15,
+  },
+});

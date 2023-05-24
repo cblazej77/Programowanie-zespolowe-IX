@@ -7,7 +7,6 @@ import Gallery from './UserGallery';
 import GalleryEditing from './UserGalleryEditing';
 import Profile from './UserProfile';
 import ProfileEditing from './UserProfileEditing';
-import Reviews from './UserReviews';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //SecureStoring accessToken
@@ -198,21 +197,6 @@ export default function ProfileScreen({ navigation }) {
                 }}
                 name="Gallery"
                 component={Gallery}
-              />
-              <Tab.Screen
-                options={{
-                  title: ({ color, focused }) => {
-                    return (
-                      <Ionicons
-                        size={25}
-                        name={focused ? 'happy' : 'happy-outline'}
-                        color={focused ? darkLight : secondary}
-                      />
-                    );
-                  },
-                }}
-                name="Reviews"
-                component={Reviews}
               />
             </Tab.Navigator>
           )}

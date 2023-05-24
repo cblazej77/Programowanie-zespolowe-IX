@@ -228,22 +228,22 @@ const Chat = () => {
             <TitleText>Wiadomości {username}</TitleText>
             <MessagesWrapper>
               <MessagesElement
-                name="zabkaCompany"
+                name="Biedronka"
                 surname=""
                 avatar="/assets/cards/person1.jpg"
                 lastMessage="Ale zajmę się tym."
                 unseenMessages={32}
                 lastOnline="1 godz."
-                onClick={() => setSecond("zabkaCompany")}
+                onClick={() => setSecond("Biedronka")}
               />
               <MessagesElement
-                name="jakub1"
+                name="konrado"
                 surname=""
                 avatar="/assets/cards/person1.jpg"
                 lastMessage="zywy."
                 unseenMessages={32}
                 lastOnline="1 godz."
-                onClick={() => setSecond("jakub1")}
+                onClick={() => setSecond("konrado")}
               />
             </MessagesWrapper>
           </MessagesLabel>

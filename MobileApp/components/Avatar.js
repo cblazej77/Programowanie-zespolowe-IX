@@ -9,8 +9,8 @@ const Awatar = (props) => {
     return (
       <Avatar
         style={[style]}
-        onError={() => {setUri('../assets/img/avatar1.png')}}
-        source={{ uri: uri}}
+        onError={(e) => { e.target.onError=null; e.target.src="../assets/img/avatar1.png";}}
+        source={{ uri: avatar}}
       />
     )
     };

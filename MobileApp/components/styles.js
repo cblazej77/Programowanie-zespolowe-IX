@@ -218,7 +218,7 @@ export const StyledFormArea = styled.View`
 `;
 
 export const StyledTextInput = styled.TextInput`
-    background-color: ${grey};
+    background-color: #FFF;
     padding: 15px;
     padding-left: 55px;
     padding-right: 55px;
@@ -228,6 +228,11 @@ export const StyledTextInput = styled.TextInput`
     margin-vertical: 3px;
     margin-bottom: 10px;
     color: ${tertiary};
+
+    ${(props) => props.checkRegex === false && `
+        borderColor: ${red}
+        borderWidth: 1px;
+    `}
 `;
 
 export const StyledInputLabel = styled.Text`

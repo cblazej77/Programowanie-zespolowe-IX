@@ -95,7 +95,7 @@ const Login = ({ navigation }) => {
       setGoogleSubmiting(false);
       console.log(responseG);
       save('accessToken', JSON.stringify(responseG.authentication.accessToken));
-      navigation.navigate('MainNavigation');
+      navigation.replace('MainNavigation');
     }
   }, [responseG]);
 
@@ -103,7 +103,7 @@ const Login = ({ navigation }) => {
     if (responseF && responseF.type === 'success' && responseF.authentication) {
       setFacebookSubmiting(false);
       save('accessToken', JSON.stringify(responseF.authentication.accessToken));
-      navigation.navigate('MainNavigation');
+      navigation.replace('MainNavigation');
     }
   }, [responseF]);
 
@@ -237,6 +237,7 @@ const Login = ({ navigation }) => {
                   onBlur={handleBlur('email')}
                   value={email}
                   keyboardType="email-address"
+                  checkRegex={ email.length !== 0 ? emailPatternValidation(email) : true}
                 />
                 <MyTextInput
                   label="Hasło"
@@ -250,6 +251,7 @@ const Login = ({ navigation }) => {
                   isPassword={true}
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
+                  checkRegex={password.length !== 0 ? passwordPatternValidation(password) : true}
                 />
                 <MsgBox type={messageType}>{message}</MsgBox>
                 {!submitting && (
@@ -267,7 +269,7 @@ const Login = ({ navigation }) => {
                   </LinearGradientStyle>
                 )}
                 <LinearGradientStyle colors={[darkLight2, darkLight]}>
-                  <StyledButton onPress={() => navigation.navigate('MainNavigation')}>
+                  <StyledButton onPress={() => navigation.replace('HomePage')}>
                     <StatsText style={{ color: primary }}>Kontynuuj bez logowania</StatsText>
                   </StyledButton>
                 </LinearGradientStyle>
