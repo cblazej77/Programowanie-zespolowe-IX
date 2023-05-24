@@ -8,7 +8,7 @@ import CardItem from './CardItem';
 import { CommisionElement } from './CommisionElement';
 import Modal from 'react-native-modal';
 
-const { darkLight, secondary, primary } = Colors;
+const { darkLight, secondary, primary, white, black } = Colors;
 
 function getSelectedLevel(levels) {
   if (levels) {
@@ -238,17 +238,17 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
               <View style={styles.ModalCommisionDetails}>
                 <View style={styles.ModalDetail}>
                   <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
-                  <RegularText style={{ color: '#6e6968', width: '30%' }}>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
                     {modalCommision.rate + ' PLN'}
                   </RegularText>
                 </View>
                 <View style={styles.ModalDetail}>
                   <RegularText style={{ width: '60%' }}>Czas wykonania:</RegularText>
-                  <RegularText style={{ color: '#6e6968', width: '30%' }}>{modalCommision.deadline}</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>{modalCommision.deadline}</RegularText>
                 </View>
                 <View style={styles.ModalDetail}>
                   <RegularText style={{ width: '60%' }}>Poziom zaawansowania:</RegularText>
-                  <RegularText style={{ color: '#6e6968', width: '30%' }}>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
                     {getSelectedLevel(modalCommision.level)}
                   </RegularText>
                 </View>
@@ -291,7 +291,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                 <Pressable
-                  onPress={() => {}}
+                  onPress={() => {navigation.navigate('CompanyScreen', {username: modalCommision.client_username})}}
                   style={({ pressed }) => [
                     {
                       backgroundColor: pressed ? 'lightgrey' : darkLight,
@@ -299,7 +299,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
                     styles.ModalButton,
                   ]}
                 >
-                  <AppText style={{ color: 'white' }}>Aplikuj!</AppText>
+                  <AppText style={{ color: 'white' }}>Sprawdź nas!</AppText>
                 </Pressable>
               </View>
             </View>
@@ -358,17 +358,17 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
               <View style={styles.ModalCommisionDetails}>
                 <View style={styles.ModalDetail}>
                   <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
-                  <RegularText style={{ color: '#6e6968', width: '30%' }}>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
                     {modalCommision.rate + ' PLN'}
                   </RegularText>
                 </View>
                 <View style={styles.ModalDetail}>
                   <RegularText style={{ width: '60%' }}>Czas wykonania:</RegularText>
-                  <RegularText style={{ color: '#6e6968', width: '30%' }}>{modalCommision.deadline}</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>{modalCommision.deadline}</RegularText>
                 </View>
                 <View style={styles.ModalDetail}>
                   <RegularText style={{ width: '60%' }}>Poziom zaawansowania:</RegularText>
-                  <RegularText style={{ color: '#6e6968', width: '30%' }}>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
                     {getSelectedLevel(modalCommision.level)}
                   </RegularText>
                 </View>
@@ -411,7 +411,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                 <Pressable
-                  onPress={() => {}}
+                  onPress={() => {navigation.navigate('CompanyScreen', {username: modalCommision.client_username})}}
                   style={({ pressed }) => [
                     {
                       backgroundColor: pressed ? 'lightgrey' : darkLight,
@@ -419,7 +419,7 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
                     styles.ModalButton,
                   ]}
                 >
-                  <AppText style={{ color: 'white' }}>Aplikuj!</AppText>
+                  <AppText style={{ color: 'white' }}>Sprawdź nas!</AppText>
                 </Pressable>
               </View>
             </View>
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
   modalView: {
     width: '100%',
     margin: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: primary,
     borderRadius: 20,
     padding: 15,
     alignItems: 'center',
@@ -573,6 +573,8 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 5,
     marginHorizontal: 2,
-    backgroundColor: primary,
+    backgroundColor: white,
+    //borderColor: darkLight,
+    //borderWidth: 1,
   },
 });
