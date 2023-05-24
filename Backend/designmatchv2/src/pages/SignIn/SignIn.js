@@ -26,7 +26,7 @@ import PasswordInput from '../../components/Input/PasswordInput';
 import FacebookLogin from '@greatsumini/react-facebook-login';
 import { PASSWORD_REGEX, EMAIL_REGEX } from '../../components/Regex';
 
-export const SignIn = () => {
+export const SignIn = ({ onSignIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const authApi = useAuth();
@@ -84,6 +84,10 @@ export const SignIn = () => {
       authApi.login(email, password);
       saveStorageData(response?.data.accessToken);
       navigate(redirectPath, { replace: true });
+      // Wywołaj funkcję onSignIn po zalogowaniu
+      if (onSignIn) {
+        onSignIn();
+      }
     } catch (err) {
       setSubmitting(false);
       if (!err?.response) {
@@ -103,6 +107,10 @@ export const SignIn = () => {
       authApi.login("Michal", "pssw");
       saveStorageData("Goggle");
       navigate(redirectPath, { replace: true });
+      // Wywołaj funkcję onSignIn po zalogowaniu
+      if (onSignIn) {
+        onSignIn();
+      }
     },
     flow: 'auth-code',
   });
@@ -167,6 +175,10 @@ export const SignIn = () => {
               authApi.login(response.name, "passwordini");
               saveStorageData("Facebook");
               navigate(redirectPath, { replace: true });
+              // Wywołaj funkcję onSignIn po zalogowaniu
+              if (onSignIn) {
+                onSignIn();
+              }
             }}
             render={({ onClick }) => (
               <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>

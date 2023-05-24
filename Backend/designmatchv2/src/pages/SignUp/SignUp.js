@@ -30,7 +30,7 @@ function LoginForm() {
   const [KRS, setKRS] = useState('');
   const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
-  const [showModal, setShowModal] = useState(true);//
+  const [showModal, setShowModal] = useState(false);//
   const [navigateGo, setNavigateGo] = useState(false);//po zamknięciu modala przekierowywuje na stronę główną
   const [submitting, setSubmitting] = useState(false);
   const [checkRegexEmail, setCheckRegexEmail] = useState(true);

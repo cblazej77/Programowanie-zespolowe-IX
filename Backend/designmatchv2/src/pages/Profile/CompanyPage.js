@@ -167,7 +167,7 @@ const CompanyPage = () => {
     };
 
     fetchData();
-  }, [citiesData, tagsData, categoriesData, languagesData, levelsData]);
+  }, [showModal, showModalEdit, citiesData, tagsData, categoriesData, languagesData, levelsData]);
 
   const openModalEditClick = () => {
     setShowModalEdit(true);
@@ -660,10 +660,9 @@ const CompanyPage = () => {
               />
             ))}
           </DownSection>
+          <ModalEdit showModalEdit={showModalEdit} />
+          <Modal showModal={showModal} data={modalData} />
         </ProfileWrapper>) : (<LoadingPage />)}
-      <ModalEdit showModalEdit={showModalEdit} />
-      <Modal showModal={showModal} data={modalData} />
-
     </>
   );
 };

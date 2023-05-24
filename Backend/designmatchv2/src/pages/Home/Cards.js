@@ -515,7 +515,6 @@ const Cards = () => {
           <LoadingPage />
         )}
       </Cards2>
-
     </>
   )
 }
