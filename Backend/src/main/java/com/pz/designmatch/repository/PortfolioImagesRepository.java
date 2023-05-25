@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface PortfolioImagesRepository extends JpaRepository<PortfolioEntry, Long> {
 
+    void deleteByArtistProfile_User_UsernameAndId(String username, Long imageId);
+
     Optional<PortfolioEntry> findById(Long id);
 
     Page<PortfolioEntry> findAllByArtistProfile(ArtistProfile artistProfile, Pageable pageable);

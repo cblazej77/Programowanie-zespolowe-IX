@@ -90,4 +90,10 @@ public class ArtistProfileController {
         artistProfileServiceImpl.uploadPortfolioImage(username, image, name, description);
         return ResponseEntity.ok(new ApiResponse(true, "Pomyślnie dodano zdjęcie do portfolio"));
     }
+
+    @DeleteMapping(value = "/api/artist/deletePortfolioEntry/{username}/{imageId}", produces = apiVersionAccept)
+    public ResponseEntity<ApiResponse> deletePortfolioEntry(@PathVariable("username") String username, @PathVariable("imageId") Long imageId) {
+        artistProfileServiceImpl.deletePortfolioEntry(username, imageId);
+        return ResponseEntity.ok(new ApiResponse(true, "Pomyślnie usunięto zdjęcie z portfolio"));
+    }
 }
