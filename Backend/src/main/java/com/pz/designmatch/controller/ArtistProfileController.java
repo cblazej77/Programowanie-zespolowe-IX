@@ -8,6 +8,8 @@ import com.pz.designmatch.dto.response.PortfolioEntryResponse;
 import com.pz.designmatch.dto.response.ShortArtistProfileResponse;
 import com.pz.designmatch.service.impl.ArtistProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -93,7 +95,7 @@ public class ArtistProfileController {
 
     @DeleteMapping(value = "/api/artist/deletePortfolioEntry/{username}/{imageId}", produces = apiVersionAccept)
     public ResponseEntity<ApiResponse> deletePortfolioEntry(@PathVariable("username") String username, @PathVariable("imageId") Long imageId) {
-        artistProfileServiceImpl.deletePortfolioEntry(username, imageId);
-        return ResponseEntity.ok(new ApiResponse(true, "Pomyślnie usunięto zdjęcie z portfolio"));
+            artistProfileServiceImpl.deletePortfolioEntry(username, imageId);
+            return ResponseEntity.ok(new ApiResponse(true, "Pomyślnie usunięto zdjęcie z portfolio"));
     }
 }

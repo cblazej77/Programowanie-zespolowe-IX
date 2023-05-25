@@ -5,11 +5,15 @@ import com.pz.designmatch.model.user.PortfolioEntry;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
 public interface PortfolioImagesRepository extends JpaRepository<PortfolioEntry, Long> {
 
+
+    @Query(value = "DELETE FROM portfolio_entries WHERE id = :imageId AND artist_profile = (SELECT id FROM artist_profiles WHERE id = (SELECT id FROM users WHERE username = :username))", nativeQuery = true)
     void deleteByArtistProfile_User_UsernameAndId(String username, Long imageId);
 
     Optional<PortfolioEntry> findById(Long id);

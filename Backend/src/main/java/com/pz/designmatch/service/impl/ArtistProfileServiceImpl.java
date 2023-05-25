@@ -19,8 +19,12 @@ import com.pz.designmatch.util.mapper.ArtistProfileMapper;
 import com.pz.designmatch.util.mapper.EducationMapper;
 import com.pz.designmatch.util.mapper.ExperienceMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -215,9 +219,10 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
         return artistProfilePage.map(artistProfileMapper::mapToShortDto);
     }
 
+
     @Override
     public void deletePortfolioEntry(String username, Long imageId) {
-       portfolioImagesRepository.deleteByArtistProfile_User_UsernameAndId(username, imageId);
+            portfolioImagesRepository.deleteByArtistProfile_User_UsernameAndId(username, imageId);
     }
 
     public void uploadProfileImage(String username, MultipartFile image) {
