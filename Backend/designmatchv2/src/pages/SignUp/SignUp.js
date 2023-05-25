@@ -56,22 +56,22 @@ function LoginForm() {
   }
 
   const handleCheckBlockButton = () => {
-    if (name === "" || surname === "" || nick === "" || email === "" || password === "" || confirmPassword === "") {
+    if (name === "" || surname === "" || nick === "" || email === "" || password === "") {
       setAllInput(false);
       setSubmitting(false);
     }
-    else if (checkRegexName && checkRegexEmail && checkRegexNick && checkRegexSurname && checkRegexPassword && password === confirmPassword) {
+    else if (checkRegexName && checkRegexEmail && checkRegexNick && checkRegexSurname && checkRegexPassword) {
       handleRegistration();
     }
     else setSubmitting(false);
   };
 
   const handleCompanyCheckBlockButton = () => {
-    if (name === "" || NIP === "" || REGON === "" || email === "" || nick === "" || password === "" || confirmPassword === "") {
+    if (name === "" || NIP === "" || REGON === "" || email === "" || nick === "" || password === "") {
       setAllInput(false);
       setSubmitting(false);
     }
-    else if (checkRegexName && checkRegexNIP && checkRegexREGON && checkRegexKRS && checkRegexEmail && checkRegexNick && checkRegexPassword && password === confirmPassword) {
+    else if (checkRegexName && checkRegexNIP && checkRegexREGON && checkRegexKRS && checkRegexEmail && checkRegexNick && checkRegexPassword) {
       handleCompanyRegistration();
     }
     else setSubmitting(false);
@@ -403,7 +403,6 @@ function LoginForm() {
               {(!checkRegexNick && nick !== "") && <ErrorLabel>Wpisano niedozwolone znaki w nazwie użytkownika</ErrorLabel>}
               <PasswordInput label="hasło:" name="signUp" id="passwordId" onChange={handlePassword} checkRegex={checkRegexPassword} />
               {(!checkRegexPassword && password !== "") && <ErrorLabel>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </ErrorLabel>}
-              <PasswordInput label="potwierdź hasło:" id="confPasswordId" onChange={handleConfirmPassword} checkRegex={checkRegexPassword} />
               {(!allInput) && <ErrorLabel>Wszystkie pola musza być zepełnione</ErrorLabel>}
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {!submitting ? <SignUpButton onClick={handleCheckBlockButton} type="submit" value="Submit">Zarejestruj się jako artysta</SignUpButton> :
@@ -449,7 +448,6 @@ function LoginForm() {
               {(!checkRegexNick && nick !== "") && <ErrorLabel>Wpisano niedozwolone znaki w nazwie użytkownika</ErrorLabel>}
               <PasswordInput label="hasło:" name="signUp" id="passwordId" onChange={handlePassword} checkRegex={checkRegexPassword} />
               {(!checkRegexPassword && password !== "") && <ErrorLabel>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </ErrorLabel>}
-              <PasswordInput label="potwierdź hasło:" id="confPasswordId" onChange={handleConfirmPassword} checkRegex={checkRegexPassword} />
               {(!allInput) && <ErrorLabel>Wypełnij wszystkie wymagane pola!</ErrorLabel>}
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {!submitting ? <SignUpButton onClick={handleCompanyCheckBlockButton} type="submit" value="Submit">Zarejestruj się jako firma</SignUpButton> :

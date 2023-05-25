@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { default as axios } from '../../api/axios';
 import { COLORS } from '../../components/Colors';
@@ -163,7 +163,7 @@ const EditUserPageMobile = () => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [date, setDate] = useState("20.07.2001");//nie siciaga z bazy
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const [button, setButton] = useState(true);
 
   //do textarea
@@ -359,7 +359,7 @@ const EditUserPageMobile = () => {
     setLinkedin('');
   }
 
-  const updateArtistProfile = async () => {
+  const updateArtistProfile = useCallback(async () => {
     let education = educationList;
     let experience = experienceList;
 
@@ -370,12 +370,23 @@ const EditUserPageMobile = () => {
       delete item.id;
     });
 
-    axios.post('/api/artist/updateProfileImage/' + username, blob, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
-      },
-    })
+    if (selectedImage) {
+      console.log(selectedImage);
+      const formData = new FormData();
+      console.log(formData);
+      formData.append('image', selectedImage, selectedImage.name);
+
+      axios.post(
+        '/api/artist/updateProfileImage/' + username,
+        formData,
+        {
+          headers: {
+            accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+          },
+        })
+    }
 
     const response = await axios
       .put(
@@ -414,7 +425,7 @@ const EditUserPageMobile = () => {
       education = null;
       navigate('/account');
     }
-  }
+  }, [selectedImage]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -447,7 +458,7 @@ const EditUserPageMobile = () => {
           ],
         );
 
-       // const imageType = avatarResponse.headers['content-type'];
+        // const imageType = avatarResponse.headers['content-type'];
         //const imageBlob = new Blob([avatarResponse.data], { type: imageType });
         //const imageUrl = URL.createObjectURL(imageBlob);
 
@@ -841,18 +852,30 @@ const EditUserPageMobile = () => {
 
   };
 
-  const handleEditImageClick = () => {
-    fileInputRef.current.click();
+  const handleImageChange = (e) => {
+    console.log('handleImageChange');
+    // Wybrano plik
+    const file = e.target.files[0];
+    if (file) {
+      // Sprawdź rozszerzenie pliku
+      const extension = file.name.split('.').pop().toLowerCase();
+      if (['jpg', 'jpeg', 'png'].includes(extension)) {
+        console.log(file);
+        setSelectedImage(file);
+      } else {
+        // Nieprawidłowy format pliku
+        alert('Wybierz plik w formacie JPG, JPEG lub PNG.');
+      }
+    }
   };
 
-  const handleFileInputChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setAvatar(URL.createObjectURL(file));
-      const formData = new FormData();
-      formData.append('image', file, file.name);
-      setBlob(formData);
-    }
+  const handleEditImageClick = () => {
+    console.log('handleEditImageClick');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = handleImageChange;
+    input.click();
   };
 
   window.addEventListener('resize', showButton);
@@ -878,16 +901,17 @@ const EditUserPageMobile = () => {
                   alignItems: 'center'
                 }}>
                 <EditProfileImage onClick={handleEditImageClick}>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                    onChange={handleFileInputChange}
-                  />
-                  {avatar ? (
-                    <Image src={avatar} alt="Profile" />) : (
-                    <FaUser size={40} />
+                  {selectedImage ? (
+                    <Image src={URL.createObjectURL(selectedImage)} alt="Profile" />
+                  ) : (
+                    <Image
+                      src={'/public/api/artist/getProfileImageByUsername/' + get.username}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/assets/cards/defaultavatar.png";
+                      }}
+                      alt="Profile"
+                    />
                   )}
                   <EditIcon size={40} />
                 </EditProfileImage>

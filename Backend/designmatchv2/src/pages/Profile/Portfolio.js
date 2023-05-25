@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../api/axios';
 import LoadingPage from '../LoadingPage';
 import {
+    BottomWrapper,
     Image,
     ModalBackground,
     ModalImageContainer,
@@ -12,6 +13,10 @@ import {
     PortfolioWrapper
 } from './ProfileElements';
 import { TitleText } from '../Home/CardsElement';
+import { CommisionCard } from '../Home/CommisionsElements';
+import { COLORS } from '../../components/Colors';
+
+const { gray1 } = COLORS;
 
 const Portfolio = (props) => {
     const [entries, setEntries] = useState([]);
@@ -73,7 +78,7 @@ const Portfolio = (props) => {
 
     return (
         <>
-            {entries ? (
+            {entries.length > 0 ? (
                 <PortfolioWrapper>
                     {entries.map((entry, index) => (
                         <PortfolioImageContainer key={index} onClick={() => ModalOpen(entry)}>
@@ -83,9 +88,9 @@ const Portfolio = (props) => {
                     <PhotoModal showModal={showModal} />
                 </PortfolioWrapper>
             ) : (
-                <>
-                    Wczytywanie . . .
-                </>
+                <CommisionCard style={{ alignItems: 'center', cursor: 'default' }}>
+                    <text style={{ color: gray1, fontSize: '1.2rem' }}>Artysta nie posiada jeszcze żadnych wpisów w portfolio</text>
+                </CommisionCard>
             )}
         </>
     );

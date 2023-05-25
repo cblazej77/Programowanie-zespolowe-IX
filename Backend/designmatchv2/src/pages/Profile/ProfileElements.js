@@ -54,8 +54,8 @@ export const BottomSection = styled.div`
 
 export const BottomWrapper = styled.div`
   width: 88rem;
-  border-radius: 15px;
-  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  // border-radius: 15px;
+  // box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
   @media screen and (max-width: 95rem) {
     width: calc(100% - 0.5rem);
   }

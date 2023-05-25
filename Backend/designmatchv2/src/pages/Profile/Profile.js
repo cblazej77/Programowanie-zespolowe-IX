@@ -86,7 +86,7 @@ const UserPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [showModalEdit]);
 
   useEffect(() => {
     if (get) {
@@ -291,9 +291,6 @@ const UserPage = () => {
   const ModalEdit = ({ showModalEdit }) => {
     const [avatar, setAvatar] = useState('');
     const [blob, setBlob] = useState('');
-
-
-
 
     const [modalEditData, setModalEditData] = useState({
       name: '',
