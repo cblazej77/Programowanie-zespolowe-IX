@@ -17,4 +17,6 @@ public interface ArtistProfileService {
     ArtistProfileResponse updateArtistProfileByUsername(String username, ArtistProfileRequest artistProfile);
 
     Page<ShortArtistProfileResponse> filterArtistProfiles(ArtistFilterRequest filterRequest, Pageable pageable);
+
+    void deletePortfolioEntry(String username, Long imageId);
 }

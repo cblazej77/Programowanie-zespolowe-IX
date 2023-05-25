@@ -215,6 +215,11 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
         return artistProfilePage.map(artistProfileMapper::mapToShortDto);
     }
 
+    @Override
+    public void deletePortfolioEntry(String username, Long imageId) {
+       portfolioImagesRepository.deleteByArtistProfile_User_UsernameAndId(username, imageId);
+    }
+
     public void uploadProfileImage(String username, MultipartFile image) {
         ArtistProfile artistProfile = artistProfileRepository.findByUser_Username(username)
                 .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono profilu artysty dla użytkownika " + username));
