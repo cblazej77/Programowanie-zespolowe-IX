@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
+
+    long countBySender_UsernameAndRecipient_UsernameAndStatus(
+            String senderUsername, String recipientUsername, MessageStatus status);
     long countBySenderIdAndRecipientIdAndStatus(
             String senderId, String recipientId, MessageStatus status);
 

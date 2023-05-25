@@ -106,6 +106,7 @@ export const DMMessagesContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
   overflow-y: auto;
+  word-wrap: break-word;
   &::-webkit-scrollbar {
     width: 0.25rem;
   }

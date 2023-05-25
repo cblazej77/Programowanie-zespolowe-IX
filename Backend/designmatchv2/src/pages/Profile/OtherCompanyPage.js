@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { TitleText } from '../Home/CardsElement';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
 import { COLORS } from '../../components/Colors';
 import axios from '../../api/axios';
 import {
@@ -30,6 +33,8 @@ import {
     ModalTitle,
     ModalWrapper,
     NameText,
+    ButtonMessageOff,
+    ButtonMessage,
     ProfileImage,
     ProfileWrapper,
     RightColumn,
@@ -59,6 +64,7 @@ import { FiClock, FiMapPin } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
 
 const { darkLight, gray1 } = COLORS;
+var stompClient = null;
 
 const OtherCompanyPage = () => {
     const { argument } = useParams();
@@ -73,7 +79,11 @@ const OtherCompanyPage = () => {
     const [get, setGet] = useState("");
     const [CommisionsData, setCommisionsData] = useState([]);
     const [username, setUsername] = useState('');
+    const [myUsername, setmyUsername] = useState('');
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const redirectPath = location.state?.path || '/';
 
     const citiesData = useMemo(
         () => ({
@@ -137,6 +147,15 @@ const OtherCompanyPage = () => {
                     headers: {},
                 });
 
+                const decoderResult = await axios.request({
+                    url: '/auth/decodeToken',
+                    headers: {
+                        'accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
+                      },
+                })
+
                 const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
                     [
                         axios.request(citiesData),
@@ -148,6 +167,7 @@ const OtherCompanyPage = () => {
                 );
                 setUsername(argument);
                 setCommisionsData(commissionResponse.data);
+                setmyUsername(decoderResult.data.username);
                 setGet(companyResponse.data);
                 setCities(citiesResponse.data);
                 setTags(tagsResponse.data);
@@ -161,6 +181,36 @@ const OtherCompanyPage = () => {
 
         fetchData();
     }, [citiesData, tagsData, categoriesData, languagesData, levelsData]);
+
+    const connect= () => {
+        const Stomp = require("stompjs");
+        let SockJS = require("sockjs-client");
+        SockJS = new SockJS("http://localhost:8080/ws");
+        stompClient = Stomp.over(SockJS);
+        stompClient.connect({}, onConnected, onError());;
+      };
+      const onError = (error) => {
+        console.error('WebSocket error:', error);
+      };
+    
+            const onConnected = () => {
+              if (stompClient) {
+                 if (stompClient.connected) {
+               let newMessage = {
+                 sender_username: myUsername,
+                 recipient_username: argument,
+                 content: "!$@DM@$!",
+               };
+          
+               stompClient.send('/app/chat', {}, JSON.stringify(newMessage))
+               try {
+                stompClient.disconnect();
+            } catch (e) {console.log("stomp Client ma problem z disconnected, ZAWSZE");}
+            navigate('/chat');
+             }else console.log("błąd wysyłania: brak połączenia z WebSocket");
+           }else  console.log("błąd wysyłania: stompClient niezdefiniowany");
+            };
+
 
     const openModalClick = (data) => {
         setModalData(data);
@@ -281,7 +331,7 @@ const OtherCompanyPage = () => {
                                 }} alt="Profile" /></ProfileImage>
                             <NameText>{get.name}</NameText>
                             <LineForm />
-                            <Button>Napisz wiadomość</Button>
+                            {(argument !== myUsername && myUsername != '') ? <ButtonMessage onClick ={()=> connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => navigate(redirectPath, { replace: true })} > Napisz wiadomość </ButtonMessage> }
                         </LeftWrapper>
                         <RightWrapper>
                             <BoldLabel>O firmie:</BoldLabel>
