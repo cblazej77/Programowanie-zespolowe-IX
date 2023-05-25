@@ -6,7 +6,9 @@ import com.pz.designmatch.dto.request.CommissionRequest;
 import com.pz.designmatch.dto.response.CommissionResponse;
 import com.pz.designmatch.model.Commission;
 import com.pz.designmatch.model.enums.*;
+import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.CommissionRepository;
+import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.CommissionService;
 import com.pz.designmatch.specification.CommissionSpecification;
 import com.pz.designmatch.util.mapper.CommissionMapper;
@@ -28,10 +30,13 @@ public class CommissionServiceImpl implements CommissionService {
 
     private final CommissionRepository commissionRepository;
     private final CommissionMapper commissionMapper;
+    private final UserRepository userRepository;
 
-    public CommissionServiceImpl(CommissionRepository commissionRepository, CommissionMapper commissionMapper) {
+    public CommissionServiceImpl(CommissionRepository commissionRepository, CommissionMapper commissionMapper,
+                                 UserRepository userRepository) {
         this.commissionRepository = commissionRepository;
         this.commissionMapper = commissionMapper;
+        this.userRepository = userRepository;
     }
 
     public CommissionResponse getCommissionById(Long id) {
@@ -59,6 +64,10 @@ public class CommissionServiceImpl implements CommissionService {
         Commission existingCommission = commissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nie istnieje zlecenie o id: " + id));
 
+        UserEntity contractor = userRepository.findByUsername(commissionRequest.getContractorUsername())
+                .orElseThrow(() -> new EntityNotFoundException("Nie istnieje użytkownik o nazwie: " + commissionRequest.getContractorUsername()));
+
+        existingCommission.setContractor(contractor);
         Optional.ofNullable(commissionRequest.getTitle()).ifPresent(existingCommission::setTitle);
         Optional.ofNullable(commissionRequest.getDescription()).ifPresent(existingCommission::setDescription);
         Optional.ofNullable(commissionRequest.getDeadline()).ifPresent(existingCommission::setDeadline);
