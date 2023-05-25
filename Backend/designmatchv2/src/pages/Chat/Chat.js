@@ -29,6 +29,7 @@ import { COLORS } from "../../components/Colors";
 import { default as axios } from '../../api/axios';
 import LoadingPage from "../LoadingPage";
 import { RiSendPlane2Line } from 'react-icons/ri';
+import {useAuth} from '../../components/Auth';
 
 const { darkLight, white, black } = COLORS;
 
@@ -40,6 +41,7 @@ const Chat = () => {
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
   const [fullName, setFullName] = useState('');
+  const [urlActive, setUrlActive] = useState('');
   const [first, setfirst] = useState(true);
   const [second, setSecond] = useState('');
   const [message, setMessage] = useState("");
@@ -47,6 +49,8 @@ const Chat = () => {
   const [checkMess, setCheckMess] = useState(false);
   const [dataProfile, setDataProfile] = useState([]);
   //const stompClientRef = useRef(null);
+    const authApi = useAuth();
+
 
   const DMElement = (props) => {
     let copySecond = sessionStorage.getItem("active");
@@ -71,22 +75,25 @@ const Chat = () => {
     const [notificationCount, setNotificationCount] = useState(null);
     const [returnNotificationCount, setReturnNotificationCount] = useState(false);
     const [leftName, setLeftName] = useState('');
-    const [urlMessageElement, setUrlMessageElement] = ('');
+    const [urlMessageElement, setUrlMessageElement] = useState('');
 
     useEffect(() => {
-      const fetchData = async () =>{
+      const fetchData = async () => {
           const response = await axios.get(`/messages/` + props.nick + `/` + username + `/count`);
-          let responseURL;
-          //ZDJĘCIA//
-          //if(props.company == null) responseURL = await axios.get(`/public/api/artist/getProfileImageByUsername/` + username);
-          //else responseURL = await axios.get(`/public/api/company/getProfileImageByUsername/` + username);
-          //setUrlMessageElement();
           setNotificationCount(response.data);
-          if(response.data !== 0) setReturnNotificationCount(true);
-          else setReturnNotificationCount(false);
-    };
+            if(response.data !== 0) setReturnNotificationCount(true);
+            else setReturnNotificationCount(false);
+            try{
+                let responseURL;
+                if(props.company == null) setUrlMessageElement(`/public/api/artist/getProfileImageByUsername/` + props.nick);
+                 else setUrlMessageElement(`/public/api/company/getProfileImageByUsername/` + props.nick);
+            }catch(e){
+                console.log("Błąd w fetchData/useEffet/MessageElement z łapaniem zdjęcia profilowego: "  + e);
+                setUrlMessageElement("/assets/cards/defaultavatar.png");
+            }
+        }
     fetchData();
-  }, [props.nick]);
+  }, [props.nick, urlMessageElement]);
 
   useEffect(() =>{
     let shortMessage = props.lastMessage.slice(0, 25);
@@ -121,6 +128,14 @@ const Chat = () => {
         </>
     );
   };
+      useEffect(() => {
+          if(localStorage.length > 0){
+              let myKey = localStorage.getItem("key");
+              console.log(myKey);
+              authApi.login("Michal", "pssw");
+          }
+          else console.log("pusty localStorage");
+      }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -256,8 +271,14 @@ const Chat = () => {
             sessionStorage.setItem("active", response.data[0].username);
             //setSecond(response.data[0].username);
             sessionStorage.setItem("person", JSON.stringify(response.data));
-             if(response.data[0].company_name === null) setFullName(response.data[0].first_name + " " + response.data[0].last_name);
-             else setFullName(response.data[0].company_name);
+             if(response.data[0].company_name === null){
+                 setFullName(response.data[0].first_name + " " + response.data[0].last_name);
+                 setUrlActive(`/public/api/artist/getProfileImageByUsername/` + response.data[0].username)
+             }
+             else{
+                 setFullName(response.data[0].company_name);
+                 setUrlActive(`/public/api/company/getProfileImageByUsername/` + response.data[0].username);
+             }
             handleChangeActive(response.data[0].username);
             setRenderFlag(true);  
              setfirst(false);
@@ -266,6 +287,7 @@ const Chat = () => {
        }else{
         console.log("brak historii wiadomości dla użytkownika: " + users);
         setFullName("Brak uzytkownika do wyswietlenia");
+        setUrlActive("/assets/cards/defaultavatar.png");
         setRenderFlag(true);
         setfirst(false);
         sessionStorage.removeItem("active");
@@ -286,8 +308,14 @@ const Chat = () => {
     if(username !== '' && user !== ''){
      let datePerson =  JSON.parse(sessionStorage.getItem("person"));
       let dfp = datePerson.find(person => person.username === user);
-      if(dfp.company_name == null) setFullName( dfp.first_name + " " +  dfp.last_name);
-      else setFullName(dfp.company_name);
+      if(dfp.company_name == null) {
+          setFullName( dfp.first_name + " " +  dfp.last_name);
+          setUrlActive(`/public/api/artist/getProfileImageByUsername/` + dfp.username);
+      }
+      else{
+          setFullName(dfp.company_name);
+          setUrlActive(`/public/api/company/getProfileImageByUsername/` + dfp.username);
+      }
      sessionStorage.removeItem("message");
 
     axios.get(`/messages/` + username + `/` + user)
@@ -353,7 +381,11 @@ const Chat = () => {
           </MessagesLabel>
           <DMWrapper>
             <DMHeaderContainer>
-              <Avatar src="/assets/cards/person1.jpg" />
+              <Avatar src={urlActive}
+                    onError={(e) => {
+                        e.target.onerror = null;
+          e.target.src = "/assets/cards/defaultavatar.png";
+      }} alt="Profile" />
               <DMName>{fullName}</DMName>
             </DMHeaderContainer>
             <LineForm />

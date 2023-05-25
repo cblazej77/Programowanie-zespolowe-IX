@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   AllPage,
   Top,
@@ -10,8 +10,13 @@ import {
   AnswerText,
   QuestionText
 } from './Elements';
-
+import sessionStoreCleaner from  '../../components/sessionStoreCleaner';
 const About = () => {
+    useEffect(() => {
+        sessionStoreCleaner.checkAndRemoveSessionStorage();
+    }, []);
+
+
   return (
     <AllPage>
       <Border>

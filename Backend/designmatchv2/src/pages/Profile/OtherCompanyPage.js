@@ -5,6 +5,7 @@ import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import { COLORS } from '../../components/Colors';
 import axios from '../../api/axios';
+import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 import {
     AboutMe,
     BoldLabel,
@@ -134,6 +135,9 @@ const OtherCompanyPage = () => {
         }),
         [],
     );
+    useEffect (() => {
+        sessionStoreCleaner.checkAndRemoveSessionStorage();
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {

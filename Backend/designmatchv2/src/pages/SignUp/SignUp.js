@@ -19,7 +19,7 @@ import {
   REGON_14_REGEX,
   KRS_REGEX
 } from '../../components/Regex';
-
+import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 function LoginForm() {
 
   const [email, setEmail] = useState('');
@@ -177,6 +177,9 @@ function LoginForm() {
     if (navigateGo) navigate('/');
   }, [navigateGo]);
 
+  useEffect (() => {
+    sessionStoreCleaner.checkAndRemoveSessionStorage();
+}, []);
   const handleName = (value) => {
     setName(value);
     if (value && namesPatternValidation(value)) setCheckRegexName(true);

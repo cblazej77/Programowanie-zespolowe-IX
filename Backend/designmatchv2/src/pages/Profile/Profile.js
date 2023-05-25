@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Rating } from 'react-simple-star-rating';
 import { default as axios } from '../../api/axios'
+import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 import LoadingPage from '../LoadingPage';
 import {
   AboutInput,
@@ -61,6 +62,9 @@ const UserPage = () => {
   const [showModalEdit, setShowModalEdit] = useState(false);
   const fileInputRef = useRef(null);
 
+  useEffect (() => {
+    sessionStoreCleaner.checkAndRemoveSessionStorage();
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {

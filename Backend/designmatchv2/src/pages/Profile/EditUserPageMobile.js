@@ -6,6 +6,7 @@ import Modal from '../../components/modalTags';
 import ModalLinks from '../../components/ModalLinks';
 import ModalSkills from '../../components/ModalSkills';
 import ModalLanguages from '../../components/ModalLanguages';
+import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import './Dropdown.css';
@@ -426,6 +427,9 @@ const EditUserPageMobile = () => {
       navigate('/account');
     }
   }, [selectedImage]);
+  useEffect (() => {
+    sessionStoreCleaner.checkAndRemoveSessionStorage();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

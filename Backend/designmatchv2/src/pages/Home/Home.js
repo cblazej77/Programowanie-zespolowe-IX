@@ -6,11 +6,13 @@ import {
 import { useAuth } from '../../components/Auth';
 import Cards from './Cards';
 
+import sessionStoreCleaner from  '../../components/sessionStoreCleaner';
 
 const Home = () => {
   const authApi = useAuth();
 
   useEffect(() => {
+    sessionStoreCleaner.checkAndRemoveSessionStorage();
     if(localStorage.length > 0){
       let myKey = localStorage.getItem("key");
       console.log(myKey);

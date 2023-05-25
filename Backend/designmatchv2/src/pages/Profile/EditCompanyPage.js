@@ -19,6 +19,7 @@ import {
   TopSection
 } from './ProfileElements';
 import styled from 'styled-components';
+import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 import axios from '../../api/axios';
 import LoadingPage from '../LoadingPage';
 import { COLORS } from '../../components/Colors';
@@ -76,6 +77,9 @@ const EditCompanyPage = () => {
 
   const maxChars = 300;
   const limitHeight = 60;
+  useEffect (() => {
+    sessionStoreCleaner.checkAndRemoveSessionStorage();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

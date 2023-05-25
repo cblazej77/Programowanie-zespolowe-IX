@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { TitleText } from '../Home/CardsElement';
 import { COLORS } from '../../components/Colors';
+import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 import axios from '../../api/axios';
 import {
   AboutMe,
@@ -125,6 +126,9 @@ const CompanyPage = () => {
     }),
     [],
   );
+  useEffect (() => {
+    sessionStoreCleaner.checkAndRemoveSessionStorage();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

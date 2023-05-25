@@ -100,7 +100,7 @@ function App() {
             </GoogleOAuthProvider>}
           />
           <Route path="/test" element={<EditUserPageMobile />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat" element={         <RequireAuth> <Chat /> </RequireAuth>} />
           <Route path="/1" element={<Modal />} />
           <Route path="/commisions"
             element={

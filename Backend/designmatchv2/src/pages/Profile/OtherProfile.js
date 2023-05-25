@@ -6,6 +6,7 @@ import LoadingPage from '../LoadingPage';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import { useParams } from 'react-router-dom';
+import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 import {
   AboutMe,
   BoldLabel,
@@ -86,6 +87,9 @@ const OtherUserPage = () => {
     };
 
     fetchData();
+  }, []);
+  useEffect (() => {
+    sessionStoreCleaner.checkAndRemoveSessionStorage();
   }, []);
 
   useEffect(() => {
