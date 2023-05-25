@@ -251,7 +251,7 @@ const Chat = () => {
 
       const response = await axios.get(`/messages/conversations/` + users);
         setDataProfile(response.data);
-         if(dataProfile !== []) {
+        if(response.data.length != 0){
            console.log("Istnieje hisotira wiadomości dla" + users);
             sessionStorage.setItem("active", response.data[0].username);
             //setSecond(response.data[0].username);

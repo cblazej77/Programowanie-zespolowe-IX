@@ -50,6 +50,7 @@ var stompClient = null;
 //UserName/UserInfo/MessageButton
 const OtherUserPage = () => {
   const { argument } = useParams();
+  const [argumentSet, setArgumentSet] = useState(argument);
   const [get, setGet] = useState("");
   const [checkLoading, setCheckLoading] = useState(null);
   const [shortProfile, setShortProfile] = useState("");
@@ -76,12 +77,9 @@ const OtherUserPage = () => {
             'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
           },
         });
-
-        const userResult = await axios.request({
-          url: '/public/api/artist/getArtistProfileByUsername/' + decodeResult.data.username
-        });
-
+        setArgumentSet(argument);
         setmyUsername(decodeResult.data.username);
+        console.log("user: " + myUsername+ " " + argumentSet);
       } catch (err) {
         console.log(err);
       }
@@ -369,7 +367,7 @@ const OtherUserPage = () => {
               <RatingText>({reviewCount} opinii)</RatingText>
             </RatingWrapper> */}
             <LineForm />
-            {(argument !== myUsername && myUsername != '') ? <ButtonMessage onClick ={()=> connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => navigate(redirectPath, { replace: true })} > Napisz wiadomość </ButtonMessage> }
+            {(argumentSet != myUsername && myUsername != '') ? <ButtonMessage onClick = {()=> connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => {navigate(redirectPath, { replace: true }); console.log(myUsername + argument)}} > Napisz wiadomość </ButtonMessage> }
             {/* <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
               <SmallButton>Napisz opinię</SmallButton>
               <SmallButton> Like</SmallButton>
