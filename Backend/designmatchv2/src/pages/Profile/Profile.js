@@ -61,6 +61,11 @@ const UserPage = () => {
   const [username, setUsername] = useState('');
   const [showModalEdit, setShowModalEdit] = useState(false);
   const fileInputRef = useRef(null);
+  const [refreshPortfolio, setRefreshPortfolio] = useState(false);
+
+  const handleRefreshPortfolio = () => {
+    setRefreshPortfolio((prevState) => !prevState);
+  };
 
   useEffect (() => {
     sessionStoreCleaner.checkAndRemoveSessionStorage();
@@ -304,7 +309,8 @@ const UserPage = () => {
     const handleAddPhoto = useCallback(async () => {
       try {
         const response = await axios.post(
-          '/api/artist/createPortfolioEntry/' + username, blob,
+          '/api/artist/createPortfolioEntry/' + username,
+          blob,
           {
             params: {
               name: modalEditData.name,
@@ -316,12 +322,14 @@ const UserPage = () => {
               'Content-Type': 'multipart/form-data',
             },
           }
-        )
+        );
+        handleRefreshPortfolio(); // Odświeżenie Portfolio
       } catch (err) {
         console.error('Error while saving data:', err);
       }
       setShowModalEdit(false);
-    },);
+    }, [blob, handleRefreshPortfolio, modalEditData.description, modalEditData.name, username]);
+
 
     const handleEditImageClick = () => {
       fileInputRef.current.click();
@@ -397,29 +405,26 @@ const UserPage = () => {
           </LeftWrapper>
           <RightWrapper>
             <BoldLabel>O mnie:</BoldLabel>
-            <AboutMe>{get.bio}</AboutMe>
+            <AboutMe>{get.bio ? get.bio : 'brak opisu'}</AboutMe>
             <Left>
               <LineForm />
               <InfoRow>
                 <LeftColumn>
                   <LeftInfoRow>
-                    <InfoText>Członek od:</InfoText>
-                    <DataText>20.20.2023</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
                     <InfoText>Miejscowość:</InfoText>
-                    <DataText>{get.location}</DataText>
+                    <DataText>{get.location ? get.location : 'puste'}</DataText>
                   </LeftInfoRow>
-                  <LeftInfoRow>
+                  {/* <LeftInfoRow>
                     <InfoText>Prace:</InfoText>
                     <DataText>20</DataText>
                   </LeftInfoRow>
+                  <LineForm /> */}
                   <LineForm />
                   <InfoText>Języki:</InfoText>
                   <BubbleWrap>
                     {get.languages?.length ? (
                       get.languages.map((language, index) => <Bubble key={index}>{language}</Bubble>)
-                    ) : <Bubble>{Default}</Bubble>}
+                    ) : <Bubble>brak</Bubble>}
                   </BubbleWrap>
                   <LineForm />
                   <InfoText>Umiejętności:</InfoText>
@@ -442,10 +447,10 @@ const UserPage = () => {
         <BottomSection>
           <TitleText>Portfolio</TitleText>
           <BottomWrapper>
-            <Portfolio username={username} />
+            <Portfolio username={username} refreshPortfolio={handleRefreshPortfolio} />
           </BottomWrapper>
         </BottomSection>
-        <ModalEdit showModalEdit={showModalEdit} />
+        <ModalEdit showModalEdit={showModalEdit} handleRefreshPortfolio={handleRefreshPortfolio} />
       </ProfileWrapper>
     ) : (<LoadingPage />)}
     </>

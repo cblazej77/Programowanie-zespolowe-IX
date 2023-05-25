@@ -238,6 +238,15 @@ export const NumberInput = styled.textarea`
   @media screen and (max-width: 960px) {
     height: 1.8rem;
   }
+  &::placeholder {
+    color: ${secondary};
+  }
+`;
+
+export const DateInput = styled(NumberInput)`
+  width: 3.5rem;
+  text-align: center;
+  padding: 0 0.5rem;
 `;
 
 export const ModalEditRow = styled(ModalRow)`

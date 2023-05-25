@@ -511,7 +511,6 @@ const Cards = () => {
             </CardsWrapper>
             <Modal showModal={showModal} onCloseModal={handleCloseModal} />
           </RightLabel>
-
         ) : (
           <LoadingPage />
         )}

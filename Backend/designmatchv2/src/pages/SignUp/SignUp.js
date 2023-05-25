@@ -21,7 +21,6 @@ import {
 } from '../../components/Regex';
 import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 function LoginForm() {
-
   const [email, setEmail] = useState('');
   const [nick, setNick] = useState('');
   const [name, setName] = useState('');
@@ -83,12 +82,18 @@ function LoginForm() {
     setName("");
     setSurname("");
     setPassword("");
+    setNIP("");
+    setREGON("");
+    setKRS("");
     setCheckRegexEmail(true);
     setCheckRegexName(true);
     setCheckRegexNick(true);
     setCheckRegexPassword(true);
     setCheckRegexPassword(true);
     setAllInput(true);
+    setCheckRegexNIP(true);
+    setCheckRegexREGON(true);
+    setCheckRegexKRS(true);
   }
 
   const handleRegistration = async (e) => {
@@ -111,8 +116,8 @@ function LoginForm() {
       console.log(response.data);
       console.log(response.accessToken);
       console.log(JSON.stringify(response));
-      openModal();
       clear();
+      openModal();
     } catch (err) {
       setSubmitting(false);
       if (!err?.response) {
@@ -148,9 +153,9 @@ function LoginForm() {
       console.log(response.data.accessToken);
       console.log(response?.accessToken);
       setSubmitting(false);
+      clear();
       console.log(JSON.stringify(response));
       openModal();
-      clear();
     } catch (err) {
       setSubmitting(false);
       if (!err?.response) {
@@ -174,7 +179,7 @@ function LoginForm() {
   });
 
   useEffect(() => {
-    if (navigateGo) navigate('/');
+    if (navigateGo) navigate('/sign-in');
   }, [navigateGo]);
 
   useEffect (() => {
@@ -394,7 +399,7 @@ function LoginForm() {
           {userRole === "ARTIST" && (
             <InputsWrapper >
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <InputText label="imię:" id="nameId" onChange={handleName} checkRegex={checkRegexName} />
+                <InputText label="imię:" id="nameId" value={name} onChange={handleName} checkRegex={checkRegexName} />
                 <InputText label="nazwisko:" id="surnameId" onChange={handleSurname} checkRegex={checkRegexSurname} />
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>

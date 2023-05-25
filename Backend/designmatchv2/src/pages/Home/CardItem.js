@@ -131,26 +131,37 @@ function CardItem(props) {
               {props.skills[3]}
             </CategoryText>
           </DetailedInfoContainer>
-          <FirstPhoto
-            onClick={() => ModalOpen(entries[0])}
-            src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + 1}
-            onError={(e) => handleImageError(e, "/assets/cards/background1.png")}
-          />
-          <SecondPhoto
-            onClick={() => ModalOpen(entries[1])}
-            src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + 2}
-            onError={(e) => handleImageError(e, "/assets/cards/background2.png")}
-          />
-          <ThirdPhoto
-            onClick={() => ModalOpen(entries[2])}
-            src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + 3}
-            onError={(e) => handleImageError(e, "/assets/cards/background3.png")}
-          />
-          <FourthPhoto
-            onClick={() => ModalOpen(entries[3])}
-            src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + 4}
-            onError={(e) => handleImageError(e, "/assets/cards/background4.png")}
-          />
+          {entries[0] ?
+            <FirstPhoto
+              onClick={() => ModalOpen(entries[0])}
+              src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + entries[0].id}
+            /> :
+            <FirstPhoto style={{ cursor: 'default' }}
+              src={"/assets/cards/background1.png"}
+            />}
+          {entries[1] ?
+            <SecondPhoto
+              onClick={() => ModalOpen(entries[1])}
+              src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + entries[1].id}
+            /> :
+            <SecondPhoto style={{ cursor: 'default' }}
+              src={"/assets/cards/background2.png"}
+            />}
+          {entries[2] ?
+            <ThirdPhoto
+              onClick={() => ModalOpen(entries[2])}
+              src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + entries[2].id}
+            /> :
+            <ThirdPhoto style={{ cursor: 'default' }}
+              src={"/assets/cards/background3.png"}
+            />}
+          {entries[3] ?
+            <FourthPhoto
+              onClick={() => ModalOpen(entries[3])}
+              src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + entries[3].id}
+            /> :
+            <FourthPhoto style={{ cursor: 'default' }}
+              src={"/assets/cards/background4.png"} />}
           <PhotoModal showModal={showModal} />
         </CardLabel>
       ) : (

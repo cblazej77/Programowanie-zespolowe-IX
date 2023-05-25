@@ -75,7 +75,7 @@ const EditCompanyPage = () => {
 
   const navigate = useNavigate();
 
-  const maxChars = 300;
+  const maxChars = 255;
   const limitHeight = 60;
   useEffect (() => {
     sessionStoreCleaner.checkAndRemoveSessionStorage();
@@ -243,11 +243,11 @@ const EditCompanyPage = () => {
               <InfoInputWrapper>
                 <InputInfoText>Adres firmy: </InputInfoText>
                 <EditNameText
-                  defaultValue={get.companyAdress}
-                  value={get.companyAdress}
+                  defaultValue={get.address}
+                  value={get.address}
                   onChange={({ target }) =>
                     setGet({
-                      ...get, companyAdress: target.value,
+                      ...get, address: target.value,
                     })} />
               </InfoInputWrapper>
             </LeftWrapper>
