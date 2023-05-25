@@ -33,19 +33,18 @@ public class ChatMessageService {
         ChatMessage chatMessage = chatMessageMapper.mapToEntity(chatMessageRequest, true);
         return chatMessageMapper.mapToDto(chatMessageRepository.save(chatMessage));
     }
-
-    public long countNewMessages(String senderId, String recipientId) {
-        return chatMessageRepository.countBySenderIdAndRecipientIdAndStatus(
-                senderId, recipientId, MessageStatus.RECEIVED);
+    public long countNewMessages(String senderUsername, String recipientUsername) {
+        return chatMessageRepository.countBySender_UsernameAndRecipient_UsernameAndStatus(
+                senderUsername, recipientUsername, MessageStatus.RECEIVED);
     }
 
-    public List<ChatMessageResponse> findChatMessages(String senderId, String recipientId) {
-        String chatId = chatRoomService.getChatId(senderId, recipientId, false)
-                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + senderId + "_" + recipientId));
+    public List<ChatMessageResponse> findChatMessages(String senderUsername, String recipientUsername) {
+        String chatId = chatRoomService.getChatId(senderUsername, recipientUsername, false)
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + senderUsername + "_" + recipientUsername));
         List<ChatMessage> messages = chatId.isEmpty() ? new ArrayList<>() : chatMessageRepository.findByChatId(chatId);
 
         if (messages.size() > 0) {
-            updateStatuses(messages);
+            updateStatuses(messages, senderUsername);
         }
 
         List<ChatMessageResponse> result = new ArrayList<>();
@@ -65,9 +64,9 @@ public class ChatMessageService {
                         new EntityNotFoundException("Nie znaleziono wiadomości o id: " + id));
     }
 
-    public void updateStatuses(List<ChatMessage> messages) {
+    public void updateStatuses(List<ChatMessage> messages, String senderUsername) {
         for (ChatMessage message : messages) {
-            if (message.getStatus().equals(MessageStatus.RECEIVED)) {
+            if (message.getStatus().equals(MessageStatus.RECEIVED) && message.getRecipient().getUsername().equals(senderUsername)) {
                 message.setStatus(MessageStatus.DELIVERED);
                 chatMessageRepository.save(message);
             }
@@ -80,14 +79,17 @@ public class ChatMessageService {
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu dla użytkownika: " + username));
         for (ChatRoom chatRoom : chatRooms) {
             UserEntity interlocutor = chatRoom.getRecipient();
-            ChatMessage lastMessage = chatMessageRepository.findFirstByIdOrderByTimestampDesc(chatRoom.getChatId())
-                    .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono wiadomości dla czatu: " + chatRoom.getChatId()));
-            if (interlocutor.getArtistProfile() != null)
-                result.add(new InterlocutorResponse(interlocutor.getUsername(), interlocutor.getArtistProfile().getFirstname(),
-                        interlocutor.getArtistProfile().getLastname(), lastMessage.getContent()));
-            else
-                result.add(new InterlocutorResponse(interlocutor.getUsername(), interlocutor.getCompanyProfile().getName(), lastMessage.getContent()));
+            if (!interlocutor.getUsername().equals(username)) { // Dodatkowa warunek sprawdzający username
+                ChatMessage lastMessage = chatMessageRepository.findFirstByIdOrderByTimestampDesc(chatRoom.getChatId())
+                        .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono wiadomości dla czatu: " + chatRoom.getChatId()));
+                if (interlocutor.getArtistProfile() != null)
+                    result.add(new InterlocutorResponse(interlocutor.getUsername(), interlocutor.getArtistProfile().getFirstname(),
+                            interlocutor.getArtistProfile().getLastname(), lastMessage.getContent()));
+                else
+                    result.add(new InterlocutorResponse(interlocutor.getUsername(), interlocutor.getCompanyProfile().getName(), lastMessage.getContent()));
+            }
         }
         return result;
     }
+
 }

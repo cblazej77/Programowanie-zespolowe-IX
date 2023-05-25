@@ -39,18 +39,18 @@ public class ChatController {
                         saved.getRecipientUsername()));
     }
 
-    @GetMapping("/messages/{senderId}/{recipientId}/count")
+    @GetMapping("/messages/{senderUsername}/{recipientUsername}/count")
     public ResponseEntity<Long> countNewMessages(
-            @PathVariable String senderId,
-            @PathVariable String recipientId) {
+            @PathVariable("senderUsername") String senderId,
+            @PathVariable("recipientUsername") String recipientId) {
 
         return ResponseEntity.ok(chatMessageService.countNewMessages(senderId, recipientId));
     }
 
-    @GetMapping("/messages/{senderId}/{recipientId}")
-    public ResponseEntity<?> findChatMessages(@PathVariable String senderId,
-                                              @PathVariable String recipientId) {
-        return ResponseEntity.ok(chatMessageService.findChatMessages(senderId, recipientId));
+    @GetMapping("/messages/{senderUsername}/{recipientUsername}")
+    public ResponseEntity<?> findChatMessages(@PathVariable("senderUsername") String senderUsername,
+                                              @PathVariable("recipientUsername") String recipientUsername) {
+        return ResponseEntity.ok(chatMessageService.findChatMessages(senderUsername, recipientUsername));
     }
 
     @GetMapping("/messages/{id}")

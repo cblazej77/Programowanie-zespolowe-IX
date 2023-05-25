@@ -15,6 +15,7 @@ public class ChatNotification {
     @JsonProperty("senderName")
     private String senderName;
 
+
     @JsonCreator
     public ChatNotification(Long id, String senderId, String senderName) {
         this.id = id;

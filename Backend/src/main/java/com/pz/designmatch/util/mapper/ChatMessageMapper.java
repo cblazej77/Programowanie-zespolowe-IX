@@ -71,7 +71,7 @@ public class ChatMessageMapper {
                     recipient,
                     chatMessageRequest.getContent(),
                     LocalDateTime.now(),
-                    MessageStatus.DELIVERED
+                    MessageStatus.RECEIVED
             );
         } else {
             throw new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + chatMessageRequest.getSenderUsername() + "_" + chatMessageRequest.getRecipientUsername());

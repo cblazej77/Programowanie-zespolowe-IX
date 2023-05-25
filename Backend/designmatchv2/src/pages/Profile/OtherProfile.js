@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Rating } from 'react-simple-star-rating';
 import { default as axios } from '../../api/axios'
 import LoadingPage from '../LoadingPage';
+import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
 import { useParams } from 'react-router-dom';
 import {
   AboutMe,
@@ -25,6 +28,8 @@ import {
   NameText,
   ProfileImage,
   ProfileWrapper,
+  ButtonMessageOff,
+  ButtonMessage,
   RatingText,
   RatingWrapper,
   RightColumn,
@@ -41,6 +46,7 @@ const getArtistProfileURL = process.env.REACT_APP_GET_ARTIST_PROFILE;
 const getUserURL = process.env.REACT_APP_GET_USER;
 const getShortArtistProfileURL = process.env.REACT_APP_GET_SHORT_ARTIST_PROFILE;
 
+var stompClient = null;
 //UserName/UserInfo/MessageButton
 const OtherUserPage = () => {
   const { argument } = useParams();
@@ -49,12 +55,40 @@ const OtherUserPage = () => {
   const [shortProfile, setShortProfile] = useState("");
   const [educationList, setEducationList] = useState([]);
   const [experienceList, setExperienceList] = useState([]);
+  const [myUsername, setmyUsername] = useState('');
 
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
   const [click, setClick] = useState(true);
   const [button, setButton] = useState(true);
 
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const redirectPath = location.state?.path || '/';
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const decodeResult = await axios.request('/auth/decodeToken', {
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
+          },
+        });
+
+        const userResult = await axios.request({
+          url: '/public/api/artist/getArtistProfileByUsername/' + decodeResult.data.username
+        });
+
+        setmyUsername(decodeResult.data.username);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     let profileName = "";
@@ -119,6 +153,35 @@ const OtherUserPage = () => {
       }
     }
   }, [get]);
+
+  const connect= () => {
+    const Stomp = require("stompjs");
+    let SockJS = require("sockjs-client");
+    SockJS = new SockJS("http://localhost:8080/ws");
+    stompClient = Stomp.over(SockJS);
+    stompClient.connect({}, onConnected, onError());;
+  };
+  const onError = (error) => {
+    console.error('WebSocket error:', error);
+  };
+
+        const onConnected = () => {
+          if (stompClient) {
+             if (stompClient.connected) {
+           let newMessage = {
+             sender_username: myUsername,
+             recipient_username: argument,
+             content: "!$@DM@$!",
+           };
+      
+           stompClient.send('/app/chat', {}, JSON.stringify(newMessage))
+           try {
+            stompClient.disconnect();
+        } catch (e) {console.log("stomp Client ma problem z disconnected, ZAWSZE");}
+        navigate('/chat');
+         }else console.log("błąd wysyłania: brak połączenia z WebSocket");
+       }else  console.log("błąd wysyłania: stompClient niezdefiniowany");
+        };
 
   const handleAddEducationElement = (newId, faculty, schoolName, fieldOfStudy, degree, startDate, endDate, description) => {
     setEducationList((prevList) => [
@@ -306,7 +369,7 @@ const OtherUserPage = () => {
               <RatingText>({reviewCount} opinii)</RatingText>
             </RatingWrapper> */}
             <LineForm />
-            <Button>Napisz wiadomość</Button>
+            {(argument !== myUsername && myUsername != '') ? <ButtonMessage onClick ={()=> connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => navigate(redirectPath, { replace: true })} > Napisz wiadomość </ButtonMessage> }
             {/* <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
               <SmallButton>Napisz opinię</SmallButton>
               <SmallButton> Like</SmallButton>

@@ -432,10 +432,10 @@ const EditUserPageMobile = () => {
           url: '/public/api/artist/getArtistProfileByUsername/' + decodeResponse.data.username
         });
 
-        const avatarResponse = await axios.request(
-          '/public/api/artist/getProfileImageByUsername/' + decodeResponse.data.username, {
-          responseType: 'arraybuffer',
-        });
+        // const avatarResponse = await axios.request(
+        //   '/public/api/artist/getProfileImageByUsername/' + decodeResponse.data.username, {
+        //   responseType: 'arraybuffer',
+        // });
 
         const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
           [
@@ -447,12 +447,12 @@ const EditUserPageMobile = () => {
           ],
         );
 
-        const imageType = avatarResponse.headers['content-type'];
-        const imageBlob = new Blob([avatarResponse.data], { type: imageType });
-        const imageUrl = URL.createObjectURL(imageBlob);
+       // const imageType = avatarResponse.headers['content-type'];
+        //const imageBlob = new Blob([avatarResponse.data], { type: imageType });
+        //const imageUrl = URL.createObjectURL(imageBlob);
 
-        setBlob(avatarResponse.data);
-        setAvatar(imageUrl);
+        //setBlob(avatarResponse.data);
+        //setAvatar(imageUrl);
         setUsername(decodeResponse.data.username);
         setGet(artistResponse.data);
         setArtistProfile(artistResponse.data);

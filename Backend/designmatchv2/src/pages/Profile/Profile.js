@@ -41,6 +41,7 @@ import { TitleText } from '../Home/CardsElement';
 import Portfolio from './Portfolio';
 import { TitleInput } from '../Home/CommisionsElements';
 
+
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
 const getArtistProfileURL = process.env.REACT_APP_GET_ARTIST_PROFILE;
@@ -50,7 +51,7 @@ const getShortArtistProfileURL = process.env.REACT_APP_GET_SHORT_ARTIST_PROFILE;
 //UserName/UserInfo/MessageButton
 const UserPage = () => {
   const [get, setGet] = useState("");
-  const [checkLoading, setCheckLoading] = useState(null);
+  const [checkLoading, setCheckLoading] = useState(false);
   const [shortProfile, setShortProfile] = useState("");
   const [educationList, setEducationList] = useState([]);
   const [experienceList, setExperienceList] = useState([]);
@@ -115,6 +116,7 @@ const UserPage = () => {
       }
     }
   }, [get]);
+
 
   const handleAddEducationElement = (newId, schoolName, faculty, fieldOfStudy, degree, startDate, endDate, description) => {
     setEducationList((prevList) => [

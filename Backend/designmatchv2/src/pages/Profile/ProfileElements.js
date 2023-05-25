@@ -192,6 +192,28 @@ export const Button = styled(Link)`
     #555978
     );
 `;
+export const ButtonMessage = styled.button`
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    margin: 8px 0px;
+    padding: 7px 0px;
+    font-size: 0.9rem;
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(
+    to top,
+    #4A4E69,
+    #555978
+    );
+`;
+
+export const ButtonMessageOff = styled(ButtonMessage)`
+    cursor: not-allowed;
+    background: grey;
+`
 
 export const AddCommissionButton = styled(Button)`
     margin: 1rem;
