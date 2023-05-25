@@ -49,6 +49,7 @@ import {
   CommisionTitle,
   CommisionTitleContainer,
   CommisionTop,
+  DateInput,
   LevelBubble,
   ModalEditRow,
   NumberInput,
@@ -75,7 +76,7 @@ const CompanyPage = () => {
   const [CommisionsData, setCommisionsData] = useState([]);
   const [username, setUsername] = useState('');
 
-  const maxChars = 300;
+  const maxChars = 255;
 
   const citiesData = useMemo(
     () => ({
@@ -126,7 +127,7 @@ const CompanyPage = () => {
     }),
     [],
   );
-  useEffect (() => {
+  useEffect(() => {
     sessionStoreCleaner.checkAndRemoveSessionStorage();
   }, []);
 
@@ -213,11 +214,16 @@ const CompanyPage = () => {
       languages: [],
     });
 
+    const [day, setDay] = useState('');
+    const [month, setMonth] = useState('');
+    const [year, setYear] = useState('');
+
     const [skillsT, setSkillsT] = useState([])
     const [languagesT, setLanguagesT] = useState(languages);
     const [tagsT, setTagsT] = useState(tags);
     const [locationT, setLocationT] = useState(cities);
     const [levelT, setLevelT] = useState(levels);
+    const [test, setTest] = useState({ deadline: '' });
 
     useEffect(() => {
       if (categories && categories.categories && Array.isArray(categories.categories)) {
@@ -231,8 +237,12 @@ const CompanyPage = () => {
       }
     }, []);
 
+    useEffect(() => {
+      const deadline = `${day}/${month}/${year}`;
+      setModalEditData({ ...modalEditData, deadline: deadline });
+    }, [day, month, year]);
+
     const handleAddCommission = useCallback(async () => {
-      console.log(modalEditData);
       try {
         const response = await axios.post(
           `/api/commission/create`,
@@ -245,22 +255,23 @@ const CompanyPage = () => {
             },
           }
         );
-        console.log('Data saved successfully!');
+        // console.log('Data saved successfully!');
         console.log(response.data);
       } catch (err) {
         console.error('Error while saving data:', err);
       }
       console.log(modalEditData);
       setShowModalEdit(false);
-    },);
+    }, [day, month, year, modalEditData]);
 
     return (
       <>
         {showModalEdit && (
-          <ModalBackground onClick={closeModalEditClick}>
+          <ModalBackground>
             <ModalWrapper onClick={handleWrapperClick}>
               <ModalInfo>Tytuł zlecenia:</ModalInfo>
               <TitleInput
+                maxLength={maxChars}
                 value={modalEditData.title}
                 onChange={({ target }) =>
                   setModalEditData({ ...modalEditData, title: target.value, })}
@@ -281,22 +292,54 @@ const CompanyPage = () => {
                     <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
                       <NumberInput
                         type="number"
-                        maxLength={12}
+                        maxLength={16}
                         value={modalEditData.rate}
-                        onChange={({ target }) =>
-                          setModalEditData({ ...modalEditData, rate: parseInt(target.value) })}
+                        onChange={({ target }) => {
+                          const rate = parseInt(target.value);
+                          if (rate >= 0) {
+                            setModalEditData({ ...modalEditData, rate });
+                          }
+                        }}
                       />
                       <ModalData style={{ color: darkLight }}>PLN</ModalData>
                     </div>
                   </ModalEditRow>
                   <ModalEditRow>
                     <ModalInfo>Czas wykonania:</ModalInfo>
-                    <NumberInput
-                      placeHolder={'dzień/miesiąc/rok'}
-                      value={modalEditData.deadline}
-                      onChange={({ target }) =>
-                        setModalEditData({ ...modalEditData, deadline: target.value, })}
-                    />
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <DateInput
+                        placeholder="DD"
+                        maxLength={2}
+                        value={day}
+                        onChange={({ target }) => {
+                          const rate = parseInt(target.value);
+                          if (rate >= 0) {
+                            setDay(target.value);
+                          }
+                        }} />
+                      <ModalData style={{ margin: '0 0.5rem' }}>/</ModalData>
+                      <DateInput
+                        placeholder="MM"
+                        maxLength={2}
+                        value={month}
+                        onChange={({ target }) => {
+                          const rate = parseInt(target.value);
+                          if (rate >= 0) {
+                            setMonth(target.value);
+                          }
+                        }} />
+                      <ModalData style={{ margin: '0 0.5rem' }}>/</ModalData>
+                      <DateInput style={{ width: '5.5rem' }}
+                        placeholder="RRRR"
+                        maxLength={4}
+                        value={year}
+                        onChange={({ target }) => {
+                          const rate = parseInt(target.value);
+                          if (rate >= 0) {
+                            setYear(target.value);
+                          }
+                        }} />
+                    </div>
                   </ModalEditRow>
                   <ModalEditRow>
                     <ModalInfo>Poziom zaawansowania:</ModalInfo>
@@ -487,7 +530,7 @@ const CompanyPage = () => {
       console.log(modalData.id);
       try {
         const response = await axios.delete(
-          `/public/api/deleteCommission/` + modalData.id,
+          `/api/deleteCommission/` + modalData.id,
           {
             headers: {
               accept: 'application/json',
@@ -622,24 +665,25 @@ const CompanyPage = () => {
             </LeftWrapper>
             <RightWrapper>
               <BoldLabel>O firmie:</BoldLabel>
-              <AboutMe>{get.description}</AboutMe>
+              <AboutMe>{get.description ? get.description : 'brak opisu'}</AboutMe>
               <Left>
                 <LineForm />
                 <InfoRow>
-                  <LeftColumn>
-                    <InfoText>Linki:</InfoText>
-                    <BubbleWrap>
-                      <Bubble>{get.website}</Bubble>
-                      <Bubble>{get.linkedin}</Bubble>
-                      <Bubble>{get.facebook}</Bubble>
-                      <Bubble>{get.instagram}</Bubble>
-                      <Bubble>{get.twitter}</Bubble>
-                    </BubbleWrap>
-                  </LeftColumn>
+                  {(get.website || get.linkedin || get.facebook || get.instagram || get.twitter) &&
+                    <LeftColumn>
+                      <InfoText>Media społecznościowe:</InfoText>
+                      <BubbleWrap>
+                        {get.website && <Bubble>{get.website}</Bubble>}
+                        {get.linkedin && <Bubble>{get.linkedin}</Bubble>}
+                        {get.facebook && <Bubble>{get.facebook}</Bubble>}
+                        {get.instagram && <Bubble>{get.instagram}</Bubble>}
+                        {get.twitter && <Bubble>{get.twitter}</Bubble>}
+                      </BubbleWrap>
+                    </LeftColumn>}
                   <RightColumn>
                     <LeftInfoRow>
                       <InfoText>Adres:</InfoText>
-                      <DataText>{get.companyAdress}</DataText>
+                      <DataText>{get.address}</DataText>
                     </LeftInfoRow>
                     <LeftInfoRow>
                       <InfoText>NIP:</InfoText>
@@ -651,7 +695,7 @@ const CompanyPage = () => {
                     </LeftInfoRow>
                     <LeftInfoRow>
                       <InfoText>KRS:</InfoText>
-                      <DataText>{get.krs}</DataText>
+                      <DataText>{get.krs ? get.krs : 'brak'}</DataText>
                     </LeftInfoRow>
                   </RightColumn>
                 </InfoRow>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../api/axios';
 import LoadingPage from '../LoadingPage';
 import {
+    AddCommissionButton,
     BottomWrapper,
     Image,
     ModalBackground,
@@ -22,10 +23,18 @@ const Portfolio = (props) => {
     const [entries, setEntries] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [modalData, setModalData] = useState([]);
+    const [username, setUsername] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const decodeResult = await axios.request('/auth/decodeToken', {
+                    headers: {
+                        'accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
+                    },
+                });
 
                 const portfolioEntriesResponse = await axios.request(
                     '/public/api/artist/getPortfolioEntries/' + props.username,
@@ -35,6 +44,7 @@ const Portfolio = (props) => {
                     },
                 );
 
+                setUsername(decodeResult.data.username);
                 setEntries(portfolioEntriesResponse.data.content);
             } catch (err) {
                 console.log(err);
@@ -42,7 +52,7 @@ const Portfolio = (props) => {
         };
 
         fetchData();
-    }, []);
+    }, [props.refreshPortfolio, showModal]);
 
     const ModalOpen = (data) => {
         console.log(data);
@@ -58,6 +68,23 @@ const Portfolio = (props) => {
         event.stopPropagation();
     };
 
+    const handleDeletePhoto = (imageId) => async () => {
+        try {
+            await axios.delete(
+                '/api/artist/deletePortfolioEntry/' + props.username + '/' + imageId,
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
+                    },
+                },
+            );
+            setShowModal(false);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const PhotoModal = ({ showModal }) => {
         return (
             <>
@@ -70,6 +97,9 @@ const Portfolio = (props) => {
                                 <PortfolioImage src={'/public/api/artist/getPortfolioImage/' + props.username + '/' + modalData.id} />
                             </ModalImageContainer>
                         </ModalWrapper>
+                        {username === props.username &&
+                            <AddCommissionButton onClick={handleDeletePhoto(modalData.id)}>Usuń z portfolio</AddCommissionButton>
+                        }
                     </ModalBackground>
                 )}
             </>
