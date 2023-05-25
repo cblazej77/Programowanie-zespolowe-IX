@@ -377,13 +377,13 @@ const UserPage = () => {
   };
 
   return (
-    <>{checkLoading && get ? (
+    <>{checkLoading && get && username ? (
       <ProfileWrapper>
         <TopSection>
           <LeftWrapper>
             <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               <ProfileImage>
-                {username && <Image src={'/public/api/artist/getProfileImageByUsername/' + username}
+                {<Image src={'/public/api/artist/getProfileImageByUsername/' + username}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = "/assets/cards/defaultavatar.png";

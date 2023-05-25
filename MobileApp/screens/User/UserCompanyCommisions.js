@@ -173,6 +173,7 @@ const CompanyCommisions = ({ route, navigation }) => {
             key={indexC}
           >
             <CommisionElement
+              name={cms.company_name}
               key={indexC}
               title={cms.title}
               description={cms.description}

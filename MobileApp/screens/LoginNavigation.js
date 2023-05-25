@@ -8,11 +8,9 @@ import Login from './Login';
 import Signup from './ArtistSignup';
 import CompanySignup from './CompanySignup';
 import MainNavigation from './MainNavigation';
-import HomePage from './navigation_screens/HomePage';
+import HomePage from './navigation_screens/NotLoggedHomePage';
 import ArtistScreen from './Artist/ArtistScreen';
 import CompanyScreen from './Company/CompanyScreen';
-import UserCompanyScreen from './User/UserCompanyScreen';
-import Chat from './Chat';
 import { StatusBar } from 'react-native';
 
 import { Colors } from '../components/styles';
@@ -37,9 +35,7 @@ const LoginNavigation = () => {
         <Stack.Screen name="CompanySignup" component={CompanySignup} />
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="ArtistScreen" component={ArtistScreen} />
-        <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="CompanyScreen" component={CompanyScreen} />
-        <Stack.Screen name="UserCompanyScreen" component={UserCompanyScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

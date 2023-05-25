@@ -52,6 +52,8 @@ const CompanySignup = ({ navigation }) => {
   const [regon, setRegon] = useState('');
   const [krs, setKrs] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isPassword2Valid, setIsPassword2Valid] = useState(true);
 
   function passwordPatternValidation(password) {
     const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$');
@@ -238,15 +240,21 @@ const CompanySignup = ({ navigation }) => {
               } else if (!namesPatternValidation(name)) {
                 handleMessage('Wpisano niedozwolone znaki w nazwie firmy', 'FAILED');
                 setSubmitting(false);
-              } else if (!nipPatternValidation(nip) || !isNipValid(nip)) {
-                handleMessage('Wpisano zły NIP', 'FAILED');
+              } else if (!nipPatternValidation(nip)) {
+                handleMessage('Wpisano NIP w złym formacie, firma musi być zarejestrowana w Polsce', 'FAILED');
                 setSubmitting(false);
-              } else if (!regonPatternValidation(regon) || !isRegonValid(regon)) {
-                handleMessage('Wpisano zły REGON', 'FAILED');
+              } else if (!isNipValid(nip)) {
+                handleMessage('Wpisano nieprawidłowy NIP', 'FAILED');
+                setSubmitting(false);
+              } else if (!regonPatternValidation(regon) ) {
+                handleMessage('Wpisano REGON w złym formacie, firma musi być zarejestrowana w Polsce', 'FAILED');
+                setSubmitting(false);
+              } else if (!isRegonValid(regon)) {
+                handleMessage('Wpisano nieprawidłowy REGON', 'FAILED');
                 setSubmitting(false);
               } else if (!krsPatternValidation(krs)) {
                 console.log(krs);
-                handleMessage('Wpisano zły KRS', 'FAILED');
+                handleMessage('Wpisano KRS w zlym formacie', 'FAILED');
                 setSubmitting(false);
               } else if (!usernamesPatternValidation(username)) {
                 handleMessage('Wpisano niedozwolone znaki w nazwie użytkownika', 'FAILED');
@@ -275,6 +283,7 @@ const CompanySignup = ({ navigation }) => {
                   onChangeText={setName}
                   onBlur={handleBlur('name')}
                   value={name}
+                  checkRegex={name.length !== 0 ? namesPatternValidation(name) : true}
                 />
                 <MyTextInput
                   label="NIP"
@@ -284,6 +293,8 @@ const CompanySignup = ({ navigation }) => {
                   onChangeText={setNip}
                   onBlur={handleBlur('nip')}
                   value={nip}
+                  checkRegex={nip.length !== 0 ? nipPatternValidation(nip) : true}
+
                 />
                 <MyTextInput
                   label="REGON"
@@ -293,6 +304,8 @@ const CompanySignup = ({ navigation }) => {
                   onChangeText={setRegon}
                   onBlur={handleBlur('regon')}
                   value={regon}
+                  keyboardType='numeric'
+                  checkRegex={regon.length !== 0 ? regonPatternValidation(regon) : true}
                 />
                 <MyTextInput
                   label="KRS"
@@ -302,6 +315,8 @@ const CompanySignup = ({ navigation }) => {
                   onChangeText={setKrs}
                   onBlur={handleBlur('krs')}
                   value={krs}
+                  keyboardType='numeric'
+                  checkRegex={krs !== null ? (krs.length !== 0 ? krsPatternValidation(krs) : true) : true}
                 />
                 <MyTextInput
                   label="Adres Email"
@@ -312,6 +327,7 @@ const CompanySignup = ({ navigation }) => {
                   onBlur={handleBlur('email')}
                   value={email}
                   keyboardType="email-address"
+                  checkRegex={email.length !== 0 ? emailPatternValidation(email) : true}
                 />
                 <MyTextInput
                   label="Nazwa użytkownika"
@@ -321,34 +337,38 @@ const CompanySignup = ({ navigation }) => {
                   onChangeText={setUsername}
                   onBlur={handleBlur('username')}
                   value={username}
+                  checkRegex={username.length !== 0 ? usernamesPatternValidation(username) : true}
                 />
-                <MyTextInput
+                 <MyTextInput
                   label="Hasło"
                   icon="lock"
                   placeholder="************"
                   placeholderTextColor={'#00000088'}
-                  onChangeText={setPassword}
+                  onChangeText={(newText) => {setPassword(newText); setIsPasswordValid(passwordPatternValidation(newText))}}
                   onBlur={handleBlur('password')}
                   value={password}
                   secureTextEntry={hidePassword}
                   isPassword={true}
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
+                  checkRegex={password.length !== 0 ? passwordPatternValidation(password) : true}
                 />
                 <MyTextInput
                   label="Potwierdź hasło"
                   icon="lock"
                   placeholder="************"
                   placeholderTextColor={'#00000088'}
-                  onChangeText={setConfirmPassword}
+                  onChangeText={(newText) => {setConfirmPassword(newText); setIsPassword2Valid(passwordPatternValidation(newText))}}
                   onBlur={handleBlur('confirmPassword')}
                   value={confirmPassword}
                   secureTextEntry={hidePassword}
                   isPassword={true}
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
+                  checkRegex={confirmPassword.length !== 0 ? passwordPatternValidation(confirmPassword) : true}
                 />
                 <MsgBox type={messageType}> {message} </MsgBox>
+                {(!isPasswordValid || !isPassword2Valid) && <MsgBox type={'FAILED'}>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </MsgBox>}
                 {!submitting && (
                   <LinearGradientStyle colors={[darkLight2, darkLight]}>
                     <StyledButton onPress={handleSubmit}>

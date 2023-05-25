@@ -81,12 +81,12 @@ export const CommisionBubble = styled.p`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: ${darkLight};
-  border: 1px solid ${darkLight};
+  color: ${darkLight2};
+  border: 1px solid ${darkLight2};
   background: ${primary};
   border-radius: 15px;
-  font-size: 1.2rem;
-  height: 1.9rem;
+  font-size: 1.1rem;
+  height: 1.7rem;
   margin: 0 0.3rem;
   padding: 0 0.5rem;
   @media screen and (max-width: 1280px) {
@@ -120,6 +120,17 @@ export const ModalCommisionWrapper = styled.div`
   display: flex;
   padding: 2rem;
   font-size: 1.5rem;
+  animation: modalFadeIn 0.5s ease;
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   @media screen and (max-width: 100rem) {
     width: 95%;
@@ -140,6 +151,7 @@ export const ModalCommisionBackground = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 export const CommisionLineForm = styled.div`
@@ -173,6 +185,8 @@ export const CommisionText = styled.p`
 `;
 
 export const CommisionBottom = styled.div`
+  width: 100%;
+  overflow: hidden;
   display: flex;
   justify-content: flex-end;
 `;
@@ -227,4 +241,17 @@ export const NumberInput = styled.textarea`
 `;
 
 export const ModalEditRow = styled(ModalRow)`
+`;
+
+export const VisitCompanyButton = styled.button`
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
+  color: ${primary};
+  text-decoration: none;
+  background:  ${darkLight};
+  padding: 0.2rem 0.5rem;
+  font-size: 1.2rem;
+  margin: 1rem;
+  cursor: pointer;
 `;

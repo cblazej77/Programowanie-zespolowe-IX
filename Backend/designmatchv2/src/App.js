@@ -1,4 +1,3 @@
-//Switch => Routes
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/Auth';
@@ -25,62 +24,80 @@ import OtherCompanyPage from './pages/Profile/OtherCompanyPage';
 function App() {
   const [role, setRole] = useState('');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem('storageLogin');
+      if (token) {
         const decodeResult = await axios.request('/auth/decodeToken', {
           headers: {
             accept: 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json',
           },
         });
 
         console.log(decodeResult.data.role);
         setRole(decodeResult.data.role);
-      } catch (err) {
-        console.log(err);
+      } else {
+        console.log('localStorage.getItem("storageLogin") is empty');
       }
-    };
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
+
+  const handleSignIn = () => {
+    fetchData();
+  };
 
   return (
     <AuthProvider>
       <BrowserRouter>
         <Head />
         {/* <Alarm /> */}
+
         <Routes>
+          {role && (
+            <>
+              <Route path="/account" element={
+                <RequireAuth>
+                  {" "}
+                  {role === 'ARTIST' ? <UserPage /> : null}
+                  {role === 'COMPANY' ? <CompanyPage /> : null}
+                  {" "}
+                </RequireAuth>
+              } />
+              <Route
+                path="/accountEdit"
+                element={
+                  <RequireAuth>
+                    {" "}
+                    {role === 'ARTIST' ? <EditUserPageMobile /> : null}
+                    {role === 'COMPANY' ? <EditCompanyPage /> : null}
+                    {" "}
+                  </RequireAuth>
+                }
+              />
+            </>
+          )}
+
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/account" element={
-            <RequireAuth>
-              {" "}
-              {role === 'ARTIST' ? <UserPage /> : null}
-              {role === 'COMPANY' ? <CompanyPage /> : null}
-              {" "}
-            </RequireAuth>} />
           <Route path="/other-company/:argument" element={<OtherCompanyPage />} />
           <Route path="/other-account/:argument" element={<OtherUserPage />} />
           <Route path="/sign-in" element={
             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
-              {" "} <SignIn />{" "}
+              {" "} <SignIn onSignIn={handleSignIn} />{" "}
             </GoogleOAuthProvider>}
           />
           <Route path="/sign-up" element={
             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
               {" "} <SignUp />{" "}
             </GoogleOAuthProvider>}
-          />
-          <Route
-            path="/accountEdit"
-            element={
-              <RequireAuth>
-                {" "}
-                {role === 'ARTIST' ? <EditUserPageMobile /> : null}
-                {role === 'COMPANY' ? <EditCompanyPage /> : null}
-                {" "}
-              </RequireAuth>}
           />
           <Route path="/test" element={<EditUserPageMobile />} />
           <Route path="/chat" element={<Chat />} />

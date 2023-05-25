@@ -26,6 +26,7 @@ import {
   ModalIconContainer,
   LineForm,
   ModalScroll,
+  FilterModalWrapper,
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
@@ -46,7 +47,8 @@ import {
   LevelBubble,
   ModalCommisionBackground,
   ModalCommisionWrapper,
-  StakeText
+  StakeText,
+  VisitCompanyButton
 } from './CommisionsElements';
 import { Button, ModalBottomSection, ModalBubbleContainer, ModalColumn, ModalData, ModalInfo, ModalRow, ModalTitle } from '../Profile/ProfileElements';
 import { FiBriefcase, FiClock, FiMapPin } from 'react-icons/fi';
@@ -382,7 +384,7 @@ const Commisions = () => {
       <>
         {showFModal && (
           <ModalBackground onClick={onCloseFModal}>
-            <ModalWrapper onClick={handleWrapperClick}>
+            <FilterModalWrapper onClick={handleWrapperClick}>
               <ModalIconContainer onClick={onCloseFModal}>
                 <FontAwesomeIcon style={{ color: darkLight }} icon={faChevronDown} />
               </ModalIconContainer>
@@ -437,7 +439,7 @@ const Commisions = () => {
                   </>
                 )}
               </ModalScroll>
-            </ModalWrapper>
+            </FilterModalWrapper>
           </ModalBackground>
         )}
       </>
@@ -536,10 +538,23 @@ const Commisions = () => {
                     <ModalInfo>Poziom zaawansowania:</ModalInfo>
                     <ModalData>{modalData.level}</ModalData>
                   </ModalRow>
-                  <ModalRow>
-                    <ModalInfo>Lokalizacja:</ModalInfo>
-                    <ModalData>{modalData.location}</ModalData>
-                  </ModalRow>
+                  <ModalInfo>Lokalizacja:</ModalInfo>
+                  {/* {modalData.location.map((loc, index) => (
+                    index === 0 ? (
+                      <ModalData key={index}>{loc}, {loc}, {loc}, {loc}, {loc}, {loc}</ModalData>
+                    ) : (
+                      <ModalData key={index}>, {loc}</ModalData>
+                    )
+                  ))} */}
+                  <ModalData>
+                    {modalData.location.map((loc, index) => (
+                      index !== 0 ? (
+                        ' / ' + loc
+                      ) : (
+                        loc
+                      )
+                    ))}
+                  </ModalData>
                   <ModalRow>
                     <ModalInfo>Firma:</ModalInfo>
                     <ModalData>{modalData.name}</ModalData>
@@ -576,11 +591,11 @@ const Commisions = () => {
                 justifyContent: 'center',
                 alignItems: 'end',
               }}>
-                <button style={{ width: '8rem', height: '2rem' }} onClick={handleCompanyNavigation}>
-                  Odwiedź firmę
-                </button>
               </div>
             </ModalCommisionWrapper>
+            <VisitCompanyButton onClick={handleCompanyNavigation}>
+              Odwiedź firmę
+            </VisitCompanyButton>
           </ModalCommisionBackground>
         )}
       </>

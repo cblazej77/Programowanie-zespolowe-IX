@@ -6,7 +6,6 @@ import { ChatLabel, Colors, HeaderText } from '../../components/styles';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ArtistProfile from './ArtistProfile';
 import ArtistGallery from './ArtistGallery';
-import ArtistReviews from './ArtistReviews';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //SecureStoring accessToken
 import * as SecureStore from 'expo-secure-store';
@@ -24,26 +23,6 @@ async function getValueFor(key) {
 }
 
 export default function ArtistScreen({ route, navigation }) {
-  const [token, setToken] = useState('');
-
-  const changeEditingState = (state) => {
-    setEditing(state);
-  };
-
-  async function getAccessToken() {
-    const t = await getValueFor('accessToken');
-    setToken(t);
-  }
-
-  useEffect(() => {
-    getAccessToken();
-  }, []);
-
-  async function save(key, value) {
-    await SecureStore.setItemAsync(key, value).catch((error) => {
-      console.log(error);
-    });
-  }
 
   return (
     <>
@@ -104,22 +83,6 @@ export default function ArtistScreen({ route, navigation }) {
               }}
               name="ArtistGallery"
               component={ArtistGallery}
-              initialParams={{ username: route.params.username }}
-            />
-            <Tab.Screen
-              options={{
-                title: ({ color, focused }) => {
-                  return (
-                    <Ionicons
-                      size={25}
-                      name={focused ? 'happy' : 'happy-outline'}
-                      color={focused ? darkLight : secondary}
-                    />
-                  );
-                },
-              }}
-              name="ArtistReviews"
-              component={ArtistReviews}
               initialParams={{ username: route.params.username }}
             />
           </Tab.Navigator>

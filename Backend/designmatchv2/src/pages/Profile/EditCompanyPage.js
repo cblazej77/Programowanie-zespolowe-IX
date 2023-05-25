@@ -88,21 +88,15 @@ const EditCompanyPage = () => {
           },
         });
 
+        // const avatarResponse = await axios.request(
+        //   '/public/api/company/getProfileImageByUsername/' + decodeResponse.data.username, {
+        //     headers: {accept: 'application/json'}
+        //   });
+
         const companyResponse = await axios.request({
           url: '/public/api/company/getProfileByUsername/' + decodeResponse.data.username
         });
 
-        const avatarResponse = await axios.request(
-          '/public/api/company/getProfileImageByUsername/' + decodeResponse.data.username, {
-          responseType: 'arraybuffer',
-        });
-
-        const imageType = avatarResponse.headers['content-type'];
-        const imageBlob = new Blob([avatarResponse.data], { type: imageType });
-        const imageUrl = URL.createObjectURL(imageBlob);
-
-        setBlob(avatarResponse.data);
-        setAvatar(imageUrl);
         setUsername(decodeResponse.data.username);
         setGet(companyResponse.data);
         setCheckLoading(companyResponse);
@@ -130,29 +124,40 @@ const EditCompanyPage = () => {
 
   const handleSave = useCallback(async () => {
     try {
-      console.log(get);
       const response = await axios.put(
-        `/api/company/updateProfileByUsername/` + username,
-        get,
-        {
-          headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      console.log('Data saved successfully!');
-      console.log(response.data);
+        '/api/company/updateProfileByUsername/' + username,
+        get, {
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(selectedImage); // Dodaj ten console.log
+      if (selectedImage) {
+        console.log(selectedImage);
+        const formData = new FormData();
+        console.log(formData);
+        formData.append('file', selectedImage, selectedImage.name);
+
+        axios.post(
+          '/api/company/uploadProfileImage/' + username,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            },
+          })
+      }
+      //console.log('Data saved successfully!');
+      //console.log(response.data);
       navigate('/account');
     } catch (err) {
       console.error('Error while saving data:', err);
     }
-  }, [get]);
-
-  const handleEditImageClick = () => {
-    fileInputRef.current.click();
-  };
+  }, [get, selectedImage]);
 
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
@@ -174,6 +179,32 @@ const EditCompanyPage = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    console.log('handleImageChange');
+    // Wybrano plik
+    const file = e.target.files[0];
+    if (file) {
+      // Sprawdź rozszerzenie pliku
+      const extension = file.name.split('.').pop().toLowerCase();
+      if (['jpg', 'jpeg', 'png'].includes(extension)) {
+        console.log(file);
+        setSelectedImage(file);
+      } else {
+        // Nieprawidłowy format pliku
+        alert('Wybierz plik w formacie JPG, JPEG lub PNG.');
+      }
+    }
+  };
+
+  const handleEditImageClick = () => {
+    console.log('handleEditImageClick');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = handleImageChange;
+    input.click();
+  };
+
   return (
     <>
       {checkLoading ? (
@@ -181,16 +212,17 @@ const EditCompanyPage = () => {
           <TopSection>
             <LeftWrapper>
               <EditProfileImage onClick={handleEditImageClick}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  style={{ display: 'none' }}
-                  onChange={handleFileInputChange}
-                />
-                {avatar ? (
-                  <Image src={avatar} alt="Profile" />) : (
-                  <Image src={"/assets/cards/defaultavatar.png"} alt="Profile" />
+                {selectedImage ? (
+                  <Image src={URL.createObjectURL(selectedImage)} alt="Profile" />
+                ) : (
+                  <Image
+                    src={'/public/api/company/getProfileImageByUsername/' + get.username}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/assets/cards/defaultavatar.png";
+                    }}
+                    alt="Profile"
+                  />
                 )}
                 <EditIcon size={40} />
               </EditProfileImage>

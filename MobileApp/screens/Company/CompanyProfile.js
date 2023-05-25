@@ -51,11 +51,6 @@ const CompanyProfile = ({ route, navigation }) => {
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // async function getAccessToken() {
-  //   const t = await getValueFor('accessToken');
-  //   setToken(t);
-  //   console.log(t);
-  // }
 
   const OpenLinkElement = ({ link, children1, children2, color }) => {
     const handlePress = useCallback(async () => {
@@ -77,10 +72,6 @@ const CompanyProfile = ({ route, navigation }) => {
       </View>
     );
   };
-
-  // useEffect(() => {
-  //   getAccessToken();
-  // }, []);
 
   useEffect(() => {
     if (username) {
@@ -154,7 +145,7 @@ const CompanyProfile = ({ route, navigation }) => {
               </HeaderText>
             </View>
           </View>
-          <View
+          {/* <View
             style={{
               flex: 1,
               flexDirection: 'row',
@@ -176,7 +167,7 @@ const CompanyProfile = ({ route, navigation }) => {
             >
               <AppText style={{ color: primary }}>Napisz wiadomość</AppText>
             </Pressable>
-          </View>
+          </View> */}
           <AppText style={styles.About}>O firmie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
             {companyProfile.description}

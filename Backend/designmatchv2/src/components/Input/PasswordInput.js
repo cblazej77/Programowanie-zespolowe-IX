@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { InputGroup, NotButton, Input, LabelInput, CloseEyeIcon, OpenEyeIcon } from './Elements'
 
 function PasswordInput({
-    label,
-    name,
-    id,
-    value = '',
-    onChange,
-    checkRegex
+  label,
+  name,
+  id,
+  value = '',
+  onChange,
+  checkRegex
 }) {
   const [password, setPassword] = useState(value);
   const [visible, setVisible] = useState(false);
@@ -19,26 +19,23 @@ function PasswordInput({
   }
 
   return (
-    <InputGroup>        
-      
+    <InputGroup>
       <div>
         <Input
-        required
-            name={name}
-            id={id}
-            isWithButton
+          required
+          name={name}
+          id={id}
+          isWithButton
           value={password}
           type={visible ? "text" : "password"}
           onChange={handleClick}
           checkRegex={checkRegex}
         ></Input>
-
         <LabelInput htmlFor={id}>{label}</LabelInput>
         <NotButton onClick={() => setVisible(!visible)}>
-            {visible ? <OpenEyeIcon /> : <CloseEyeIcon />}
+          {visible ? <OpenEyeIcon /> : <CloseEyeIcon />}
         </NotButton>
       </div>
-      
     </InputGroup>
   )
 }

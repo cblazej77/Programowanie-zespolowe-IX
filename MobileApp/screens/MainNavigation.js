@@ -114,7 +114,7 @@ export default function MainNavigation({navigation}) {
         
         <Tab.Screen name={isArtist ? artistProfileName : companyProfileName} component={isArtist ? ProfileScreen : UserCompanyScreen} />
         <Tab.Screen name={homeName} component={HomePage} />
-        <Tab.Screen name={messagesName} component={MessagesScreen} />
+        {/* <Tab.Screen name={messagesName} component={MessagesScreen} /> */}
       </Tab.Navigator>
     </SafeAreaView>
   );

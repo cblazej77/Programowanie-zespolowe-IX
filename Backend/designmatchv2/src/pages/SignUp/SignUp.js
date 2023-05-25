@@ -30,7 +30,8 @@ function LoginForm() {
   const [KRS, setKRS] = useState('');
   const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
-  const [showModal, setShowModal] = useState(true);//
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showModal, setShowModal] = useState(false);//
   const [navigateGo, setNavigateGo] = useState(false);//po zamknięciu modala przekierowywuje na stronę główną
   const [submitting, setSubmitting] = useState(false);
   const [checkRegexEmail, setCheckRegexEmail] = useState(true);
@@ -55,22 +56,22 @@ function LoginForm() {
   }
 
   const handleCheckBlockButton = () => {
-    if (name === "" || surname === "" || nick === "" || email === "" || password === "") {
+    if (name === "" || surname === "" || nick === "" || email === "" || password === "" || confirmPassword === "") {
       setAllInput(false);
       setSubmitting(false);
     }
-    else if (checkRegexName && checkRegexEmail && checkRegexNick && checkRegexSurname && checkRegexPassword) {
+    else if (checkRegexName && checkRegexEmail && checkRegexNick && checkRegexSurname && checkRegexPassword && password === confirmPassword) {
       handleRegistration();
     }
     else setSubmitting(false);
   };
 
   const handleCompanyCheckBlockButton = () => {
-    if (name === "" || NIP === "" || REGON === "" || email === "" || nick === "" || password === "") {
+    if (name === "" || NIP === "" || REGON === "" || email === "" || nick === "" || password === "" || confirmPassword === "") {
       setAllInput(false);
       setSubmitting(false);
     }
-    else if (checkRegexName && checkRegexNIP && checkRegexREGON && checkRegexKRS && checkRegexEmail && checkRegexNick && checkRegexPassword) {
+    else if (checkRegexName && checkRegexNIP && checkRegexREGON && checkRegexKRS && checkRegexEmail && checkRegexNick && checkRegexPassword && password === confirmPassword) {
       handleCompanyRegistration();
     }
     else setSubmitting(false);
@@ -203,6 +204,13 @@ function LoginForm() {
 
   const handlePassword = (value) => {
     setPassword(value);
+    setAllInput(true);
+    if (value && passwordPatternValidation(value)) setCheckRegexPassword(true);
+    else setCheckRegexPassword(false);
+  };
+
+  const handleConfirmPassword = (value) => {
+    setConfirmPassword(value);
     setAllInput(true);
     if (value && passwordPatternValidation(value)) setCheckRegexPassword(true);
     else setCheckRegexPassword(false);
@@ -395,9 +403,10 @@ function LoginForm() {
               {(!checkRegexNick && nick !== "") && <ErrorLabel>Wpisano niedozwolone znaki w nazwie użytkownika</ErrorLabel>}
               <PasswordInput label="hasło:" name="signUp" id="passwordId" onChange={handlePassword} checkRegex={checkRegexPassword} />
               {(!checkRegexPassword && password !== "") && <ErrorLabel>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </ErrorLabel>}
+              <PasswordInput label="potwierdź hasło:" id="confPasswordId" onChange={handleConfirmPassword} checkRegex={checkRegexPassword} />
               {(!allInput) && <ErrorLabel>Wszystkie pola musza być zepełnione</ErrorLabel>}
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                {!submitting ? <SignUpButton onClick={handleCheckBlockButton} type="submit" value="Submit">Zarejestruj się</SignUpButton> :
+                {!submitting ? <SignUpButton onClick={handleCheckBlockButton} type="submit" value="Submit">Zarejestruj się jako artysta</SignUpButton> :
                   <SignUpButton type="submit" value="Submit">Zarejestruj się jako artysta</SignUpButton>}
                 {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
                 <LineForm />
@@ -440,6 +449,7 @@ function LoginForm() {
               {(!checkRegexNick && nick !== "") && <ErrorLabel>Wpisano niedozwolone znaki w nazwie użytkownika</ErrorLabel>}
               <PasswordInput label="hasło:" name="signUp" id="passwordId" onChange={handlePassword} checkRegex={checkRegexPassword} />
               {(!checkRegexPassword && password !== "") && <ErrorLabel>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </ErrorLabel>}
+              <PasswordInput label="potwierdź hasło:" id="confPasswordId" onChange={handleConfirmPassword} checkRegex={checkRegexPassword} />
               {(!allInput) && <ErrorLabel>Wypełnij wszystkie wymagane pola!</ErrorLabel>}
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {!submitting ? <SignUpButton onClick={handleCompanyCheckBlockButton} type="submit" value="Submit">Zarejestruj się jako firma</SignUpButton> :

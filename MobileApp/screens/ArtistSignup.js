@@ -49,7 +49,9 @@ const Signup = ({ navigation }) => {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [password, setPassword] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false); 
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isPassword2Valid, setIsPassword2Valid] = useState(true);
 
   function passwordPatternValidation(password) {
     const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$');
@@ -135,10 +137,6 @@ const Signup = ({ navigation }) => {
                 handleMessage('Wpisano email w nieprawidłowym formacie', 'FAILED');
                 setSubmitting(false);
               } else if (!passwordPatternValidation(password) && confirmPassword === password) {
-                handleMessage(
-                  'Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki.',
-                  'FAILED',
-                );
                 setSubmitting(false);
               } else {
                 handleSignup();
@@ -155,6 +153,7 @@ const Signup = ({ navigation }) => {
                   onChangeText={setFirstname}
                   onBlur={handleBlur('firstname')}
                   value={firstname}
+                  checkRegex={firstname.length !== 0 ? namesPatternValidation(firstname) : true}
                 />
                 <MyTextInput
                   label="Nazwisko"
@@ -164,6 +163,7 @@ const Signup = ({ navigation }) => {
                   onChangeText={setLastname}
                   onBlur={handleBlur('lastname')}
                   value={lastname}
+                  checkRegex={lastname.length !== 0 ? namesPatternValidation(lastname) : true}
                 />
                 <MyTextInput
                   label="Adres Email"
@@ -174,6 +174,7 @@ const Signup = ({ navigation }) => {
                   onBlur={handleBlur('email')}
                   value={email}
                   keyboardType="email-address"
+                  checkRegex={email.length !== 0 ? emailPatternValidation(email) : true}
                 />
                 <MyTextInput
                   label="Nazwa użytkownika"
@@ -183,34 +184,38 @@ const Signup = ({ navigation }) => {
                   onChangeText={setUsername}
                   onBlur={handleBlur('username')}
                   value={username}
+                  checkRegex={username.length !== 0 ? usernamesPatternValidation(username) : true}
                 />
                 <MyTextInput
                   label="Hasło"
                   icon="lock"
                   placeholder="************"
                   placeholderTextColor={'#00000088'}
-                  onChangeText={setPassword}
+                  onChangeText={(newText) => {setPassword(newText); setIsPasswordValid(passwordPatternValidation(newText))}}
                   onBlur={handleBlur('password')}
                   value={password}
                   secureTextEntry={hidePassword}
                   isPassword={true}
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
+                  checkRegex={password.length !== 0 ? passwordPatternValidation(password) : true}
                 />
                 <MyTextInput
                   label="Potwierdź hasło"
                   icon="lock"
                   placeholder="************"
                   placeholderTextColor={'#00000088'}
-                  onChangeText={setConfirmPassword}
+                  onChangeText={(newText) => {setConfirmPassword(newText); setIsPassword2Valid(passwordPatternValidation(newText))}}
                   onBlur={handleBlur('confirmPassword')}
                   value={confirmPassword}
                   secureTextEntry={hidePassword}
                   isPassword={true}
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
+                  checkRegex={confirmPassword.length !== 0 ? passwordPatternValidation(confirmPassword) : true}
                 />
                 <MsgBox type={messageType}> {message} </MsgBox>
+                {(!isPasswordValid || !isPassword2Valid) && <MsgBox type={'FAILED'}>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </MsgBox>}
                 {!submitting && (
                   <LinearGradientStyle colors={[darkLight2, darkLight]}>
                     <StyledButton onPress={handleSubmit}>

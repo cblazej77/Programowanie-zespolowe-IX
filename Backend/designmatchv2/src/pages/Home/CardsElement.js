@@ -126,6 +126,9 @@ export const CheckBoxLabel = styled.label`
     &:hover {
         background: ${darkLight};
     }
+    ${CheckBox}:checked + & {
+        background: ${darkLight};
+    }
     ${CheckBox}:focus + & {
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
     }
@@ -133,6 +136,18 @@ export const CheckBoxLabel = styled.label`
         width: 1.2rem;
         height: 1.2rem;
     }
+`;
+
+export const CheckBoxWrapper = styled.div`    
+    flex-direction: row;
+    margin: 1rem 1rem;
+    align-items: center;
+    display: flex;
+`;
+
+export const CheckBoxContainter = styled.div`
+    justify-content: center;
+    display: flex;
 `;
 
 // do zmiany
@@ -149,16 +164,8 @@ export const JobText = styled(SubtitleText)`
         }
 `;
 
-export const CheckBoxWrapper = styled.div`    
-    flex-direction: row;
-    margin: 1rem 1rem;
-    align-items: center;
-    display: flex;
-`;
-
-export const CheckBoxContainter = styled.div`
-    justify-content: center;
-    display: flex;
+export const CheckBoxText = styled(JobText)`
+    font-size: 1.2rem;
 `;
 
 export const Input = styled.input`
@@ -229,6 +236,7 @@ export const ProjectPhoto = styled.img`
     margin: 0px 1px 0px 1px;
     width: 20%;
     object-fit: cover;
+    cursor: pointer;
     @media screen and (max-width: 1600px) {
         width: 25%;
     }
@@ -448,9 +456,6 @@ export const CategoryWrapper = styled.div`
     padding-left: 1rem;
 `;
 
-export const CheckBoxText = styled(JobText)`
-    font-size: 1.2rem;
-`;
 
 export const ModalBackground = styled.div`
     position: fixed;
@@ -467,6 +472,37 @@ export const ModalBackground = styled.div`
 export const ModalWrapper = styled.div`
     width: 100%;
     height: 75%;
+    animation: modalFadeIn 0.5s ease;
+
+    @keyframes modalFadeIn {
+        from {
+        opacity: 0;
+        transform: translateY(-100px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
+    background: ${primary};
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+`;
+
+export const FilterModalWrapper = styled.div`
+    width: 100%;
+    height: 75%;
+    animation: modalFilter 0.5s ease;
+
+    @keyframes modalFilter {
+        from {
+        opacity: 0;
+        transform: translateY(200px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
     background: ${primary};
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
 `;

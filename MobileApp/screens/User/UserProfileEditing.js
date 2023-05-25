@@ -1130,6 +1130,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
       quality: 1,
     });
 
+    delete result.cancelled;
+
     if (!result.canceled) {
       console.log(result);
       //setPhoto(result);

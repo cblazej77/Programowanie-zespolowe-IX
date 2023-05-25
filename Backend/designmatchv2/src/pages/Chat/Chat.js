@@ -318,27 +318,10 @@ const Chat = () => {
         });
     }
   };
-
-  /*
-                {!(username === "JulkaMazowiecka") && <MessagesElement
-                  name="Julka"
-                  surname="COś tam"
-                  avatar="/assets/cards/person1.jpg"
-                  lastMessage="Ale zajmę się tym."
-                  unseenMessages={32}
-                  lastOnline="1 godz."
-                  onClick={() => handleChangeActive("JulkaMazowiecka")}
-              />}
-              {!(username === "MichalMostowiak") && <MessagesElement
-                name="Michal"
-                surname="Mostowia"
-                avatar="/assets/cards/person1.jpg"
-                lastMessage="zywy."
-                unseenMessages={32}
-                lastOnline="1 godz."
-                onClick={() => handleChangeActive("MichalMostowiak")}
-              />
-   */
+                // co jeszcze mozna doac
+                //   avatar="/assets/cards/person1.jpg"
+                //   unseenMessages={32}
+                //   lastOnline="1 godz."
 
   return (
     <>

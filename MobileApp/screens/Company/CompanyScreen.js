@@ -21,40 +21,11 @@ async function getValueFor(key) {
   return result;
 }
 
-export default function CompanyScreen({ navigation }) {
-  const [token, setToken] = useState('');
-  const [userInfo, setUserInfo] = useState('jakis tam cos ');
-
-  // async function getAccessToken() {
-  //   const t = await getValueFor('accessToken');
-  //   setToken(t);
-  // }
-
-  // async function getUserInfo() {
-  //   const u = await getValueFor('user');
-  //   setUserInfo(JSON.parse(u));
-  // }
-
-  // useEffect(() => {
-  //   getAccessToken();
-  //   getUserInfo();
-  // }, []);
-
-  // async function save(key, value) {
-  //   await SecureStore.setItemAsync(key, value).catch((error) => {
-  //     console.log(error);
-  //   });
-  // }
-
-  // async function logout() {
-  //   save('accessToken', '');
-  //   save('user', '');
-  //   navigation.navigate('Login');
-  // }
-
+export default function CompanyScreen({ route, navigation }) {
+  
   return (
     <>
-      {userInfo ? (
+      {route.params ? (
         <SafeAreaView style={{ flex: 1, backgroundColor: primary }}>
           <ChatLabel
             style={{
@@ -91,6 +62,9 @@ export default function CompanyScreen({ navigation }) {
                 }}
                 name="Profile"
                 component={CompanyProfile}
+                initialParams={{
+                  username: route.params.username,
+                }}
               />
               <Tab.Screen
                 options={{
@@ -106,6 +80,9 @@ export default function CompanyScreen({ navigation }) {
                 }}
                 name="Commisions"
                 component={CompanyCommisions}
+                initialParams={{
+                  username: route.params.username,
+                }}
               />
             </Tab.Navigator>
         </SafeAreaView>
