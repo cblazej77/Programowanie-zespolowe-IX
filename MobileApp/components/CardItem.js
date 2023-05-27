@@ -1,36 +1,192 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppText, RegularText } from './styles';
 import { Image, StyleSheet, View } from 'react-native';
 import { Colors } from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { default as baseURL } from './AxiosAuth';
+import axios from 'axios';
+import Awatar from './Avatar';
 
 const { secondary1, darkLight, gray1, grey } = Colors;
 
 function CardItem(props) {
+  const [entries, setEntries] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
+  const username = props.username;
 
-  return (
-    <View style={styles.PostStyle}>
-      <View style={styles.SimpleInfoContainer}>
-        <Image style={styles.Avatar} resizeMode="cover" source={{uri: baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date()}}/>
-        <AppText style={{ color: gray1 }}>{props.level}</AppText>
-        <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate('ArtistScreen', {
-              username: props.username,
-              firstname: props.name,
-              lastname: props.surname,
-            });
-          }}
-        >
-          <RegularText style={{ fontSize: 20, marginTop: 10 }}>
-            {props.name} {props.surname}
-          </RegularText>
-        </TouchableOpacity>
-      </View>
-      <Image style={styles.Photo} resizeMode="cover" source={require('./../assets/img/image1.jpg')} />
-    </View>
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const portfolioEntriesResponse = await axios.request(
+          baseURL + '/public/api/artist/getPortfolioEntries/' + props.username,
+          {
+            params: { page: 0, size: 2 },
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+          },
+        );
+        setEntries(portfolioEntriesResponse.data.content);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    async function fetchImage() {
+      try {
+        const response = await fetch(
+          baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date(),
+        );
+        if (response.status === 200) {
+          setIsLoaded(true);
+        } else {
+          setIsLoaded(false);
+        }
+      } catch (error) {
+        setIsLoaded(false);
+        console.log(error);
+      }
+    }
+
+    fetchImage();
+    fetchData();
+  }, [username]);
+
+  if (isLoaded) {
+    if (entries.length !== 0) {
+      return (
+        <View style={styles.PostStyle}>
+          <View style={styles.SimpleInfoContainer}>
+            <Image
+              style={styles.Avatar}
+              resizeMode="cover"
+              source={{
+                uri: baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date(),
+              }}
+            />
+            <AppText style={{ color: gray1 }}>{props.level}</AppText>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('ArtistScreen', {
+                  username: props.username,
+                  firstname: props.name,
+                  lastname: props.surname,
+                });
+              }}
+            >
+              <RegularText style={{ fontSize: 20, marginTop: 10 }}>
+                {props.name} {props.surname}
+              </RegularText>
+            </TouchableOpacity>
+          </View>
+          <Image
+            style={styles.Photo}
+            source={{
+              uri:
+                baseURL +
+                '/public/api/artist/getPortfolioImage/' +
+                props.username +
+                '/' +
+                entries[0].id +
+                '?date' +
+                new Date(),
+            }}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.PostStyle}>
+          <View style={styles.SimpleInfoContainer}>
+            <Image
+              style={styles.Avatar}
+              resizeMode="cover"
+              source={{
+                uri: baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date(),
+              }}
+            />
+            <AppText style={{ color: gray1 }}>{props.level}</AppText>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('ArtistScreen', {
+                  username: props.username,
+                  firstname: props.name,
+                  lastname: props.surname,
+                });
+              }}
+            >
+              <RegularText style={{ fontSize: 20, marginTop: 10 }}>
+                {props.name} {props.surname}
+              </RegularText>
+            </TouchableOpacity>
+          </View>
+          <Image style={styles.Photo} source={require('./../assets/img/background.png')} />
+        </View>
+      );
+    }
+  } else {
+    if (entries.length !== 0) {
+      return (
+        <View style={styles.PostStyle}>
+          <View style={styles.SimpleInfoContainer}>
+            <Image style={styles.Avatar} resizeMode="cover" source={require('../assets/img/defaultavatar.png')} />
+            <AppText style={{ color: gray1 }}>{props.level}</AppText>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('ArtistScreen', {
+                  username: props.username,
+                  firstname: props.name,
+                  lastname: props.surname,
+                });
+              }}
+            >
+              <RegularText style={{ fontSize: 20, marginTop: 10 }}>
+                {props.name} {props.surname}
+              </RegularText>
+            </TouchableOpacity>
+          </View>
+          <Image
+            style={styles.Photo}
+            source={{
+              uri:
+                baseURL +
+                '/public/api/artist/getPortfolioImage/' +
+                props.username +
+                '/' +
+                entries[0].id +
+                '?date' +
+                new Date(),
+            }}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.PostStyle}>
+          <View style={styles.SimpleInfoContainer}>
+            <Image style={styles.Avatar} resizeMode="cover" source={require('../assets/img/defaultavatar.png')} />
+            <AppText style={{ color: gray1 }}>{props.level}</AppText>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('ArtistScreen', {
+                  username: props.username,
+                  firstname: props.name,
+                  lastname: props.surname,
+                });
+              }}
+            >
+              <RegularText style={{ fontSize: 20, marginTop: 10 }}>
+                {props.name} {props.surname}
+              </RegularText>
+            </TouchableOpacity>
+          </View>
+          <Image style={styles.Photo} source={require('./../assets/img/background.png')} />
+        </View>
+      );
+    }
+  }
 }
 
 export default CardItem;

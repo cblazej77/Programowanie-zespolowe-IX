@@ -4,9 +4,7 @@ import { View, StyleSheet, Pressable, Alert } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Colors,
-  StatsText,
   AppText,
-  Avatar,
   Bubble,
   Line,
   RegularTextInput,
@@ -17,13 +15,11 @@ import {
   HeaderText,
   HeaderTextInput,
 } from '../../components/styles';
-import Stars from 'react-native-stars';
 //SecureStoring accessToken
 import * as SecureStore from 'expo-secure-store';
 import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
 import Loading from '../../components/Loading';
-import { Button } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectDropdown from 'react-native-select-dropdown';
 import Modal from 'react-native-modal';
@@ -32,6 +28,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import * as ImagePicker from 'expo-image-picker';
 import Awatar from '../../components/Avatar';
+import EditableAwatar from '../../components/EditableAvatar';
 
 const { darkLight, grey, black, primary, red } = Colors;
 
@@ -109,6 +106,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
   const [lastname, setLastname] = useState('');
   const [photo, setPhoto] = useState('');
   const [uri, setUri] = useState();
+  const [localUri, setLocalUri] = useState('');
 
   const handleMessage = (message, type = 'FAILED') => {
     setMessage(message);
@@ -1135,8 +1133,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
     if (!result.canceled) {
       console.log(result);
       //setPhoto(result);
-      let localUri = result.uri;
-      setUri(localUri);
+      let localUri = result.assets[0].uri;
+      setLocalUri(localUri);
       let filename = localUri.split('/').pop();
 
       let match = /\.(\w+)$/.exec(filename);
@@ -1161,9 +1159,6 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
           'Access-Control-Allow-Origin': '*',
         },
       })
-      .then((res) => {
-        setPhoto(res.data.photo.photo);
-      })
       .catch((err) => {
         handleMessage('Wystąpił błąd przy zmianie zdjęcia!','FAILED');
         console.log(err.response);
@@ -1175,7 +1170,7 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
       {artistProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-            <Awatar avatar={uri}></Awatar>
+            {localUri ? <EditableAwatar avatar={localUri}></EditableAwatar> : <Awatar avatar={uri}></Awatar>}
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
               <Pressable
                 onPress={() => {
@@ -1252,7 +1247,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
               onSelect={(selectedItem, index) => {
                 setLevel(selectedItem);
               }}
-              defaultButtonText={level}
+              defaultButtonText={'Wybierz poziom'}
+              buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
               buttonStyle={{ width: 90, height: 30, borderWidth: 2, borderColor: grey, borderRadius: 12 }}
               buttonTextStyle={{ fontSize: 14 }}
               renderDropdownIcon={(isOpened) => {
@@ -1266,7 +1262,8 @@ const ProfileEditing = ({ navigation: { goBack } }) => {
               onSelect={(selectedItem, index) => {
                 setLocation(selectedItem);
               }}
-              defaultButtonText={location}
+              defaultButtonText={'Wybierz lokalizacje'}
+              buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
               buttonTextStyle={{ fontSize: 14 }}
               buttonStyle={{ width: 120, height: 30, borderWidth: 2, borderColor: grey, borderRadius: 12 }}
               renderDropdownIcon={(isOpened) => {

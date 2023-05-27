@@ -227,17 +227,13 @@ const CompanySignup = ({ navigation }) => {
                 email === '' ||
                 password === '' ||
                 username === '' ||
-                confirmPassword === '' ||
                 name === '' ||
                 nip === '' ||
                 regon === ''
               ) {
                 handleMessage('Proszę wypełnić wszystkie pola');
                 setSubmitting(false);
-              } else if (confirmPassword !== password) {
-                handleMessage('Hasła się nie zgadzają');
-                setSubmitting(false);
-              } else if (!namesPatternValidation(name)) {
+              }  else if (!namesPatternValidation(name)) {
                 handleMessage('Wpisano niedozwolone znaki w nazwie firmy', 'FAILED');
                 setSubmitting(false);
               } else if (!nipPatternValidation(nip)) {
@@ -262,7 +258,7 @@ const CompanySignup = ({ navigation }) => {
               } else if (!emailPatternValidation(email)) {
                 handleMessage('Wpisano email w nieprawidłowym formacie', 'FAILED');
                 setSubmitting(false);
-              } else if (!passwordPatternValidation(password) && confirmPassword === password) {
+              } else if (!passwordPatternValidation(password)) {
                 handleMessage(
                   'Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki.',
                   'FAILED',
@@ -353,7 +349,7 @@ const CompanySignup = ({ navigation }) => {
                   setHidePassword={setHidePassword}
                   checkRegex={password.length !== 0 ? passwordPatternValidation(password) : true}
                 />
-                <MyTextInput
+                {/* <MyTextInput
                   label="Potwierdź hasło"
                   icon="lock"
                   placeholder="************"
@@ -366,9 +362,9 @@ const CompanySignup = ({ navigation }) => {
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
                   checkRegex={confirmPassword.length !== 0 ? passwordPatternValidation(confirmPassword) : true}
-                />
+                /> */}
                 <MsgBox type={messageType}> {message} </MsgBox>
-                {(!isPasswordValid || !isPassword2Valid) && <MsgBox type={'FAILED'}>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </MsgBox>}
+                {(!isPasswordValid ) && <MsgBox type={'FAILED'}>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </MsgBox>}
                 {!submitting && (
                   <LinearGradientStyle colors={[darkLight2, darkLight]}>
                     <StyledButton onPress={handleSubmit}>

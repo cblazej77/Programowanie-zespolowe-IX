@@ -118,16 +118,18 @@ const Signup = ({ navigation }) => {
                 email == '' ||
                 password == '' ||
                 username == '' ||
-                confirmPassword == '' ||
+                
                 firstname == '' ||
                 lastname == ''
               ) {
                 handleMessage('Proszę wypełnić wszystkie pola');
                 setSubmitting(false);
-              } else if (confirmPassword !== password) {
-                handleMessage('Hasła się nie zgadzają');
-                setSubmitting(false);
-              } else if (!namesPatternValidation(firstname) || !namesPatternValidation(lastname)) {
+               } 
+              //else if (confirmPassword !== password) {
+              //   handleMessage('Hasła się nie zgadzają');
+              //   setSubmitting(false);
+              // }
+               else if (!namesPatternValidation(firstname) || !namesPatternValidation(lastname)) {
                 handleMessage('Wpisano niedozwolone znaki w imieniu lub nazwisku', 'FAILED');
                 setSubmitting(false);
               } else if (!usernamesPatternValidation(username)) {
@@ -136,7 +138,7 @@ const Signup = ({ navigation }) => {
               } else if (!emailPatternValidation(email)) {
                 handleMessage('Wpisano email w nieprawidłowym formacie', 'FAILED');
                 setSubmitting(false);
-              } else if (!passwordPatternValidation(password) && confirmPassword === password) {
+              } else if (!passwordPatternValidation(password)) {
                 setSubmitting(false);
               } else {
                 handleSignup();
@@ -200,7 +202,7 @@ const Signup = ({ navigation }) => {
                   setHidePassword={setHidePassword}
                   checkRegex={password.length !== 0 ? passwordPatternValidation(password) : true}
                 />
-                <MyTextInput
+                {/* <MyTextInput
                   label="Potwierdź hasło"
                   icon="lock"
                   placeholder="************"
@@ -213,9 +215,9 @@ const Signup = ({ navigation }) => {
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
                   checkRegex={confirmPassword.length !== 0 ? passwordPatternValidation(confirmPassword) : true}
-                />
+                /> */}
                 <MsgBox type={messageType}> {message} </MsgBox>
-                {(!isPasswordValid || !isPassword2Valid) && <MsgBox type={'FAILED'}>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </MsgBox>}
+                {(!isPasswordValid ) && <MsgBox type={'FAILED'}>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </MsgBox>}
                 {!submitting && (
                   <LinearGradientStyle colors={[darkLight2, darkLight]}>
                     <StyledButton onPress={handleSubmit}>

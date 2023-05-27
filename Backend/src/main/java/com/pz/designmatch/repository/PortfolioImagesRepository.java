@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface PortfolioImagesRepository extends JpaRepository<PortfolioEntry, Long> {
 
 
-    @Query(value = "DELETE FROM portfolio_entries WHERE id = :imageId AND artist_profile = (SELECT id FROM artist_profiles WHERE id = (SELECT id FROM users WHERE username = :username))", nativeQuery = true)
+    @Query(value = "DELETE FROM portfolio_entries WHERE id = :imageId AND artist_profile = (SELECT id FROM artist_profiles WHERE id = (SELECT artist_profile_id FROM users WHERE username = :username))", nativeQuery = true)
     void deleteByArtistProfile_User_UsernameAndId(String username, Long imageId);
 
     Optional<PortfolioEntry> findById(Long id);
