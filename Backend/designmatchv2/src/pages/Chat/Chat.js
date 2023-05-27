@@ -360,7 +360,7 @@ const Chat = () => {
       {renderFlag ? (
         <ChatWrapper>
           <MessagesLabel>
-            <TitleText>Wiadomości {username}</TitleText>
+            <TitleText>Wiadomości</TitleText>
             <MessagesWrapper>
               {dataProfile.map((item) => (
                 <MessagesElement

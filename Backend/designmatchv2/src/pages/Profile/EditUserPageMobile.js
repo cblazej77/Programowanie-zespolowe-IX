@@ -10,7 +10,6 @@ import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import './Dropdown.css';
-import { FaUser } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import {
   RightColumn,
@@ -26,7 +25,6 @@ import {
   TopSection,
   LeftInfoRow,
   HeaderText,
-  EditUserDownSection,
   BubbleWrap,
   Bubble,
   SmallInput,
@@ -37,7 +35,8 @@ import {
   NameText,
   EditProfileImage,
   EditIcon,
-  XButton
+  XButton,
+  ButtonsContainer
 
 } from './ProfileElements'
 import LoadingPage from '../LoadingPage';
@@ -67,10 +66,9 @@ const AboutMe = styled.textarea`
 `;
 
 const ButtonSave = styled.button`
-  padding: 20px 50px;
+  padding: 0.6rem 3rem;
   font-size: 1.2rem;
-  margin-top: 0;
-  margin-left: 80vw;
+  margin: 0 1rem;
   display: flex;
   color: ${primary};
   border-radius: 15px;
@@ -79,13 +77,11 @@ const ButtonSave = styled.button`
   cursor: pointer;
   transition: 0.5s;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
   }
-  @media screen and (max-width: 960px) {
-    margin: 0;
-  }
 `;
+
 const ButtonEdit = styled.button`
   padding: 5px 20px;
   background: ${darkLight};
@@ -102,12 +98,9 @@ const ButtonEdit = styled.button`
 
 //UserName/UserInfo/MessageButton
 const EditUserPageMobile = () => {
-  const [get, setGet] = useState(null);//przechwytuje dane i na ich podstawie loguje // juz nie
+  const [get, setGet] = useState([]);//przechwytuje dane i na ich podstawie loguje // juz nie
   const [height, setHeight] = useState("20px");//do zmiejszającego się textarena
   const [username, setUsername] = useState('');
-  const fileInputRef = useRef(null);
-  const [avatar, setAvatar] = useState('');
-  const [blob, setBlob] = useState('');
 
   //popUp - modal
   const [showModalTags, setShowModalTags] = useState(false);
@@ -132,7 +125,6 @@ const EditUserPageMobile = () => {
   }
 
   //Hooks for working logins    
-  const [token, setToken] = useState('');//wcześniej get
   const [artistProfile, setArtistProfile] = useState(null);
   const [artistShortProfile, setArtistShortProfile] = useState(null);
   const [availableLevels, setAvailableLevels] = useState([]);
@@ -364,9 +356,7 @@ const EditUserPageMobile = () => {
   const updateAvatar = async () => {
     try {
       if (selectedImage) {
-        console.log(selectedImage);
-        const formData = new FormData();
-        console.log(formData);
+        const formData = new FormData()
         formData.append('image', selectedImage, selectedImage.name);
 
         await axios.post(
@@ -403,8 +393,8 @@ const EditUserPageMobile = () => {
         '/api/artist/updateProfileByUsername/' + username,
         {
           bio: bio,
-          level: level.value,
-          location: location.value,
+          level: level,
+          location: location,
           skills: skills,
           tags: tags,
           languages: languages,
@@ -429,7 +419,6 @@ const EditUserPageMobile = () => {
 
       await updateAvatar();
       navigate('/account');
-      console.log("updateArtist response:     ", response);
       if (response.status === 200) {
         experience = null;
         education = null;
@@ -461,11 +450,6 @@ const EditUserPageMobile = () => {
           url: '/public/api/artist/getArtistProfileByUsername/' + decodeResponse.data.username
         });
 
-        // const avatarResponse = await axios.request(
-        //   '/public/api/artist/getProfileImageByUsername/' + decodeResponse.data.username, {
-        //   responseType: 'arraybuffer',
-        // });
-
         const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
           [
             axios.request(citiesData),
@@ -476,12 +460,6 @@ const EditUserPageMobile = () => {
           ],
         );
 
-        // const imageType = avatarResponse.headers['content-type'];
-        //const imageBlob = new Blob([avatarResponse.data], { type: imageType });
-        //const imageUrl = URL.createObjectURL(imageBlob);
-
-        //setBlob(avatarResponse.data);
-        //setAvatar(imageUrl);
         setUsername(decodeResponse.data.username);
         setGet(artistResponse.data);
         setArtistProfile(artistResponse.data);
@@ -552,8 +530,6 @@ const EditUserPageMobile = () => {
       setWebsite(artistProfile.website);
     }
   }, [artistProfile]);
-
-
 
   function ListTags() {
     if (tags) {
@@ -863,7 +839,6 @@ const EditUserPageMobile = () => {
       // Sprawdź rozszerzenie pliku
       const extension = file.name.split('.').pop().toLowerCase();
       if (['jpg', 'jpeg', 'png'].includes(extension)) {
-        console.log(file);
         setSelectedImage(file);
       } else {
         // Nieprawidłowy format pliku
@@ -879,6 +854,10 @@ const EditUserPageMobile = () => {
     input.accept = 'image/*';
     input.onchange = handleImageChange;
     input.click();
+  };
+
+  const handleCancel = () => {
+    navigate('/account');
   };
 
   window.addEventListener('resize', showButton);
@@ -901,7 +880,7 @@ const EditUserPageMobile = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   flexDirection: 'column',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}>
                 <EditProfileImage onClick={handleEditImageClick}>
                   {selectedImage ? (
@@ -928,24 +907,17 @@ const EditUserPageMobile = () => {
                   <StyledDropDown
                     className='dropdown-level'
                     options={availableLevels}
-                    onChange={(e) => setLevel(e)}
+                    onChange={(e) => setLevel(e.value)}
                     value={level}
-                    placeHolder={level} />}
+                    placeholder='Wybierz' />}
               </div>
             </EditLeftWrapper>
             <EditRightWrapper>
               <InputInfoText >O mnie: </InputInfoText>
               <AboutInput
-                // defaultValue={get.description}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
               />
-              {/* <AboutMe
-                hag={height}
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                maxLength={maxChars}
-                onKeyDown={(e) => handleKeyDown(e)} /> */}
               <Bracket>({chars}/{maxChars})</Bracket>
               <Left>
                 <LineForm />
@@ -953,14 +925,12 @@ const EditUserPageMobile = () => {
                   <LeftColumn >
                     <InputInfoText>Miejscowość:</InputInfoText>
                     {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
-                    {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <Dropdown
-                      options={availableLocations} onChange={(e) => setLocation(e)} value={location} placeHolder={location}
-                    />}
-                    <LineForm />
-                    <HeaderText>Tagi:</HeaderText>
-                    <BubbleWrap>
-                      <ListTags />
-                    </BubbleWrap>
+                    <Dropdown
+                      options={availableLocations}
+                      onChange={(e) => setLocation(e.value)}
+                      value={location}
+                      placeholder='Wybierz'
+                    />
                     <LineForm />
                     <HeaderText>Umiejętności:</HeaderText>
                     <BubbleWrap>
@@ -970,6 +940,11 @@ const EditUserPageMobile = () => {
                     <HeaderText>Języki:</HeaderText>
                     <BubbleWrap>
                       <ListLanguages />
+                    </BubbleWrap>
+                    <LineForm />
+                    <HeaderText>Tagi:</HeaderText>
+                    <BubbleWrap>
+                      <ListTags />
                     </BubbleWrap>
                     <LineForm />
                     <LeftInfoRow>
@@ -990,10 +965,10 @@ const EditUserPageMobile = () => {
             </EditRightWrapper>
           </TopSection>
           {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
-          {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <ButtonSave onClick={updateArtistProfile}>ZAPISZ</ButtonSave>}
-          <EditUserDownSection>
-
-          </EditUserDownSection>
+          <ButtonsContainer>
+            {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <ButtonSave style={{ background: secondary }} onClick={handleCancel}>Anuluj</ButtonSave>}
+            {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) && <ButtonSave onClick={updateArtistProfile}>Zapisz</ButtonSave>}
+          </ButtonsContainer>
         </ProfileWrapper>
       ) : (<LoadingPage />)}
     </>

@@ -41,7 +41,8 @@ import {
     RightColumn,
     RightWrapper,
     StyledDropDown,
-    TopSection
+    TopSection,
+    BubbleLinks
 } from './ProfileElements';
 import {
     AboutInput,
@@ -339,24 +340,25 @@ const OtherCompanyPage = () => {
                         </LeftWrapper>
                         <RightWrapper>
                             <BoldLabel>O firmie:</BoldLabel>
-                            <AboutMe>{get.description}</AboutMe>
+                            <AboutMe>{get.description ? get.description : 'brak opisu'}</AboutMe>
                             <Left>
                                 <LineForm />
                                 <InfoRow>
-                                    <LeftColumn>
-                                        <InfoText>Linki:</InfoText>
-                                        <BubbleWrap>
-                                            <Bubble>{get.website}</Bubble>
-                                            <Bubble>{get.linkedin}</Bubble>
-                                            <Bubble>{get.facebook}</Bubble>
-                                            <Bubble>{get.instagram}</Bubble>
-                                            <Bubble>{get.twitter}</Bubble>
-                                        </BubbleWrap>
-                                    </LeftColumn>
+                                    {(get.website || get.linkedin || get.facebook || get.instagram || get.twitter) &&
+                                        <LeftColumn>
+                                            <InfoText>Media społecznościowe:</InfoText>
+                                            <BubbleWrap>
+                                                {get.website && <BubbleLinks href={get.website}>{get.website}</BubbleLinks>}
+                                                {get.linkedin && <BubbleLinks href={get.linkedin}>{get.linkedin}</BubbleLinks>}
+                                                {get.facebook && <BubbleLinks href={get.facebook}>{get.facebook}</BubbleLinks>}
+                                                {get.instagram && <BubbleLinks href={get.instagram}>{get.instagram}</BubbleLinks>}
+                                                {get.twitter && <BubbleLinks href={get.twitter}>{get.twitter}</BubbleLinks>}
+                                            </BubbleWrap>
+                                        </LeftColumn>}
                                     <RightColumn>
                                         <LeftInfoRow>
                                             <InfoText>Adres:</InfoText>
-                                            <DataText>{get.companyAdress}</DataText>
+                                            <DataText>{get.address ? get.address : 'brak'}</DataText>
                                         </LeftInfoRow>
                                         <LeftInfoRow>
                                             <InfoText>NIP:</InfoText>
@@ -368,7 +370,7 @@ const OtherCompanyPage = () => {
                                         </LeftInfoRow>
                                         <LeftInfoRow>
                                             <InfoText>KRS:</InfoText>
-                                            <DataText>{get.krs}</DataText>
+                                            <DataText>{get.krs ? get.krs : 'brak'}</DataText>
                                         </LeftInfoRow>
                                     </RightColumn>
                                 </InfoRow>

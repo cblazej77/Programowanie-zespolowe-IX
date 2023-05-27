@@ -98,7 +98,6 @@ const OtherUserPage = () => {
         setArgumentSet(argument);
         setRole(decodeResult.data.role)
         setmyUsername(decodeResult.data.username);
-        console.log("user: " + myUsername + " " + argumentSet);
       } catch (err) {
         console.log(err);
       }
@@ -113,8 +112,6 @@ const OtherUserPage = () => {
 
   useEffect(() => {
     let profileName = "";
-    console.log(argument);
-    console.log({ argument });
     if (!argument) profileName = 'jakub1';
     else profileName = argument;
 
@@ -496,43 +493,43 @@ const OtherUserPage = () => {
           </LeftWrapper>
           <RightWrapper>
             <BoldLabel>O mnie:</BoldLabel>
-            <AboutMe>{get.bio}</AboutMe>
+            <AboutMe>{get.bio ? get.bio : 'brak opisu'}</AboutMe>
             <Left>
               <LineForm />
               <InfoRow>
                 <LeftColumn>
                   <LeftInfoRow>
-                    <InfoText>Członek od:</InfoText>
-                    <DataText>20.20.2023</DataText>
-                  </LeftInfoRow>
-                  <LeftInfoRow>
                     <InfoText>Miejscowość:</InfoText>
                     <DataText>{shortProfile.city}</DataText>
                   </LeftInfoRow>
-                  {/* <LeftInfoRow>
-                    <InfoText>Prace:</InfoText>
-                    <DataText>20</DataText>
-                  </LeftInfoRow> */}
-                  <LineForm />
-                  <InfoText>Języki:</InfoText>
-                  <BubbleWrap>
-                    {get.languages?.length ? (
-                      get.languages.map((language, index) => <Bubble key={index}>{language}</Bubble>)
-                    ) : <Bubble>{Default}</Bubble>}
-                  </BubbleWrap>
                   <LineForm />
                   <InfoText>Umiejętności:</InfoText>
                   <BubbleWrap>
                     {get.skills?.length ? (
                       get.skills.map((skill, index) => <Bubble key={index}>{skill}</Bubble>)
-                    ) : <Bubble>{Default}</Bubble>}
+                    ) : <Bubble>brak</Bubble>}
+                  </BubbleWrap>
+                  <LineForm />
+                  <InfoText>Języki:</InfoText>
+                  <BubbleWrap>
+                    {get.languages?.length ? (
+                      get.languages.map((language, index) => <Bubble key={index}>{language}</Bubble>)
+                    ) : <Bubble>brak</Bubble>}
+                  </BubbleWrap>
+                  <LineForm />
+                  <InfoText>Tagi:</InfoText>
+                  <BubbleWrap>
+                    {get.tags?.length ? (
+                      get.tags.map((tag, index) => <Bubble key={index}>{tag}</Bubble>)
+                    ) : <Bubble>brak</Bubble>}
                   </BubbleWrap>
                   <ListLinks />
                 </LeftColumn>
-                <RightColumn>
-                  <ListEducation />
-                  <ListExperience />
-                </RightColumn>
+                {get.education.length > 0 || get.experience.length > 0 ? (
+                  <RightColumn>
+                    <ListEducation />
+                    <ListExperience />
+                  </RightColumn>) : null}
               </InfoRow>
             </Left>
           </RightWrapper>

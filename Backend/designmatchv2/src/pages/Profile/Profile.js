@@ -414,11 +414,13 @@ const UserPage = () => {
                     <InfoText>Miejscowość:</InfoText>
                     <DataText>{get.location ? get.location : 'puste'}</DataText>
                   </LeftInfoRow>
-                  {/* <LeftInfoRow>
-                    <InfoText>Prace:</InfoText>
-                    <DataText>20</DataText>
-                  </LeftInfoRow>
-                  <LineForm /> */}
+                  <LineForm />
+                  <InfoText>Umiejętności:</InfoText>
+                  <BubbleWrap>
+                    {get.skills?.length ? (
+                      get.skills.map((skill, index) => <Bubble key={index}>{skill}</Bubble>)
+                    ) : <Bubble>brak</Bubble>}
+                  </BubbleWrap>
                   <LineForm />
                   <InfoText>Języki:</InfoText>
                   <BubbleWrap>
@@ -427,11 +429,11 @@ const UserPage = () => {
                     ) : <Bubble>brak</Bubble>}
                   </BubbleWrap>
                   <LineForm />
-                  <InfoText>Umiejętności:</InfoText>
+                  <InfoText>Tagi:</InfoText>
                   <BubbleWrap>
-                    {get.skills?.length ? (
-                      get.skills.map((skill, index) => <Bubble key={index}>{skill}</Bubble>)
-                    ) : <Bubble>{Default}</Bubble>}
+                    {get.tags?.length ? (
+                      get.tags.map((tag, index) => <Bubble key={index}>{tag}</Bubble>)
+                    ) : <Bubble>brak</Bubble>}
                   </BubbleWrap>
                   <ListLinks />
                 </LeftColumn>

@@ -628,3 +628,14 @@ export const XButton = styled.button`
   cursor: pointer;
   background: ${darkLight};
 `;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 90%;
+  padding-bottom: 1rem;
+  @media (max-width: 960px) {
+    justify-content: center;
+  }
+`;

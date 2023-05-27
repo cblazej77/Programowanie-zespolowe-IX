@@ -710,7 +710,7 @@ const CompanyPage = () => {
                   <RightColumn>
                     <LeftInfoRow>
                       <InfoText>Adres:</InfoText>
-                      <DataText>{get.address}</DataText>
+                      <DataText>{get.address ? get.address : 'brak'}</DataText>
                     </LeftInfoRow>
                     <LeftInfoRow>
                       <InfoText>NIP:</InfoText>

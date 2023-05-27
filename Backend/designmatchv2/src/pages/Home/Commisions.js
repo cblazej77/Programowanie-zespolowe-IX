@@ -489,6 +489,21 @@ const Commisions = () => {
       return null;
     }
 
+    const countWithoutContractor = filtered.content.reduce((count, filter) => {
+      if (!filter.contractor_username) {
+        return count + 1;
+      }
+      return count;
+    }, 0);
+
+    if (countWithoutContractor === 0) {
+      return (
+        <BlankCard style={{ margin: '0 0 0 1rem' }}>
+          Brak zleceń do wyświetlenia
+        </BlankCard>
+      );
+    }
+
     return filtered.content.map((filter, indexF) => (
       !filter.contractor_username &&
       <CommisionElement
