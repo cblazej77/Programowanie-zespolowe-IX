@@ -29,7 +29,7 @@ import { COLORS } from "../../components/Colors";
 import { default as axios } from '../../api/axios';
 import LoadingPage from "../LoadingPage";
 import { RiSendPlane2Line } from 'react-icons/ri';
-import {useAuth} from '../../components/Auth';
+import { useAuth } from '../../components/Auth';
 
 const { darkLight, white, black } = COLORS;
 
@@ -49,7 +49,7 @@ const Chat = () => {
   const [checkMess, setCheckMess] = useState(false);
   const [dataProfile, setDataProfile] = useState([]);
   //const stompClientRef = useRef(null);
-    const authApi = useAuth();
+  const authApi = useAuth();
 
 
   const DMElement = (props) => {
@@ -79,63 +79,66 @@ const Chat = () => {
 
     useEffect(() => {
       const fetchData = async () => {
-          const response = await axios.get(`/messages/` + props.nick + `/` + username + `/count`);
-          setNotificationCount(response.data);
-            if(response.data !== 0) setReturnNotificationCount(true);
-            else setReturnNotificationCount(false);
-            try{
-                let responseURL;
-                if(props.company == null) setUrlMessageElement(`/public/api/artist/getProfileImageByUsername/` + props.nick);
-                 else setUrlMessageElement(`/public/api/company/getProfileImageByUsername/` + props.nick);
-            }catch(e){
-                console.log("Błąd w fetchData/useEffet/MessageElement z łapaniem zdjęcia profilowego: "  + e);
-                setUrlMessageElement("/assets/cards/defaultavatar.png");
-            }
+        const response = await axios.get(`/messages/` + props.nick + `/` + username + `/count`);
+        setNotificationCount(response.data);
+        if (response.data !== 0) setReturnNotificationCount(true);
+        else setReturnNotificationCount(false);
+        try {
+          let responseURL;
+          if (props.company == null) setUrlMessageElement(`/public/api/artist/getProfileImageByUsername/` + props.nick);
+          else setUrlMessageElement(`/public/api/company/getProfileImageByUsername/` + props.nick);
+        } catch (e) {
+          console.log("Błąd w fetchData/useEffet/MessageElement z łapaniem zdjęcia profilowego: " + e);
+          // setUrlMessageElement("/assets/cards/defaultavatar.png");
         }
-    fetchData();
-  }, [props.nick, urlMessageElement]);
+      }
+      fetchData();
+    }, [props.nick, urlMessageElement]);
 
-  useEffect(() =>{
-    let shortMessage = props.lastMessage.slice(0, 25);
-    if(shortMessage == "!$@DM@$!") shortMessage = '';
-    if(shortMessage.length == 25) shortMessage = shortMessage + "...";
-    setShortLastMessage(shortMessage);
-  }, [props.lastMessage]);
-  
-  useEffect(() => {
-    if(props.company == null) setLeftName(props.name + " " + props.surname);
-    else setLeftName(props.company);
-  }, [props.company]);
+    useEffect(() => {
+      let shortMessage = props.lastMessage.slice(0, 25);
+      if (shortMessage == "!$@DM@$!") shortMessage = '';
+      if (shortMessage.length == 25) shortMessage = shortMessage + "...";
+      setShortLastMessage(shortMessage);
+    }, [props.lastMessage]);
 
-  
-    
+    useEffect(() => {
+      if (props.company == null) setLeftName(props.name + " " + props.surname);
+      else setLeftName(props.company);
+    }, [props.company]);
+
+
+
     return (
-        <>
-          <ElementContainer onClick = {() => handleChangeActive(props.nick)}>
-            <Avatar src={urlMessageElement} />
-            <BasicInfoContainer>
-              <SmallNameText>
-                {leftName}
-              </SmallNameText>
-              <SmallText> {shortLastMessage} </SmallText>
-            </BasicInfoContainer>
-            {returnNotificationCount && <DetailedInfoContainer>
-              <Notification>{notificationCount}</Notification>
-              {/*<SmallText>{props.lastOnline}</SmallText>*/}
-            </DetailedInfoContainer> }
-          </ElementContainer>
-          <LineForm />
-        </>
+      <>
+        <ElementContainer onClick={() => handleChangeActive(props.nick)}>
+          <Avatar src={urlMessageElement} onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/assets/cards/defaultavatar.png";
+          }} />
+          <BasicInfoContainer>
+            <SmallNameText>
+              {leftName}
+            </SmallNameText>
+            <SmallText> {shortLastMessage} </SmallText>
+          </BasicInfoContainer>
+          {returnNotificationCount && <DetailedInfoContainer>
+            <Notification>{notificationCount}</Notification>
+            {/*<SmallText>{props.lastOnline}</SmallText>*/}
+          </DetailedInfoContainer>}
+        </ElementContainer>
+        <LineForm />
+      </>
     );
   };
-      useEffect(() => {
-          if(localStorage.length > 0){
-              let myKey = localStorage.getItem("key");
-              console.log(myKey);
-              authApi.login("Michal", "pssw");
-          }
-          else console.log("pusty localStorage");
-      }, []);
+  useEffect(() => {
+    if (localStorage.length > 0) {
+      let myKey = localStorage.getItem("key");
+      console.log(myKey);
+      authApi.login("Michal", "pssw");
+    }
+    else console.log("pusty localStorage");
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,16 +151,16 @@ const Chat = () => {
           },
         });
         setUsername(decodeResult.data.username);
-        if(first) fetchDataLeftSide(decodeResult.data.username);
+        if (first) fetchDataLeftSide(decodeResult.data.username);
       } catch (err) {
         console.log("źle odkodowany token: " + err);
       }
     };
     let copySecond = sessionStorage.getItem("active");
     //if(username !== '' && second !== ""){
-      if(username !== '' && second !== ''){
+    if (username !== '' && second !== '') {
       connect();
-    }  
+    }
     fetchData();
 
   }, [username, second]);
@@ -165,12 +168,12 @@ const Chat = () => {
   const keyPress = useCallback(
 
     e => {
-      if (e.key === 'Enter' ){
-        if(message.length > 0) {
+      if (e.key === 'Enter') {
+        if (message.length > 0) {
           if (second.length > 0) {
             sendMessage();
-          }else console.log("Zła dlugosc second: " + second);
-        }else console.log("zła długość message" + message);
+          } else console.log("Zła dlugosc second: " + second);
+        } else console.log("zła długość message" + message);
       }
     },
     [message]
@@ -184,7 +187,7 @@ const Chat = () => {
     [keyPress]
   );
 
-  const connect= () => {
+  const connect = () => {
     const Stomp = require("stompjs");
     let SockJS = require("sockjs-client");
     SockJS = new SockJS("http://localhost:8080/ws");
@@ -196,41 +199,42 @@ const Chat = () => {
     console.error('WebSocket error:', error);
   };
 
-        const onConnected = () => {
-          stompClient.subscribe('/user/' + username + '/queue/messages', onMessageReceived);
-        };
+  const onConnected = () => {
+    stompClient.subscribe('/user/' + username + '/queue/messages', onMessageReceived);
+  };
 
-        const onMessageReceived = async (msg) => {
-          const notification = JSON.parse(msg.body);
-          let copySecond = sessionStorage.getItem("active");
-          if(copySecond == notification.senderId) {
+  const onMessageReceived = async (msg) => {
+    const notification = JSON.parse(msg.body);
+    let copySecond = sessionStorage.getItem("active");
+    if (copySecond == notification.senderId) {
 
-            try{
-            let messageContent=  await axios.get(`/messages/${notification.id}`)
-                  if(messageContent.data.content != "!$@DM@$!"){
-                  const receivedMessage = {
-                    sender_username: notification.senderId,
-                    recipient_username: notification.senderName,
-                    content: messageContent.data.content,
-                  };
+      try {
+        let messageContent = await axios.get(`/messages/${notification.id}`)
+        if (messageContent.data.content != "!$@DM@$!") {
+          const receivedMessage = {
+            sender_username: notification.senderId,
+            recipient_username: notification.senderName,
+            content: messageContent.data.content,
+          };
 
-                  let updatedConversation = JSON.parse(sessionStorage.getItem("message"));
+          let updatedConversation = JSON.parse(sessionStorage.getItem("message"));
 
-                  updatedConversation.unshift(receivedMessage);
-                  setConversation(updatedConversation);
-                  sessionStorage.setItem("message", JSON.stringify(updatedConversation));
-                }}
-                catch(error){ 
-                  console.log("Error retrieving message content:", error);
-                  
-                };
-          }
-        else{
-          console.log("nowa wiadomość od " + notification.senderId +", a ty patrzysz na chat: " + second);
-          let selectedPerson = dataProfile.find(person => person.username === notification.senderId);
-          fetchDataLeftSide(username);
+          updatedConversation.unshift(receivedMessage);
+          setConversation(updatedConversation);
+          sessionStorage.setItem("message", JSON.stringify(updatedConversation));
         }
       }
+      catch (error) {
+        console.log("Error retrieving message content:", error);
+
+      };
+    }
+    else {
+      console.log("nowa wiadomość od " + notification.senderId + ", a ty patrzysz na chat: " + second);
+      let selectedPerson = dataProfile.find(person => person.username === notification.senderId);
+      fetchDataLeftSide(username);
+    }
+  }
 
   const sendMessage = () => {
     if (message.length > 0) {
@@ -265,60 +269,60 @@ const Chat = () => {
     try {
 
       const response = await axios.get(`/messages/conversations/` + users);
-        setDataProfile(response.data);
-        if(response.data.length != 0){
-           console.log("Istnieje hisotira wiadomości dla" + users);
-            sessionStorage.setItem("active", response.data[0].username);
-            //setSecond(response.data[0].username);
-            sessionStorage.setItem("person", JSON.stringify(response.data));
-             if(response.data[0].company_name === null){
-                 setFullName(response.data[0].first_name + " " + response.data[0].last_name);
-                 setUrlActive(`/public/api/artist/getProfileImageByUsername/` + response.data[0].username)
-             }
-             else{
-                 setFullName(response.data[0].company_name);
-                 setUrlActive(`/public/api/company/getProfileImageByUsername/` + response.data[0].username);
-             }
-            handleChangeActive(response.data[0].username);
-            setRenderFlag(true);  
-             setfirst(false);
-            
-      //   handleChangeActive(second);
-       }else{
+      setDataProfile(response.data);
+      if (response.data.length != 0) {
+        console.log("Istnieje hisotira wiadomości dla" + users);
+        sessionStorage.setItem("active", response.data[0].username);
+        //setSecond(response.data[0].username);
+        sessionStorage.setItem("person", JSON.stringify(response.data));
+        if (response.data[0].company_name === null) {
+          setFullName(response.data[0].first_name + " " + response.data[0].last_name);
+          setUrlActive(`/public/api/artist/getProfileImageByUsername/` + response.data[0].username)
+        }
+        else {
+          setFullName(response.data[0].company_name);
+          setUrlActive(`/public/api/company/getProfileImageByUsername/` + response.data[0].username);
+        }
+        handleChangeActive(response.data[0].username);
+        setRenderFlag(true);
+        setfirst(false);
+
+        //   handleChangeActive(second);
+      } else {
         console.log("brak historii wiadomości dla użytkownika: " + users);
         setFullName("Brak uzytkownika do wyswietlenia");
         setUrlActive("/assets/cards/defaultavatar.png");
         setRenderFlag(true);
         setfirst(false);
         sessionStorage.removeItem("active");
-       }
+      }
     } catch (error) {
       console.log("ERROR in fetchDataLeftSide" + error);
     }
   };
 
-  const handleChangeActive = (user) =>{
+  const handleChangeActive = (user) => {
 
     console.log("handleAdd :)" + user);
-    if(second !== user && second != '') {
-        try {
-            stompClient.disconnect();
-        } catch (e) {console.log("stomp Client ma problem z disconnected, ZAWSZE");}
+    if (second !== user && second != '') {
+      try {
+        stompClient.disconnect();
+      } catch (e) { console.log("stomp Client ma problem z disconnected, ZAWSZE"); }
     }
-    if(username !== '' && user !== ''){
-     let datePerson =  JSON.parse(sessionStorage.getItem("person"));
+    if (username !== '' && user !== '') {
+      let datePerson = JSON.parse(sessionStorage.getItem("person"));
       let dfp = datePerson.find(person => person.username === user);
-      if(dfp.company_name == null) {
-          setFullName( dfp.first_name + " " +  dfp.last_name);
-          setUrlActive(`/public/api/artist/getProfileImageByUsername/` + dfp.username);
+      if (dfp.company_name == null) {
+        setFullName(dfp.first_name + " " + dfp.last_name);
+        setUrlActive(`/public/api/artist/getProfileImageByUsername/` + dfp.username);
       }
-      else{
-          setFullName(dfp.company_name);
-          setUrlActive(`/public/api/company/getProfileImageByUsername/` + dfp.username);
+      else {
+        setFullName(dfp.company_name);
+        setUrlActive(`/public/api/company/getProfileImageByUsername/` + dfp.username);
       }
-     sessionStorage.removeItem("message");
+      sessionStorage.removeItem("message");
 
-    axios.get(`/messages/` + username + `/` + user)
+      axios.get(`/messages/` + username + `/` + user)
         .then((response) => {
           const filtredMessages = response.data.filter((message) => message.content !== "!$@DM@$!");
           const axiosHistoryMessage = filtredMessages.map((message) => ({
@@ -346,10 +350,10 @@ const Chat = () => {
         });
     }
   };
-                // co jeszcze mozna doac
-                //   avatar="/assets/cards/person1.jpg"
-                //   unseenMessages={32}
-                //   lastOnline="1 godz."
+  // co jeszcze mozna doac
+  //   avatar="/assets/cards/person1.jpg"
+  //   unseenMessages={32}
+  //   lastOnline="1 godz."
 
   return (
     <>
@@ -358,16 +362,16 @@ const Chat = () => {
           <MessagesLabel>
             <TitleText>Wiadomości {username}</TitleText>
             <MessagesWrapper>
-                {dataProfile.map((item) => (
-                    <MessagesElement
-                        key={item.username}
-                        name={item.first_name}
-                        surname={item.last_name}
-                        company={item.company_name}
-                        lastMessage={item.last_message}
-                        nick={item.username}
-                    />))}
-                    {/* brak hisotrii label */}
+              {dataProfile.map((item) => (
+                <MessagesElement
+                  key={item.username}
+                  name={item.first_name}
+                  surname={item.last_name}
+                  company={item.company_name}
+                  lastMessage={item.last_message}
+                  nick={item.username}
+                />))}
+              {/* brak hisotrii label */}
             </MessagesWrapper>
             {/*{!(username === "WojciechDuklas") && <MessagesElement*/}
             {/*  name="Wojciech"*/}
@@ -382,20 +386,20 @@ const Chat = () => {
           <DMWrapper>
             <DMHeaderContainer>
               <Avatar src={urlActive}
-                    onError={(e) => {
-                        e.target.onerror = null;
-          e.target.src = "/assets/cards/defaultavatar.png";
-      }} alt="Profile" />
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/assets/cards/defaultavatar.png";
+                }} alt="Profile" />
               <DMName>{fullName}</DMName>
             </DMHeaderContainer>
             <LineForm />
             <DMMessagesContainer>
-                {conversation && <>
-                  {conversation.map((msg, index) => (
-                      <DMElement key={index} recipient={msg.recipient_username} sender={msg.sender_username} message={msg.content} />
-                  ))}
-                </>
-                }
+              {conversation && <>
+                {conversation.map((msg, index) => (
+                  <DMElement key={index} recipient={msg.recipient_username} sender={msg.sender_username} message={msg.content} />
+                ))}
+              </>
+              }
             </DMMessagesContainer>
 
             <LineForm />

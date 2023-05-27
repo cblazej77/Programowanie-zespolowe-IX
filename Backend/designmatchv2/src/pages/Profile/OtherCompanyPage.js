@@ -135,7 +135,7 @@ const OtherCompanyPage = () => {
         }),
         [],
     );
-    useEffect (() => {
+    useEffect(() => {
         sessionStoreCleaner.checkAndRemoveSessionStorage();
     }, []);
 
@@ -157,7 +157,7 @@ const OtherCompanyPage = () => {
                         'accept': 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
-                      },
+                    },
                 })
 
                 const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
@@ -186,34 +186,34 @@ const OtherCompanyPage = () => {
         fetchData();
     }, [citiesData, tagsData, categoriesData, languagesData, levelsData]);
 
-    const connect= () => {
+    const connect = () => {
         const Stomp = require("stompjs");
         let SockJS = require("sockjs-client");
         SockJS = new SockJS("http://localhost:8080/ws");
         stompClient = Stomp.over(SockJS);
         stompClient.connect({}, onConnected, onError());;
-      };
-      const onError = (error) => {
+    };
+    const onError = (error) => {
         console.error('WebSocket error:', error);
-      };
-    
-            const onConnected = () => {
-              if (stompClient) {
-                 if (stompClient.connected) {
-               let newMessage = {
-                 sender_username: myUsername,
-                 recipient_username: argument,
-                 content: "!$@DM@$!",
-               };
-          
-               stompClient.send('/app/chat', {}, JSON.stringify(newMessage))
-               try {
-                stompClient.disconnect();
-            } catch (e) {console.log("stomp Client ma problem z disconnected, ZAWSZE");}
-            navigate('/chat');
-             }else console.log("błąd wysyłania: brak połączenia z WebSocket");
-           }else  console.log("błąd wysyłania: stompClient niezdefiniowany");
-            };
+    };
+
+    const onConnected = () => {
+        if (stompClient) {
+            if (stompClient.connected) {
+                let newMessage = {
+                    sender_username: myUsername,
+                    recipient_username: argument,
+                    content: "!$@DM@$!",
+                };
+
+                stompClient.send('/app/chat', {}, JSON.stringify(newMessage))
+                try {
+                    stompClient.disconnect();
+                } catch (e) { console.log("stomp Client ma problem z disconnected, ZAWSZE"); }
+                navigate('/chat');
+            } else console.log("błąd wysyłania: brak połączenia z WebSocket");
+        } else console.log("błąd wysyłania: stompClient niezdefiniowany");
+    };
 
 
     const openModalClick = (data) => {
@@ -335,7 +335,7 @@ const OtherCompanyPage = () => {
                                 }} alt="Profile" /></ProfileImage>
                             <NameText>{get.name}</NameText>
                             <LineForm />
-                            {(argument !== myUsername && myUsername != '') ? <ButtonMessage onClick ={()=> connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => navigate(redirectPath, { replace: true })} > Napisz wiadomość </ButtonMessage> }
+                            {(argument !== myUsername && myUsername != '') ? <ButtonMessage onClick={() => connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => navigate(redirectPath, { replace: true })} > Napisz wiadomość </ButtonMessage>}
                         </LeftWrapper>
                         <RightWrapper>
                             <BoldLabel>O firmie:</BoldLabel>
@@ -376,7 +376,7 @@ const OtherCompanyPage = () => {
                         </RightWrapper>
                     </TopSection>
                     <DownSection>
-                        <TitleText>Zlecenia</TitleText>
+                        <TitleText style={{ width: '100%', textAlign: 'center', paddingRight: '1rem' }}>Zlecenia</TitleText>
                         {CommisionsData.map((com, indexC) => (
                             <CommisionElement
                                 key={indexC}

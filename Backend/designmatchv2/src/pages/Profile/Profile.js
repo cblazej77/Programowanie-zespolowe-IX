@@ -67,7 +67,7 @@ const UserPage = () => {
     setRefreshPortfolio((prevState) => !prevState);
   };
 
-  useEffect (() => {
+  useEffect(() => {
     sessionStoreCleaner.checkAndRemoveSessionStorage();
   }, []);
   useEffect(() => {
@@ -240,7 +240,7 @@ const UserPage = () => {
           <HeaderText>Doświadczenie</HeaderText>
           <LeftInfoRow>
             <InfoText>Nazwa firmy: </InfoText>
-            <label>{item.comapny}</label>
+            <label>{item.company}</label>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Miasto: </InfoText>

@@ -36,10 +36,17 @@ import {
   RightColumn,
   RightWrapper,
   SmallButton,
-  TopSection
+  TopSection,
+  ModalBackground,
+  ModalWrapper
 } from './ProfileElements';
-import { TitleText } from '../Home/CardsElement';
+import { BlankCard, TitleText } from '../Home/CardsElement';
 import Portfolio from './Portfolio';
+import { CommisionBottom, CommisionCard, CommisionText, CommisionTitle, CommisionTitleContainer, CommisionTop, LevelBubble, SmallCommisionBubble, StakeText } from '../Home/CommisionsElements';
+import { FiClock, FiMapPin } from 'react-icons/fi';
+import { COLORS } from '../../components/Colors';
+
+const { gray1 } = COLORS;
 
 const FirstScreen = 1954;//wyświetlić (15opini niżej)
 const SecondScreen = 1000;
@@ -58,10 +65,13 @@ const OtherUserPage = () => {
   const [educationList, setEducationList] = useState([]);
   const [experienceList, setExperienceList] = useState([]);
   const [myUsername, setmyUsername] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const [rating, setRating] = useState(0); //rating wyslac do bazy jako ocenę
   const [click, setClick] = useState(true);
   const [button, setButton] = useState(true);
+  const [role, setRole] = useState('');
+  const [commissions, setCommissions] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -78,17 +88,26 @@ const OtherUserPage = () => {
             'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
           },
         });
+
+        const commissionsResponse = await axios.request({
+          url: '/public/api/commission/getAllCommissionFirmByUsername/' + decodeResult.data.username,
+          headers: {},
+        });
+
+        setCommissions(commissionsResponse.data);
         setArgumentSet(argument);
+        setRole(decodeResult.data.role)
         setmyUsername(decodeResult.data.username);
-        console.log("user: " + myUsername+ " " + argumentSet);
+        console.log("user: " + myUsername + " " + argumentSet);
       } catch (err) {
         console.log(err);
       }
     };
 
     fetchData();
-  }, []);
-  useEffect (() => {
+  }, [showModal]);
+
+  useEffect(() => {
     sessionStoreCleaner.checkAndRemoveSessionStorage();
   }, []);
 
@@ -156,7 +175,7 @@ const OtherUserPage = () => {
     }
   }, [get]);
 
-  const connect= () => {
+  const connect = () => {
     const Stomp = require("stompjs");
     let SockJS = require("sockjs-client");
     SockJS = new SockJS("http://localhost:8080/ws");
@@ -167,23 +186,23 @@ const OtherUserPage = () => {
     console.error('WebSocket error:', error);
   };
 
-        const onConnected = () => {
-          if (stompClient) {
-             if (stompClient.connected) {
-           let newMessage = {
-             sender_username: myUsername,
-             recipient_username: argument,
-             content: "!$@DM@$!",
-           };
-      
-           stompClient.send('/app/chat', {}, JSON.stringify(newMessage))
-           try {
-            stompClient.disconnect();
-        } catch (e) {console.log("stomp Client ma problem z disconnected, ZAWSZE");}
-        navigate('/chat');
-         }else console.log("błąd wysyłania: brak połączenia z WebSocket");
-       }else  console.log("błąd wysyłania: stompClient niezdefiniowany");
+  const onConnected = () => {
+    if (stompClient) {
+      if (stompClient.connected) {
+        let newMessage = {
+          sender_username: myUsername,
+          recipient_username: argument,
+          content: "!$@DM@$!",
         };
+
+        stompClient.send('/app/chat', {}, JSON.stringify(newMessage))
+        try {
+          stompClient.disconnect();
+        } catch (e) { console.log("stomp Client ma problem z disconnected, ZAWSZE"); }
+        navigate('/chat');
+      } else console.log("błąd wysyłania: brak połączenia z WebSocket");
+    } else console.log("błąd wysyłania: stompClient niezdefiniowany");
+  };
 
   const handleAddEducationElement = (newId, faculty, schoolName, fieldOfStudy, degree, startDate, endDate, description) => {
     setEducationList((prevList) => [
@@ -335,13 +354,110 @@ const OtherUserPage = () => {
 
   window.addEventListener('resize', showButton);
 
-  const reviewCount = 15; //pobrac to z bazy
-  const ratingCount = 2.5; //pobrac z bazy
   const Default = "...";
 
-  function handleRating(rate) {
-    setRating(rate);
-  }
+  const handleMandatory = (comId) => async () => {
+    try {
+      await axios.put(
+        '/api/commission/updateById/' + comId,
+        {
+          contractor_username: argument
+        },
+        {
+          headers: {
+            Accept: 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      setShowModal(false);
+    } catch (err) {
+      console.log(err);
+    }
+    setShowModal(false);
+  };
+
+  const handleCommisionShow = () => {
+    setShowModal(true);
+  };
+
+  const ModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleWrapperClick = (event) => {
+    event.stopPropagation();
+  };
+
+  const CommisionElement = (props) => {
+    return (
+      <CommisionCard onClick={handleMandatory(props.id)}>
+        <CommisionTop>
+          <CommisionTitleContainer>
+            <CommisionTitle>
+              {props.title}
+            </CommisionTitle>
+            <LevelBubble>
+              {props.level}
+            </LevelBubble>
+          </CommisionTitleContainer>
+          <StakeText>{props.rate} PLN</StakeText>
+        </CommisionTop>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          margin: '0.4rem 0',
+          alignItems: 'center',
+        }}>
+          <FiMapPin size={18} style={{ color: gray1 }} />
+          <CommisionText>{props.location}</CommisionText>
+          <FiClock size={18} style={{ color: gray1 }} />
+          <CommisionText>{props.deadline}</CommisionText>
+        </div>
+        <CommisionBottom>
+          {props.tags.map((tag, indexT) => (
+            <SmallCommisionBubble key={indexT}>{tag}</SmallCommisionBubble>
+          ))}
+        </CommisionBottom>
+      </CommisionCard>
+    );
+  };
+
+  const Modal = ({ showModal }) => {
+    return (
+      <>
+        {showModal && (
+          <ModalBackground onClick={ModalClose}>
+            <ModalWrapper onClick={handleWrapperClick}>
+              <TitleText style={{ marginBottom: '1rem' }}>Wybierz zlecenie dla: {get.firstname} {get.lastname}</TitleText>
+              {commissions.length > 0 ?
+                commissions.map((com, indexC) => (
+                  !com.contractor_username &&
+                  <CommisionElement
+                    key={indexC}
+                    title={com.title}
+                    description={com.description}
+                    rate={com.rate}
+                    deadline={com.deadline}
+                    level={com.level}
+                    location={com.location}
+                    languages={com.languages}
+                    tags={com.tags}
+                    skills={com.skills}
+                    id={com.id}
+                  />
+                )) : (
+                  <BlankCard>
+                    Brak dostępnych zleceń
+                  </BlankCard>
+                )}
+            </ModalWrapper>
+          </ModalBackground>
+        )}
+      </>
+    );
+  };
 
   return (
     <>{checkLoading && get ? (
@@ -371,7 +487,8 @@ const OtherUserPage = () => {
               <RatingText>({reviewCount} opinii)</RatingText>
             </RatingWrapper> */}
             <LineForm />
-            {(argumentSet != myUsername && myUsername != '') ? <ButtonMessage onClick = {()=> connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => {navigate(redirectPath, { replace: true }); console.log(myUsername + argument)}} > Napisz wiadomość </ButtonMessage> }
+            {(argumentSet != myUsername && myUsername != '') ? <ButtonMessage onClick={() => connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => { navigate(redirectPath, { replace: true }); console.log(myUsername + argument) }} > Napisz wiadomość </ButtonMessage>}
+            {role === "COMPANY" && <ButtonMessage onClick={handleCommisionShow}>Wyznacz zlecenie</ButtonMessage>}
             {/* <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
               <SmallButton>Napisz opinię</SmallButton>
               <SmallButton> Like</SmallButton>
@@ -392,10 +509,10 @@ const OtherUserPage = () => {
                     <InfoText>Miejscowość:</InfoText>
                     <DataText>{shortProfile.city}</DataText>
                   </LeftInfoRow>
-                  <LeftInfoRow>
+                  {/* <LeftInfoRow>
                     <InfoText>Prace:</InfoText>
                     <DataText>20</DataText>
-                  </LeftInfoRow>
+                  </LeftInfoRow> */}
                   <LineForm />
                   <InfoText>Języki:</InfoText>
                   <BubbleWrap>
@@ -421,11 +538,12 @@ const OtherUserPage = () => {
           </RightWrapper>
         </TopSection>
         <DownSection>
-          <TitleText>Portfolio</TitleText>
+          <TitleText style={{ width: '100%', textAlign: 'center' }}>Portfolio</TitleText>
           <BottomWrapper>
             <Portfolio username={get.username} />
           </BottomWrapper>
         </DownSection>
+        <Modal showModal={showModal} />
       </ProfileWrapper>
     ) : (<LoadingPage />)}
     </>

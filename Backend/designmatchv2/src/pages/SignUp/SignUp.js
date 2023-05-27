@@ -20,6 +20,10 @@ import {
   KRS_REGEX
 } from '../../components/Regex';
 import sessionStoreCleaner from '../../components/sessionStoreCleaner';
+import { COLORS } from '../../components/Colors';
+
+const { darkLight, gray1 } = COLORS;
+
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [nick, setNick] = useState('');
@@ -43,6 +47,7 @@ function LoginForm() {
   const [checkRegexPassword, setCheckRegexPassword] = useState(true);
   const [userRole, setUserRole] = useState('');
   const [allInput, setAllInput] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const authApi = useAuth();
   const navigate = useNavigate();
@@ -60,6 +65,7 @@ function LoginForm() {
       setSubmitting(false);
     }
     else if (checkRegexName && checkRegexEmail && checkRegexNick && checkRegexSurname && checkRegexPassword) {
+      setLoading(true);
       handleRegistration();
     }
     else setSubmitting(false);
@@ -117,7 +123,8 @@ function LoginForm() {
       console.log(response.accessToken);
       console.log(JSON.stringify(response));
       clear();
-      openModal();
+      setShowModal(true);
+      setLoading(false);
     } catch (err) {
       setSubmitting(false);
       if (!err?.response) {
@@ -154,8 +161,9 @@ function LoginForm() {
       console.log(response?.accessToken);
       setSubmitting(false);
       clear();
+      setShowModal(true);
+      setLoading(false);
       console.log(JSON.stringify(response));
-      openModal();
     } catch (err) {
       setSubmitting(false);
       if (!err?.response) {
@@ -182,9 +190,9 @@ function LoginForm() {
     if (navigateGo) navigate('/sign-in');
   }, [navigateGo]);
 
-  useEffect (() => {
+  useEffect(() => {
     sessionStoreCleaner.checkAndRemoveSessionStorage();
-}, []);
+  }, []);
   const handleName = (value) => {
     setName(value);
     if (value && namesPatternValidation(value)) setCheckRegexName(true);
@@ -360,15 +368,11 @@ function LoginForm() {
     setUserRole("ARTIST");
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-  }
-
   return (
     <>
-      <ModalConfirm showModal={showModal} setShowModal={setShowModal} navigateGo={navigateGo} setNavigateGo={setNavigateGo} />
+      {showModal && <ModalConfirm showModal={showModal} setShowModal={setShowModal} />}
       <AllPage>
-        <MainName >REJESTRACJA</MainName>
+        <MainName>REJESTRACJA</MainName>
         <StyledForm>
           <LogoIcon />
           {!userRole ? (
@@ -403,7 +407,7 @@ function LoginForm() {
                 <InputText label="nazwisko:" id="surnameId" onChange={handleSurname} checkRegex={checkRegexSurname} />
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                {((!checkRegexName && name !== "") || (!checkRegexSurname && surname !== "")) && <ErrorLabel2>Zaczyna sie mała literą lub wpisano niedozolone znaki w imieniu lub nazwisku</ErrorLabel2>}
+                {((!checkRegexName && name !== "") || (!checkRegexSurname && surname !== "")) && <ErrorLabel2>Imię i nazwisko powinny zaczynać się od wielkiej litery</ErrorLabel2>}
               </div>
               <InputText label="email:" id="emailId" onChange={handleEmail} checkRegex={checkRegexEmail} />
               {(!checkRegexEmail && email !== "") && <ErrorLabel>Wpisano email w nieprawidłowym formacie.</ErrorLabel>}
@@ -411,13 +415,14 @@ function LoginForm() {
               {(!checkRegexNick && nick !== "") && <ErrorLabel>Wpisano niedozwolone znaki w nazwie użytkownika</ErrorLabel>}
               <PasswordInput label="hasło:" name="signUp" id="passwordId" onChange={handlePassword} checkRegex={checkRegexPassword} />
               {(!checkRegexPassword && password !== "") && <ErrorLabel>Hasło musi zawierać wielkie i małe litery, liczby, oraz conajmiej jeden znak specjalny: !@#$%\nHasło musi zawierać między 8 a 24 znaki. </ErrorLabel>}
-              {(!allInput) && <ErrorLabel>Wszystkie pola musza być zepełnione</ErrorLabel>}
+              {(!allInput) && <ErrorLabel>Wszystkie pola musza być wypełnione!</ErrorLabel>}
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {!submitting ? <SignUpButton onClick={handleCheckBlockButton} type="submit" value="Submit">Zarejestruj się jako artysta</SignUpButton> :
                   <SignUpButton type="submit" value="Submit">Zarejestruj się jako artysta</SignUpButton>}
+                {loading && <ErrorLabel style={{ color: gray1, marginTop: '0.5rem' }}>Rejestruję . . .</ErrorLabel>}
                 {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
                 <LineForm />
-                <GoogleButton to='' type="button" onClick={() => login()} >Kontynuuj z google</GoogleButton>
+                {/* <GoogleButton to='' type="button" onClick={() => login()} >Kontynuuj z google</GoogleButton> */}
                 <FacebookLogin
                   appId="739036054553215"
                   scope={email}
@@ -433,8 +438,8 @@ function LoginForm() {
                     navigate(redirectPath, { replace: true });
 
                   }}
-                  render={({ onClick }) => (
-                    <FacebookButton onClick={onClick}>Kontynuuj z Facebook</FacebookButton>
+                  render={({ onClick }) => (<></>
+                    // <FacebookButton onClick={onClick}>Kontynuuj z Facebook</FacebookButton>
                   )}
                 />
               </div>
@@ -460,6 +465,7 @@ function LoginForm() {
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 {!submitting ? <SignUpButton onClick={handleCompanyCheckBlockButton} type="submit" value="Submit">Zarejestruj się jako firma</SignUpButton> :
                   <SignUpButton type="submit" value="Submit">Zarejestruj się jako firma</SignUpButton>}
+                {loading && <ErrorLabel style={{ color: gray1, marginTop: '0.5rem' }}>Rejestruję . . .</ErrorLabel>}
                 {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
                 <LineForm />
                 <GoogleButton to='' type="button" onClick={() => login()} >Kontynuuj z google</GoogleButton>

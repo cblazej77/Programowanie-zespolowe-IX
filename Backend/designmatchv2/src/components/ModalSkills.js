@@ -2,64 +2,60 @@ import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components';
 import { COLORS } from './Colors';
 import axios from '../api/axios';
+import { SecondPhoto } from '../pages/Home/CardsElement';
 
+const { darkLight, darkLight2, primary, gray, gray1, secondary } = COLORS;
 
 //czesc elementow, na szybko pisane mozna przeniesc gdzies indziej
 const Background = styled.div`
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.6);
   position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
-const ButtonSave = styled.button`
-height: 50px;
-width: 25%;
-cursor: pointer;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 450px;
-  left: 100%;
-`
-const ButtonClose2 = styled.button`
-height: 50px;
-width: 25%;
-cursor: pointer;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 450px;
-  right: 75%;
-`
+
+const Button = styled.button`
+  cursor: pointer;
+  background: ${darkLight};
+  color: ${primary};
+  border: 0px;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  padding: 0.1rem 0.7rem;
+  margin: 1rem 1rem;
+  &:hover {
+    background: ${darkLight2};
+  }   
+`;
 
 const ModalWrapper = styled.div`
-  width: 800px;
-  height: 500px;
+  width: 50rem;
+  height: 35rem;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
-  background: #fff;
+  background: ${primary};
   color: #000;
-  position: relative;
   z-index: 10;
-  border-radius: 10px;
-      overflow-y: scroll;
-    &::-webkit-scrollbar {
-        width: 0.5vw;
-      }
-    
-      &::-webkit-scrollbar-track {
-        background: grey;
-      }
-    
-      &::-webkit-scrollbar-thumb {
-        background: #888;
-      }
-    
-      &::-webkit-scrollbar-thumb:hover {
-        background: red;
-      }
-`;
+  border-radius: 15px;
+  @media screen and (max-width: 960px) {
+    width: 100%;
+  }
+  animation: modalFadeIn 0.5s ease;
 
+    @keyframes modalFadeIn {
+        from {
+        opacity: 0;
+        transform: translateY(-100px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
+`;
 
 const ModalContent = styled.div`
   display: flex;
@@ -70,43 +66,57 @@ const ModalContent = styled.div`
     line-height: 2px;
   }
 `;
-const ButtonClose = styled.button`
-  cursor: pointer;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 1px;
-  left: 100%;
-  width: 32px;
-  height: 32px;
-  padding: 5px;
-  z-index: 10;
-  &:hover {
-    background: red;
-  }
-`;
+
 const ModalBubble = styled.p`
   padding: 5px 10px 5px 10px;
   display: inline-flex;
-  margin-right: 15px;
   border-radius: 15px;
-  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
+  // box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.3);
   font-size: 16px;
-  margin-bottom: 20px;
-  margin-top: 5px;
   ${(props) => props.checked === true ? `
         font-size: 18px;
-        background: red;
+        background: ${darkLight};
+        color: white;
     ` : `back`}
 `;
 
-const Label = styled.label`
-  height: 30px;
-  z-index: 10;
-  position: absolute;
-  font-size: 32px;
-  transform: translate(0, -25px);
-  margin-left: 10%;
-`
+const SkillButton = styled.button`
+  border: 0px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.7rem 0;
+  background: ${primary};
+  &:hover {
+      background: ${gray};
+  }
+`;
+
+const Header = styled.div`
+  font-size: 2.2rem;
+  height: 3.2rem;
+  color: ${darkLight};
+  text-align: center;
+`;
+
+const ScrollWrapper = styled.div`
+  overflow-y: auto;
+  height: calc(100% - 3.2rem);
+  border-radius: 15px;
+  &::-webkit-scrollbar {
+      width: 0.5vw;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: ${gray1};
+      border-radius: 15px;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background: ${darkLight};
+    }
+`;
 
 const ModalSkills = ({ showModal, setShowModal, skills, setSkills }) => {
   const modalRef = useRef();
@@ -207,17 +217,16 @@ const ModalSkills = ({ showModal, setShowModal, skills, setSkills }) => {
         if (!skills.includes(item)) return item;
       });
       const list = available.map((item, id) => (
-        <button onClick={() => {
+        <SkillButton onClick={() => {
           if (skillsToAdd.includes(item)) { handleDeleteSkillsToAdd(item) }
           else { handleAddSkillsToAdd(item) }
         }} key={id}>
           <ModalBubble
             key={id}
-            checked={skillsToAdd.includes(item)}
-          >
-            <label style={{ marginRight: 2 }}>{item}</label>
+            checked={skillsToAdd.includes(item)}>
+            <label style={{ marginRight: 2, cursor: 'pointer' }}>{item}</label>
           </ModalBubble>
-        </button>
+        </SkillButton>
       ));
       return <>{list}</>;
     } else {
@@ -229,20 +238,22 @@ const ModalSkills = ({ showModal, setShowModal, skills, setSkills }) => {
     setShowModal(prev => !prev);
   }
 
-
   return (
     <>
       {showModal ? (
         <Background onClick={closeModal} ref={modalRef}>
           <ModalWrapper showModal={showModal}>
-            <ButtonClose onClick={() => setShowModal(prev => !prev)}>X</ButtonClose>
-            <ButtonSave onClick={handleClickSave}> Save</ButtonSave>
-            <ButtonClose2 onClick={() => setShowModal(prev => !prev)}> Close</ButtonClose2>
-            <ModalContent>
-              <ListAvailableSkills />
-              <Label>Skille:</Label>
-            </ModalContent>
+            <Header>Wybierz umiejętności</Header>
+            <ScrollWrapper>
+              <ModalContent>
+                <ListAvailableSkills />
+              </ModalContent>
+            </ScrollWrapper>
           </ModalWrapper >
+          <div>
+            <Button onClick={handleClickSave}>Zapisz</Button>
+            <Button style={{ background: secondary }} onClick={() => setShowModal(prev => !prev)}>Anuluj</Button>
+          </div>
         </Background>
       ) : null}
     </>

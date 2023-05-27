@@ -30,6 +30,8 @@ import {
   ModalScroll,
   CheckBoxContainter,
   FilterModalWrapper,
+  CardLabel,
+  BlankCard
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
@@ -176,7 +178,7 @@ const Cards = () => {
               tags: tagsFilter,
             },
             {
-              params: { page: 0, size: 10 },
+              params: { page: 0, size: 50 },
               headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
             },
           )
@@ -495,25 +497,30 @@ const Cards = () => {
             </FilterScroll>
           </FilterWrapper>
         </FilterLabel>
-        {filtered ? (
-          <RightLabel>
-            <TopSection>
-              <FilterButton onClick={handleFilterClick}>Filtruj</FilterButton>
-              {/* <StyledSelect>
+        <RightLabel>
+          <TopSection>
+            <FilterButton onClick={handleFilterClick}>Filtruj</FilterButton>
+            {/* <StyledSelect>
                 <StyledOption value="">Sortuj po...</StyledOption>
                 <StyledOption value="1">najlepsza ocena</StyledOption>
                 <StyledOption value="2">najwięcej prac</StyledOption>
                 <StyledOption value="3">ostatnia aktywność</StyledOption>
               </StyledSelect> */}
-            </TopSection>
+          </TopSection>
+          {filtered ? (
             <CardsWrapper>
-              {filteredCards}
+              {!filtered.empty ? (
+                filteredCards
+              ) : (
+                <BlankCard>
+                  Brak artystów do wyświetlenia
+                </BlankCard>
+              )}
             </CardsWrapper>
-            <Modal showModal={showModal} onCloseModal={handleCloseModal} />
-          </RightLabel>
-        ) : (
-          <LoadingPage />
-        )}
+          ) : (<LoadingPage />)}
+
+          <Modal showModal={showModal} onCloseModal={handleCloseModal} />
+        </RightLabel>
       </Cards2>
     </>
   )

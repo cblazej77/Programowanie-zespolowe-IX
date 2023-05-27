@@ -1,8 +1,9 @@
 import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { COLORS } from './Colors';
-import { Button } from '../pages/Profile/ProfileElements';
+import { AddCommissionButton, Button } from '../pages/Profile/ProfileElements';
 import { useNavigate } from 'react-router-dom';
+import { VisitCompanyButton } from '../pages/Home/CommisionsElements';
 
 const { primary, darkLight } = COLORS;
 
@@ -54,7 +55,7 @@ const Label = styled.label`
   margin-top: 50%;
 `
 
-const ModalConfirm = ({ showModal, setShowModal, setNavigateGo, navigateGo }) => {
+const ModalConfirm = ({ showModal, setShowModal, setNavigateGo, navigateGo, onClose }) => {
   const modalRef = useRef();
   const navigate = useNavigate(); // Używanie hooka useNavigate z react-router-dom
 
@@ -80,10 +81,9 @@ const ModalConfirm = ({ showModal, setShowModal, setNavigateGo, navigateGo }) =>
     return () => document.removeEventListener('keydown', keyPress);
   }, [keyPress]);
 
-  // const closeModalClick = () => {
-  //   //setShowModal(false);
-  //   navigate(`/sign-in`);
-  // }
+  const handleConfirmClick = () => {
+    navigate('/sign-in');
+  };
 
   return (
     <>
@@ -93,7 +93,7 @@ const ModalConfirm = ({ showModal, setShowModal, setNavigateGo, navigateGo }) =>
             <div style={{ textAlign: 'center', height: '100%', fontSize: '2rem', color: darkLight }}>
               Pomyślnie zarejestrowano użytkownika. Aby dokończyć rejestrację, potwierdź adres e-mail przed zalogowaniem.
             </div>
-            <Button onClick={closeModal}>Rozumiem</Button>
+            <VisitCompanyButton onClick={handleConfirmClick}>Rozumiem</VisitCompanyButton>
           </ModalWrapper>
         </Background>
       ) : null}

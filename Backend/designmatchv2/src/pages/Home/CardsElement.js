@@ -360,6 +360,23 @@ export const CardLabel = styled.div`
     }
 `;
 
+export const BlankCard = styled.div`
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    width: 95%;
+    box-shadow: 4px 2px 10px 2px rgba(0, 0, 0, 0.2);
+    margin-right: 1vw;
+    background: ${secondary1};
+    padding: 1.5rem 0;
+    color: ${gray1};
+    @media screen and (max-width: 960px) {
+        width: 95%;
+    }
+`;
+
 export const CardAvatar = styled.img`
     height: 8rem;
     width: 8rem;
@@ -491,18 +508,18 @@ export const ModalWrapper = styled.div`
 export const FilterModalWrapper = styled.div`
     width: 100%;
     height: 75%;
-    animation: modalFilter 0.5s ease;
+    // animation: modalFilter 0.5s ease;
 
-    @keyframes modalFilter {
-        from {
-        opacity: 0;
-        transform: translateY(200px);
-        }
-        to {
-        opacity: 1;
-        transform: translateY(0);
-        }
-    }
+    // @keyframes modalFilter {
+    //     from {
+    //     opacity: 0;
+    //     transform: translateY(200px);
+    //     }
+    //     to {
+    //     opacity: 1;
+    //     transform: translateY(0);
+    //     }
+    // }
     background: ${primary};
     box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
 `;

@@ -36,7 +36,8 @@ import {
   Bracket,
   NameText,
   EditProfileImage,
-  EditIcon
+  EditIcon,
+  XButton
 
 } from './ProfileElements'
 import LoadingPage from '../LoadingPage';
@@ -360,42 +361,50 @@ const EditUserPageMobile = () => {
     setLinkedin('');
   }
 
-  const updateArtistProfile = useCallback(async () => {
+  const updateAvatar = async () => {
+    try {
+      if (selectedImage) {
+        console.log(selectedImage);
+        const formData = new FormData();
+        console.log(formData);
+        formData.append('image', selectedImage, selectedImage.name);
+
+        await axios.post(
+          '/api/artist/updateProfileImage/' + username,
+          formData,
+          {
+            headers: {
+              accept: 'application/json',
+              'Content-Type': 'multipart/form-data',
+              Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+            },
+          }
+        );
+      }
+    } catch (err) {
+      console.error('Error while saving data:', err);
+    }
+  };
+
+  const updateArtistProfile = async () => {
     let education = educationList;
     let experience = experienceList;
 
-    education.map((item, index) => {
-      delete item.id;
-    });
-    experience.map((item, index) => {
+    education.forEach((item) => {
       delete item.id;
     });
 
-    if (selectedImage) {
-      console.log(selectedImage);
-      const formData = new FormData();
-      console.log(formData);
-      formData.append('image', selectedImage, selectedImage.name);
+    experience.forEach((item) => {
+      delete item.id;
+    });
 
-      axios.post(
-        '/api/artist/updateProfileImage/' + username,
-        formData,
-        {
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'multipart/form-data',
-            Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
-          },
-        })
-    }
-
-    const response = await axios
-      .put(
+    try {
+      const response = await axios.put(
         '/api/artist/updateProfileByUsername/' + username,
         {
           bio: bio,
-          level: level,
-          location: location,
+          level: level.value,
+          location: location.value,
           skills: skills,
           tags: tags,
           languages: languages,
@@ -415,19 +424,24 @@ const EditUserPageMobile = () => {
             Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
             'Content-Type': 'application/json',
           },
-        },
-      )
-      .catch((error) => {
-        console.log("updateArtist  ", error);
-      });
-    console.log("updateArtist response:     ", response);
-    if ((response.status = 200)) {
-      experience = null;
-      education = null;
+        }
+      );
+
+      await updateAvatar();
+      navigate('/account');
+      console.log("updateArtist response:     ", response);
+      if (response.status === 200) {
+        experience = null;
+        education = null;
+        //navigate('/account');
+      }
+    } catch (error) {
+      console.log("updateArtist  ", error);
       navigate('/account');
     }
-  }, [selectedImage]);
-  useEffect (() => {
+  };
+
+  useEffect(() => {
     sessionStoreCleaner.checkAndRemoveSessionStorage();
   }, []);
 
@@ -544,73 +558,58 @@ const EditUserPageMobile = () => {
   function ListTags() {
     if (tags) {
       const list = tags.map((item, id) => (
-
-        <Bubble key={id} >
-          <label>{item}</label>
-          <button onClick={() => handleDeleteTag(item)}>
-            [X]</button>
+        <Bubble key={id} onClick={() => handleDeleteTag(item)}>
+          {item} x
         </Bubble>
       ));
       return (
         <>
           {list}
-          <Bubble >
-            <button onClick={openModalTags}>
-              <label>Dodaj</label>
-            </button>
+          <Bubble onClick={openModalTags}>
+            Dodaj +
           </Bubble>
         </>
       );
     } else {
-      return <label>empty</label>;
+      return <label>pusto</label>;
     }
   }
   function ListSkills() {
     if (skills) {
       const list = skills.map((item, id) => (
-        <Bubble key={id} >
-          <label>{item}</label>
-          <button onClick={() => handleDeleteSkill(item)}>
-            [X] </button>
+        <Bubble key={id} onClick={() => handleDeleteSkill(item)}>
+          {item} x
         </Bubble>
       ));
       return (
         <>
           {list}
-          <Bubble >
-            <button onClick={openModalSkills}>
-              <label>Dodaj</label>
-            </button>
-
+          <Bubble onClick={openModalSkills}>
+            Dodaj +
           </Bubble>
         </>
       );
     } else {
-      return <label>pusty ListSkills</label>;
+      return <label>pusta lista</label>;
     }
   }
   function ListLanguages() {
     if (languages) {
       const list = languages.map((item, id) => (
-        <Bubble key={id} >
-          <label>{item}</label>
-          <button onClick={() => handleDeleteLanguage(item)}>
-            [X] </button>
+        <Bubble key={id} onClick={() => handleDeleteLanguage(item)}>
+          {item} x
         </Bubble>
       ));
       return (
         <>
           {list}
-          <Bubble >
-            <button onClick={openModalLanguages}>
-              <label>Dodaj</label>
-            </button>
-
+          <Bubble onClick={openModalLanguages}>
+            Dodaj +
           </Bubble>
         </>
       );
     } else {
-      return <label></label>;
+      return <label>pusto</label>;
     }
   }
   function ListEducation() {
@@ -679,11 +678,11 @@ const EditUserPageMobile = () => {
             placeholder="Wpisz opis"
           />
           <div style={{ alignItems: 'center' }}>
-            <button
+            <XButton
               onClick={() => handleDeleteEducationElement(item.id)}
               style={{ alignContent: 'center', marginBottom: 3, marginTop: 3 }}>
               Usuń
-            </button>
+            </XButton>
           </div>
         </div>
       );
@@ -706,12 +705,12 @@ const EditUserPageMobile = () => {
       <>
         {list}
         <div style={{ alignItems: 'center' }}>
-          <button
+          <XButton
             onClick={handleAddEducationClick}
             style={{ alignContent: 'center', marginBottom: 3, marginTop: 3 }}
           >
             Dodaj
-          </button>
+          </XButton>
         </div>
       </>
     );
@@ -742,9 +741,9 @@ const EditUserPageMobile = () => {
           <SmallInput
             maxLength={50}
             type="text"
-            defaultValue={item.comapny}
+            defaultValue={item.company}
             onChange={(e) => {
-              item.comapny = e.target.value;
+              item.company = e.target.value;
             }}
             placeholder="Wpisz nazwę firmy"
           />
@@ -790,12 +789,12 @@ const EditUserPageMobile = () => {
           />
 
           <div style={{ alignItems: 'center' }}>
-            <button
+            <XButton
               onClick={() => handleDeleteExperienceElement(item.id)}
               style={{ alignContent: 'center', marginBottom: 3, marginTop: 3 }}
             >
               Usuń
-            </button>
+            </XButton>
           </div>
         </div>
       );
@@ -818,12 +817,12 @@ const EditUserPageMobile = () => {
       <>
         {list}
         <div style={{ alignItems: 'center' }}>
-          <button
+          <XButton
             onClick={handleAddExperienceClick}
             style={{ alignContent: 'center', marginBottom: 3, marginTop: 3 }}
           >
             Dodaj
-          </button>
+          </XButton>
         </div>
       </>
     );
@@ -975,7 +974,7 @@ const EditUserPageMobile = () => {
                     <LineForm />
                     <LeftInfoRow>
                       <HeaderText>Media społecznościowe:</HeaderText>
-                      <ButtonEdit onClick={openModalLinks}>Edytuj</ButtonEdit>
+                      <XButton style={{ height: '2rem' }} onClick={openModalLinks}>Edytuj</XButton>
                     </LeftInfoRow>
                     <ListLinks />
                   </LeftColumn>

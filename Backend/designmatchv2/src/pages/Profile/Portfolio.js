@@ -39,7 +39,7 @@ const Portfolio = (props) => {
                 const portfolioEntriesResponse = await axios.request(
                     '/public/api/artist/getPortfolioEntries/' + props.username,
                     {
-                        params: { page: 0, size: 10 },
+                        params: { page: 0, size: 50 },
                         headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
                     },
                 );
