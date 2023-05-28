@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface CommissionRepository extends JpaRepository<Commission, Long> {
 
-    Optional<Commission> findById(Long id);
+    @NotNull Optional<Commission> findById(@NotNull Long id);
 
     Page<Commission> findAll(@NotNull Specification<Commission> specification, Pageable pageable);
 

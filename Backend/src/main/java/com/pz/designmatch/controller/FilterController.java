@@ -26,7 +26,7 @@ public class FilterController {
 
     @Operation(summary = "Zwraca dostępne kategorie", responses = {
             @ApiResponse(responseCode = "200", description = "Pobrano dostępne kategorie", content = @Content(mediaType = apiVersionAccept, array = @ArraySchema(schema =
-                    @Schema(implementation = String.class, example = "[\"Programowanie\",\"Grafika\",\"Marketing\",\"Administracja\",\"Sprzedaż\"]", description = "Lista dostępnych kategorii")))),
+            @Schema(implementation = String.class, example = "[\"Programowanie\",\"Grafika\",\"Marketing\",\"Administracja\",\"Sprzedaż\"]", description = "Lista dostępnych kategorii")))),
             @ApiResponse(responseCode = "500", description = "Wystąpił błąd podczas pobierania dostępnych kategorii")
     }, tags = {"Filtry"})
     @GetMapping(value = "/getAvailableCategories", produces = apiVersionAccept)
@@ -38,9 +38,9 @@ public class FilterController {
 
     @Operation(summary = "Zwraca dostępne miasta", responses = {
             @ApiResponse(responseCode = "200", description = "Pobrano dostępne miasta", content = @Content(mediaType = apiVersionAccept, array = @ArraySchema(schema =
-                @Schema(example = "[\"Zdalnie\",\"Warszawa\",\"Kraków\",\"Wrocław\",\"Poznań\",\"Gdańsk\",\"Szczecin\",\"Bydgoszcz\",\"Lublin\"]", description = "Lista dostępnych miast")))),
+            @Schema(example = "[\"Zdalnie\",\"Warszawa\",\"Kraków\",\"Wrocław\",\"Poznań\",\"Gdańsk\",\"Szczecin\",\"Bydgoszcz\",\"Lublin\"]", description = "Lista dostępnych miast")))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Wystąpił błąd podczas pobierania dostępnych miast",
-                    content = @Content) },
+                    content = @Content)},
             tags = {"Filtry"})
     @GetMapping(value = "/getAvailableCities", produces = apiVersionAccept)
     public ResponseEntity<List<String>> getAvailableCities() {

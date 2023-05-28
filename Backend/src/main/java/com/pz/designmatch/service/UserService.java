@@ -13,5 +13,5 @@ public interface UserService {
 
     List<String> getAllUsernames();
 
-    UserEntity registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException, ValidationException;
+    void registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException, ValidationException;
 }

@@ -23,7 +23,5 @@ public interface CommissionService {
 
     Page<CommissionResponse> filterCommissions(CommissionFilterRequest filterRequest, Pageable pageable);
 
-    CommissionResponse deleteCommissionById(Long id);
-
-
+    void deleteCommissionById(Long id);
 }

@@ -67,12 +67,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserEntity registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException {
+    public void registerNewUser(RegisterRequest registerRequest, String roleName) throws UserAlreadyExistAuthenticationException {
         Role role = roleRepository.findByName(roleName).orElseThrow(() -> new EntityNotFoundException("Taka rola nie istnieje!"));
 
         if (userRepository.existsByEmailIgnoreCase(registerRequest.getEmail())) {
-            // TODO check if attributes are the same and
-            // TODO if email not confirmed resend confirmation email
             throw new UserAlreadyExistAuthenticationException("Ten email jest już zajęty");
         }
 
@@ -116,8 +114,6 @@ public class UserServiceImpl implements UserService {
 
         String token = confirmationTokenService.saveConfirmationToken(user);
         sendConfirmationEmail(registerRequest.getEmail(), registerRequest.getUsername(), token);
-
-        return user;
     }
 
     private UserEntity buildUser(final RegisterRequest signUpRequest, final Role role) {

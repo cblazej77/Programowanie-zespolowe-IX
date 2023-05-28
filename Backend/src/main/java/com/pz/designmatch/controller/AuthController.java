@@ -5,8 +5,8 @@ import com.pz.designmatch.dto.request.ArtistRegisterRequest;
 import com.pz.designmatch.dto.request.CompanyRegisterRequest;
 import com.pz.designmatch.dto.request.LoginRequest;
 import com.pz.designmatch.dto.request.RegisterRequest;
-import com.pz.designmatch.dto.response.MyApiResponse;
 import com.pz.designmatch.dto.response.JwtAuthenticationResponse;
+import com.pz.designmatch.dto.response.MyApiResponse;
 import com.pz.designmatch.exception.UserAlreadyExistAuthenticationException;
 import com.pz.designmatch.service.ConfirmationTokenService;
 import com.pz.designmatch.service.UserService;
@@ -46,8 +46,8 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
-    private JwtDecoder jwtDecoder;
-    private JdbcTemplate jdbcTemplate;
+    private final JwtDecoder jwtDecoder;
+    private final JdbcTemplate jdbcTemplate;
 
     public AuthController(JwtEncoder encoder, UserService userService, AuthenticationManager authenticationManager,
                           ConfirmationTokenServiceImpl confirmationTokenService, JwtDecoder jwtDecoder, JdbcTemplate jdbcTemplate) {

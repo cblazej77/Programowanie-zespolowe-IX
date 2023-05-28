@@ -4,6 +4,7 @@ import com.pz.designmatch.model.chat.ChatRoom;
 import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.ChatRoomRepository;
 import com.pz.designmatch.repository.UserRepository;
+import com.pz.designmatch.service.ChatRoomService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,16 +13,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ChatRoomService {
+public class ChatRoomServiceImpl implements ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public ChatRoomService(ChatRoomRepository chatRoomRepository, UserRepository userRepository) {
+    public ChatRoomServiceImpl(ChatRoomRepository chatRoomRepository, UserRepository userRepository) {
         this.chatRoomRepository = chatRoomRepository;
         this.userRepository = userRepository;
     }
 
+    @Override
     public Optional<String> getChatId(String senderUsername, String recipientUsername, boolean createIfNotExist) {
         UserEntity existingSender = userRepository.findByUsername(senderUsername)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono użytkownika o nazwie: " + senderUsername));
@@ -44,6 +46,7 @@ public class ChatRoomService {
         return existingChatRoom.map(ChatRoom::getChatId);
     }
 
+    @Override
     public Optional<List<ChatRoom>> findChatBySender(String username) {
         UserEntity existingUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono użytkownika o nazwie: " + username));

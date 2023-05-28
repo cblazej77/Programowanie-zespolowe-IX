@@ -1,7 +1,6 @@
 package com.pz.designmatch.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pz.designmatch.model.enums.Skill;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 

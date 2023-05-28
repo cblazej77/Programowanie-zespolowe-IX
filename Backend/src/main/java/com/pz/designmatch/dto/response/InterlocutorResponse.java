@@ -20,7 +20,7 @@ public class InterlocutorResponse {
     private String lastName;
 
     @JsonProperty("company_name")
-    @Schema(example = "", description = "Nazwa firmy", implementation = String.class)
+    @Schema(description = "Nazwa firmy", implementation = String.class)
     private String companyName;
 
     @NotEmpty

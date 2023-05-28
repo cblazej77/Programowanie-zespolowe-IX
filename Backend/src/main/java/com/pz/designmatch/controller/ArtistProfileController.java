@@ -143,8 +143,6 @@ public class ArtistProfileController {
     }
 
 
-
-
     @Operation(summary = "Aktualizuje profil artysty o podanej nazwie użytkownika",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Zaktualizowano profil artysty o podanej nazwie użytkownika",
@@ -209,7 +207,6 @@ public class ArtistProfileController {
         artistProfileServiceImpl.uploadPortfolioImage(username, image, name, description);
         return ResponseEntity.ok(new MyApiResponse(true, "Pomyślnie dodano zdjęcie do portfolio"));
     }
-
 
 
     @Operation(summary = "Usuwa wpis z portfolio artysty o podanej nazwie użytkownika i id wpisu w portfolio",

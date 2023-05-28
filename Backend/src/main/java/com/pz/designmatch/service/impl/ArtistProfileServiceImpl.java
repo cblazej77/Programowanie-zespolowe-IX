@@ -19,12 +19,9 @@ import com.pz.designmatch.util.mapper.ArtistProfileMapper;
 import com.pz.designmatch.util.mapper.EducationMapper;
 import com.pz.designmatch.util.mapper.ExperienceMapper;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -111,7 +108,7 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
 
     @Override
     @Transactional
-    public ArtistProfileResponse updateArtistProfileByUsername(String username, ArtistProfileRequest artistProfile) {
+    public ArtistProfileResponse updateArtistProfileByUsername(String username, @NotNull ArtistProfileRequest artistProfile) {
         ArtistProfile existingArtistProfile = artistProfileRepository.findByUser_Username(username)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
 
@@ -172,7 +169,7 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
     }
 
     @Override
-    public Page<ShortArtistProfileResponse> filterArtistProfiles(ArtistFilterRequest filterRequest, Pageable pageable) {
+    public Page<ShortArtistProfileResponse> filterArtistProfiles(@NotNull ArtistFilterRequest filterRequest, Pageable pageable) {
         Specification<ArtistProfile> specification = Specification.where(null);
 
         if (filterRequest.getLevels() != null && !filterRequest.getLevels().isEmpty()) {
@@ -222,7 +219,7 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
 
     @Override
     public void deletePortfolioEntry(String username, Long imageId) {
-            portfolioImagesRepository.deleteByArtistProfile_User_UsernameAndId(username, imageId);
+        portfolioImagesRepository.deleteByArtistProfile_User_UsernameAndId(username, imageId);
     }
 
     public void uploadProfileImage(String username, MultipartFile image) {
@@ -233,7 +230,7 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
         artistProfile.setProfileImageUrl(imagePath);
         artistProfileRepository.save(artistProfile);
     }
-
+    
     public void uploadPortfolioImage(String username, MultipartFile image, String name, String description) {
         ArtistProfile artistProfile = artistProfileRepository.findByUser_Username(username)
                 .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono profilu artysty dla użytkownika " + username));

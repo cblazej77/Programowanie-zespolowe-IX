@@ -1,6 +1,5 @@
 package com.pz.designmatch.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +8,6 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.Set;
 
 
-@JsonInclude(JsonInclude.Include.ALWAYS)
 public class ShortArtistProfileResponse {
 
     @JsonProperty("username")
@@ -47,30 +45,30 @@ public class ShortArtistProfileResponse {
     @JsonProperty("skills")
     @ArraySchema(arraySchema = @Schema(description = "Umiejętności", example = "[\"Logo\",\"Identyfikacja wizualna\"]", implementation = String.class, enumAsRef = true,
             allowableValues = {"Logo",
-            "Identyfikacja wizualna",
-            "Wizytówka",
-            "Strona internetowa",
-            "Motyw WordPress",
-            "Ikona lub przycisk",
-            "Aplikacja mobilna",
-            "Baner",
-            "Broszura",
-            "Plakat",
-            "Infografika",
-            "Okleina samochodowa",
-            "Menu",
-            "T-shirt",
-            "Inne ubrania",
-            "Akcesorium",
-            "Kubek",
-            "Naklejka, magnes lub przypinka",
-            "Ilustracja lub grafika",
-            "Okładka albumu",
-            "Maskotka",
-            "Tatuaż",
-            "Model 3D",
-            "Opakowanie",
-            "Etykieta"}))
+                    "Identyfikacja wizualna",
+                    "Wizytówka",
+                    "Strona internetowa",
+                    "Motyw WordPress",
+                    "Ikona lub przycisk",
+                    "Aplikacja mobilna",
+                    "Baner",
+                    "Broszura",
+                    "Plakat",
+                    "Infografika",
+                    "Okleina samochodowa",
+                    "Menu",
+                    "T-shirt",
+                    "Inne ubrania",
+                    "Akcesorium",
+                    "Kubek",
+                    "Naklejka, magnes lub przypinka",
+                    "Ilustracja lub grafika",
+                    "Okładka albumu",
+                    "Maskotka",
+                    "Tatuaż",
+                    "Model 3D",
+                    "Opakowanie",
+                    "Etykieta"}))
     private final Set<String> skills;
 
     public ShortArtistProfileResponse(String username, String firstname, String lastname, String level, String city, Set<String> skills) {

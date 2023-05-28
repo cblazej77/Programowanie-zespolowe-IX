@@ -1,6 +1,7 @@
 package com.pz.designmatch.exception;
 
 import com.pz.designmatch.dto.response.MyApiResponse;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -22,8 +23,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatusCode status,
-                                                                  final WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(final @NotNull MethodArgumentNotValidException ex, final @NotNull HttpHeaders headers, final @NotNull HttpStatusCode status,
+                                                                  final @NotNull WebRequest request) {
         logger.error("400 Status Code", ex);
         final BindingResult result = ex.getBindingResult();
 

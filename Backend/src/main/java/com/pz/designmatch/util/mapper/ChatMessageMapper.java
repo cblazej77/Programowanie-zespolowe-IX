@@ -8,7 +8,7 @@ import com.pz.designmatch.model.enums.MessageStatus;
 import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.ChatRoomRepository;
 import com.pz.designmatch.repository.UserRepository;
-import com.pz.designmatch.service.impl.ChatRoomService;
+import com.pz.designmatch.service.impl.ChatRoomServiceImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
@@ -23,15 +23,15 @@ public class ChatMessageMapper {
 
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
-    private final ChatRoomService chatRoomService;
+    private final ChatRoomServiceImpl chatRoomServiceImpl;
 
     @Autowired
     private EntityManager entityManager;
 
     @Autowired
-    public ChatMessageMapper(ChatRoomRepository chatRoomRepository, ChatRoomService chatRoomService, UserRepository userRepository) {
+    public ChatMessageMapper(ChatRoomRepository chatRoomRepository, ChatRoomServiceImpl chatRoomServiceImpl, UserRepository userRepository) {
         this.chatRoomRepository = chatRoomRepository;
-        this.chatRoomService = chatRoomService;
+        this.chatRoomServiceImpl = chatRoomServiceImpl;
         this.userRepository = userRepository;
     }
 
@@ -54,7 +54,7 @@ public class ChatMessageMapper {
         UserEntity recipient = userRepository.findByUsername(chatMessageRequest.getRecipientUsername())
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono użytkownika o nazwie: " + chatMessageRequest.getRecipientUsername()));
 
-        String chatId = chatRoomService.getChatId(chatMessageRequest.getSenderUsername(), chatMessageRequest.getRecipientUsername(), createIfNotExist)
+        String chatId = chatRoomServiceImpl.getChatId(chatMessageRequest.getSenderUsername(), chatMessageRequest.getRecipientUsername(), createIfNotExist)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + chatMessageRequest.getSenderUsername() + "_" + chatMessageRequest.getRecipientUsername()));
 
         TypedQuery<ChatRoom> query = entityManager.createQuery("SELECT cr FROM ChatRoom cr WHERE cr.chatId = :chatId", ChatRoom.class);

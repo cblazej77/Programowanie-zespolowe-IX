@@ -5,7 +5,6 @@ import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -57,7 +56,7 @@ public class UserProfileController {
             @ApiResponse(responseCode = "200", description = "Pomyślnie pobrano listę nazw użytkowników",
                     content = @Content(mediaType = apiVersionAccept, array = @ArraySchema(schema = @Schema(implementation = String.class)))),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
-            },
+    },
             security = @SecurityRequirement(name = "bearerToken"),
             tags = {"Użytkownik"})
     @GetMapping(value = "/getAllUsernames", produces = apiVersionAccept)

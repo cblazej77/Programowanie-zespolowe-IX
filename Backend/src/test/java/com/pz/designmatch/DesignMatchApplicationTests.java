@@ -8,6 +8,7 @@ class DesignMatchApplicationTests {
 
     @Test
     void contextLoads() {
+        var a = 1;
     }
 
 }

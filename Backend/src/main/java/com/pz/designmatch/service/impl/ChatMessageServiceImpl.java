@@ -8,6 +8,7 @@ import com.pz.designmatch.model.chat.ChatRoom;
 import com.pz.designmatch.model.enums.MessageStatus;
 import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.ChatMessageRepository;
+import com.pz.designmatch.service.ChatMessageService;
 import com.pz.designmatch.util.mapper.ChatMessageMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,29 +18,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ChatMessageService {
+public class ChatMessageServiceImpl implements ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatMessageMapper chatMessageMapper;
-    private final ChatRoomService chatRoomService;
+    private final ChatRoomServiceImpl chatRoomServiceImpl;
 
     @Autowired
-    public ChatMessageService(ChatMessageRepository chatMessageRepository, ChatMessageMapper chatMessageMapper, ChatRoomService chatRoomService) {
+    public ChatMessageServiceImpl(ChatMessageRepository chatMessageRepository, ChatMessageMapper chatMessageMapper, ChatRoomServiceImpl chatRoomServiceImpl) {
         this.chatMessageRepository = chatMessageRepository;
         this.chatMessageMapper = chatMessageMapper;
-        this.chatRoomService = chatRoomService;
+        this.chatRoomServiceImpl = chatRoomServiceImpl;
     }
 
+    @Override
     public ChatMessageResponse saveChatMessage(ChatMessageRequest chatMessageRequest) {
         ChatMessage chatMessage = chatMessageMapper.mapToEntity(chatMessageRequest, true);
         return chatMessageMapper.mapToDto(chatMessageRepository.save(chatMessage));
     }
+
+    @Override
     public long countNewMessages(String senderUsername, String recipientUsername) {
         return chatMessageRepository.countBySender_UsernameAndRecipient_UsernameAndStatus(
                 senderUsername, recipientUsername, MessageStatus.RECEIVED);
     }
 
+    @Override
     public List<ChatMessageResponse> findChatMessages(String senderUsername, String recipientUsername) {
-        String chatId = chatRoomService.getChatId(senderUsername, recipientUsername, false)
+        String chatId = chatRoomServiceImpl.getChatId(senderUsername, recipientUsername, false)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu o nazwie: " + senderUsername + "_" + recipientUsername));
         List<ChatMessage> messages = chatId.isEmpty() ? new ArrayList<>() : chatMessageRepository.findByChatId(chatId);
 
@@ -54,6 +59,7 @@ public class ChatMessageService {
         return result;
     }
 
+    @Override
     public ChatMessageResponse findById(Long id) {
         return chatMessageRepository.findById(id)
                 .map(chatMessage -> {
@@ -64,18 +70,10 @@ public class ChatMessageService {
                         new EntityNotFoundException("Nie znaleziono wiadomości o id: " + id));
     }
 
-    public void updateStatuses(List<ChatMessage> messages, String senderUsername) {
-        for (ChatMessage message : messages) {
-            if (message.getStatus().equals(MessageStatus.RECEIVED) && message.getRecipient().getUsername().equals(senderUsername)) {
-                message.setStatus(MessageStatus.DELIVERED);
-                chatMessageRepository.save(message);
-            }
-        }
-    }
-
+    @Override
     public List<InterlocutorResponse> findConversations(String username) {
         List<InterlocutorResponse> result = new ArrayList<>();
-        List<ChatRoom> chatRooms = chatRoomService.findChatBySender(username)
+        List<ChatRoom> chatRooms = chatRoomServiceImpl.findChatBySender(username)
                 .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono czatu dla użytkownika: " + username));
         for (ChatRoom chatRoom : chatRooms) {
             UserEntity interlocutor = chatRoom.getRecipient();
@@ -90,6 +88,15 @@ public class ChatMessageService {
             }
         }
         return result;
+    }
+
+    public void updateStatuses(List<ChatMessage> messages, String senderUsername) {
+        for (ChatMessage message : messages) {
+            if (message.getStatus().equals(MessageStatus.RECEIVED) && message.getRecipient().getUsername().equals(senderUsername)) {
+                message.setStatus(MessageStatus.DELIVERED);
+                chatMessageRepository.save(message);
+            }
+        }
     }
 
 }

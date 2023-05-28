@@ -4,13 +4,12 @@ import com.pz.designmatch.dto.request.ChatMessageRequest;
 import com.pz.designmatch.dto.response.ChatMessageResponse;
 import com.pz.designmatch.dto.response.ChatNotification;
 import com.pz.designmatch.dto.response.InterlocutorResponse;
-import com.pz.designmatch.service.impl.ChatMessageService;
+import com.pz.designmatch.service.impl.ChatMessageServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +26,17 @@ import java.util.List;
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final ChatMessageService chatMessageService;
+    private final ChatMessageServiceImpl chatMessageServiceImpl;
 
     @Autowired
-    public ChatController(SimpMessagingTemplate messagingTemplate, ChatMessageService chatMessageService) {
+    public ChatController(SimpMessagingTemplate messagingTemplate, ChatMessageServiceImpl chatMessageServiceImpl) {
         this.messagingTemplate = messagingTemplate;
-        this.chatMessageService = chatMessageService;
+        this.chatMessageServiceImpl = chatMessageServiceImpl;
     }
 
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessageRequest chatMessageRequest) {
-        ChatMessageResponse saved = chatMessageService.saveChatMessage(chatMessageRequest);
+        ChatMessageResponse saved = chatMessageServiceImpl.saveChatMessage(chatMessageRequest);
         messagingTemplate.convertAndSendToUser(
                 saved.getRecipientUsername(), "/queue/messages",
                 new ChatNotification(
@@ -49,10 +48,10 @@ public class ChatController {
 
     @Operation(summary = "Zwraca liczbę nowych wiadomości w konwersacji",
             responses = {
-                @ApiResponse(responseCode = "200", description = "Liczba nowych wiadomości w konwersacji",
-                    content = @Content(mediaType = "application/json")),
-                @ApiResponse(responseCode = "404", description = "Nie znaleziono konwersacji",
-                    content = @Content(mediaType = "application/json")),},
+                    @ApiResponse(responseCode = "200", description = "Liczba nowych wiadomości w konwersacji",
+                            content = @Content(mediaType = "application/json")),
+                    @ApiResponse(responseCode = "404", description = "Nie znaleziono konwersacji",
+                            content = @Content(mediaType = "application/json")),},
             parameters = {
                     @Parameter(name = "senderUsername", description = "Nazwa użytkownika nadawcy", required = true, example = "user1"),
                     @Parameter(name = "recipientUsername", description = "Nazwa użytkownika odbiorcy", required = true, example = "user2"),},
@@ -61,7 +60,7 @@ public class ChatController {
     public ResponseEntity<Long> countNewMessages(
             @PathVariable("senderUsername") String senderId,
             @PathVariable("recipientUsername") String recipientId) {
-        return ResponseEntity.ok(chatMessageService.countNewMessages(senderId, recipientId));
+        return ResponseEntity.ok(chatMessageServiceImpl.countNewMessages(senderId, recipientId));
     }
 
 
@@ -78,7 +77,7 @@ public class ChatController {
     @GetMapping("/messages/{senderUsername}/{recipientUsername}")
     public ResponseEntity<?> findChatMessages(@PathVariable("senderUsername") String senderUsername,
                                               @PathVariable("recipientUsername") String recipientUsername) {
-        return ResponseEntity.ok(chatMessageService.findChatMessages(senderUsername, recipientUsername));
+        return ResponseEntity.ok(chatMessageServiceImpl.findChatMessages(senderUsername, recipientUsername));
     }
 
 
@@ -93,7 +92,7 @@ public class ChatController {
             tags = {"Chat"})
     @GetMapping("/messages/{id}")
     public ResponseEntity<?> findMessage(@PathVariable Long id) {
-        return ResponseEntity.ok(chatMessageService.findById(id));
+        return ResponseEntity.ok(chatMessageServiceImpl.findById(id));
     }
 
 
@@ -108,6 +107,6 @@ public class ChatController {
             tags = {"Chat"})
     @GetMapping("/messages/conversations/{username}")
     public ResponseEntity<List<InterlocutorResponse>> findConversations(@PathVariable String username) {
-        return ResponseEntity.ok(chatMessageService.findConversations(username));
+        return ResponseEntity.ok(chatMessageServiceImpl.findConversations(username));
     }
 }

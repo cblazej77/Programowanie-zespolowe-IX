@@ -31,10 +31,10 @@ public class CommissionController {
 
     @Operation(summary = "Zwraca zlecenie o podanym id",
             responses = {
-            @ApiResponse(responseCode = "200", description = "Znaleziono zlecenie o podanym id",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Nie udało się pobrać zlecenia o podanym id", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Nie udało się pobrać zlecenia o podanym id", content = @Content)},
+                    @ApiResponse(responseCode = "200", description = "Znaleziono zlecenie o podanym id",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "Nie udało się pobrać zlecenia o podanym id", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Nie udało się pobrać zlecenia o podanym id", content = @Content)},
             parameters = {
                     @Parameter(name = "id", description = "Id zlecenia", required = true, example = "1", schema = @Schema(type = "long", implementation = Long.class))},
             tags = {"Zlecenia"})
@@ -47,10 +47,10 @@ public class CommissionController {
 
     @Operation(summary = "Zwraca pofiltrowane zlecenia",
             responses = {
-            @ApiResponse(responseCode = "200", description = "Znaleziono zlecenia",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class, example = "[]"))),
-            @ApiResponse(responseCode = "404", description = "Nie udało się pobrać zleceń", content = @Content),
-            @ApiResponse(responseCode = "400", description = "Nie udało się pobrać zleceń", content = @Content)},
+                    @ApiResponse(responseCode = "200", description = "Znaleziono zlecenia",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class, example = "[]"))),
+                    @ApiResponse(responseCode = "404", description = "Nie udało się pobrać zleceń", content = @Content),
+                    @ApiResponse(responseCode = "400", description = "Nie udało się pobrać zleceń", content = @Content)},
             parameters = {
                     @Parameter(name = "page", description = "Numer strony", example = "0", schema = @Schema(type = "int", implementation = Integer.class)),
                     @Parameter(name = "size", description = "Ilość elementów na stronie", example = "10", schema = @Schema(type = "int", implementation = Integer.class))},
@@ -68,10 +68,10 @@ public class CommissionController {
 
     @Operation(summary = "Tworzy zlecenie",
             responses = {
-            @ApiResponse(responseCode = "200", description = "Zlecenie zostało utworzone",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Nie udało się utworzyć zlecenia", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się", content = @Content)},
+                    @ApiResponse(responseCode = "200", description = "Zlecenie zostało utworzone",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
+                    @ApiResponse(responseCode = "400", description = "Nie udało się utworzyć zlecenia", content = @Content),
+                    @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się", content = @Content)},
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dane zlecenia", required = true,
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionRequest.class))),
             tags = {"Zlecenia"})
@@ -84,10 +84,10 @@ public class CommissionController {
 
     @Operation(summary = "Aktualizuje zlecenie o podanym id",
             responses = {
-            @ApiResponse(responseCode = "200", description = "Zlecenie zostało zaktualizowane",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Nie udało się zaktualizować zlecenia o podanym id", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się", content = @Content)},
+                    @ApiResponse(responseCode = "200", description = "Zlecenie zostało zaktualizowane",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
+                    @ApiResponse(responseCode = "403", description = "Nie udało się zaktualizować zlecenia o podanym id", content = @Content),
+                    @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się", content = @Content)},
             parameters = {
                     @Parameter(name = "id", description = "Id zlecenia", required = true, example = "1", schema = @Schema(type = "long", implementation = Long.class))},
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dane zlecenia", required = true,
@@ -101,10 +101,10 @@ public class CommissionController {
 
     @Operation(summary = "Ustawia zlecenie o podanym id jako zakończone",
             responses = {
-            @ApiResponse(responseCode = "200", description = "Zlecenie o podanym id zostało zaktualizowane",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Nie udało się zaktualizować zlecenia o podanym id", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się", content = @Content)},
+                    @ApiResponse(responseCode = "200", description = "Zlecenie o podanym id zostało zaktualizowane",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
+                    @ApiResponse(responseCode = "403", description = "Nie udało się zaktualizować zlecenia o podanym id", content = @Content),
+                    @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się", content = @Content)},
             parameters = {
                     @Parameter(name = "id", description = "Id zlecenia", required = true, example = "1", schema = @Schema(type = "long", implementation = Long.class))},
             tags = {"Zlecenia"})
@@ -116,9 +116,9 @@ public class CommissionController {
 
     @Operation(summary = "Zwraca wszystkie zlecenia dla firmy o podanej nazwie użytkownika",
             responses = {
-            @ApiResponse(responseCode = "200", description = "Zlecenia dla firmy o podanej nazwie użytkownika",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Nie znaleziono zleceń dla firmy o podanej nazwie użytkownika", content = @Content)},
+                    @ApiResponse(responseCode = "200", description = "Zlecenia dla firmy o podanej nazwie użytkownika",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommissionResponse.class))),
+                    @ApiResponse(responseCode = "404", description = "Nie znaleziono zleceń dla firmy o podanej nazwie użytkownika", content = @Content)},
             parameters = {
                     @Parameter(name = "username", description = "Nazwa użytkownika", required = true, example = "jkasinski1", schema = @Schema(type = "string", implementation = String.class))},
             tags = {"Zlecenia"})
@@ -131,9 +131,9 @@ public class CommissionController {
 
     @Operation(summary = "Usuwa zlecenie o podanym id",
             responses = {
-            @ApiResponse(responseCode = "200", description = "Zlecenie zostało usunięte", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Nie udało się usunąć zlecenia o podanym id", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się", content = @Content)},
+                    @ApiResponse(responseCode = "200", description = "Zlecenie zostało usunięte", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Nie udało się usunąć zlecenia o podanym id", content = @Content),
+                    @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się", content = @Content)},
             parameters = {
                     @Parameter(name = "id", description = "Id zlecenia", required = true, example = "1", schema = @Schema(type = "long", implementation = Long.class))},
             tags = {"Zlecenia"})
