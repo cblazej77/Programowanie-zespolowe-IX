@@ -360,7 +360,7 @@ export const HomeLabel = styled.View`
 
 export const HomeIconButton = styled.TouchableOpacity`
     flex: 0.3;
-    width: 40%;
+    width: 20%;
 `;
 
 export const HomeTextInput = styled.TextInput`

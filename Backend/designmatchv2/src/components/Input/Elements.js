@@ -17,6 +17,7 @@ export const LabelInput = styled.label`
 
 export const InputGroup = styled.div`
     position: relative;
+    margin: 0 0.5rem;
     padding: 0.4rem 0;
 `;
 

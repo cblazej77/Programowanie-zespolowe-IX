@@ -129,7 +129,7 @@ const Login = ({ navigation }) => {
     try {
       const response = await axios.get(url, {
         params: {
-          Authorization: token
+          Authorization: token,
         },
         headers: {
           accept: 'application/json',
@@ -237,7 +237,7 @@ const Login = ({ navigation }) => {
                   onBlur={handleBlur('email')}
                   value={email}
                   keyboardType="email-address"
-                  checkRegex={ email.length !== 0 ? emailPatternValidation(email) : true}
+                  checkRegex={email.length !== 0 ? emailPatternValidation(email) : true}
                 />
                 <MyTextInput
                   label="Hasło"
@@ -269,7 +269,13 @@ const Login = ({ navigation }) => {
                   </LinearGradientStyle>
                 )}
                 <LinearGradientStyle colors={[darkLight2, darkLight]}>
-                  <StyledButton onPress={() => navigation.replace('HomePage')}>
+                  <StyledButton
+                    onPress={() => {
+                      save('accessToken', '');
+                      save('user', '');
+                      navigation.replace('HomePage');
+                    }}
+                  >
                     <StatsText style={{ color: primary }}>Kontynuuj bez logowania</StatsText>
                   </StyledButton>
                 </LinearGradientStyle>

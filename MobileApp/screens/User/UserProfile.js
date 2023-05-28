@@ -252,41 +252,13 @@ const Profile = ({ navigation }) => {
     <>
       {artistProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
-          <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'flex-start', alignItems:'center' }}>
           <Awatar avatar={baseURL + '/public/api/artist/getProfileImageByUsername/' + userInfo.username + '?date' + new Date()}></Awatar>
-            <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
-              <Stars
-                default={3.5}
-                spacing={7}
-                count={5}
-                starSize={30}
-                half={true}
-                disabled={true}
-                fullStar={require('../../assets/img/star.png')}
-                halfStar={require('../../assets/img/star-half.png')}
-                emptyStar={require('../../assets/img/star-outline.png')}
-              />
-              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around' }}>
-                <View>
-                  <StatsText bold={true}>63</StatsText>
-                  <StatsText>Prace</StatsText>
-                </View>
-                <View>
-                  <StatsText bold={true}>205</StatsText>
-                  <StatsText>Opinie</StatsText>
-                </View>
-                <View>
-                  <StatsText bold={true}>3,5/5</StatsText>
-                  <StatsText>Ocena</StatsText>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={{ marginLeft: 15, justifyContent: 'space-between' }}>
-            <HeaderText style={{ color: darkLight, fontSize: 20 }}>
+          <HeaderText style={{ color: darkLight, fontSize: 28 }}>
               {artistProfile.firstname + ' ' + artistProfile.lastname}
             </HeaderText>
           </View>
+          
           <AppText style={styles.About}>O mnie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
             {artistProfile.bio}

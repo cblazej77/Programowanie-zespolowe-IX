@@ -98,6 +98,17 @@ export const RightWrapper = styled.div`
   overflow-y: auto;
   width: 55rem;
   height: 30rem;
+  &::-webkit-scrollbar {
+      width: 0.5vw;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${gray1};
+      border-radius: 15px;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background: ${darkLight};
+    }
   @media screen and (max-width: 960px) {
     overflow: hidden;
     height: fit-content;
@@ -204,10 +215,11 @@ export const ButtonMessage = styled.button`
     width: 100%;
     text-align: center;
     background: linear-gradient(
-    to top,
-    #4A4E69,
-    #555978
+      to top,
+      #4A4E69,
+      #555978
     );
+    cursor: pointer;
 `;
 
 export const ButtonMessageOff = styled(ButtonMessage)`
@@ -380,6 +392,8 @@ export const Bubble = styled.p`
   font-size: 16px;
   margin-bottom: 20px;
   margin-top: 5px;
+  align-items: center;
+  cursor: pointer;
 `;
 
 export const BubbleLinks = styled.a.attrs(props => ({
@@ -599,4 +613,29 @@ export const PortfolioWrapper = styled.div`
 export const ModalImageContainer = styled.div`
   width: 100%;
   height: 100%;
+`;
+
+export const XButton = styled.button`
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.15);
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  padding: 0.2rem 0.5rem;
+  margin: 0 0.2rem;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  background: ${darkLight};
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 90%;
+  padding-bottom: 1rem;
+  @media (max-width: 960px) {
+    justify-content: center;
+  }
 `;

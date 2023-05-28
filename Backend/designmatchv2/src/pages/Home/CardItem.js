@@ -90,7 +90,7 @@ function CardItem(props) {
     return (
       <>
         {showModal && modalData && (
-          <ModalBackground onClick={ModalClose}>
+          <ModalBackground style={{ zIndex: 9999 }} onClick={ModalClose}>
             <ModalWrapper onClick={handleWrapperClick}>
               <TitleText>{modalData.name}</TitleText>
               <ModalInfo>{modalData.description}</ModalInfo>
@@ -119,7 +119,7 @@ function CardItem(props) {
             </NameText>
           </SimpleInfoContainer>
           <DetailedInfoContainer>
-            <CityText>{props.city}, PL</CityText>
+            {props.city && <CityText>{props.city}, PL</CityText>}
             <CategoryHeaderText>Umiejętności:</CategoryHeaderText>
             <CategoryText>
               {props.skills[0]}
@@ -166,6 +166,7 @@ function CardItem(props) {
         </CardLabel>
       ) : (
         <>
+          Wczytywanie . . .
         </>
       )}
     </>

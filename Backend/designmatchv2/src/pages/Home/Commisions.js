@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   Cards2,
   FilterWrapper,
@@ -27,6 +27,7 @@ import {
   LineForm,
   ModalScroll,
   FilterModalWrapper,
+  BlankCard,
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
@@ -196,7 +197,7 @@ const Commisions = () => {
               languages: languagesFilter,
             },
             {
-              params: { page: 0, size: 10 },
+              params: { page: 0, size: 50 },
               headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
             },
           )
@@ -380,6 +381,7 @@ const Commisions = () => {
   };
 
   const FilterModal = ({ showFModal, onCloseFModal }) => {
+
     return (
       <>
         {showFModal && (
@@ -487,7 +489,23 @@ const Commisions = () => {
       return null;
     }
 
+    const countWithoutContractor = filtered.content.reduce((count, filter) => {
+      if (!filter.contractor_username) {
+        return count + 1;
+      }
+      return count;
+    }, 0);
+
+    if (countWithoutContractor === 0) {
+      return (
+        <BlankCard style={{ margin: '0 0 0 1rem' }}>
+          Brak zleceń do wyświetlenia
+        </BlankCard>
+      );
+    }
+
     return filtered.content.map((filter, indexF) => (
+      !filter.contractor_username &&
       <CommisionElement
         key={indexF}
         avatar="/assets/cards/person1.jpg"
@@ -658,26 +676,32 @@ const Commisions = () => {
             </FilterScroll>
           </FilterWrapper>
         </FilterLabel>
-        {filtered ? (
-          <RightLabel>
-            <TopSection>
-              <FilterButton onClick={FModalOpen}>Filtruj</FilterButton>
-              {/* <StyledSelect>
+        <RightLabel>
+          <TopSection>
+            <FilterButton onClick={FModalOpen}>Filtruj</FilterButton>
+            {/* <StyledSelect>
                 <StyledOption value="">Sortuj po...</StyledOption>
                 <StyledOption value="1">najlepsza ocena</StyledOption>
                 <StyledOption value="2">najwięcej prac</StyledOption>
                 <StyledOption value="3">ostatnia aktywność</StyledOption>
               </StyledSelect> */}
-            </TopSection>
+          </TopSection>
+          {filtered ? (
             <CommisionWrapper>
-              {filteredCommisions}
+              {!filtered.empty ? (
+                filteredCommisions
+              ) : (
+                <BlankCard style={{ margin: '0 0 0 1rem' }}>
+                  Brak zleceń do wyświetlenia
+                </BlankCard>
+              )}
             </CommisionWrapper>
-            <FilterModal showFModal={showFModal} onCloseFModal={FModalClose} />
-            <CommisionModal showCModal={showCModal} />
-          </RightLabel>
-        ) : (
-          <LoadingPage />
-        )}
+          ) : (
+            <LoadingPage />
+          )}
+          <FilterModal showFModal={showFModal} onCloseFModal={FModalClose} />
+          <CommisionModal showCModal={showCModal} />
+        </RightLabel>
       </Cards2>
 
     </>

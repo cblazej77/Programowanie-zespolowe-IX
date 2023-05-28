@@ -9,6 +9,7 @@ import {
   BoldLabel,
   Bracket,
   Bubble,
+  BubbleLinks,
   BubbleWrap,
   BubblesDropDown,
   Button,
@@ -58,12 +59,14 @@ import {
   TitleInput
 } from '../Home/CommisionsElements';
 import LoadingPage from '../LoadingPage';
-import { FiBriefcase, FiClock, FiMapPin } from 'react-icons/fi';
+import { FiBriefcase, FiClock, FiMapPin, FiUser } from 'react-icons/fi';
 import { FaTimes } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 const { darkLight, gray1, secondary } = COLORS;
 
 const CompanyPage = () => {
+  const navigate = useNavigate();
   const [cities, setCities] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [tags, setTags] = useState([]);
@@ -223,7 +226,6 @@ const CompanyPage = () => {
     const [tagsT, setTagsT] = useState(tags);
     const [locationT, setLocationT] = useState(cities);
     const [levelT, setLevelT] = useState(levels);
-    const [test, setTest] = useState({ deadline: '' });
 
     useEffect(() => {
       if (categories && categories.categories && Array.isArray(categories.categories)) {
@@ -243,20 +245,24 @@ const CompanyPage = () => {
     }, [day, month, year]);
 
     const handleAddCommission = useCallback(async () => {
+
       try {
-        const response = await axios.post(
-          `/api/commission/create`,
-          modalEditData,
-          {
-            headers: {
-              accept: 'application/json',
-              Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-        // console.log('Data saved successfully!');
-        console.log(response.data);
+        if (modalEditData.title && modalEditData.description && modalEditData.rate) {
+          const response = await axios.post(
+            `/api/commission/create`,
+            modalEditData,
+            {
+              headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer ' + localStorage.getItem('storageLogin'),
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+        }
+        else {
+          alert('Pola tytułu, opisu, stawki i czasu wykonania zlecenia powinny być wypełnione.');
+        }
       } catch (err) {
         console.error('Error while saving data:', err);
       }
@@ -547,6 +553,14 @@ const CompanyPage = () => {
       setShowModal(false);
     },);
 
+    const handleGoProfile = (nick) => {
+      navigate(`/other-account/${nick}`, {
+        state: {
+          argument: nick,
+        }
+      });
+    };
+
     return (
       <>
         {showModal && (
@@ -557,6 +571,13 @@ const CompanyPage = () => {
               <LineForm />
               <ModalBottomSection>
                 <ModalColumn>
+                  <ModalRow>
+                    <ModalInfo>Zleceniobiorca:</ModalInfo>
+                    <ModalData style={{ color: darkLight }}>
+                      {modalData.contractor_username ? (
+                        <text onClick={() => handleGoProfile(modalData.contractor_username)} style={{ cursor: 'pointer' }}>{modalData.contractor_username}</text>) : ('brak')}
+                    </ModalData>
+                  </ModalRow>
                   <ModalRow>
                     <ModalInfo>Stawka:</ModalInfo>
                     <ModalData style={{ color: darkLight }}>{modalData.rate} PLN</ModalData>
@@ -632,6 +653,12 @@ const CompanyPage = () => {
           <CommisionText>{props.location}</CommisionText>
           <FiClock size={18} style={{ color: gray1 }} />
           <CommisionText>{props.deadline}</CommisionText>
+          {props.contractor_username && (
+            <>
+              <FiUser size={18} style={{ color: gray1 }} />
+              <CommisionText>{props.contractor_username}</CommisionText>
+            </>
+          )}
         </div>
         <CommisionBottom>
           {props.tags.map((tag, indexT) => (
@@ -673,17 +700,17 @@ const CompanyPage = () => {
                     <LeftColumn>
                       <InfoText>Media społecznościowe:</InfoText>
                       <BubbleWrap>
-                        {get.website && <Bubble>{get.website}</Bubble>}
-                        {get.linkedin && <Bubble>{get.linkedin}</Bubble>}
-                        {get.facebook && <Bubble>{get.facebook}</Bubble>}
-                        {get.instagram && <Bubble>{get.instagram}</Bubble>}
-                        {get.twitter && <Bubble>{get.twitter}</Bubble>}
+                        {get.website && <BubbleLinks href={get.website}>{get.website}</BubbleLinks>}
+                        {get.linkedin && <BubbleLinks href={get.linkedin}>{get.linkedin}</BubbleLinks>}
+                        {get.facebook && <BubbleLinks href={get.facebook}>{get.facebook}</BubbleLinks>}
+                        {get.instagram && <BubbleLinks href={get.instagram}>{get.instagram}</BubbleLinks>}
+                        {get.twitter && <BubbleLinks href={get.twitter}>{get.twitter}</BubbleLinks>}
                       </BubbleWrap>
                     </LeftColumn>}
                   <RightColumn>
                     <LeftInfoRow>
                       <InfoText>Adres:</InfoText>
-                      <DataText>{get.address}</DataText>
+                      <DataText>{get.address ? get.address : 'brak'}</DataText>
                     </LeftInfoRow>
                     <LeftInfoRow>
                       <InfoText>NIP:</InfoText>
@@ -703,7 +730,7 @@ const CompanyPage = () => {
             </RightWrapper>
           </TopSection>
           <DownSection>
-            <TitleText>Zlecenia</TitleText>
+            <TitleText style={{ width: '100%', textAlign: 'center' }}>Zlecenia</TitleText>
             {CommisionsData.length > 0 ? (
               CommisionsData.map((com, indexC) => (
                 <CommisionElement
@@ -717,6 +744,7 @@ const CompanyPage = () => {
                   languages={com.languages}
                   tags={com.tags}
                   skills={com.skills}
+                  contractor_username={com.contractor_username}
                   id={com.id}
                 />
               ))

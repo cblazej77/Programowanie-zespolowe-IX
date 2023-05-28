@@ -65,7 +65,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [userInfo, setUserInfo] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isModalVisible, setisModalVisible] = useState(false);
-  const [contractorModalVisible, setContractorModalVisible] = useState(false);
+  const [showCommission, setShowCommission] = useState(false);
   const [tagsModalVisible, setTagsModalVisible] = useState(false);
   const [skillsModalVisible, setSkillsModalVisible] = useState(false);
   const [languagesModalVisible, setLanguagesModalVisible] = useState(false);
@@ -75,7 +75,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [message, setMessage] = useState();
   const [messageType, setMessageType] = useState();
   const [refresh, setRefresh] = useState(false);
-  const [commisionToUpdate, setCommisionToUpdate] = useState('');
+  const [modalCommision, setModalCommision] = useState('');
 
   //available data from server
   const [availableLocations, setAvailableLocations] = useState([]);
@@ -101,7 +101,6 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
   const [languages, setLanguages] = useState([]);
   const [levels, setLevels] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [contractorUsername, setContractorUsername] = useState('');
 
   const handleMessage = (message, type = 'FAILED') => {
     setMessage(message);
@@ -292,8 +291,6 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     setSkills([]);
     setTags([]);
     setRate(0);
-    setContractorUsername('');
-    setCommisionToUpdate('');
     setMessage('');
   }
 
@@ -341,7 +338,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     console.log(commisionToUpdate);
   }
 
-  function setModalCommision(id, title, description, deadline, level, location, languages, skills, tags, rate) {
+  function setModalCommission(id, title, description, deadline, level, location, languages, skills, tags, rate) {
     console.log({
       'id:': id,
       'title:': title,
@@ -523,7 +520,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
 
   async function deleteCommision(id) {
     const response = await axios.delete(
-      baseURL + '/public/api/deleteCommission/' + id.toString(),
+      baseURL + '/api/deleteCommission/' + id.toString(),
       {
         params: { id: id },
         headers: {
@@ -859,84 +856,101 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
     <SafeAreaView style={{ backgroundColor: primary, justifyContent: 'center', height: '100%' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
-          {contractorModalVisible && (
-            <Modal
-              isVisible={contractorModalVisible}
-              onBackdropPress={() => setContractorModalVisible(false)}
-              onSwipeComplete={() => setContractorModalVisible(false)}
-              swipeDirection="right"
-              animationInTiming={500}
-              animationOutTiming={500}
-              hideModalContentWhileAnimating={true}
-            >
-              <View
-                style={{
-                  backgroundColor: primary,
-                  borderRadius: 20,
-                  padding: 15,
-                  alignItems: 'center',
-                  maxWidth: '100%',
-                  width: '90%',
-                  alignSelf: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    marginBottom: 15,
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <RegularText style={{ color: black }}>Dodaj zleceniobiorcę dla: </RegularText>
-                  <RegularText>{commisionToUpdate.title}</RegularText>
+        {modalCommision && (
+        <Modal
+        isVisible={showCommission}
+        onBackdropPress={() => setShowCommission(false)}
+        onSwipeComplete={() => setShowCommission(false)}
+        swipeDirection="right"
+        animationIn="fadeInUp"
+        animationOut="fadeOutUp"
+        animationInTiming={500}
+        animationOutTiming={500}
+        hideModalContentWhileAnimating={true}
+      >
+        <ScrollView style={{ maxHeight: '90%' }}>
+          <View style={[styles.centeredView1]}>
+            <View style={styles.modalView1}>
+              <HeaderText style={{ color: darkLight }}>{modalCommision.title}</HeaderText>
+              <Line style={{ width: '90%', height: 2 }} />
+              <View style={styles.ModalDescription1}>
+                <RegularText style={{ color: '#6e6968' }}>{modalCommision.description}</RegularText>
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalCommisionDetails1}>
+                <View style={styles.ModalDetail1}>
+                  <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
+                    {modalCommision.rate + ' PLN'}
+                  </RegularText>
                 </View>
-                <View style={{ marginBottom: 10 }}>
-                  <RegularText>Nazwa użytkownika zleceniobiorcy:</RegularText>
-                  <RegularTextInput
-                    maxLength={40}
-                    style={{ color: darkLight, textAlign: 'center' }}
-                    value={contractorUsername}
-                    onChangeText={setContractorUsername}
-                    placeholder="Wpisz zleceniobiorcę"
-                  />
+                <View style={styles.ModalDetail1}>
+                  <RegularText style={{ width: '60%' }}>Czas wykonania:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>{modalCommision.deadline}</RegularText>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                  <Pressable
-                    onPress={() => {
-                      apiCommissionUpdate();
-                      setContractorModalVisible(false);
-                      clear();
-
-                    }}
-                    style={({ pressed }) => [
-                      {
-                        backgroundColor: pressed ? 'lightgrey' : darkLight,
-                      },
-                      styles.ModalButton,
-                    ]}
-                  >
-                    <AppText style={{ color: white }}>Dodaj</AppText>
-                  </Pressable>
-                  <Pressable
-                    onPress={() => {
-                      setContractorModalVisible(false);
-                      clear();
-                    }}
-                    style={({ pressed }) => [
-                      {
-                        backgroundColor: pressed ? 'lightgrey' : darkLight,
-                      },
-                      styles.ModalButton,
-                    ]}
-                  >
-                    <AppText style={{ color: white }}>Anuluj</AppText>
-                  </Pressable>
+                <View style={styles.ModalDetail1}>
+                  <RegularText style={{ width: '60%' }}>Poziom zaawansowania:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
+                    {getSelectedLevel(modalCommision.level)}
+                  </RegularText>
                 </View>
               </View>
-            </Modal>
-          )}
+              <Line style={{ width: '90%', height: 1 }} />
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'flex-start', alignItems: 'center', marginLeft: 15}}>
+                  <RegularText style={{ width: '40%' }}>Zleceniodawca:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '55%', textAlign: 'right' }}>
+                    {modalCommision.company_name}
+                  </RegularText>
+                </View>
+                {modalCommision.contractor_username && <Line style={{ width: '90%', height: 1 }} />}
+                {modalCommision.contractor_username && <View style={{flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'flex-start', alignItems: 'center', marginLeft: 15}}>
+                  <RegularText style={{ width: '40%' }}>Zleceniobiorca:</RegularText>
+                  <RegularText onPress={() => {navigation.navigate('ArtistScreen', {username: modalCommision.contractor_username}); setShowCommission(false)}} style={{ color: '#6e6968', width: '55%', textAlign: 'right' }}>
+                    {modalCommision.contractor_username}
+                  </RegularText>
+                </View>}
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping1}>
+                <RegularText style={{ marginRight: 5 }}>Lokalizacja:</RegularText>
+                {modalCommision.location.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble1, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping1}>
+                <RegularText style={{ marginRight: 5 }}>Tagi:</RegularText>
+                {modalCommision.tags.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble1, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping1}>
+                <RegularText style={{ marginRight: 5 }}>Wymagane Umiejętności:</RegularText>
+                {modalCommision.skills.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble1, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={[styles.ModalMapping1,{marginBottom: 10}]}>
+                <RegularText style={{ marginRight: 5 }}>Wymagane Języki:</RegularText>
+                {modalCommision.languages.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble1, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              
+            </View>
+          </View>
+        </ScrollView>
+      </Modal>
+      )}
           {isModalVisible ? (
             <View style={{ height: '100%' }}>
               <View style={[styles.centeredView]}>
@@ -1294,20 +1308,8 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                   <View key={indexC} style={{ alignItems: 'center' }}>
                     <TouchableOpacity
                       onPress={() => {
-                        // setisModalVisible(true);
-                        // setIsNewElement(false);
-                        // setModalCommision(
-                        //   cms.id,
-                        //   cms.title,
-                        //   cms.description,
-                        //   cms.deadline,
-                        //   cms.level,
-                        //   cms.location,
-                        //   cms.languages,
-                        //   cms.skills,
-                        //   cms.tags,
-                        //   cms.rate,
-                        // );
+                        setModalCommision(cms);
+                        setShowCommission(true);
                       }}
                       key={indexC}
                     >
@@ -1324,14 +1326,14 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                       />
                     </TouchableOpacity>
                     <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-evenly', width: '90%' }}>
-                      <Pressable
+                      {/* <Pressable
                         onPress={() => {
                           setCommisionToUpdate(cms);
                           setContractorModalVisible(true);
                         }}
                         style={({ pressed }) => [
                           {
-                            backgroundColor: pressed ? 'lightgrey' : darkLight,
+                            backgroundColor: cms.contractor_username ? ('lightgrey') : (pressed ? 'lightgrey' : darkLight),
                             padding: 5,
                             paddingHorizontal: 7,
                             borderRadius: 15,
@@ -1344,7 +1346,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                         disabled={cms.contractor_username !== null}
                       >
                         <AppText style={{ color: 'white' }}>Dodaj zleceniobiorcę</AppText>
-                      </Pressable>
+                      </Pressable> */}
                       <Pressable
                         onPress={() => {
                           handleDeleteCommisionsElement(cms.id);
@@ -1393,7 +1395,7 @@ const CompanyCommisionsEditing = ({ route, navigation }) => {
                     //   0,
                     // );
                     setIsNewElement(true);
-                    setModalCommision(getIdOfLastCommisionsElement() + 1, '', '', '01/01/1990', [], [], [], [], [], 0);
+                    setModalCommission(getIdOfLastCommisionsElement() + 1, '', '', '01/01/1990', [], [], [], [], [], 0);
                     setisModalVisible(true);
                   }}
                 >
@@ -1431,6 +1433,7 @@ const styles = StyleSheet.create({
   modalView: {
     width: '100%',
     backgroundColor: primary,
+    borderRadius: 20,
     padding: 15,
     alignItems: 'center',
     shadowColor: '#000',
@@ -1484,5 +1487,71 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
     borderColor: '#0F0F0F33',
     borderWidth: 1.6,
+  },
+  centeredView1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    width: '100%',
+  },
+  modalView1: {
+    width: '100%',
+    margin: 10,
+    backgroundColor: primary,
+    borderRadius: 20,
+    padding: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  ModalButton1: {
+    padding: 7,
+    borderRadius: 15,
+    fontSize: 16,
+    marginBottom: 10,
+    marginTop: 10,
+    alignItems: 'center',
+    marginRight: 5,
+    flexDirection: 'row',
+  },
+  ModalDescription1: {
+    paddingTop: 5,
+    padding: 15,
+  },
+  ModalCommisionDetails1: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
+  },
+  ModalDetail1: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ModalMapping1: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingLeft: 17,
+    paddingRight: 12,
+  },
+  ModalTagBubble1: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingLeft: 5,
+    paddingRight: 5,
+    marginTop: 0,
+    marginBottom: 5,
+    marginHorizontal: 2,
+    backgroundColor: white,
+    //borderColor: darkLight,
+    //borderWidth: 1,
   },
 });

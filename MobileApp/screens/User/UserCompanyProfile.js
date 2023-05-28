@@ -163,29 +163,7 @@ const CompanyProfile = ({ route, navigation }) => {
               </HeaderText>
             </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
-              alignContent: 'center',
-              justifyContent: 'space-evenly',
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                navigation.navigate('Chat');
-              }}
-              style={({ pressed }) => [
-                {
-                  backgroundColor: pressed ? 'lightgrey' : darkLight,
-                },
-                styles.ModalButton,
-              ]}
-            >
-              <AppText style={{ color: primary }}>Napisz wiadomość</AppText>
-            </Pressable>
-          </View>
+          
           <AppText style={styles.About}>O firmie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
             {companyProfile.description}

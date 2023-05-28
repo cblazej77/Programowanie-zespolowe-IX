@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ChatLabel, Colors } from '../../components/styles';
 import CompanyProfile from './UserCompanyProfile';
-import CompanyCommisions from './UserCompanyCommisions';
+import UserCompanyCommisions from './UserCompanyCommisions';
 import CompanyCommisionsEditing from './UserCompanyCommisionsEditing';
 import CompanyProfileEditing from './UserCompanyProfileEditing';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -152,8 +152,8 @@ export default function UserCompanyScreen({ navigation }) {
                     );
                   },
                 }}
-                name="Commisions"
-                component={CompanyCommisions}
+                name="UserCommisions"
+                component={UserCompanyCommisions}
               />
             </Tab.Navigator>
           ) : (

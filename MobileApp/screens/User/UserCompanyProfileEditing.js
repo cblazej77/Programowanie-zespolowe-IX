@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, Pressable, Linking } from 'react-native';
+import { View, StyleSheet, Pressable, Linking, Alert } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Colors,
@@ -22,6 +22,7 @@ import Loading from '../../components/Loading';
 import { Fontisto } from '@expo/vector-icons';
 import Awatar from '../../components/Avatar';
 import * as ImagePicker from 'expo-image-picker';
+import EditableAwatar from '../../components/EditableAvatar';
 
 
 const { darkLight, link, black, primary } = Colors;
@@ -71,6 +72,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
   const [companyName, setCompanyName] = useState('');
   const [photo, setPhoto] = useState('');
   const [uri, setUri] = useState();
+  const [localUri, setLocalUri] = useState('');
 
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
@@ -241,11 +243,13 @@ const CompanyProfileEditing = ({ route, navigation }) => {
       quality: 1,
     });
 
+    delete result.cancelled;
+
     if (!result.canceled) {
       console.log(result);
       //setPhoto(result);
       let localUri = result.assets[0].uri;
-      setUri(localUri);
+      setLocalUri(localUri);
       let filename = localUri.split('/').pop();
 
       let match = /\.(\w+)$/.exec(filename);
@@ -269,9 +273,6 @@ const CompanyProfileEditing = ({ route, navigation }) => {
           'Content-Type': 'multipart/form-data',
           'Access-Control-Allow-Origin': '*',
         },
-      })
-      .then((res) => {
-        //setPhoto(res.data.photo.photo);
       })
       .catch((err) => {
         handleMessage('Wystąpił błąd przy zmianie zdjęcia!','FAILED');
@@ -350,7 +351,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
       {companyProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-          <Awatar avatar={uri}></Awatar>
+          {localUri ? <EditableAwatar avatar={localUri}></EditableAwatar> : <Awatar avatar={uri}></Awatar>}
             <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
               <HeaderTextInput
                 multiline={true}

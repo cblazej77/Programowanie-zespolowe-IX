@@ -54,12 +54,15 @@ const CompanyProfile = ({ route, navigation }) => {
 
   const OpenLinkElement = ({ link, children1, children2, color }) => {
     const handlePress = useCallback(async () => {
-      const supported = await Linking.canOpenURL('https://' + link);
+      if(!link.startsWith('https://')) {
+        link = 'https://' + link;
+      }
+      const supported = await Linking.canOpenURL(link);
 
       if (supported) {
-        await Linking.openURL('https://' + link);
+        await Linking.openURL(link);
       } else {
-        Alert.alert(`Nie można otworzyć takiego URL'a: https://${link}`);
+        Alert.alert(`Nie można otworzyć takiego URL'a: ${link}`);
       }
     }, [link]);
 
@@ -139,35 +142,12 @@ const CompanyProfile = ({ route, navigation }) => {
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
           <Awatar avatar={baseURL + '/public/api/artist/getProfileImageByUsername/' + username + '?date' + new Date()}></Awatar>
-            <View style={{ width: '65%', alignItems: 'center', justifyContent: 'space-around' }}>
-              <HeaderText numberOfLines={1} style={{ width: '75%', marginLeft: 10, color: darkLight}} isLong={(companyProfile.name.length > 30)}>
+            <View style={{ width: '65%', alignItems: 'flex-start', justifyContent: 'center' }}>
+              <HeaderText style={{ width: '100%', marginLeft: 10, color: darkLight}} isLong={(companyProfile.name.length > 30)}>
                 {companyProfile.name}
               </HeaderText>
             </View>
           </View>
-          {/* <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
-              alignContent: 'center',
-              justifyContent: 'space-evenly',
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                navigation.navigate('Chat');
-              }}
-              style={({ pressed }) => [
-                {
-                  backgroundColor: pressed ? 'lightgrey' : darkLight,
-                },
-                styles.ModalButton,
-              ]}
-            >
-              <AppText style={{ color: primary }}>Napisz wiadomość</AppText>
-            </Pressable>
-          </View> */}
           <AppText style={styles.About}>O firmie:</AppText>
           <RegularText numberOfLines={5} style={{ marginHorizontal: 15, color: black, fontSize: 15 }}>
             {companyProfile.description}

@@ -42,7 +42,7 @@ export default function CompanyScreen({ route, navigation }) {
             </TouchableOpacity>
           </ChatLabel>
             <Tab.Navigator
-              initialRouteName="Profile"
+              initialRouteName="CompanyProfile"
               screenOptions={{
                 tabBarIndicatorStyle: { backgroundColor: darkLight },
                 tabBarStyle: { backgroundColor: primary, marginTop: 0 },
@@ -60,7 +60,7 @@ export default function CompanyScreen({ route, navigation }) {
                     );
                   },
                 }}
-                name="Profile"
+                name="CompanyProfile"
                 component={CompanyProfile}
                 initialParams={{
                   username: route.params.username,

@@ -160,7 +160,7 @@ export const SignIn = ({ onSignIn }) => {
           {!submitting ? <LoginButton to='##' type="submit" onClick={handleCheckBlockButton}>Zaloguj się</LoginButton> :
             <LoginButton to='#' type="submit">Zaloguj się</LoginButton>}
           <LineForm />
-          <GoogleButton to='#' type="button" onClick={() => login()} >Kontynuuj z Google{' '}</GoogleButton>
+          {/* <GoogleButton to='#' type="button" onClick={() => login()} >Kontynuuj z Google{' '}</GoogleButton> */}
           <FacebookLogin
             appId="739036054553215"
             scope={email}
@@ -181,7 +181,8 @@ export const SignIn = ({ onSignIn }) => {
               }
             }}
             render={({ onClick }) => (
-              <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>
+              <></>
+              // <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>
             )}
           />
           <div style={{ fontSize: 12 }}>

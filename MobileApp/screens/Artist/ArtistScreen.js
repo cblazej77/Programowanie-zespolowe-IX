@@ -65,8 +65,6 @@ export default function ArtistScreen({ route, navigation }) {
               component={ArtistProfile}
               initialParams={{
                 username: route.params.username,
-                firstname: route.params.firstname,
-                lastname: route.params.lastname,
               }}
             />
             <Tab.Screen

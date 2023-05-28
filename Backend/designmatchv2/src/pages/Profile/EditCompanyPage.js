@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   AboutInput,
+  ButtonsContainer,
   EditIcon,
-  EditImage,
   EditNameText,
   EditProfileImage,
   Image,
@@ -12,7 +12,6 @@ import {
   LeftColumn,
   LeftWrapper,
   LineForm,
-  ProfileImage,
   ProfileWrapper,
   RightWrapper,
   SmallTextArea,
@@ -24,22 +23,25 @@ import axios from '../../api/axios';
 import LoadingPage from '../LoadingPage';
 import { COLORS } from '../../components/Colors';
 import { useRef } from 'react';
-import { FaUser } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const { secondary, darkLight } = COLORS;
+const { secondary, darkLight, primary } = COLORS;
 
 const ButtonSave = styled.button`
-  padding: 20px 50px;
+  padding: 0.6rem 3rem;
   font-size: 1.2rem;
-  margin-top: 0;
-  margin-left: 80vw;
+  margin: 0 1rem;
   display: flex;
-  color: white;
+  color: ${primary};
   border-radius: 15px;
-  background: ${secondary};
-  transform: translateY(2.5rem);
+  border: none;
+  background: ${darkLight};
   cursor: pointer;
+  transition: 0.5s;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+  }
 `;
 
 const Nawias = styled.p`
@@ -77,7 +79,7 @@ const EditCompanyPage = () => {
 
   const maxChars = 255;
   const limitHeight = 60;
-  useEffect (() => {
+  useEffect(() => {
     sessionStoreCleaner.checkAndRemoveSessionStorage();
   }, []);
 
@@ -91,11 +93,6 @@ const EditCompanyPage = () => {
             'Content-Type': 'application/json',
           },
         });
-
-        // const avatarResponse = await axios.request(
-        //   '/public/api/company/getProfileImageByUsername/' + decodeResponse.data.username, {
-        //     headers: {accept: 'application/json'}
-        //   });
 
         const companyResponse = await axios.request({
           url: '/public/api/company/getProfileByUsername/' + decodeResponse.data.username
@@ -209,6 +206,10 @@ const EditCompanyPage = () => {
     input.click();
   };
 
+  const handleCancel = () => {
+    navigate('/account');
+  };
+
   return (
     <>
       {checkLoading ? (
@@ -309,7 +310,10 @@ const EditCompanyPage = () => {
               </Left>
             </RightWrapper>
           </TopSection>
-          <ButtonSave style={{ background: darkLight }} onClick={handleSave}>Zapisz</ButtonSave>
+          <ButtonsContainer>
+            <ButtonSave style={{ background: secondary }} onClick={handleCancel}>Anuluj</ButtonSave>
+            <ButtonSave onClick={handleSave}>Zapisz</ButtonSave>
+          </ButtonsContainer>
         </ProfileWrapper>
       ) : (
         <LoadingPage />

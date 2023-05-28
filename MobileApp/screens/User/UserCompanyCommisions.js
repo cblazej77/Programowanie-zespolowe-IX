@@ -10,7 +10,7 @@ import { default as baseURL } from '../../components/AxiosAuth';
 import axios from 'axios';
 
 
-const { black, primary, gray, darkLight } = Colors;
+const { black, primary, gray, darkLight, white } = Colors;
 
 async function getValueFor(key) {
   let result = await SecureStore.getItemAsync(key);
@@ -41,57 +41,8 @@ const generateBoxShadowStyle = (
   }
 };
 
-// const commisionsData = [
-//   {
-//     title: 'Projekt logo dla firmy produkującej kosmetyki naturalne',
-//     description:
-//       'Poszukujemy osoby do zaprojektowania logo dla naszej firmy. Chcielibyśmy, żeby logo nawiązywało do idei naturalności i ekologii, które są dla nas ważne. W zamian oferujemy dobre wynagrodzenie i ciekawe projekty do realizacji w przyszłości',
-//     stawka: 2000,
-//     deadline: '2 tyg.',
-//     level: ['Mid'],
-//     location: ['Zdalnie'],
-//     tags: ['Design logo', 'Kosmetyki', 'Ekologia'],
-//     skills: ['Maskotka'],
-//     languages: ['Polski', 'Angielski'],
-//   },
-//   {
-//     title: 'Projekt opakowań dla nowej marki herbat ekologicznych',
-//     description:
-//       'Szukamy doświadczonego projektanta graficznego, który zaprojektuje dla nas opakowania do naszych herbat ekologicznych. Zależy nam na kreatywnym podejściu, które pozwoli wyróżnić nasze produkty na rynku. Oferujemy konkurencyjne wynagrodzenie oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.',
-//     stawka: 3000,
-//     deadline: '3 tyg.',
-//     level: ['Senior'],
-//     location: [],
-//     tags: ['Design opakowań', 'Herbaty', 'Ekologia'],
-//     skills: ['Maskotka'],
-//     languages: ['Polski', 'Angielski'],
-//   },
-//   {
-//     title: 'Projekt plakatu promującego wystawę sztuki nowoczesnej',
-//     description:
-//       'Jesteśmy galerią sztuki i poszukujemy projektanta graficznego, który zaprojektuje dla nas plakat promujący zbliżającą się wystawę sztuki nowoczesnej. Zależy nam na ciekawym i oryginalnym projekcie, który przyciągnie uwagę potencjalnych zwiedzających. Oferujemy dobrą stawkę oraz możliwość dalszej współpracy przy projektowaniu innych elementów graficznych.',
-//     stawka: 1222500,
-//     deadline: '2 tyg.',
-//     level: ['Junior', 'Mid', 'Senior'],
-//     location: ['Bydgoszcz', 'Torun', 'Warszawa', 'Zdalnie'],
-//     tags: [
-//       'Design plakatu',
-//       'Sztuka',
-//       'Wystawa',
-//       'Sztukaaa',
-//       'Design plakatu',
-//       'Sztuka',
-//       'Wystawa',
-//       'Design plakatu',
-//       'Sztuka',
-//       'Wystawa',
-//     ],
-//     skills: ['Maskotka'],
-//     languages: ['Polski', 'Angielski'],
-//   },
-// ];
 
-const CompanyCommisions = ({ route, navigation }) => {
+const UserCompanyCommisions = ({ route, navigation }) => {
   generateBoxShadowStyle(0, 8, '#0F0F0F33', 0.2, 15, 2, '#0F0F0F33');
 
   const [token, setToken] = useState('');
@@ -188,104 +139,104 @@ const CompanyCommisions = ({ route, navigation }) => {
       </View>
       {modalCommision && (
         <Modal
-          isVisible={isModalVisible}
-          onBackdropPress={() => setisModalVisible(false)}
-          onSwipeComplete={() => setisModalVisible(false)}
-          swipeDirection="right"
-          animationIn="fadeInUp"
-          animationOut="fadeOutUp"
-          animationInTiming={500}
-          animationOutTiming={500}
-          hideModalContentWhileAnimating={true}
-        >
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={[styles.centeredView]}>
-              <View style={styles.modalView}>
-                <HeaderText style={{ color: darkLight }}>{modalCommision.title}</HeaderText>
-                <Line style={{ width: '90%', height: 2 }} />
-                <View style={styles.ModalDescription}>
-                  <RegularText style={{ color: '#6e6968' }}>{modalCommision.description}</RegularText>
+        isVisible={isModalVisible}
+        onBackdropPress={() => setisModalVisible(false)}
+        onSwipeComplete={() => setisModalVisible(false)}
+        swipeDirection="right"
+        animationIn="fadeInUp"
+        animationOut="fadeOutUp"
+        animationInTiming={500}
+        animationOutTiming={500}
+        hideModalContentWhileAnimating={true}
+      >
+        <ScrollView style={{ maxHeight: '90%' }}>
+          <View style={[styles.centeredView]}>
+            <View style={styles.modalView}>
+              <HeaderText style={{ color: darkLight }}>{modalCommision.title}</HeaderText>
+              <Line style={{ width: '90%', height: 2 }} />
+              <View style={styles.ModalDescription}>
+                <RegularText style={{ color: '#6e6968' }}>{modalCommision.description}</RegularText>
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalCommisionDetails}>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
+                    {modalCommision.rate + ' PLN'}
+                  </RegularText>
                 </View>
-                <Line style={{ width: '90%', height: 1 }} />
-                <View style={styles.ModalCommisionDetails}>
-                  <View style={styles.ModalDetail}>
-                    <RegularText style={{ width: '60%' }}>Stawka:</RegularText>
-                    <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
-                      {modalCommision.rate + ' PLN'}
-                    </RegularText>
-                  </View>
-                  <View style={styles.ModalDetail}>
-                    <RegularText style={{ width: '60%' }}>Termin:</RegularText>
-                    <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
-                      {modalCommision.deadline}
-                    </RegularText>
-                  </View>
-                  <View style={styles.ModalDetail}>
-                    <RegularText style={{ width: '60%' }}>Poziom zaawansowania:</RegularText>
-                    <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
-                      {getSelectedLevel(modalCommision.level)}
-                    </RegularText>
-                  </View>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Czas wykonania:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>{modalCommision.deadline}</RegularText>
                 </View>
-                <Line style={{ width: '90%', height: 1 }} />
-                <View style={styles.ModalMapping}>
-                  <RegularText style={{ marginRight: 5 }}>Lokalizacja:</RegularText>
-                  {modalCommision.location.map((tag, indexT) => (
-                    <Bubble style={[styles.ModalTagBubble]} key={indexT}>
-                      <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
-                    </Bubble>
-                  ))}
-                </View>
-                <Line style={{ width: '90%', height: 1 }} />
-                <View style={styles.ModalMapping}>
-                  <RegularText style={{ marginRight: 5 }}>Tagi:</RegularText>
-                  {modalCommision.tags.map((tag, indexT) => (
-                    <Bubble style={[styles.ModalTagBubble]} key={indexT}>
-                      <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
-                    </Bubble>
-                  ))}
-                </View>
-                <Line style={{ width: '90%', height: 1 }} />
-                <View style={styles.ModalMapping}>
-                  <RegularText style={{ marginRight: 5 }}>Wymagane Umiejętności:</RegularText>
-                  {modalCommision.skills.map((tag, indexT) => (
-                    <Bubble style={[styles.ModalTagBubble]} key={indexT}>
-                      <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
-                    </Bubble>
-                  ))}
-                </View>
-                <Line style={{ width: '90%', height: 1 }} />
-                <View style={styles.ModalMapping}>
-                  <RegularText style={{ marginRight: 5 }}>Wymagane Języki:</RegularText>
-                  {modalCommision.languages.map((tag, indexT) => (
-                    <Bubble style={[styles.ModalTagBubble]} key={indexT}>
-                      <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
-                    </Bubble>
-                  ))}
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-                  <Pressable
-                    onPress={() => {}}
-                    style={({ pressed }) => [
-                      {
-                        backgroundColor: pressed ? 'lightgrey' : darkLight,
-                      },
-                      styles.ModalButton,
-                    ]}
-                  >
-                    <AppText style={{ color: 'white' }}>Aplikuj!</AppText>
-                  </Pressable>
+                <View style={styles.ModalDetail}>
+                  <RegularText style={{ width: '60%' }}>Poziom zaawansowania:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '30%', textAlign: 'right' }}>
+                    {getSelectedLevel(modalCommision.level)}
+                  </RegularText>
                 </View>
               </View>
+              <Line style={{ width: '90%', height: 1 }} />
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'flex-start', alignItems: 'center', marginLeft: 15}}>
+                  <RegularText style={{ width: '40%' }}>Zleceniodawca:</RegularText>
+                  <RegularText style={{ color: '#6e6968', width: '55%', textAlign: 'right' }}>
+                    {modalCommision.company_name}
+                  </RegularText>
+                </View>
+                {modalCommision.contractor_username && <Line style={{ width: '90%', height: 1 }} />}
+                {modalCommision.contractor_username && <View style={{flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'flex-start', alignItems: 'center', marginLeft: 15}}>
+                  <RegularText style={{ width: '40%' }}>Zleceniobiorca:</RegularText>
+                  <RegularText onPress={() => {navigation.navigate('ArtistScreen', {username: modalCommision.contractor_username}); setisModalVisible(false)}} style={{ color: '#6e6968', width: '55%', textAlign: 'right' }}>
+                    {modalCommision.contractor_username}
+                  </RegularText>
+                </View>}
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Lokalizacja:</RegularText>
+                {modalCommision.location.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Tagi:</RegularText>
+                {modalCommision.tags.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={styles.ModalMapping}>
+                <RegularText style={{ marginRight: 5 }}>Wymagane Umiejętności:</RegularText>
+                {modalCommision.skills.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              <Line style={{ width: '90%', height: 1 }} />
+              <View style={[styles.ModalMapping,{marginBottom: 10}]}>
+                <RegularText style={{ marginRight: 5 }}>Wymagane Języki:</RegularText>
+                {modalCommision.languages.map((tag, indexT) => (
+                  <Bubble style={[styles.ModalTagBubble, styles.boxShadow]} key={indexT}>
+                    <AppText style={{ fontSize: 10, color: darkLight }}>{tag}</AppText>
+                  </Bubble>
+                ))}
+              </View>
+              
             </View>
-          </ScrollView>
-        </Modal>
+          </View>
+        </ScrollView>
+      </Modal>
       )}
     </SafeAreaView>
   );
 };
 
-export default CompanyCommisions;
+export default UserCompanyCommisions;
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -340,17 +291,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingLeft: 17,
-    paddingRight: 17,
+    paddingRight: 12,
   },
   ModalTagBubble: {
-    paddingTop: 3,
+    paddingTop: 4,
     paddingBottom: 4,
     paddingLeft: 5,
     paddingRight: 5,
     marginTop: 0,
     marginBottom: 5,
     marginHorizontal: 2,
-    borderColor: '#0F0F0F33',
-    borderWidth: 1.6,
+    backgroundColor: white,
+    //borderColor: darkLight,
+    //borderWidth: 1,
   },
 });

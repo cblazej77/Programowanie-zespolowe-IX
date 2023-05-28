@@ -6,7 +6,7 @@ import {
     CommisionText,
     CommisionTop,
     LevelBubble
-} from "../../components/ProfileElements";
+} from "../Profile/ProfileElements";
 import { TitleText } from "./CardsElement";
 
 function CommisionItem(props) {

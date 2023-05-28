@@ -171,7 +171,7 @@ export default function HomePage({ navigation }) {
                 tags: tagsFiltr,
               },
               {
-                params: { page: 0, size: 10 },
+                params: { page: 0, size: 50 },
                 headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
               },
             )
@@ -198,7 +198,7 @@ export default function HomePage({ navigation }) {
                 tags: tagsFiltr,
               },
               {
-                params: { page: 0, size: 10 },
+                params: { page: 0, size: 50 },
                 headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
               },
             )
@@ -382,38 +382,15 @@ export default function HomePage({ navigation }) {
     if (!Array.isArray(filtered.content)) {
       return null;
     }
-
-  
+      
     return <HomeSearchFilter data={filtered.content} input={input} setInput={setInput} navigation={navigation} />;
-
-    // return filtered.content.map((filter, indexF) => (
-    //   <CardItem
-    //     key={indexF}
-    //     avatar="/assets/cards/person1.jpg"
-    //     name={filter.firstname}
-    //     surname={filter.lastname}
-    //     username={filter.username}
-    //     navigation={navigation}
-    //     level={filter.level}
-    //     rating={3.5}
-    //     ratingCount={12}
-    //     city={filter.city}
-    //     skills={filter.skills}
-    //     project1="/assets/cards/design1.jpg"
-    //     project2="/assets/cards/design2.png"
-    //     project3="/assets/cards/design3.jpg"
-    //     project4="/assets/cards/design4.png"
-    //   />
-    // ));
   });
 
   const filteredCommisions = useMemo(() => {
     if (!Array.isArray(commisions.content)) {
       return null;
     }
-
-    console.log(commisions.content);
-
+    
     return <CommisionsSearchFilter data={commisions.content} input={input} setInput={setInput} navigation={navigation} />;
   });
 
@@ -443,10 +420,10 @@ export default function HomePage({ navigation }) {
             </TouchableOpacity>
           </ChatLabel>
           <HomeLabel>
-            <HomeIconButton onPress={() => setShowModal(true)} activeOpacity={0.5}>
+            <HomeIconButton onPress={() => setShowModal(true)} activeOpacity={0.5} style={{alignItems: 'center'}}>
               <ChatImage
-                style={{ tintColor: '#A9A9A9', width: '50%', marginLeft: 10 }}
-                resizeMode="contain"
+                style={{ tintColor: '#A9A9A9', width: '30%', marginLeft: 10 }}
+                resizeMode="cover"
                 source={require('./../../assets/img/filter.png')}
               />
             </HomeIconButton>
@@ -586,7 +563,7 @@ export default function HomePage({ navigation }) {
               </View>
             </Modal>
 
-            <SelectDropdown
+            {/* <SelectDropdown
               data={sort}
               defaultValueByIndex={0}
               onSelect={(selectedItem, index) => {
@@ -607,7 +584,7 @@ export default function HomePage({ navigation }) {
               dropdownStyle={styles.DropDownStyle1}
               rowStyle={styles.DropdownRowStyle}
               rowTextStyle={styles.DropdownRowTextStyle}
-            />
+            /> */}
             <HomeTextInput
               value={input}
               onChangeText={(text) => setInput(text)}
@@ -639,10 +616,10 @@ export default function HomePage({ navigation }) {
             <HeaderText>Przeglądaj zlecenia</HeaderText>
           </ChatLabel>
           <HomeLabel>
-            <HomeIconButton onPress={() => setShowModal(true)} activeOpacity={0.5}>
+          <HomeIconButton onPress={() => setShowModal(true)} activeOpacity={0.5} style={{alignItems: 'center'}}>
               <ChatImage
-                style={{ tintColor: '#A9A9A9', width: '50%', marginLeft: 10 }}
-                resizeMode="contain"
+                style={{ tintColor: '#A9A9A9', width: '30%', marginLeft: 10 }}
+                resizeMode="cover"
                 source={require('./../../assets/img/filter.png')}
               />
             </HomeIconButton>
@@ -782,7 +759,7 @@ export default function HomePage({ navigation }) {
               </View>
             </Modal>
 
-            <SelectDropdown
+            {/* <SelectDropdown
               data={sort}
               defaultValueByIndex={0}
               onSelect={(selectedItem, index) => {
@@ -803,7 +780,7 @@ export default function HomePage({ navigation }) {
               dropdownStyle={styles.DropDownStyle1}
               rowStyle={styles.DropdownRowStyle}
               rowTextStyle={styles.DropdownRowTextStyle}
-            />
+            /> */}
             <HomeTextInput
               value={input}
               onChangeText={(text) => setInput(text)}

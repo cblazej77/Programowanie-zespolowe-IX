@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { HeaderText, Colors, RegularText, Line } from '../../components/styles';
 import * as SecureStore from 'expo-secure-store';
 
-const { black, primary, gray, darkLight } = Colors;
+const { black, primary, gray, darkLight, white } = Colors;
 
 async function getValueFor(key) {
   let result = await SecureStore.getItemAsync(key);
@@ -25,6 +25,7 @@ const Gallery = () => {
   const [modalData, setModalData] = useState([]);
   const [token, setToken] = useState('');
   const [userInfo, setUserInfo] = useState('');
+  
 
   async function getAccessToken() {
     const t = await getValueFor('accessToken');
@@ -47,7 +48,7 @@ const Gallery = () => {
         const portfolioEntriesResponse = await axios.request(
           baseURL + '/public/api/artist/getPortfolioEntries/' + userInfo.username,
           {
-            params: { page: 0, size: 10 },
+            params: { page: 0, size: 50 },
             headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
@@ -61,11 +62,11 @@ const Gallery = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
     console.log(entries);
-  }, [entries])
+  }, [entries]);
 
   const ModalOpen = (data) => {
     console.log(data);
@@ -81,64 +82,77 @@ const Gallery = () => {
   return (
     <View style={{ backgroundColor: primary }}>
       {entries ? (
-        <View style={{ backgroundColor: primary, height: '100%', width: '100%' }}>
-          {/* <ScrollView style={{height: '100%', width: '100%'}}> */}
-            <View style={{height: '100%', width: '100%'}}>
-            {entries.map((entry, index) => (
-              <View style={{ maxWidth: 300, maxHeight: 200 }} key={index}>
-                <TouchableOpacity
-                  onPress={() => {
-                    ModalOpen(entry);
+        <View style={{ backgroundColor: primary }}>
+          <ScrollView style={{ height: '100%', width: '100%' }} contentContainerStyle={{ padding: 30 }}>
+            <View style={{ flex: 1 }}>
+              {entries.map((entry, index) => (
+                <View
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: 200,
+                    backgroundColor: white,
+                    margin: 10,
+                    borderRadius: 20,
+                    justifyContent: 'center',
+                    padding: 10,
                   }}
+                  key={index}
                 >
-                  <Image
-                    resizeMode='cover'
-                    source={{
-                      uri: baseURL + '/public/api/artist/getPortfolioImage/' + userInfo.username + '/' + entry.id
+                  <TouchableOpacity
+                    onPress={() => {
+                      ModalOpen(entry);
                     }}
-                    style={{ width: '95%', height: '95%' }}
-                  />
-                </TouchableOpacity>
-              </View>
-            ))}
-            </View>
-          {/* </ScrollView> */}
-          {modalData && <Modal
-            isVisible={showModal}
-            onBackdropPress={() => ModalClose()}
-            onSwipeComplete={() => ModalClose()}
-            swipeDirection="right"
-            animationIn="fadeInUp"
-            animationOut="fadeOutUp"
-            animationInTiming={200}
-            animationOutTiming={200}
-            hideModalContentWhileAnimating={true}
-          >
-            <View style={[styles.centeredView]}>
-              <View style={styles.modalView}>
-                <HeaderText style={{ color: darkLight }}>{modalData.name}</HeaderText>
-                <Line style={{ width: '100%', height: 1 }} />
-                <View style={styles.ModalDescription}>
-                  <RegularText style={{ color: '#6e6968' }}>{modalData.description}</RegularText>
+                  >
+                    <Image
+                      resizeMode="contain"
+                      source={{
+                        uri: baseURL + '/public/api/artist/getPortfolioImage/' + userInfo.username + '/' + entry.id,
+                      }}
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                  </TouchableOpacity>
                 </View>
-                <Line style={{ width: '100%', height: 1 }} />
-                <Image
-                  resizeMode='contain'
-                  source={{
-                    uri:
-                      baseURL +
-                      '/public/api/artist/getPortfolioImage/' +
-                      userInfo.username +
-                      '/' +
-                      modalData.id +
-                      '?' +
-                      new Date(),
-                  }}
-                  style={{ width: '100%', height: '90%' }}
-                />
-              </View>
+              ))}
             </View>
-          </Modal>}
+          </ScrollView>
+          {modalData && (
+            <Modal
+              isVisible={showModal}
+              onBackdropPress={() => ModalClose()}
+              onSwipeComplete={() => ModalClose()}
+              swipeDirection="right"
+              animationIn="fadeInUp"
+              animationOut="fadeOutUp"
+              animationInTiming={200}
+              animationOutTiming={200}
+              hideModalContentWhileAnimating={true}
+            >
+              <View style={[styles.centeredView]}>
+                <View style={styles.modalView}>
+                  <HeaderText style={{ color: darkLight }}>{modalData.name}</HeaderText>
+                  <Line style={{ width: '100%', height: 1 }} />
+                  <View style={styles.ModalDescription}>
+                    <RegularText style={{ color: '#6e6968' }}>{modalData.description}</RegularText>
+                  </View>
+                  <Line style={{ width: '100%', height: 1 }} />
+                  <Image
+                    resizeMode="contain"
+                    source={{
+                      uri:
+                        baseURL +
+                        '/public/api/artist/getPortfolioImage/' +
+                        userInfo.username +
+                        '/' +
+                        modalData.id +
+                        '?' +
+                        new Date(),
+                    }}
+                    style={{ width: 350, height: 400 }}
+                  />
+                </View>
+              </View>
+            </Modal>
+          )}
         </View>
       ) : (
         <Loading />
@@ -151,14 +165,11 @@ export default Gallery;
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
     //justifyContent: 'center',
     //alignItems: 'center',
     marginTop: 22,
-    minWidth: '50%',
-    maxwidth: '100%',
-    minheight: '40%',
-    maxHeight: '80%',
+    width: '100%',
+    height: '70%',
   },
   modalView: {
     flex: 1,
