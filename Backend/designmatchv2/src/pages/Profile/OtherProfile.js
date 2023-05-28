@@ -537,7 +537,7 @@ const OtherUserPage = () => {
         <DownSection>
           <TitleText style={{ width: '100%', textAlign: 'center' }}>Portfolio</TitleText>
           <BottomWrapper>
-            <Portfolio username={get.username} />
+            <Portfolio username={argument} />
           </BottomWrapper>
         </DownSection>
         <Modal showModal={showModal} />

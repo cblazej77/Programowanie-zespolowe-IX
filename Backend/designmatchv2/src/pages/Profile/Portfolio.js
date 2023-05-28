@@ -28,13 +28,16 @@ const Portfolio = (props) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const decodeResult = await axios.request('/auth/decodeToken', {
-                    headers: {
-                        'accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
-                    },
-                });
+                if (localStorage.getItem('storageLogin')) {
+                    const decodeResult = await axios.request('/auth/decodeToken', {
+                        headers: {
+                            'accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
+                        },
+                    });
+                    setUsername(decodeResult.data.username);
+                }
 
                 const portfolioEntriesResponse = await axios.request(
                     '/public/api/artist/getPortfolioEntries/' + props.username,
@@ -44,7 +47,6 @@ const Portfolio = (props) => {
                     },
                 );
 
-                setUsername(decodeResult.data.username);
                 setEntries(portfolioEntriesResponse.data.content);
             } catch (err) {
                 console.log(err);
