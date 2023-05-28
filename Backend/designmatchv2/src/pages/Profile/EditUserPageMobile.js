@@ -36,7 +36,8 @@ import {
   EditProfileImage,
   EditIcon,
   XButton,
-  ButtonsContainer
+  ButtonsContainer,
+  BubbleEdit
 
 } from './ProfileElements'
 import LoadingPage from '../LoadingPage';
@@ -534,16 +535,16 @@ const EditUserPageMobile = () => {
   function ListTags() {
     if (tags) {
       const list = tags.map((item, id) => (
-        <Bubble key={id} onClick={() => handleDeleteTag(item)}>
+        <BubbleEdit key={id} onClick={() => handleDeleteTag(item)}>
           {item} x
-        </Bubble>
+        </BubbleEdit>
       ));
       return (
         <>
           {list}
-          <Bubble onClick={openModalTags}>
+          <BubbleEdit onClick={openModalTags}>
             Dodaj +
-          </Bubble>
+          </BubbleEdit>
         </>
       );
     } else {
@@ -553,16 +554,16 @@ const EditUserPageMobile = () => {
   function ListSkills() {
     if (skills) {
       const list = skills.map((item, id) => (
-        <Bubble key={id} onClick={() => handleDeleteSkill(item)}>
+        <BubbleEdit key={id} onClick={() => handleDeleteSkill(item)}>
           {item} x
-        </Bubble>
+        </BubbleEdit>
       ));
       return (
         <>
           {list}
-          <Bubble onClick={openModalSkills}>
+          <BubbleEdit onClick={openModalSkills}>
             Dodaj +
-          </Bubble>
+          </BubbleEdit>
         </>
       );
     } else {
@@ -572,16 +573,16 @@ const EditUserPageMobile = () => {
   function ListLanguages() {
     if (languages) {
       const list = languages.map((item, id) => (
-        <Bubble key={id} onClick={() => handleDeleteLanguage(item)}>
+        <BubbleEdit key={id} onClick={() => handleDeleteLanguage(item)}>
           {item} x
-        </Bubble>
+        </BubbleEdit>
       ));
       return (
         <>
           {list}
-          <Bubble onClick={openModalLanguages}>
+          <BubbleEdit onClick={openModalLanguages}>
             Dodaj +
-          </Bubble>
+          </BubbleEdit>
         </>
       );
     } else {
@@ -640,6 +641,16 @@ const EditUserPageMobile = () => {
             defaultValue={item.start_date}
             onChange={(e) => {
               item.start_date = e.target.value;
+            }}
+            placeholder="Data rozpoczęcia, DD/MM/YYYY"
+          />
+          <InputInfoText>Do: </InputInfoText>
+          <SmallInput
+            maxLength={10}
+            type="text"
+            defaultValue={item.end_date}
+            onChange={(e) => {
+              item.end_date = e.target.value;
             }}
             placeholder="Data rozpoczęcia, DD/MM/YYYY"
           />
@@ -863,7 +874,6 @@ const EditUserPageMobile = () => {
   window.addEventListener('resize', showButton);
 
   return (
-
     <>
       <Modal showModal={showModalTags} setShowModal={setShowModalTags} tags={tags} setTags={setTags} />
       <ModalSkills showModal={showModalSkills} setShowModal={setShowModalSkills} skills={skills} setSkills={setSkills} />
@@ -957,7 +967,7 @@ const EditUserPageMobile = () => {
                     <HeaderText>Wykształcenie:</HeaderText>
                     <ListEducation />
                     <LineForm />
-                    <HeaderText>Doświadczenie:</HeaderText>
+                    <HeaderText>Doświadczenie zawodowe:</HeaderText>
                     <ListExperience />
                   </RightColumn>
                 </InfoRow>

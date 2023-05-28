@@ -393,6 +393,9 @@ export const Bubble = styled.p`
   margin-bottom: 20px;
   margin-top: 5px;
   align-items: center;
+`;
+
+export const BubbleEdit = styled(Bubble)`
   cursor: pointer;
 `;
 

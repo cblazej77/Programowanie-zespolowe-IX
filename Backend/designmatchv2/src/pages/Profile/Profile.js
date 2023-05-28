@@ -173,9 +173,9 @@ const UserPage = () => {
   function ListEducation() {
     const list = educationList.map((item, index) => {
       return (
-        <div key={item.id}>
+        <div style={{ display: 'flex', flexDirection: 'column' }} key={item.id}>
           {index !== 0 && <LineForm />}
-          <HeaderText>Wykształcenie</HeaderText>
+          {index == 0 && <HeaderText style={{ marginBottom: '1.5rem' }}>Wykształcenie</HeaderText>}
           <LeftInfoRow>
             <InfoText>Uczelnia:</InfoText>
             <label>{item.school_name}</label>
@@ -195,6 +195,10 @@ const UserPage = () => {
           <LeftInfoRow>
             <InfoText>Od: </InfoText>
             <label>{item.start_date}</label>
+          </LeftInfoRow>
+          <LeftInfoRow>
+            <InfoText>Do: </InfoText>
+            <label>{item.end_date}</label>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Opis: </InfoText>
@@ -232,12 +236,15 @@ const UserPage = () => {
   }
 
   function ListExperience() {
-
     const list = experienceList.map((item, index) => {
       return (
-        <div key={item.id}>
-          <LineForm />
-          <HeaderText>Doświadczenie</HeaderText>
+        <div style={{ display: 'flex', flexDirection: 'column' }} key={item.id}>
+          {index !== 0 && <LineForm />}
+          {index == 0 &&
+            <>
+              <LineForm />
+              <HeaderText style={{ marginBottom: '1.5rem' }}>Doświadczenie zawodowe</HeaderText>
+            </>}
           <LeftInfoRow>
             <InfoText>Nazwa firmy: </InfoText>
             <label>{item.company}</label>

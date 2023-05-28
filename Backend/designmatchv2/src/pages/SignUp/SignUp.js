@@ -468,7 +468,7 @@ function LoginForm() {
                 {loading && <ErrorLabel style={{ color: gray1, marginTop: '0.5rem' }}>Rejestruję . . .</ErrorLabel>}
                 {/*{ enabled ?<LoginButton to='/' type="submit" onClick = {e => handleSubmit(e)}>Zaloguj się</LoginButton> :<LoginButton to='' type="submit" onClick= {e => handleSubmit(e)}>Zaloguj się</LoginButton>}*/}
                 <LineForm />
-                <GoogleButton to='' type="button" onClick={() => login()} >Kontynuuj z google</GoogleButton>
+                {/* <GoogleButton to='' type="button" onClick={() => login()} >Kontynuuj z google</GoogleButton> */}
                 <FacebookLogin
                   appId="739036054553215"
                   scope={email}
@@ -484,8 +484,8 @@ function LoginForm() {
                     navigate(redirectPath, { replace: true });
 
                   }}
-                  render={({ onClick }) => (
-                    <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>
+                  render={({ onClick }) => (<></>
+                    // <FacebookButton onClick={onClick} >Kontynuuj z Facebook</FacebookButton>
                   )}
                 />
               </div>

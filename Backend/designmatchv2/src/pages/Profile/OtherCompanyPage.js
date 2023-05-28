@@ -85,7 +85,7 @@ const OtherCompanyPage = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const redirectPath = location.state?.path || '/';
+    const redirectPath = location.state?.path || '/sign-in';
 
     const citiesData = useMemo(
         () => ({
@@ -152,14 +152,17 @@ const OtherCompanyPage = () => {
                     headers: {},
                 });
 
-                const decoderResult = await axios.request({
-                    url: '/auth/decodeToken',
-                    headers: {
-                        'accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
-                    },
-                })
+                if (localStorage.getItem('storageLogin')) {
+                    const decoderResult = await axios.request({
+                        url: '/auth/decodeToken',
+                        headers: {
+                            'accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + localStorage.getItem('storageLogin'),
+                        },
+                    })
+                    setmyUsername(decoderResult.data.username);
+                }
 
                 const [citiesResponse, tagsResponse, categoriesResponse, languagesResponse, levelsResponse] = await Promise.all(
                     [
@@ -172,7 +175,6 @@ const OtherCompanyPage = () => {
                 );
                 setUsername(argument);
                 setCommisionsData(commissionResponse.data);
-                setmyUsername(decoderResult.data.username);
                 setGet(companyResponse.data);
                 setCities(citiesResponse.data);
                 setTags(tagsResponse.data);
@@ -336,7 +338,9 @@ const OtherCompanyPage = () => {
                                 }} alt="Profile" /></ProfileImage>
                             <NameText>{get.name}</NameText>
                             <LineForm />
-                            {(argument !== myUsername && myUsername != '') ? <ButtonMessage onClick={() => connect()}>Napisz wiadomość</ButtonMessage> : <ButtonMessage onClick={() => navigate(redirectPath, { replace: true })} > Napisz wiadomość </ButtonMessage>}
+                            {(argument !== myUsername && myUsername != '') ?
+                                <ButtonMessage onClick={() => connect()}>Napisz wiadomość</ButtonMessage> :
+                                <ButtonMessage onClick={() => navigate(redirectPath, { replace: true })} > Napisz wiadomość </ButtonMessage>}
                         </LeftWrapper>
                         <RightWrapper>
                             <BoldLabel>O firmie:</BoldLabel>

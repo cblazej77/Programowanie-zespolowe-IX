@@ -76,7 +76,7 @@ const OtherUserPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const redirectPath = location.state?.path || '/';
+  const redirectPath = location.state?.path || '/sign-in';
 
   useEffect(() => {
     const fetchData = async () => {
