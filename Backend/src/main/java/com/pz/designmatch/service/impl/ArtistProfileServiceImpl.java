@@ -78,7 +78,7 @@ public class ArtistProfileServiceImpl implements ArtistProfileService {
     public byte[] getProfileImageByUsername(String username) {
         String imagePath = artistProfileRepository.findByUser_Username(username)
                 .map(ArtistProfile::getProfileImageUrl)
-                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono profilu artysty dla użytkownika: " + username));
+                .orElseThrow(() -> new EntityNotFoundException("Nie znaleziono zdjęcia profilowego artysty dla użytkownika: " + username));
 
         return ImageUtils.getImageFromPath(imagePath);
     }

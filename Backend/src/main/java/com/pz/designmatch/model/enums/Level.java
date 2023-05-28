@@ -31,4 +31,8 @@ public enum Level {
     public String getDisplayName() {
         return displayName;
     }
+
+    public String toString() {
+        return this.displayName;
+    }
 }

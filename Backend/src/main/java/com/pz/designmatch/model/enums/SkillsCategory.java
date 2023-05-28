@@ -34,4 +34,9 @@ public enum SkillsCategory {
     public Collection<Skill> getSkills() {
         return Skill.getSkillsByCategory(this);
     }
+
+    @Override
+    public String toString() {
+        return this.displayName;
+    }
 }

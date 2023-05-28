@@ -5,15 +5,19 @@ import com.pz.designmatch.dto.request.ArtistRegisterRequest;
 import com.pz.designmatch.dto.request.CompanyRegisterRequest;
 import com.pz.designmatch.dto.request.LoginRequest;
 import com.pz.designmatch.dto.request.RegisterRequest;
-import com.pz.designmatch.dto.response.ApiResponse;
+import com.pz.designmatch.dto.response.MyApiResponse;
 import com.pz.designmatch.dto.response.JwtAuthenticationResponse;
 import com.pz.designmatch.exception.UserAlreadyExistAuthenticationException;
 import com.pz.designmatch.service.ConfirmationTokenService;
 import com.pz.designmatch.service.UserService;
 import com.pz.designmatch.service.impl.ConfirmationTokenServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,24 +41,32 @@ import static com.pz.designmatch.model.user.Role.ROLE_COMPANY;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
     private final JwtEncoder encoder;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
-
-    @Autowired
     private JwtDecoder jwtDecoder;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-    private com.pz.designmatch.util.JWTUtil JWTUtil;
 
     public AuthController(JwtEncoder encoder, UserService userService, AuthenticationManager authenticationManager,
-                          ConfirmationTokenServiceImpl confirmationTokenService) {
+                          ConfirmationTokenServiceImpl confirmationTokenService, JwtDecoder jwtDecoder, JdbcTemplate jdbcTemplate) {
         this.encoder = encoder;
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.confirmationTokenService = confirmationTokenService;
+        this.jwtDecoder = jwtDecoder;
+        this.jdbcTemplate = jdbcTemplate;
     }
+
+    @Operation(summary = "Logowanie użytkownika",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Zalogowano pomyślnie",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtAuthenticationResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "Niepoprawne dane logowania",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginRequest.class))),
+            tags = {"Autoryzacja"})
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -66,6 +78,15 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
+
+    @Operation(summary = "Zwraca nowy token JWT dla użytkownika",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Pomyślnie wygenerowano nowy token JWT",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
+            security = @SecurityRequirement(name = "bearerToken"),
+            tags = {"Autoryzacja"})
     @PostMapping("/token")
     public ResponseEntity<?> getToken(Authentication authentication) {
         LocalUserDto localUser = (LocalUserDto) authentication.getPrincipal();
@@ -73,22 +94,55 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
+
+    @Operation(summary = "Rejestracja artysty",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Pomyślnie zarejestrowano użytkownika",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class))),
+                    @ApiResponse(responseCode = "400", description = "Niepoprawne dane rejestracji, być może są już zajęte",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterRequest.class))),
+            tags = {"Autoryzacja"})
     @PostMapping("/registerArtist")
     public ResponseEntity<?> registerArtist(@RequestBody ArtistRegisterRequest artistRegisterRequest) {
         return registerUser(artistRegisterRequest, ROLE_ARTIST);
     }
 
+
+    @Operation(summary = "Rejestracja firmy",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Pomyślnie zarejestrowano użytkownika",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class))),
+                    @ApiResponse(responseCode = "400", description = "Niepoprawne dane rejestracji, być może są już zajęte",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterRequest.class))),
+            tags = {"Autoryzacja"})
     @PostMapping("/registerCompany")
     public ResponseEntity<?> registerCompany(@RequestBody CompanyRegisterRequest companyRegisterRequest) {
         return registerUser(companyRegisterRequest, ROLE_COMPANY);
     }
 
+    @Operation(summary = "Potwierdzenie adresu email",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Pomyślnie potwierdzono adres email",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class))),
+                    @ApiResponse(responseCode = "400", description = "Niepoprawny token",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
+            tags = {"Autoryzacja"})
     @GetMapping(path = "/confirmEmail")
     public ResponseEntity<String> confirm(@RequestParam("token") String token) {
         return new ResponseEntity<>(confirmationTokenService.confirmToken(token), HttpStatus.OK);
     }
 
 
+    @Operation(summary = "Zwraca dane aktualnie zalogowanego użytkownika",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Pomyślnie zwrócono dane użytkownika",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "Autoryzacja nie powiodła się",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
+            security = @SecurityRequirement(name = "bearerToken"),
+            tags = {"Autoryzacja"})
     @GetMapping(path = "/decodeToken")
     public ResponseEntity<?> decodeToken(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.substring("Bearer ".length());
@@ -97,11 +151,7 @@ public class AuthController {
         String query = "SELECT username FROM users WHERE email = ?";
         String username = jdbcTemplate.queryForObject(query, String.class, email);
 
-
-        //String email = JWTUtil.getLoggedUserEmail();
         String role = com.pz.designmatch.util.JWTUtil.getRoleFromToken();
-
-
         Map<String, Object> responseJson = new HashMap<>();
 
         responseJson.put("role", role);
@@ -115,9 +165,9 @@ public class AuthController {
             userService.registerNewUser(registerRequest, roleName);
         } catch (UserAlreadyExistAuthenticationException | ValidationException e) {
             log.error("Exception Occurred", e);
-            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new MyApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok().body(new ApiResponse(true, "Pomyślnie zarejestrowano!"));
+        return ResponseEntity.ok().body(new MyApiResponse(true, "Pomyślnie zarejestrowano!"));
     }
 
     private String getToken(LocalUserDto localUser) {

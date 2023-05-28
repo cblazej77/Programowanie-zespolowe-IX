@@ -4,6 +4,13 @@ import com.pz.designmatch.dto.response.UserResponse;
 import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.UserRepository;
 import com.pz.designmatch.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,6 +36,13 @@ public class UserProfileController {
         this.userRepository = userRepository;
     }
 
+    @Operation(summary = "Zwraca dane użytkownika od podanym id", responses = {
+            @ApiResponse(responseCode = "200", description = "Pomyślnie pobrano użytkownika",
+                    content = @Content(mediaType = apiVersionAccept, schema = @Schema(implementation = UserResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    },
+            security = @SecurityRequirement(name = "bearerToken"),
+            tags = {"Użytkownik"})
     @GetMapping(value = "/getUserById", produces = apiVersionAccept)
     public ResponseEntity<UserResponse> getAllUsers() {
         Optional<UserEntity> user = userRepository.findById(2L);
@@ -39,6 +53,13 @@ public class UserProfileController {
         return ResponseEntity.ok(userResponse);
     }
 
+    @Operation(summary = "Zwraca listę nazw użytkowników", responses = {
+            @ApiResponse(responseCode = "200", description = "Pomyślnie pobrano listę nazw użytkowników",
+                    content = @Content(mediaType = apiVersionAccept, array = @ArraySchema(schema = @Schema(implementation = String.class)))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            },
+            security = @SecurityRequirement(name = "bearerToken"),
+            tags = {"Użytkownik"})
     @GetMapping(value = "/getAllUsernames", produces = apiVersionAccept)
     public ResponseEntity<List<String>> getAllUsernames() {
         List<String> usernames = userService.getAllUsernames();

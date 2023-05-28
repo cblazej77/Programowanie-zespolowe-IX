@@ -1,6 +1,6 @@
 package com.pz.designmatch.exception;
 
-import com.pz.designmatch.dto.response.ApiResponse;
+import com.pz.designmatch.dto.response.MyApiResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -34,7 +34,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 return e.getObjectName() + " : " + e.getDefaultMessage();
             }
         }).collect(Collectors.joining(", "));
-        return handleExceptionInternal(ex, new ApiResponse(false, error), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(ex, new MyApiResponse(false, error), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }
 //@ControllerAdvice

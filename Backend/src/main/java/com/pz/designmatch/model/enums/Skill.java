@@ -54,4 +54,8 @@ public enum Skill {
         }
         return null;
     }
+
+    public String toString() {
+        return this.displayName;
+    }
 }
