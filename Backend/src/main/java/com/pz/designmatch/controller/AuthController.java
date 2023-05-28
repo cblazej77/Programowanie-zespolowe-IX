@@ -97,11 +97,11 @@ public class AuthController {
 
     @Operation(summary = "Rejestracja artysty",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Pomyślnie zarejestrowano użytkownika",
+                    @ApiResponse(responseCode = "200", description = "Pomyślnie zarejestrowano artystę",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class))),
                     @ApiResponse(responseCode = "400", description = "Niepoprawne dane rejestracji, być może są już zajęte",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterRequest.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = ArtistRegisterRequest.class))),
             tags = {"Autoryzacja"})
     @PostMapping("/registerArtist")
     public ResponseEntity<?> registerArtist(@RequestBody ArtistRegisterRequest artistRegisterRequest) {
@@ -115,7 +115,7 @@ public class AuthController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class))),
                     @ApiResponse(responseCode = "400", description = "Niepoprawne dane rejestracji, być może są już zajęte",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterRequest.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = "application/json", schema = @Schema(implementation = CompanyRegisterRequest.class))),
             tags = {"Autoryzacja"})
     @PostMapping("/registerCompany")
     public ResponseEntity<?> registerCompany(@RequestBody CompanyRegisterRequest companyRegisterRequest) {

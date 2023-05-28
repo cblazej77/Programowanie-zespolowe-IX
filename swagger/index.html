@@ -468,7 +468,7 @@
 
     <h3 class="field-label">Request body</h3>
     <div class="field-items">
-      <div class="param">body <a href="#RegisterRequest">RegisterRequest</a> (required)</div>
+      <div class="param">body <a href="#ArtistRegisterRequest">ArtistRegisterRequest</a> (required)</div>
       
             <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
                 </div>  <!-- field-items -->
@@ -500,7 +500,7 @@
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    Pomyślnie zarejestrowano użytkownika
+    Pomyślnie zarejestrowano artystę
         <a href="#MyApiResponse">MyApiResponse</a>
     <h4 class="field-label">400</h4>
     Niepoprawne dane rejestracji, być może są już zajęte
@@ -523,7 +523,7 @@
 
     <h3 class="field-label">Request body</h3>
     <div class="field-items">
-      <div class="param">body <a href="#RegisterRequest">RegisterRequest</a> (required)</div>
+      <div class="param">body <a href="#CompanyRegisterRequest">CompanyRegisterRequest</a> (required)</div>
       
             <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
                 </div>  <!-- field-items -->
@@ -1042,7 +1042,7 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "skills" : [ "skills", "skills" ],
+  "skills" : [ "Logo", "Identyfikacja wizualna" ],
   "firstname" : "Jakub",
   "city" : "Zdalnie",
   "level" : "Mid",
@@ -1338,7 +1338,7 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "skills" : [ "skills", "skills" ],
+  "skills" : [ "Logo", "Identyfikacja wizualna" ],
   "firstname" : "Jakub",
   "city" : "Zdalnie",
   "level" : "Mid",
@@ -2088,8 +2088,8 @@
     <pre class="example"><code>{
   "number" : 5,
   "size" : 1,
-  "last" : true,
   "numberOfElements" : 5,
+  "last" : true,
   "totalPages" : 6,
   "pageable" : {
     "paged" : true,
@@ -2409,12 +2409,14 @@
     <li><a href="#ArtistFilterRequest"><code>ArtistFilterRequest</code></a></li>
     <li><a href="#ArtistProfileRequest"><code>ArtistProfileRequest</code></a></li>
     <li><a href="#ArtistProfileResponse"><code>ArtistProfileResponse</code></a></li>
+    <li><a href="#ArtistRegisterRequest"><code>ArtistRegisterRequest</code></a></li>
     <li><a href="#AvailableSkillsCategoriesResponse"><code>AvailableSkillsCategoriesResponse</code></a></li>
     <li><a href="#CommissionFilterRequest"><code>CommissionFilterRequest</code></a></li>
     <li><a href="#CommissionRequest"><code>CommissionRequest</code></a></li>
     <li><a href="#CommissionResponse"><code>CommissionResponse</code></a></li>
     <li><a href="#CompanyProfileRequest"><code>CompanyProfileRequest</code></a></li>
     <li><a href="#CompanyProfileResponse"><code>CompanyProfileResponse</code></a></li>
+    <li><a href="#CompanyRegisterRequest"><code>CompanyRegisterRequest</code></a></li>
     <li><a href="#EducationDto"><code>EducationDto</code></a></li>
     <li><a href="#ExperienceDto"><code>ExperienceDto</code></a></li>
     <li><a href="#InterlocutorResponse"><code>InterlocutorResponse</code></a></li>
@@ -2424,7 +2426,6 @@
     <li><a href="#Page"><code>Page</code></a></li>
     <li><a href="#PageableObject"><code>PageableObject</code></a></li>
     <li><a href="#PortfolioEntryResponse"><code>PortfolioEntryResponse</code></a></li>
-    <li><a href="#RegisterRequest"><code>RegisterRequest</code></a></li>
     <li><a href="#ShortArtistProfileResponse"><code>ShortArtistProfileResponse</code></a></li>
     <li><a href="#SkillsCategoryResponse"><code>SkillsCategoryResponse</code></a></li>
     <li><a href="#SortObject"><code>SortObject</code></a></li>
@@ -2536,6 +2537,22 @@
           <div class="param-desc"><span class="param-type">example: https://www.pinterest.com/jkasinski</span></div>
 <div class="param">twitter (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Twitter </div>
           <div class="param-desc"><span class="param-type">example: https://www.twitter.com/jkasinski</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ArtistRegisterRequest"><code>ArtistRegisterRequest</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">email </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Adres email </div>
+          <div class="param-desc"><span class="param-type">example: jkasinski1@Gmail.com</span></div>
+<div class="param">username </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nazwa użytkownika </div>
+          <div class="param-desc"><span class="param-type">example: jkasinski1</span></div>
+<div class="param">password </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Hasło </div>
+          <div class="param-desc"><span class="param-type">example: password</span></div>
+<div class="param">firstname </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Imię </div>
+          <div class="param-desc"><span class="param-type">example: Jakub</span></div>
+<div class="param">lastname </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nazwisko </div>
+          <div class="param-desc"><span class="param-type">example: Kasinski</span></div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
@@ -2688,6 +2705,26 @@
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="CompanyRegisterRequest"><code>CompanyRegisterRequest</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">email </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Adres email </div>
+          <div class="param-desc"><span class="param-type">example: jkasinski1@Gmail.com</span></div>
+<div class="param">username </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nazwa użytkownika </div>
+          <div class="param-desc"><span class="param-type">example: jkasinski1</span></div>
+<div class="param">password </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Hasło </div>
+          <div class="param-desc"><span class="param-type">example: password</span></div>
+<div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nazwa firmy </div>
+          <div class="param-desc"><span class="param-type">example: Google</span></div>
+<div class="param">nip </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> NIP </div>
+          <div class="param-desc"><span class="param-type">example: 5247289916</span></div>
+<div class="param">regon </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> REGON </div>
+          <div class="param-desc"><span class="param-type">example: 850704562</span></div>
+<div class="param">krs (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> KRS </div>
+          <div class="param-desc"><span class="param-type">example: 0000385161</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="EducationDto"><code>EducationDto</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
@@ -2777,10 +2814,10 @@
 <div class="param">content (optional)</div><div class="param-desc"><span class="param-type"><a href="#object">array[Object]</a></span>  </div>
 <div class="param">number (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
 <div class="param">sort (optional)</div><div class="param-desc"><span class="param-type"><a href="#SortObject">SortObject</a></span>  </div>
-<div class="param">first (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
-<div class="param">last (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
 <div class="param">numberOfElements (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: int32</div>
 <div class="param">pageable (optional)</div><div class="param-desc"><span class="param-type"><a href="#PageableObject">PageableObject</a></span>  </div>
+<div class="param">first (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">last (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
 <div class="param">empty (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
@@ -2809,18 +2846,6 @@
     </div>  <!-- field-items -->
   </div>
   <div class="model">
-    <h3><a name="RegisterRequest"><code>RegisterRequest</code></a> <a class="up" href="#__Models">Up</a></h3>
-    
-    <div class="field-items">
-      <div class="param">email </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Adres email </div>
-          <div class="param-desc"><span class="param-type">example: jkasinski1@Gmail.com</span></div>
-<div class="param">username </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nazwa użytkownika </div>
-          <div class="param-desc"><span class="param-type">example: jkasinski1</span></div>
-<div class="param">password </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Hasło </div>
-          <div class="param-desc"><span class="param-type">example: password</span></div>
-    </div>  <!-- field-items -->
-  </div>
-  <div class="model">
     <h3><a name="ShortArtistProfileResponse"><code>ShortArtistProfileResponse</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
@@ -2837,6 +2862,7 @@
         <div class="param-enum">Junior</div><div class="param-enum">Mid</div><div class="param-enum">Senior</div>
           <div class="param-desc"><span class="param-type">example: Mid</span></div>
 <div class="param">skills (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span> Umiejętności </div>
+          <div class="param-desc"><span class="param-type">example: [&quot;Logo&quot;,&quot;Identyfikacja wizualna&quot;]</span></div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
