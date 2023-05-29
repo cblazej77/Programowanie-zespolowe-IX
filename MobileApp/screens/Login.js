@@ -279,7 +279,7 @@ const Login = ({ navigation }) => {
                     <StatsText style={{ color: primary }}>Kontynuuj bez logowania</StatsText>
                   </StyledButton>
                 </LinearGradientStyle>
-                {!googleSubmiting && (
+                {/* {!googleSubmiting && (
                   <LinearGradientStyle colors={[green, green2]}>
                     <StyledButton
                       google={true}
@@ -321,7 +321,7 @@ const Login = ({ navigation }) => {
                       <ActivityIndicator size="large" color={primary} />
                     </StyledButton>
                   </LinearGradientStyle>
-                )}
+                )} */}
                 <ExtraView>
                   <SmallText>Nie masz jeszcze konta? </SmallText>
                   <TextLink onPress={() => navigation.navigate('ArtistSignup')}>

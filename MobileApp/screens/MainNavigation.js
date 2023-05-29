@@ -7,14 +7,12 @@ import * as SecureStore from 'expo-secure-store';
 
 //Screens
 import HomePage from './navigation_screens/HomePage';
-import MessagesScreen from './navigation_screens/MessagesScreen';
 import ProfileScreen from './User/UserProfileScreen';
 import UserCompanyScreen from './User/UserCompanyScreen';
 
 import { SafeAreaView } from 'react-native';
 
 import { ChatLabel, Colors } from '../components/styles';
-//import { CredentialsContext } from '../components/CredentialsContext';
 
 const { secondary, darkLight } = Colors;
 
@@ -22,7 +20,6 @@ const { secondary, darkLight } = Colors;
 const homeName = 'Strona główna';
 const artistProfileName = 'Profil Artysty';
 const companyProfileName = 'Profil firmy';
-const messagesName = 'Wiadomości';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,9 +72,7 @@ export default function MainNavigation({navigation}) {
               iconName = focused ? 'home' : 'home-outline';
             } else if (rn == artistProfileName) {
               iconName = focused ? 'person' : 'person-outline';
-            } else if (rn == messagesName) {
-              iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
-            } else if (rn == companyProfileName) {
+            }  else if (rn == companyProfileName) {
               iconName = focused ? 'people' : 'people-outline';
             }
 
@@ -114,7 +109,6 @@ export default function MainNavigation({navigation}) {
         
         <Tab.Screen name={isArtist ? artistProfileName : companyProfileName} component={isArtist ? ProfileScreen : UserCompanyScreen} />
         <Tab.Screen name={homeName} component={HomePage} />
-        {/* <Tab.Screen name={messagesName} component={MessagesScreen} /> */}
       </Tab.Navigator>
     </SafeAreaView>
   );
