@@ -25,6 +25,7 @@ import {
   LeftInfoRow,
   LeftWrapper,
   LineForm,
+  LongDataText,
   ModalBackground,
   ModalInfo,
   ModalWrapper,
@@ -178,31 +179,31 @@ const UserPage = () => {
           {index == 0 && <HeaderText style={{ marginBottom: '1.5rem' }}>Wykształcenie</HeaderText>}
           <LeftInfoRow>
             <InfoText>Uczelnia:</InfoText>
-            <label>{item.school_name}</label>
+            <DataText>{item.school_name}</DataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Kierunek:</InfoText>
-            <label>{item.faculty}</label>
+            <LongDataText>{item.faculty}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Dziedzina nauk: </InfoText>
-            <label>{item.field_of_study}</label>
+            <LongDataText>{item.field_of_study}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Stopień: </InfoText>
-            <label>{item.degree}</label>
+            <LongDataText>{item.degree}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Od: </InfoText>
-            <label>{item.start_date}</label>
+            <LongDataText>{item.start_date}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Do: </InfoText>
-            <label>{item.end_date}</label>
+            <LongDataText>{item.end_date}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Opis: </InfoText>
-            <label>{item.description}</label>
+            <LongDataText>{item.description}</LongDataText>
           </LeftInfoRow>
         </div>
       );
@@ -247,23 +248,23 @@ const UserPage = () => {
             </>}
           <LeftInfoRow>
             <InfoText>Nazwa firmy: </InfoText>
-            <label>{item.company}</label>
+            <LongDataText>{item.company}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Miasto: </InfoText>
-            <label>{item.city}</label>
+            <LongDataText>{item.city}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Stanowisko: </InfoText>
-            <label>{item.position}</label>
+            <LongDataText>{item.position}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Od: </InfoText>
-            <label>{item.start_date}</label>
+            <LongDataText>{item.start_date}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Do: </InfoText>
-            <label>{item.end_date}</label>
+            <LongDataText>{item.end_date}</LongDataText>
           </LeftInfoRow>
         </div>
       );

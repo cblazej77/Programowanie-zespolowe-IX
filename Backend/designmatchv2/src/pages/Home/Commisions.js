@@ -28,6 +28,7 @@ import {
   ModalScroll,
   FilterModalWrapper,
   BlankCard,
+  Input,
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
@@ -77,6 +78,7 @@ const Commisions = () => {
   const [showFModal, setShowFModal] = useState(false);
   const [showCModal, setShowCModal] = useState(false);
   const [modalData, setModalData] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   function getSelectedLevel(levels) {
     if (levels) {
@@ -460,6 +462,10 @@ const Commisions = () => {
     );
   };
 
+  const handleInputChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
   const CommisionElement = (props) => {
     return (
       <CommisionLabel onClick={() => CModalOpen(props)}>
@@ -523,26 +529,37 @@ const Commisions = () => {
       );
     }
 
-    return filtered.content.map((filter, indexF) => (
-      !filter.contractor_username &&
-      <CommisionElement
-        key={indexF}
-        avatar="/assets/cards/person1.jpg"
-        name={filter.company_name}
-        title={filter.title}
-        rate={filter.rate}
-        description={filter.description}
-        deadline={filter.deadline}
-        level={getSelectedLevel(filter.level)}
-        location={filter.location}
-        tags={filter.tags}
-        categories={filter.skills}
-        languages={filter.languages}
-        username={filter.client_username}
-      />
-    ));
-  });
+    else {
+      return filtered.content.map((filter, indexF) => {
+        const { company_name, contractor_username, title, rate, description, deadline, level, location, tags, skills, languages, client_username } = filter;
 
+        if (!contractor_username
+          && (company_name.toLowerCase().includes(searchText.toLowerCase())
+            || client_username.toLowerCase().includes(searchText.toLowerCase())
+            || title.toLowerCase().includes(searchText.toLowerCase())
+            || searchText === '')) {
+          return (
+            <CommisionElement
+              key={indexF}
+              avatar="/assets/cards/person1.jpg"
+              name={company_name}
+              title={title}
+              rate={rate}
+              description={description}
+              deadline={deadline}
+              level={getSelectedLevel(level)}
+              location={location}
+              tags={tags}
+              categories={skills}
+              languages={languages}
+              username={client_username}
+            />
+          );
+        }
+        return null;
+      });
+    }
+  }, [filtered.content, searchText]);
 
   const CommisionModal = ({ showCModal }) => {
     const handleCompanyNavigation = () => {
@@ -697,6 +714,12 @@ const Commisions = () => {
                 <StyledOption value="2">najwięcej prac</StyledOption>
                 <StyledOption value="3">ostatnia aktywność</StyledOption>
               </StyledSelect> */}
+            <Input style={{ width: '16rem' }}
+              type='text'
+              value={searchText}
+              onChange={handleInputChange}
+              placeholder="Wyszukaj tytuł i nazwę firmy"
+            />
           </TopSection>
           {filtered ? (
             <CommisionWrapper>

@@ -42,7 +42,8 @@ import {
     RightWrapper,
     StyledDropDown,
     TopSection,
-    BubbleLinks
+    BubbleLinks,
+    LongDataText
 } from './ProfileElements';
 import {
     AboutInput,
@@ -367,17 +368,17 @@ const OtherCompanyPage = () => {
                                         <LeftColumn>
                                             <InfoText>Media społecznościowe:</InfoText>
                                             <BubbleWrap>
-                                                {get.website && <BubbleLinks href={get.website}>{get.website}</BubbleLinks>}
-                                                {get.linkedin && <BubbleLinks href={get.linkedin}>{get.linkedin}</BubbleLinks>}
-                                                {get.facebook && <BubbleLinks href={get.facebook}>{get.facebook}</BubbleLinks>}
-                                                {get.instagram && <BubbleLinks href={get.instagram}>{get.instagram}</BubbleLinks>}
-                                                {get.twitter && <BubbleLinks href={get.twitter}>{get.twitter}</BubbleLinks>}
+                                                {get.website && <BubbleLinks href={get.website}>strona firmy</BubbleLinks>}
+                                                {get.linkedin && <BubbleLinks href={get.linkedin}>linkedin</BubbleLinks>}
+                                                {get.facebook && <BubbleLinks href={get.facebook}>facebook</BubbleLinks>}
+                                                {get.instagram && <BubbleLinks href={get.instagram}>instagram</BubbleLinks>}
+                                                {get.twitter && <BubbleLinks href={get.twitter}>twitter</BubbleLinks>}
                                             </BubbleWrap>
                                         </LeftColumn>}
                                     <RightColumn>
                                         <LeftInfoRow>
                                             <InfoText>Adres:</InfoText>
-                                            <DataText>{get.address ? get.address : 'brak'}</DataText>
+                                            <LongDataText>{get.address ? get.address : 'brak'}</LongDataText>
                                         </LeftInfoRow>
                                         <LeftInfoRow>
                                             <InfoText>NIP:</InfoText>

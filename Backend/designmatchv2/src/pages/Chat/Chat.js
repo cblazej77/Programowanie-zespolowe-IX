@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import {
@@ -33,8 +34,6 @@ import { useAuth } from '../../components/Auth';
 
 const { darkLight, white, black } = COLORS;
 
-
-
 var stompClient = null;
 const Chat = () => {
   const [renderFlag, setRenderFlag] = useState(false);
@@ -50,7 +49,7 @@ const Chat = () => {
   const [dataProfile, setDataProfile] = useState([]);
   //const stompClientRef = useRef(null);
   const authApi = useAuth();
-
+  const navigate = useNavigate();
 
   const DMElement = (props) => {
     let copySecond = sessionStorage.getItem("active");
@@ -355,6 +354,14 @@ const Chat = () => {
   //   unseenMessages={32}
   //   lastOnline="1 godz."
 
+  const handleNavigate = (userNick) => {
+    navigate(`/other-account/${userNick}`, {
+      state: {
+        argument: userNick,
+      }
+    });
+  };
+
   return (
     <>
       {renderFlag ? (
@@ -385,7 +392,10 @@ const Chat = () => {
           </MessagesLabel>
           <DMWrapper>
             <DMHeaderContainer>
-              <Avatar src={urlActive}
+              <Avatar
+                onClick={() => handleNavigate(second)}
+                style={{ cursor: 'pointer' }}
+                src={urlActive}
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = "/assets/cards/defaultavatar.png";
@@ -401,7 +411,6 @@ const Chat = () => {
               </>
               }
             </DMMessagesContainer>
-
             <LineForm />
             <DMInputContainter>
               <Input type="text" placeholder="Napisz wiadomość" value={message} onChange={(e) => setMessage(e.target.value)} />

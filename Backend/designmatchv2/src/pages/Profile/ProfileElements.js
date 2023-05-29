@@ -661,3 +661,7 @@ export const ButtonsContainer = styled.div`
     justify-content: center;
   }
 `;
+
+export const LongDataText = styled(DataText)`
+  text-align: right;
+`;
