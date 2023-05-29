@@ -141,7 +141,7 @@ const CompanyProfile = ({ route, navigation }) => {
       {companyProfile ? (
         <ScrollView nestedScrollEnabled={true} style={{ flex: 1, backgroundColor: primary }} height={300}>
           <View style={{ flexDirection: 'row', margin: 15, justifyContent: 'space-between' }}>
-          <Awatar avatar={baseURL + '/public/api/artist/getProfileImageByUsername/' + username + '?date' + new Date()}></Awatar>
+          <Awatar avatar={baseURL + '/public/api/company/getProfileImageByUsername/' + username + '?date' + new Date()}></Awatar>
             <View style={{ width: '65%', alignItems: 'flex-start', justifyContent: 'center' }}>
               <HeaderText style={{ width: '100%', marginLeft: 10, color: darkLight}} isLong={(companyProfile.name.length > 30)}>
                 {companyProfile.name}
