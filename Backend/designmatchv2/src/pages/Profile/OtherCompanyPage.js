@@ -255,10 +255,16 @@ const OtherCompanyPage = () => {
                                         <ModalInfo>Poziom zaawansowania:</ModalInfo>
                                         <ModalData>{modalData.level}</ModalData>
                                     </ModalRow>
-                                    <ModalRow>
-                                        <ModalInfo>Lokalizacja:</ModalInfo>
-                                        <ModalData>{modalData.location}</ModalData>
-                                    </ModalRow>
+                                    <ModalInfo>Lokalizacja:</ModalInfo>
+                                    <ModalData>
+                                        {modalData.location.map((loc, index) => (
+                                            index !== 0 ? (
+                                                ' / ' + loc
+                                            ) : (
+                                                loc
+                                            )
+                                        ))}
+                                    </ModalData>
                                     <LineForm />
                                 </ModalColumn>
                                 <ModalColumn>
@@ -299,9 +305,10 @@ const OtherCompanyPage = () => {
                         <CommisionTitle>
                             {props.title}
                         </CommisionTitle>
-                        <LevelBubble>
-                            {props.level}
-                        </LevelBubble>
+                        {props.level.length > 0 &&
+                            <LevelBubble>
+                                {props.level}
+                            </LevelBubble>}
                     </CommisionTitleContainer>
                     <StakeText>{props.rate} PLN</StakeText>
                 </CommisionTop>
@@ -311,10 +318,18 @@ const OtherCompanyPage = () => {
                     margin: '0.4rem 0',
                     alignItems: 'center',
                 }}>
-                    <FiMapPin size={18} style={{ color: gray1 }} />
-                    <CommisionText>{props.location}</CommisionText>
-                    <FiClock size={18} style={{ color: gray1 }} />
-                    <CommisionText>{props.deadline}</CommisionText>
+                    {props.location.length > 0 &&
+                        <>
+                            <FiMapPin size={18} style={{ color: gray1 }} />
+                            <CommisionText>
+                                {props.location.length === 1 ? props.location[0] : props.location[0] + '+'}
+                            </CommisionText>
+                        </>}
+                    {props.deadline.length > 0 &&
+                        <>
+                            <FiClock size={18} style={{ color: gray1 }} />
+                            <CommisionText>{props.deadline}</CommisionText>
+                        </>}
                 </div>
                 <CommisionBottom>
                     {props.tags.map((tag, indexT) => (

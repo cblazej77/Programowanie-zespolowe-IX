@@ -78,6 +78,18 @@ const Commisions = () => {
   const [showCModal, setShowCModal] = useState(false);
   const [modalData, setModalData] = useState([]);
 
+  function getSelectedLevel(levels) {
+    if (levels) {
+      if (levels.length === 3) {
+        return 'Junior+';
+      } else if (levels.length === 2) {
+        return 'Mid+';
+      } else if (levels.length === 1) {
+        return levels[0];
+      }
+    }
+  }
+
   const navigate = useNavigate();
 
   const handleCityChange = (e) => {
@@ -456,9 +468,10 @@ const Commisions = () => {
             <CommisionTitle>
               {props.title}
             </CommisionTitle>
-            <LevelBubble>
-              {props.level}
-            </LevelBubble>
+            {props.level &&
+              <LevelBubble>
+                {props.level}
+              </LevelBubble>}
           </CommisionTitleContainer>
           <StakeText>{props.rate} PLN</StakeText>
         </CommisionTop>
@@ -470,8 +483,14 @@ const Commisions = () => {
         }}>
           <FiBriefcase size={18} style={{ color: gray1 }} />
           <CommisionText>{props.name}</CommisionText>
-          <FiMapPin size={18} style={{ color: gray1 }} />
-          <CommisionText>{props.location}</CommisionText>
+          {props.location.length > 0 &&
+            <>
+              <FiMapPin size={18} style={{ color: gray1 }} />
+              <CommisionText>
+                {props.location.length === 1 ? props.location[0] : props.location[0] + '+'}
+              </CommisionText>
+            </>
+          }
           <FiClock size={18} style={{ color: gray1 }} />
           <CommisionText>{props.deadline}</CommisionText>
         </div>
@@ -514,7 +533,7 @@ const Commisions = () => {
         rate={filter.rate}
         description={filter.description}
         deadline={filter.deadline}
-        level={filter.level}
+        level={getSelectedLevel(filter.level)}
         location={filter.location}
         tags={filter.tags}
         categories={filter.skills}
@@ -554,24 +573,17 @@ const Commisions = () => {
                   </ModalRow>
                   <ModalRow>
                     <ModalInfo>Poziom zaawansowania:</ModalInfo>
-                    <ModalData>{modalData.level}</ModalData>
+                    <ModalData>{modalData.level ? modalData.level : 'brak'}</ModalData>
                   </ModalRow>
                   <ModalInfo>Lokalizacja:</ModalInfo>
-                  {/* {modalData.location.map((loc, index) => (
-                    index === 0 ? (
-                      <ModalData key={index}>{loc}, {loc}, {loc}, {loc}, {loc}, {loc}</ModalData>
-                    ) : (
-                      <ModalData key={index}>, {loc}</ModalData>
-                    )
-                  ))} */}
                   <ModalData>
-                    {modalData.location.map((loc, index) => (
+                    {modalData.location.length > 0 ? modalData.location.map((loc, index) => (
                       index !== 0 ? (
                         ' / ' + loc
                       ) : (
                         loc
                       )
-                    ))}
+                    )) : 'brak'}
                   </ModalData>
                   <ModalRow>
                     <ModalInfo>Firma:</ModalInfo>
@@ -582,23 +594,23 @@ const Commisions = () => {
                 <ModalColumn>
                   <ModalInfo>Wymagane umiejętności:</ModalInfo>
                   <ModalBubbleContainer>
-                    {modalData.categories.map((category, index) => (
+                    {modalData.categories.length > 0 ? modalData.categories.map((category, index) => (
                       <CommisionBubble key={index}>{category}</CommisionBubble>
-                    ))}
+                    )) : <ModalData>brak</ModalData>}
                   </ModalBubbleContainer>
                   <CommisionLineForm />
                   <ModalInfo>Wymagane języki:</ModalInfo>
                   <ModalBubbleContainer>
-                    {modalData.languages.map((language, index) => (
+                    {modalData.languages.length ? modalData.languages.map((language, index) => (
                       <CommisionBubble key={index}>{language}</CommisionBubble>
-                    ))}
+                    )) : <ModalData>brak</ModalData>}
                   </ModalBubbleContainer>
                   <CommisionLineForm />
                   <ModalInfo>Tagi:</ModalInfo>
                   <ModalBubbleContainer>
-                    {modalData.tags.map((tag, index) => (
+                    {modalData.tags.length ? modalData.tags.map((tag, index) => (
                       <CommisionBubble key={index}>{tag}</CommisionBubble>
-                    ))}
+                    )) : <ModalData>brak</ModalData>}
                   </ModalBubbleContainer>
                 </ModalColumn>
               </ModalBottomSection>

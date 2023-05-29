@@ -6,6 +6,7 @@ import { FaEdit } from "react-icons/fa";
 
 const {
   darkLight,
+  darkLight2,
   gray,
   gray1,
   primary,
@@ -197,11 +198,12 @@ export const Button = styled(Link)`
     font-size: 0.9rem;
     width: 100%;
     text-align: center;
-    background: linear-gradient(
-    to top,
-    #4A4E69,
-    #555978
-    );
+    background: ${darkLight};
+    transition: transform 0.3s ease;
+    &:hover {
+        transform: scale(1.05);
+        background: ${darkLight2};
+    }
 `;
 export const ButtonMessage = styled.button`
     border: none;
@@ -230,6 +232,10 @@ export const ButtonMessageOff = styled(ButtonMessage)`
 export const AddCommissionButton = styled(Button)`
     margin: 1rem;
     width: 10rem;
+    transition: transform 0.3s ease;
+    &:hover {
+        transform: scale(1.05);
+    }
 `;
 
 export const SmallButton = styled(Button)`
@@ -520,14 +526,27 @@ export const ModalWrapper = styled.div`
       transform: translateY(0);
     }
   }
-  max-height: calc(100vh - 7rem); /* dostosowana maksymalna wysokość do dostępnej przestrzeni */
-  overflow-y: auto; /* dodaje pasek przewijania, jeśli zawartość jest zbyt duża */
+  max-height: calc(100vh - 7rem); 
+  overflow-y: auto; 
   @media screen and (max-width: 100rem) {
     width: 95%;
   }
   @media screen and (max-width: 1280px) {
     font-size: 1.2rem;
   }
+  &::-webkit-scrollbar {
+      width: 0.4vw;
+    }
+    &::-webkit-scrollbar-track {
+      background: ${primary};
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${gray1};
+      border-radius: 15px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: ${darkLight};
+    }
 `;
 
 export const ModalTitle = styled.text`

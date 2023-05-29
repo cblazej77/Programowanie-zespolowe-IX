@@ -63,7 +63,19 @@ import { FiBriefcase, FiClock, FiMapPin, FiUser } from 'react-icons/fi';
 import { FaTimes } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 
-const { darkLight, gray1, secondary } = COLORS;
+const {
+  darkLight,
+  gray1,
+  secondary
+} = COLORS;
+
+const levelOptions = [
+  'Junior',
+  'Junior+',
+  'Mid',
+  'Mid+',
+  'Senior'
+];
 
 const CompanyPage = () => {
   const navigate = useNavigate();
@@ -78,6 +90,28 @@ const CompanyPage = () => {
   const [get, setGet] = useState("");
   const [CommisionsData, setCommisionsData] = useState([]);
   const [username, setUsername] = useState('');
+
+  function getSelectedLevel(levels) {
+    if (levels) {
+      if (levels.length === 3) {
+        return 'Junior+';
+      } else if (levels.length === 2) {
+        return 'Mid+';
+      } else if (levels.length === 1) {
+        return levels[0];
+      }
+    }
+  }
+
+  function handleLevels(level) {
+    if (level === 'Junior+') {
+      return ['Junior', 'Mid', 'Senior'];
+    } else if (level === 'Mid+') {
+      return ['Mid', 'Senior'];
+    } else {
+      return [level];
+    }
+  }
 
   const maxChars = 255;
 
@@ -245,9 +279,9 @@ const CompanyPage = () => {
     }, [day, month, year]);
 
     const handleAddCommission = useCallback(async () => {
-
       try {
         if (modalEditData.title && modalEditData.description && modalEditData.rate) {
+          modalEditData.level = handleLevels(modalEditData.level);
           const response = await axios.post(
             `/api/commission/create`,
             modalEditData,
@@ -259,16 +293,15 @@ const CompanyPage = () => {
               },
             }
           );
+          setShowModalEdit(false);
         }
         else {
-          alert('Pola tytułu, opisu, stawki i czasu wykonania zlecenia powinny być wypełnione.');
+          alert('Pola tytułu, opisu, stawki i czasu wykonania powinny być wypełnione.');
         }
       } catch (err) {
         console.error('Error while saving data:', err);
       }
-      console.log(modalEditData);
-      setShowModalEdit(false);
-    }, [day, month, year, modalEditData]);
+    }, [modalEditData]);
 
     return (
       <>
@@ -350,20 +383,13 @@ const CompanyPage = () => {
                   <ModalEditRow>
                     <ModalInfo>Poziom zaawansowania:</ModalInfo>
                     <BubblesDropDown
-                      options={levelT}
+                      options={levelOptions}
                       value={modalEditData.level}
-                      placeHolder={modalEditData.level}
-                      onChange={(e) => {
-                        const selectedLevel = e.value;
-                        setLevelT((prevLevel) => prevLevel.filter((lev) => lev !== selectedLevel));
-                        setModalEditData((prevData) => ({
-                          ...prevData,
-                          level: [...prevData.level, selectedLevel]
-                        }));
-                      }}
+                      placeholder={modalEditData.level}
+                      onChange={(e) => { setModalEditData({ ...modalEditData, level: e.value, }) }}
                     />
                   </ModalEditRow>
-                  <ModalBubbleContainer>
+                  {/* <ModalBubbleContainer>
                     {Array.isArray(modalEditData.level) && modalEditData.level.map((lev, index) => (
                       <CommisionEditBubble
                         key={index}
@@ -378,7 +404,7 @@ const CompanyPage = () => {
                         {lev}
                       </CommisionEditBubble>
                     ))}
-                  </ModalBubbleContainer>
+                  </ModalBubbleContainer> */}
                   <ModalEditRow>
                     <ModalInfo>Lokalizacja:</ModalInfo>
                     <BubblesDropDown
@@ -516,7 +542,6 @@ const CompanyPage = () => {
                 </ModalColumn>
               </ModalBottomSection>
             </ModalWrapper>
-
             <div style={{ width: '100%', justifyContent: 'center', display: 'flex' }}>
               <AddCommissionButton onClick={handleAddCommission}>
                 Dodaj zlecenie
@@ -590,10 +615,16 @@ const CompanyPage = () => {
                     <ModalInfo>Poziom zaawansowania:</ModalInfo>
                     <ModalData>{modalData.level}</ModalData>
                   </ModalRow>
-                  <ModalRow>
-                    <ModalInfo>Lokalizacja:</ModalInfo>
-                    <ModalData>{modalData.location}</ModalData>
-                  </ModalRow>
+                  <ModalInfo>Lokalizacja:</ModalInfo>
+                  <ModalData>
+                    {modalData.location.map((loc, index) => (
+                      index !== 0 ? (
+                        ' / ' + loc
+                      ) : (
+                        loc
+                      )
+                    ))}
+                  </ModalData>
                   <LineForm />
                 </ModalColumn>
                 <ModalColumn>
@@ -637,9 +668,10 @@ const CompanyPage = () => {
             <CommisionTitle>
               {props.title}
             </CommisionTitle>
-            <LevelBubble>
-              {props.level}
-            </LevelBubble>
+            {props.level &&
+              <LevelBubble>
+                {props.level}
+              </LevelBubble>}
           </CommisionTitleContainer>
           <StakeText>{props.rate} PLN</StakeText>
         </CommisionTop>
@@ -649,8 +681,13 @@ const CompanyPage = () => {
           margin: '0.4rem 0',
           alignItems: 'center',
         }}>
-          <FiMapPin size={18} style={{ color: gray1 }} />
-          <CommisionText>{props.location}</CommisionText>
+          {props.location.length > 0 &&
+            <>
+              <FiMapPin size={18} style={{ color: gray1 }} />
+              <CommisionText>
+                {props.location.length === 1 ? props.location[0] : props.location[0] + '+'}
+              </CommisionText>
+            </>}
           <FiClock size={18} style={{ color: gray1 }} />
           <CommisionText>{props.deadline}</CommisionText>
           {props.contractor_username && (
@@ -739,7 +776,7 @@ const CompanyPage = () => {
                   description={com.description}
                   rate={com.rate}
                   deadline={com.deadline}
-                  level={com.level}
+                  level={getSelectedLevel(com.level)}
                   location={com.location}
                   languages={com.languages}
                   tags={com.tags}
