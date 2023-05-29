@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   AllPage,
   Top,
@@ -10,11 +10,11 @@ import {
   AnswerText,
   QuestionText
 } from './Elements';
-import sessionStoreCleaner from  '../../components/sessionStoreCleaner';
+import sessionStoreCleaner from '../../components/sessionStoreCleaner';
 const About = () => {
-    useEffect(() => {
-        sessionStoreCleaner.checkAndRemoveSessionStorage();
-    }, []);
+  useEffect(() => {
+    sessionStoreCleaner.checkAndRemoveSessionStorage();
+  }, []);
 
 
   return (
@@ -29,7 +29,7 @@ const About = () => {
         </Question>
         <Data>
           <AnswerText>
-            Wystartowaliśmy w 2023 roku. DesignMatch to platforma, która umożliwia szukanie
+            Wystartowaliśmy w 2023 roku. DesignerMatch to platforma, która umożliwia szukanie
             artystów graficznych do zleceń oraz umieszczanie zleceń przez klientów poszukujących
             usług artystycznych. Głównym celem strony jest połączenie artystów graficznych z potencjalnymi
             klientami, którzy potrzebują ich umiejętności i talentu w zakresie projektowania graficznego.
