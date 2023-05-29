@@ -212,8 +212,8 @@ const EditUserPageMobile = () => {
       ...prevList,
       {
         id: newId,
-        faculty: faculty,
         school_name: schoolName,
+        faculty: faculty,
         field_of_study: fieldOfStudy,
         degree: degree,
         start_date: startDate,
@@ -508,9 +508,9 @@ const EditUserPageMobile = () => {
           artistProfile.experience[i].company,
           artistProfile.experience[i].city,
           artistProfile.experience[i].position,
-          artistProfile.experience[i].description,
           artistProfile.experience[i].start_date,
           artistProfile.experience[i].end_date,
+          artistProfile.experience[i].description,
         );
       }
       for (let i = 0; i < artistProfile.skills.length; i++) {
@@ -711,7 +711,7 @@ const EditUserPageMobile = () => {
         {get.linkedin && <BubbleLinks href={get.linkedin}> linkedin  </BubbleLinks>}
         {get.pinterest && <BubbleLinks href={get.pinterest}> pinterest  </BubbleLinks>}
         {get.twitter && <BubbleLinks href={get.twitter}> twitter  </BubbleLinks>}
-        {get.website && <BubbleLinks href={get.website}> website  </BubbleLinks>}
+        {get.website && <BubbleLinks href={get.website}> własna strona  </BubbleLinks>}
 
 
       </BubbleWrap>
@@ -935,12 +935,13 @@ const EditUserPageMobile = () => {
                   <LeftColumn >
                     <InputInfoText>Miejscowość:</InputInfoText>
                     {/* zostaw to znikanie, bo dziwnie się świecą te elementy */}
-                    <Dropdown
-                      options={availableLocations}
-                      onChange={(e) => setLocation(e.value)}
-                      value={location}
-                      placeholder='Wybierz'
-                    />
+                    {(!showModalTags && !showModalLinks && !showModalSkills && !showModalLanguages) &&
+                      <StyledDropDown
+                        options={availableLocations}
+                        onChange={(e) => setLocation(e.value)}
+                        value={location}
+                        placeholder='Wybierz'
+                      />}
                     <LineForm />
                     <HeaderText>Umiejętności:</HeaderText>
                     <BubbleWrap>

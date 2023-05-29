@@ -62,6 +62,11 @@ const Cards = () => {
   const [showCategories, setShowCategories] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [refresh, setRefresh] = useState(false);
+
+  const handleRefresh = () => {
+    setRefresh(!refresh);
+  };
 
   const handleCityChange = (e) => {
     const city = e.target.id;
@@ -334,6 +339,7 @@ const Cards = () => {
         || searchText === '') {
         return (
           <CardItem
+            onRefresh={handleRefresh}
             key={indexF}
             name={firstname}
             surname={lastname}

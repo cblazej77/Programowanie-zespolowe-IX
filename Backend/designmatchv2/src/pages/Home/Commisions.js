@@ -738,7 +738,6 @@ const Commisions = () => {
           <CommisionModal showCModal={showCModal} />
         </RightLabel>
       </Cards2>
-
     </>
   )
 }

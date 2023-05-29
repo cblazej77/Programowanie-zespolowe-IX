@@ -133,13 +133,13 @@ const UserPage = () => {
       ...prevList,
       {
         id: newId,
-        faculty,
         school_name: schoolName,
+        faculty: faculty,
         field_of_study: fieldOfStudy,
-        degree,
+        degree: degree,
         start_date: startDate,
         end_date: endDate,
-        description,
+        description: description,
       },
     ]);
   };
@@ -179,7 +179,7 @@ const UserPage = () => {
           {index == 0 && <HeaderText style={{ marginBottom: '1.5rem' }}>Wykształcenie</HeaderText>}
           <LeftInfoRow>
             <InfoText>Uczelnia:</InfoText>
-            <DataText>{item.school_name}</DataText>
+            <LongDataText>{item.school_name}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Kierunek:</InfoText>
@@ -187,7 +187,7 @@ const UserPage = () => {
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Dziedzina nauk: </InfoText>
-            <LongDataText>{item.field_of_study}</LongDataText>
+            <LongDataText>{item.field_of_study ? item.field_of_study : 'brak'}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Stopień: </InfoText>
@@ -230,7 +230,7 @@ const UserPage = () => {
         {get.linkedin && <BubbleLinks href={get.linkedin}>linkedin</BubbleLinks>}
         {get.pinterest && <BubbleLinks href={get.pinterest}>pinterest</BubbleLinks>}
         {get.twitter && <BubbleLinks href={get.twitter}>twitter</BubbleLinks>}
-        {get.website && <BubbleLinks href={get.website}>website</BubbleLinks>}
+        {get.website && <BubbleLinks href={get.website}>własna strona</BubbleLinks>}
       </BubbleWrap>
     </>
     )
@@ -372,8 +372,8 @@ const UserPage = () => {
                   setModalEditData({ ...modalEditData, description: target.value, })}
               />
               {modalEditData.description && (<Bracket>({Math.min(modalEditData.description.length, 300)}/{300})</Bracket>)}
-              <div style={{ height: '100%', justifyContent: 'end', display: 'flex', flexDirection: 'column' }}>
-                <Button onClick={handleEditImageClick}>Wybierz zdjęcie</Button>
+              <div style={{ height: '100%', justifyContent: 'end', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Button style={{ width: '10rem' }} onClick={handleEditImageClick}>Wybierz zdjęcie</Button>
                 <input
                   type="file"
                   accept="image/*"
@@ -381,7 +381,7 @@ const UserPage = () => {
                   style={{ display: 'none' }}
                   onChange={handleFileInputChange}
                 />
-                <Button
+                <Button style={{ width: '6rem' }}
                   onClick={handleAddPhoto}>
                   Dodaj
                 </Button>

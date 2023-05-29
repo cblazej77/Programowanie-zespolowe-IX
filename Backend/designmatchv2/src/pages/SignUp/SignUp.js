@@ -451,7 +451,7 @@ function LoginForm() {
               {(!checkRegexName && name !== "") && <ErrorLabel>Nazwa powinna zaczynać się od wielkiej litery.</ErrorLabel>}
               <InputText label="NIP:" id="NIPId" onChange={handleNIP} checkRegex={checkRegexNIP} />
               {(!checkRegexNIP && NIP !== "") && <ErrorLabel>Wprowadź poprawny NIP.</ErrorLabel>}
-              <InputText label="Regon:" id="regonId" onChange={handleREGON} checkRegex={checkRegexREGON} />
+              <InputText label="REGON:" id="regonId" onChange={handleREGON} checkRegex={checkRegexREGON} />
               {(!checkRegexREGON && REGON !== "") && <ErrorLabel>Wprowadź poprawny REGON.</ErrorLabel>}
               <InputText label="KRS:" id="krsId" onChange={handleKRS} checkRegex={checkRegexKRS} />
               {(!checkRegexKRS && KRS !== "") && <ErrorLabel>Wprowadź poprawny KRS.</ErrorLabel>}

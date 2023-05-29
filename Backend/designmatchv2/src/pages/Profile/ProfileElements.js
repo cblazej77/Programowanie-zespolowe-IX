@@ -205,6 +205,7 @@ export const Button = styled(Link)`
         background: ${darkLight2};
     }
 `;
+
 export const ButtonMessage = styled.button`
     border: none;
     border-radius: 10px;
