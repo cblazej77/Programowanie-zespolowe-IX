@@ -72,7 +72,7 @@ function Navbar() {
         <NavbarContainer>
           <NavLogo to='/' onClick={closeMobileMenu}>
             <NavLogoIcon />
-            DESIGNMATCH
+            DesignerMatch
           </NavLogo>
           <MobileIcon onClick={handleClick}>
             {click ? <XIcon /> : <ThreeLineIcon />}

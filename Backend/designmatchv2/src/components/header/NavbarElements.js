@@ -68,7 +68,6 @@ export const NavLogo = styled(Link)`
   font-size: 2.7rem;
   display: flex;
   align-items: center;
-  font-family: "Norwesterregular";
 
   @media screen and (max-width: 455px) {
   font-size: 2.4rem;  /*znika napis przy małych telefonach */
