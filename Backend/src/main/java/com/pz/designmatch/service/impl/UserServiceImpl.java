@@ -143,7 +143,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void sendConfirmationEmail(String email, String username, String token) {
-        String link = "http://localhost:8080/api/auth/confirmEmail?token=" + token;
+        String link = "http://localhost:8080/auth/confirmEmail?token=" + token;
         String body = emailService.buildConfirmationEmail(username, link);
         emailService.send(email, body, "Email confirmation");
     }

@@ -5,8 +5,11 @@ import com.pz.designmatch.model.user.UserEntity;
 import com.pz.designmatch.repository.ConfirmationTokenRepository;
 import com.pz.designmatch.service.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,18 +27,24 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         return token;
     }
 
-    public String confirmToken(String token) {
+    public RedirectView confirmToken(String token) {
         ConfirmationToken confirmationToken = getToken(token).orElseThrow(() -> new IllegalStateException("Token not found"));
         if (confirmationToken.getConfirmedAt() != null) {
-            return "Email already confirmed";
+            RedirectView redirectView = new RedirectView();
+            redirectView.setUrl("http://localhost:3000/login");
+            return redirectView;
         }
         LocalDateTime expiresAt = confirmationToken.getExpiresAt();
         if (expiresAt.isBefore(LocalDateTime.now())) {
-            return "Token expired";
+            RedirectView redirectView = new RedirectView();
+            redirectView.setUrl("http://localhost:3000/login");
+            return redirectView;
         }
 
         setConfirmedAt(token);
-        return "Email confirmed";
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("http://localhost:3000/confirm");
+        return redirectView;
     }
 
     private void setConfirmedAt(String token) {

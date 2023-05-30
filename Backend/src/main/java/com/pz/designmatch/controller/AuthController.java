@@ -28,6 +28,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -130,10 +131,14 @@ public class AuthController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = MyApiResponse.class)))},
             tags = {"Autoryzacja"})
     @GetMapping(path = "/confirmEmail")
-    public ResponseEntity<String> confirm(@RequestParam("token") String token) {
-        return new ResponseEntity<>(confirmationTokenService.confirmToken(token), HttpStatus.OK);
+    public RedirectView confirm(@RequestParam("token") String token) {
+        return confirmationTokenService.confirmToken(token);
     }
 
+    @PutMapping()
+    public String redirect() {
+        return "redirect:/redirect";
+    }
 
     @Operation(summary = "Zwraca dane aktualnie zalogowanego użytkownika",
             responses = {
