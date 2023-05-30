@@ -233,6 +233,18 @@ const OtherCompanyPage = () => {
         event.stopPropagation();
     };
 
+    function getSelectedLevel(levels) {
+        if (levels) {
+            if (levels.length === 3) {
+                return 'Junior+';
+            } else if (levels.length === 2) {
+                return 'Mid+';
+            } else if (levels.length === 1) {
+                return levels[0];
+            }
+        }
+    }
+
     const Modal = ({ showModal }) => {
         return (
             <>
@@ -306,7 +318,7 @@ const OtherCompanyPage = () => {
                         <CommisionTitle>
                             {props.title}
                         </CommisionTitle>
-                        {props.level.length > 0 &&
+                        {props.level &&
                             <LevelBubble>
                                 {props.level}
                             </LevelBubble>}
@@ -406,7 +418,7 @@ const OtherCompanyPage = () => {
                                 description={com.description}
                                 rate={com.rate}
                                 deadline={com.deadline}
-                                level={com.level}
+                                level={getSelectedLevel(com.level)}
                                 location={com.location}
                                 languages={com.languages}
                                 tags={com.tags}
