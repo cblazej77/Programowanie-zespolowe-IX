@@ -172,6 +172,7 @@ const ModalTags = ({ showModal, setShowModal, tags, setTags }) => {
     }
     handleClearTagsToAdd();
   }
+
   function handleClearTagsToAdd() {
     setTagsToAdd([]);
   }

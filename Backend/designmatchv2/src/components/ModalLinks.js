@@ -90,7 +90,7 @@ const Button = styled.button`
 const InputWebsite = styled(Input)`
   margin-right: 0px;
 `
-const ModalLinks = ({ showModal, setShowModal, dribble, setDribble, facebook, setFacebook, instagram, linkedin, pinterest, twitter, website, setInstagram, setLinkedin, setPinterest, setTwitter, setWebsite }) => {
+const ModalLinks = ({ showModal, setShowModal, facebook, setFacebook, instagram, linkedin, pinterest, twitter, website, setInstagram, setLinkedin, setPinterest, setTwitter, setWebsite }) => {
   const modalRef = useRef();
 
   const [link1, setLink1] = useState(facebook);
@@ -112,6 +112,7 @@ const ModalLinks = ({ showModal, setShowModal, dribble, setDribble, facebook, se
       setShowModal(false);
     }
   };
+
   const keyPress = useCallback(
     e => {
       if (e.key === 'Escape' && showModal) {
@@ -130,7 +131,6 @@ const ModalLinks = ({ showModal, setShowModal, dribble, setDribble, facebook, se
     [keyPress]
   );
 
-
   const checkValidFacebook = (e) => {
     setLink1(e.target.value);
     const regex = new RegExp(FACEBOOK_URL);
@@ -143,6 +143,7 @@ const ModalLinks = ({ showModal, setShowModal, dribble, setDribble, facebook, se
       setFacebook("");
     }
   }
+
   const checkValidInstagram = (e) => {
     setLink2(e.target.value);
     const regex = new RegExp(INSTAGRAM_URL);
@@ -155,6 +156,7 @@ const ModalLinks = ({ showModal, setShowModal, dribble, setDribble, facebook, se
       setInstagram("");
     }
   }
+
   const checkValidLinekedin = (e) => {
     setLink3(e.target.value);
     const regex = new RegExp(LINKEDIN_URL);
@@ -167,6 +169,7 @@ const ModalLinks = ({ showModal, setShowModal, dribble, setDribble, facebook, se
       setLinkedin("");
     }
   }
+
   const checkValidPinterest = (e) => {
     setLink4(e.target.value);
     const regex = new RegExp(PINTEREST_URL);
@@ -179,6 +182,7 @@ const ModalLinks = ({ showModal, setShowModal, dribble, setDribble, facebook, se
       setPinterest("");
     }
   }
+
   const checkValidTwitter = (e) => {
     setLink5(e.target.value);
     const regex = new RegExp(TWITTER_URL);
@@ -204,7 +208,6 @@ const ModalLinks = ({ showModal, setShowModal, dribble, setDribble, facebook, se
       setWebsite("");
     }
   }
-
 
   return (
     <>

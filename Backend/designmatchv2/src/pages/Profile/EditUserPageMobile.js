@@ -335,24 +335,24 @@ const EditUserPageMobile = () => {
   }
 
 
-  function clear() {
-    handleClearEducationList();
-    handleClearExperienceList();
-    handleClearLanguages();
-    handleClearSkills();
-    handleClearTags();
-    handleClearSkillsToAdd();
-    setBio('');
-    setLevel('');
-    setLocation('');
-    setDribble('');
-    setFacebook('');
-    setInstagram('');
-    setTwitter('');
-    setPinterest('');
-    setWebsite('');
-    setLinkedin('');
-  }
+  // function clear() {
+  //   handleClearEducationList();
+  //   handleClearExperienceList();
+  //   handleClearLanguages();
+  //   handleClearSkills();
+  //   handleClearTags();
+  //   handleClearSkillsToAdd();
+  //   setBio('');
+  //   setLevel('');
+  //   setLocation('');
+  //   setDribble('');
+  //   setFacebook('');
+  //   setInstagram('');
+  //   setTwitter('');
+  //   setPinterest('');
+  //   setWebsite('');
+  //   setLinkedin('');
+  // }
 
   const updateAvatar = async () => {
     try {
@@ -486,7 +486,7 @@ const EditUserPageMobile = () => {
 
   useEffect(() => {
     if (artistProfile) {
-      clear();
+      // clear();
       setBio(artistProfile.bio);
       setLevel(artistProfile.level);
       setLocation(artistProfile.location);
@@ -705,15 +705,12 @@ const EditUserPageMobile = () => {
   function ListLinks() {
     return (<>
       <BubbleWrap>
-
-        {get.facebook && <BubbleLinks href={get.facebook}  > facebook</BubbleLinks>}
-        {get.instagram && <BubbleLinks href={get.instagram}> instagram </BubbleLinks>}
-        {get.linkedin && <BubbleLinks href={get.linkedin}> linkedin  </BubbleLinks>}
-        {get.pinterest && <BubbleLinks href={get.pinterest}> pinterest  </BubbleLinks>}
-        {get.twitter && <BubbleLinks href={get.twitter}> twitter  </BubbleLinks>}
-        {get.website && <BubbleLinks href={get.website}> własna strona  </BubbleLinks>}
-
-
+        {facebook && <BubbleLinks href={facebook}>facebook</BubbleLinks>}
+        {instagram && <BubbleLinks href={instagram}>instagram </BubbleLinks>}
+        {linkedin && <BubbleLinks href={linkedin}>linkedin  </BubbleLinks>}
+        {pinterest && <BubbleLinks href={pinterest}>pinterest</BubbleLinks>}
+        {twitter && <BubbleLinks href={twitter}>twitter</BubbleLinks>}
+        {website && <BubbleLinks href={website}>własna strona</BubbleLinks>}
       </BubbleWrap>
     </>
     )
