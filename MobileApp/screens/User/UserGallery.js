@@ -130,11 +130,9 @@ const Gallery = () => {
               <View style={[styles.centeredView]}>
                 <View style={styles.modalView}>
                   <HeaderText style={{ color: darkLight }}>{modalData.name}</HeaderText>
-                  <Line style={{ width: '100%', height: 1 }} />
                   <View style={styles.ModalDescription}>
                     <RegularText style={{ color: '#6e6968' }}>{modalData.description}</RegularText>
                   </View>
-                  <Line style={{ width: '100%', height: 1 }} />
                   <Image
                     resizeMode="contain"
                     source={{

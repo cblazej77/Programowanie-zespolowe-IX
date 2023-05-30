@@ -158,7 +158,7 @@ const CompanyProfile = ({ route, navigation }) => {
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <AppText style={styles.ListHeader}>Adres:</AppText>
-              <AppText style={[styles.ListHeader, {color: darkLight}]}>{companyProfile.companyAdress}</AppText>
+              <AppText style={[styles.ListHeader, {color: darkLight}]}>{companyProfile.address}</AppText>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <AppText style={styles.ListHeader}>NIP:</AppText>

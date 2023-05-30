@@ -366,7 +366,8 @@ export const CommisionsSearchFilter = ({ data, input, setInput, navigation }) =>
     const filtred = data1.filter((item) => {
       if (
         item.title.toLowerCase().includes(input.toLowerCase()) ||
-        item.client_username.toLowerCase().includes(input.toLowerCase())
+        item.client_username.toLowerCase().includes(input.toLowerCase()) || 
+        item.company_name.toLowerCase().includes(input.toLowerCase())
       ) {
         return item;
       }
