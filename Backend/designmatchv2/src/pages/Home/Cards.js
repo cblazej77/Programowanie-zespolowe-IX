@@ -331,35 +331,51 @@ const Cards = () => {
       return null;
     }
 
-    return filtered.content.map((filter, indexF) => {
-      const { firstname, lastname, username, level, city, skills } = filter;
-      if (firstname.toLowerCase().includes(searchText.toLowerCase())
-        || lastname.toLowerCase().includes(searchText.toLowerCase())
-        || username.toLowerCase().includes(searchText.toLowerCase())
-        || searchText === '') {
+    const sortedContent = filtered.content
+      .filter((filter) => {
+        const { firstname, lastname, username } = filter;
+        const lowerCaseSearchText = searchText.toLowerCase();
         return (
-          <CardItem
-            onRefresh={handleRefresh}
-            key={indexF}
-            name={firstname}
-            surname={lastname}
-            username={username}
-            level={level}
-            rating={3.5}
-            ratingCount={12}
-            city={city}
-            skills={skills}
-            project1="/assets/cards/design1.jpg"
-            project2="/assets/cards/design2.png"
-            project3="/assets/cards/design3.jpg"
-            project4="/assets/cards/design4.png"
-          />
+          firstname.toLowerCase().includes(lowerCaseSearchText) ||
+          lastname.toLowerCase().includes(lowerCaseSearchText) ||
+          username.toLowerCase().includes(lowerCaseSearchText) ||
+          searchText === ''
         );
-      }
-      return null;
+      })
+      .sort((a, b) => {
+        const lastnameA = a.lastname.toLowerCase();
+        const lastnameB = b.lastname.toLowerCase();
+        if (lastnameA < lastnameB) {
+          return -1;
+        }
+        if (lastnameA > lastnameB) {
+          return 1;
+        }
+        return 0;
+      });
+
+    return sortedContent.map((filter, indexF) => {
+      const { firstname, lastname, username, level, city, skills } = filter;
+      return (
+        <CardItem
+          onRefresh={handleRefresh}
+          key={indexF}
+          name={firstname}
+          surname={lastname}
+          username={username}
+          level={level}
+          rating={3.5}
+          ratingCount={12}
+          city={city}
+          skills={skills}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+        />
+      );
     });
   }, [filtered.content, searchText]);
-
 
   const handleCityVisibleClick = () => {
     setShowCities(!showCities);
