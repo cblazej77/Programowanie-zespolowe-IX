@@ -263,4 +263,9 @@ export const VisitCompanyButton = styled.button`
   font-size: 1.2rem;
   margin: 1rem;
   cursor: pointer;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+    background:  ${darkLight2};
+  }
 `;

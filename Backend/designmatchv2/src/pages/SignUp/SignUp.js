@@ -30,7 +30,7 @@ function LoginForm() {
   const [name, setName] = useState('');
   const [NIP, setNIP] = useState('');
   const [REGON, setREGON] = useState('');
-  const [KRS, setKRS] = useState('');
+  const [KRS, setKRS] = useState(null);
   const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -77,6 +77,7 @@ function LoginForm() {
       setSubmitting(false);
     }
     else if (checkRegexName && checkRegexNIP && checkRegexREGON && checkRegexKRS && checkRegexEmail && checkRegexNick && checkRegexPassword) {
+      setLoading(true);
       handleCompanyRegistration();
     }
     else setSubmitting(false);
@@ -451,7 +452,7 @@ function LoginForm() {
               {(!checkRegexName && name !== "") && <ErrorLabel>Nazwa powinna zaczynać się od wielkiej litery.</ErrorLabel>}
               <InputText label="NIP:" id="NIPId" onChange={handleNIP} checkRegex={checkRegexNIP} />
               {(!checkRegexNIP && NIP !== "") && <ErrorLabel>Wprowadź poprawny NIP.</ErrorLabel>}
-              <InputText label="Regon:" id="regonId" onChange={handleREGON} checkRegex={checkRegexREGON} />
+              <InputText label="REGON:" id="regonId" onChange={handleREGON} checkRegex={checkRegexREGON} />
               {(!checkRegexREGON && REGON !== "") && <ErrorLabel>Wprowadź poprawny REGON.</ErrorLabel>}
               <InputText label="KRS:" id="krsId" onChange={handleKRS} checkRegex={checkRegexKRS} />
               {(!checkRegexKRS && KRS !== "") && <ErrorLabel>Wprowadź poprawny KRS.</ErrorLabel>}

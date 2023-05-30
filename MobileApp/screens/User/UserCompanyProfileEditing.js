@@ -184,7 +184,7 @@ const CompanyProfileEditing = ({ route, navigation }) => {
 
   useEffect(() => {
     setCompanyName(companyProfile.name);
-    setAdress(companyProfile.companyAdress);
+    setAdress(companyProfile.address);
     setDescription(companyProfile.description);
     setFacebook(companyProfile.facebook);
     setInstagram(companyProfile.instagram);

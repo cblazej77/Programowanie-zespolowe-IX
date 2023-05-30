@@ -39,6 +39,18 @@ const ModalWrapper = styled.div`
   @media screen and (max-width: 960px) {
     width: 100%;
   }
+  animation: modalFadeIn 0.5s ease;
+
+    @keyframes modalFadeIn {
+        from {
+        opacity: 0;
+        transform: translateY(-100px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
 `;
 
 const ModalContent = styled.div`
@@ -160,6 +172,7 @@ const ModalTags = ({ showModal, setShowModal, tags, setTags }) => {
     }
     handleClearTagsToAdd();
   }
+
   function handleClearTagsToAdd() {
     setTagsToAdd([]);
   }

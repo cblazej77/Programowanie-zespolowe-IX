@@ -25,6 +25,7 @@ import {
   LeftInfoRow,
   LeftWrapper,
   LineForm,
+  LongDataText,
   ModalBackground,
   ModalInfo,
   ModalWrapper,
@@ -132,13 +133,13 @@ const UserPage = () => {
       ...prevList,
       {
         id: newId,
-        faculty,
         school_name: schoolName,
+        faculty: faculty,
         field_of_study: fieldOfStudy,
-        degree,
+        degree: degree,
         start_date: startDate,
         end_date: endDate,
-        description,
+        description: description,
       },
     ]);
   };
@@ -178,31 +179,31 @@ const UserPage = () => {
           {index == 0 && <HeaderText style={{ marginBottom: '1.5rem' }}>Wykształcenie</HeaderText>}
           <LeftInfoRow>
             <InfoText>Uczelnia:</InfoText>
-            <label>{item.school_name}</label>
+            <LongDataText>{item.school_name}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Kierunek:</InfoText>
-            <label>{item.faculty}</label>
+            <LongDataText>{item.faculty}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Dziedzina nauk: </InfoText>
-            <label>{item.field_of_study}</label>
+            <LongDataText>{item.field_of_study ? item.field_of_study : 'brak'}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Stopień: </InfoText>
-            <label>{item.degree}</label>
+            <LongDataText>{item.degree}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Od: </InfoText>
-            <label>{item.start_date}</label>
+            <LongDataText>{item.start_date}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Do: </InfoText>
-            <label>{item.end_date}</label>
+            <LongDataText>{item.end_date}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Opis: </InfoText>
-            <label>{item.description}</label>
+            <LongDataText>{item.description}</LongDataText>
           </LeftInfoRow>
         </div>
       );
@@ -229,7 +230,7 @@ const UserPage = () => {
         {get.linkedin && <BubbleLinks href={get.linkedin}>linkedin</BubbleLinks>}
         {get.pinterest && <BubbleLinks href={get.pinterest}>pinterest</BubbleLinks>}
         {get.twitter && <BubbleLinks href={get.twitter}>twitter</BubbleLinks>}
-        {get.website && <BubbleLinks href={get.website}>website</BubbleLinks>}
+        {get.website && <BubbleLinks href={get.website}>własna strona</BubbleLinks>}
       </BubbleWrap>
     </>
     )
@@ -247,23 +248,23 @@ const UserPage = () => {
             </>}
           <LeftInfoRow>
             <InfoText>Nazwa firmy: </InfoText>
-            <label>{item.company}</label>
+            <LongDataText>{item.company}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Miasto: </InfoText>
-            <label>{item.city}</label>
+            <LongDataText>{item.city}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Stanowisko: </InfoText>
-            <label>{item.position}</label>
+            <LongDataText>{item.position}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Od: </InfoText>
-            <label>{item.start_date}</label>
+            <LongDataText>{item.start_date}</LongDataText>
           </LeftInfoRow>
           <LeftInfoRow>
             <InfoText>Do: </InfoText>
-            <label>{item.end_date}</label>
+            <LongDataText>{item.end_date}</LongDataText>
           </LeftInfoRow>
         </div>
       );
@@ -371,8 +372,8 @@ const UserPage = () => {
                   setModalEditData({ ...modalEditData, description: target.value, })}
               />
               {modalEditData.description && (<Bracket>({Math.min(modalEditData.description.length, 300)}/{300})</Bracket>)}
-              <div style={{ height: '100%', justifyContent: 'end', display: 'flex', flexDirection: 'column' }}>
-                <Button onClick={handleEditImageClick}>Wybierz zdjęcie</Button>
+              <div style={{ height: '100%', justifyContent: 'end', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Button style={{ width: '10rem' }} onClick={handleEditImageClick}>Wybierz zdjęcie</Button>
                 <input
                   type="file"
                   accept="image/*"
@@ -380,7 +381,7 @@ const UserPage = () => {
                   style={{ display: 'none' }}
                   onChange={handleFileInputChange}
                 />
-                <Button
+                <Button style={{ width: '6rem' }}
                   onClick={handleAddPhoto}>
                   Dodaj
                 </Button>

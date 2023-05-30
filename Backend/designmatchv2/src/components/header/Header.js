@@ -72,7 +72,7 @@ function Navbar() {
         <NavbarContainer>
           <NavLogo to='/' onClick={closeMobileMenu}>
             <NavLogoIcon />
-            DESIGNMATCH
+            DesignerMatch
           </NavLogo>
           <MobileIcon onClick={handleClick}>
             {click ? <XIcon /> : <ThreeLineIcon />}
@@ -115,7 +115,7 @@ function Navbar() {
                     : (
                       <NavBtnLink to='/sign-up'>
                         <Button onClick={closeMobileMenu} fontBig primary>
-                          Rejestracja-M
+                          Rejestracja
                         </Button>
                       </NavBtnLink>
                     )}

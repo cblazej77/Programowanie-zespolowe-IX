@@ -28,6 +28,7 @@ function CardItem(props) {
   const [entries, setEntries] = useState([]);
   const [modalData, setModalData] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const { onRefresh } = props.onRefresh;
 
   const ModalOpen = (data) => {
     console.log(data);
@@ -61,7 +62,7 @@ function CardItem(props) {
     };
 
     fetchData();
-  }, []);
+  }, [showModal, onRefresh]);
 
   const handleGoProfile = () => {
     let userNick = props.username;
@@ -77,6 +78,8 @@ function CardItem(props) {
     if (e.target.src !== fallbackSrc) {
       e.target.src = fallbackSrc;
       e.target.style.cursor = "default";
+    } else {
+      e.target.src = "/assets/cards/background1.png";
     }
   };
 

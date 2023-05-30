@@ -20,6 +20,8 @@ import Commisions from './pages/Home/Commisions';
 import { AllPage, HeroContainer } from './pages/Home/Styles';
 import axios from './api/axios';
 import OtherCompanyPage from './pages/Profile/OtherCompanyPage';
+import ConfirmEmail from "./pages/404/ConfirmEmail";
+import Code404 from "./pages/404/Code404";
 
 function App() {
   const [role, setRole] = useState('');
@@ -112,6 +114,8 @@ function App() {
                 </AllPage>
               </>
             } />
+          <Route path="/confirm" element={ <ConfirmEmail /> } />
+          <Route path="*" element={ <Code404 />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -5,7 +5,7 @@ import { Avatar } from './styles';
 const Awatar = (props) => {
     const { avatar, style } = props;
     const [uri, setUri] = useState(avatar);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(true);
 
     useEffect(() => {
       async function fetchImage() {

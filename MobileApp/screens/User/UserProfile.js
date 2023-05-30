@@ -127,8 +127,9 @@ const Profile = ({ navigation }) => {
           <AppText style={{ marginBottom: 2 }}>{'Kierunek: ' + item.faculty}</AppText>
           <AppText style={{ marginBottom: 2 }}>{'Uczelnia: ' + item.school_name}</AppText>
           <AppText style={{ marginBottom: 2 }}>{'Stopień: ' + item.degree}</AppText>
-          <AppText style={{ marginBottom: 2 }}>{'Od: ' + item.start_date}</AppText>
-          <AppText style={{ marginBottom: 2 }}>{'Do: ' + item.end_date}</AppText>
+          {item.start_date && <AppText style={{ marginBottom: 2 }}>{'Od: ' + item.start_date}</AppText>}
+          {item.end_date ? <AppText style={{ marginBottom: 2 }}>{'Do: ' + item.end_date}</AppText> : <AppText style={{ marginBottom: 2 }}>{'Do: Obecnie'}</AppText>}
+          {item.description && <AppText style={{ marginBottom: 2 }}>{'Opis: ' + item.description}</AppText>}
         </View>
       ));
       return <>{list}</>;
@@ -141,12 +142,12 @@ const Profile = ({ navigation }) => {
     if (artistProfile.experience) {
       const list = artistProfile.experience.map((item, id) => (
         <View style={[styles.ListElement, { marginBottom: 7, marginLeft: 25 }]} key={id}>
-          <AppText style={{ marginBottom: 2 }}>{'Nazwa firmy: ' + item.company}</AppText>
-          <AppText style={{ marginBottom: 2 }}>{'Miasto: ' + item.city}</AppText>
-          <AppText style={{ marginBottom: 2 }}>{'Stanowsko: ' + item.position}</AppText>
-          <AppText style={{ marginBottom: 2 }}>{'Opis obowiązków: ' + item.description}</AppText>
-          <AppText style={{ marginBottom: 2 }}>{'Od: ' + item.start_date}</AppText>
-          <AppText style={{ marginBottom: 2 }}>{'Do: ' + item.end_date}</AppText>
+          {item.comapny && <AppText style={{ marginBottom: 2 }}>{'Nazwa firmy: ' + item.company}</AppText>}
+          {item.city && <AppText style={{ marginBottom: 2 }}>{'Miasto: ' + item.city}</AppText>}
+          {item.position && <AppText style={{ marginBottom: 2 }}>{'Stanowsko: ' + item.position}</AppText>}
+          {item.description && <AppText style={{ marginBottom: 2 }}>{'Opis obowiązków: ' + item.description}</AppText>}
+          {item.start_date && <AppText style={{ marginBottom: 2 }}>{'Od: ' + item.start_date}</AppText>}
+          {item.end_date ? <AppText style={{ marginBottom: 2 }}>{'Do: ' + item.end_date}</AppText> : <AppText style={{ marginBottom: 2 }}>{'Do: Obecnie'}</AppText>}
         </View>
       ));
       return <>{list}</>;

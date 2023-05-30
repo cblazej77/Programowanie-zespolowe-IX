@@ -31,7 +31,8 @@ import {
   CheckBoxContainter,
   FilterModalWrapper,
   CardLabel,
-  BlankCard
+  BlankCard,
+  Input
 } from './CardsElement';
 import axios from '../../api/axios';
 import { useMemo } from 'react';
@@ -60,6 +61,12 @@ const Cards = () => {
   const [showTags, setShowTags] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [refresh, setRefresh] = useState(false);
+
+  const handleRefresh = () => {
+    setRefresh(!refresh);
+  };
 
   const handleCityChange = (e) => {
     const city = e.target.id;
@@ -324,23 +331,51 @@ const Cards = () => {
       return null;
     }
 
-    return filtered.content.map((filter, indexF) => (
-      <CardItem key={indexF}
-        name={filter.firstname}
-        surname={filter.lastname}
-        username={filter.username}
-        level={filter.level}
-        rating={3.5}
-        ratingCount={12}
-        city={filter.city}
-        skills={filter.skills}
-        project1="/assets/cards/design1.jpg"
-        project2="/assets/cards/design2.png"
-        project3="/assets/cards/design3.jpg"
-        project4="/assets/cards/design4.png"
-      />
-    ));
-  });
+    const sortedContent = filtered.content
+      .filter((filter) => {
+        const { firstname, lastname, username } = filter;
+        const lowerCaseSearchText = searchText.toLowerCase();
+        return (
+          firstname.toLowerCase().includes(lowerCaseSearchText) ||
+          lastname.toLowerCase().includes(lowerCaseSearchText) ||
+          username.toLowerCase().includes(lowerCaseSearchText) ||
+          searchText === ''
+        );
+      })
+      .sort((a, b) => {
+        const lastnameA = a.lastname.toLowerCase();
+        const lastnameB = b.lastname.toLowerCase();
+        if (lastnameA < lastnameB) {
+          return -1;
+        }
+        if (lastnameA > lastnameB) {
+          return 1;
+        }
+        return 0;
+      });
+
+    return sortedContent.map((filter, indexF) => {
+      const { firstname, lastname, username, level, city, skills } = filter;
+      return (
+        <CardItem
+          onRefresh={handleRefresh}
+          key={indexF}
+          name={firstname}
+          surname={lastname}
+          username={username}
+          level={level}
+          rating={3.5}
+          ratingCount={12}
+          city={city}
+          skills={skills}
+          project1="/assets/cards/design1.jpg"
+          project2="/assets/cards/design2.png"
+          project3="/assets/cards/design3.jpg"
+          project4="/assets/cards/design4.png"
+        />
+      );
+    });
+  }, [filtered.content, searchText]);
 
   const handleCityVisibleClick = () => {
     setShowCities(!showCities);
@@ -372,6 +407,10 @@ const Cards = () => {
 
   const handleWrapperClick = (event) => {
     event.stopPropagation();
+  };
+
+  const handleInputChange = (event) => {
+    setSearchText(event.target.value);
   };
 
   const Modal = ({ showModal, onCloseModal }) => {
@@ -506,6 +545,12 @@ const Cards = () => {
                 <StyledOption value="2">najwięcej prac</StyledOption>
                 <StyledOption value="3">ostatnia aktywność</StyledOption>
               </StyledSelect> */}
+            <Input
+              type='text'
+              value={searchText}
+              onChange={handleInputChange}
+              placeholder="Wyszukaj imię i nazwisko"
+            />
           </TopSection>
           {filtered ? (
             <CardsWrapper>

@@ -42,7 +42,8 @@ import {
     RightWrapper,
     StyledDropDown,
     TopSection,
-    BubbleLinks
+    BubbleLinks,
+    LongDataText
 } from './ProfileElements';
 import {
     AboutInput,
@@ -232,6 +233,18 @@ const OtherCompanyPage = () => {
         event.stopPropagation();
     };
 
+    function getSelectedLevel(levels) {
+        if (levels) {
+            if (levels.length === 3) {
+                return 'Junior+';
+            } else if (levels.length === 2) {
+                return 'Mid+';
+            } else if (levels.length === 1) {
+                return levels[0];
+            }
+        }
+    }
+
     const Modal = ({ showModal }) => {
         return (
             <>
@@ -255,10 +268,16 @@ const OtherCompanyPage = () => {
                                         <ModalInfo>Poziom zaawansowania:</ModalInfo>
                                         <ModalData>{modalData.level}</ModalData>
                                     </ModalRow>
-                                    <ModalRow>
-                                        <ModalInfo>Lokalizacja:</ModalInfo>
-                                        <ModalData>{modalData.location}</ModalData>
-                                    </ModalRow>
+                                    <ModalInfo>Lokalizacja:</ModalInfo>
+                                    <ModalData>
+                                        {modalData.location.map((loc, index) => (
+                                            index !== 0 ? (
+                                                ' / ' + loc
+                                            ) : (
+                                                loc
+                                            )
+                                        ))}
+                                    </ModalData>
                                     <LineForm />
                                 </ModalColumn>
                                 <ModalColumn>
@@ -299,9 +318,10 @@ const OtherCompanyPage = () => {
                         <CommisionTitle>
                             {props.title}
                         </CommisionTitle>
-                        <LevelBubble>
-                            {props.level}
-                        </LevelBubble>
+                        {props.level &&
+                            <LevelBubble>
+                                {props.level}
+                            </LevelBubble>}
                     </CommisionTitleContainer>
                     <StakeText>{props.rate} PLN</StakeText>
                 </CommisionTop>
@@ -311,10 +331,18 @@ const OtherCompanyPage = () => {
                     margin: '0.4rem 0',
                     alignItems: 'center',
                 }}>
-                    <FiMapPin size={18} style={{ color: gray1 }} />
-                    <CommisionText>{props.location}</CommisionText>
-                    <FiClock size={18} style={{ color: gray1 }} />
-                    <CommisionText>{props.deadline}</CommisionText>
+                    {props.location.length > 0 &&
+                        <>
+                            <FiMapPin size={18} style={{ color: gray1 }} />
+                            <CommisionText>
+                                {props.location.length === 1 ? props.location[0] : props.location[0] + '+'}
+                            </CommisionText>
+                        </>}
+                    {props.deadline.length > 0 &&
+                        <>
+                            <FiClock size={18} style={{ color: gray1 }} />
+                            <CommisionText>{props.deadline}</CommisionText>
+                        </>}
                 </div>
                 <CommisionBottom>
                     {props.tags.map((tag, indexT) => (
@@ -352,17 +380,17 @@ const OtherCompanyPage = () => {
                                         <LeftColumn>
                                             <InfoText>Media społecznościowe:</InfoText>
                                             <BubbleWrap>
-                                                {get.website && <BubbleLinks href={get.website}>{get.website}</BubbleLinks>}
-                                                {get.linkedin && <BubbleLinks href={get.linkedin}>{get.linkedin}</BubbleLinks>}
-                                                {get.facebook && <BubbleLinks href={get.facebook}>{get.facebook}</BubbleLinks>}
-                                                {get.instagram && <BubbleLinks href={get.instagram}>{get.instagram}</BubbleLinks>}
-                                                {get.twitter && <BubbleLinks href={get.twitter}>{get.twitter}</BubbleLinks>}
+                                                {get.website && <BubbleLinks href={get.website}>strona firmy</BubbleLinks>}
+                                                {get.linkedin && <BubbleLinks href={get.linkedin}>linkedin</BubbleLinks>}
+                                                {get.facebook && <BubbleLinks href={get.facebook}>facebook</BubbleLinks>}
+                                                {get.instagram && <BubbleLinks href={get.instagram}>instagram</BubbleLinks>}
+                                                {get.twitter && <BubbleLinks href={get.twitter}>twitter</BubbleLinks>}
                                             </BubbleWrap>
                                         </LeftColumn>}
                                     <RightColumn>
                                         <LeftInfoRow>
                                             <InfoText>Adres:</InfoText>
-                                            <DataText>{get.address ? get.address : 'brak'}</DataText>
+                                            <LongDataText>{get.address ? get.address : 'brak'}</LongDataText>
                                         </LeftInfoRow>
                                         <LeftInfoRow>
                                             <InfoText>NIP:</InfoText>
@@ -390,7 +418,7 @@ const OtherCompanyPage = () => {
                                 description={com.description}
                                 rate={com.rate}
                                 deadline={com.deadline}
-                                level={com.level}
+                                level={getSelectedLevel(com.level)}
                                 location={com.location}
                                 languages={com.languages}
                                 tags={com.tags}

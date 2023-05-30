@@ -40,6 +40,7 @@ const {
     grey,
     gray1,
     checked,
+    black,
 } = Colors;
 
 //text with custom font
@@ -227,7 +228,7 @@ export const StyledTextInput = styled.TextInput`
     height: 60px;
     margin-vertical: 3px;
     margin-bottom: 10px;
-    color: ${tertiary};
+    color: ${black};
 
     ${(props) => props.checkRegex === false && `
         borderColor: ${red}

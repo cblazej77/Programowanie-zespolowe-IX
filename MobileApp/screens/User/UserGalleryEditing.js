@@ -284,6 +284,7 @@ const GalleryEditing = () => {
                   <HeaderTextInput 
                   textAlign="center"
                   maxLength={100}
+                  placeholder='Tytuł'
                   value={title}
                   onChangeText={setTitle}
                   style={{ color: darkLight, width: '100%' }}/>
@@ -292,6 +293,7 @@ const GalleryEditing = () => {
                     <RegularTextInput 
                     maxLength={255}
                     multiline={true}
+                    placeholder='Opis'
                     style={{ marginHorizontal: 15, color: '#6e6968', fontSize: 15, flexWrap: 'wrap', maxWidth: '100%', minWidth: '100%' }}
                     value={description}
                     onChangeText={setDescription}/>

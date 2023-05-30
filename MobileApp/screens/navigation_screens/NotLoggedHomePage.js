@@ -168,7 +168,7 @@ export default function HomePage({ navigation }) {
                 tags: tagsFiltr,
               },
               {
-                params: { page: 0, size: 50 },
+                params: { page: 0, size: 250 },
                 headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
               },
             )
@@ -195,7 +195,7 @@ export default function HomePage({ navigation }) {
                 tags: tagsFiltr,
               },
               {
-                params: { page: 0, size: 50 },
+                params: { page: 0, size: 250 },
                 headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
               },
             )

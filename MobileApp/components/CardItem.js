@@ -11,7 +11,7 @@ const { secondary1, darkLight, gray1, grey } = Colors;
 
 function CardItem(props) {
   const [entries, setEntries] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
   const username = props.username;
 
   useEffect(() => {
@@ -59,15 +59,7 @@ function CardItem(props) {
       return (
         <View style={styles.PostStyle}>
           <View style={styles.SimpleInfoContainer}>
-            <Image
-              style={styles.Avatar}
-              resizeMode="cover"
-              source={{
-                uri: baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date(),
-              }}
-            />
-            <AppText style={{ color: gray1 }}>{props.level}</AppText>
-            <TouchableOpacity
+          <TouchableOpacity
               onPress={() => {
                 props.navigation.navigate('ArtistScreen', {
                   username: props.username,
@@ -76,10 +68,20 @@ function CardItem(props) {
                 });
               }}
             >
+            <Image
+              style={styles.Avatar}
+              resizeMode="cover"
+              source={{
+                uri: baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date(),
+              }}
+            />
+            </TouchableOpacity>
+            <AppText style={{ color: gray1 }}>{props.level}</AppText>
+            
               <RegularText style={{ fontSize: 20, marginTop: 10 }}>
                 {props.name} {props.surname}
               </RegularText>
-            </TouchableOpacity>
+            
           </View>
           <Image
             style={styles.Photo}
@@ -100,15 +102,7 @@ function CardItem(props) {
       return (
         <View style={styles.PostStyle}>
           <View style={styles.SimpleInfoContainer}>
-            <Image
-              style={styles.Avatar}
-              resizeMode="cover"
-              source={{
-                uri: baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date(),
-              }}
-            />
-            <AppText style={{ color: gray1 }}>{props.level}</AppText>
-            <TouchableOpacity
+          <TouchableOpacity
               onPress={() => {
                 props.navigation.navigate('ArtistScreen', {
                   username: props.username,
@@ -117,10 +111,20 @@ function CardItem(props) {
                 });
               }}
             >
+            <Image
+              style={styles.Avatar}
+              resizeMode="cover"
+              source={{
+                uri: baseURL + '/public/api/artist/getProfileImageByUsername/' + props.username + '?date' + new Date(),
+              }}
+            />
+            </TouchableOpacity>
+            <AppText style={{ color: gray1 }}>{props.level}</AppText>
+            
               <RegularText style={{ fontSize: 20, marginTop: 10 }}>
                 {props.name} {props.surname}
               </RegularText>
-            </TouchableOpacity>
+            
           </View>
           <Image style={styles.Photo} source={require('./../assets/img/background.png')} />
         </View>
