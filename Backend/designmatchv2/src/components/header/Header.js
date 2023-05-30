@@ -115,7 +115,7 @@ function Navbar() {
                     : (
                       <NavBtnLink to='/sign-up'>
                         <Button onClick={closeMobileMenu} fontBig primary>
-                          Rejestracja-M
+                          Rejestracja
                         </Button>
                       </NavBtnLink>
                     )}
