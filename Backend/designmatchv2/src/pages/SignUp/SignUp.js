@@ -30,7 +30,7 @@ function LoginForm() {
   const [name, setName] = useState('');
   const [NIP, setNIP] = useState('');
   const [REGON, setREGON] = useState('');
-  const [KRS, setKRS] = useState('');
+  const [KRS, setKRS] = useState(null);
   const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -77,6 +77,7 @@ function LoginForm() {
       setSubmitting(false);
     }
     else if (checkRegexName && checkRegexNIP && checkRegexREGON && checkRegexKRS && checkRegexEmail && checkRegexNick && checkRegexPassword) {
+      setLoading(true);
       handleCompanyRegistration();
     }
     else setSubmitting(false);
