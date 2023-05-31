@@ -25,11 +25,14 @@ export const MessagesLabel = styled.div`
   left: 2vw;
   height: calc(100vh - 6rem);
   width: 23rem;
-  display: flex;
+  display: flex
   flex-direction: column;
   justify-content: flex-end;
+ 
   @media screen and (max-width: 960px) {
-    display: none;
+    display: ${({ click }) => (click ? 'flex' : 'none')};
+     display: initial;
+     width: 100%;
   }
 `;
 
@@ -39,13 +42,14 @@ export const TitleText = styled.text`
 `;
 
 export const MessagesWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   height: 100%;
+  left: 0;
   background: ${primary};
   border-radius: 10px;
   box-shadow: 0px 8px 24px 0 rgba(0, 0, 0, 0.4);
+
   overflow-y: auto;
+
   &::-webkit-scrollbar {
     width: 0.25rem;
   }
@@ -76,7 +80,7 @@ export const DMWrapper = styled.div`
   @media screen and (max-width: 960px) {
     right: 1vw;
     width: calc(100% - 2vw);
-    
+      display:  ${({ click }) => (click ? 'flex' : 'none')};
   }
 `;
 

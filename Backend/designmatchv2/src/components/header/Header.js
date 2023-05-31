@@ -25,6 +25,7 @@ function Navbar() {
   const [button, setButton] = useState(true);
   const [dropdown, setDropdown] = useState(false);
   const [role, setRole] = useState('');
+  const [showMobileDropdown, setShowMobileDropdown] = useState(false);
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -123,14 +124,34 @@ function Navbar() {
               </>
             ) : (
               <>
-                <NavBtnLink>
-                  <NavBtnLink to='/account' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-                    <Button onClick={closeMobileMenu} fontBig primary>
-                      Konto <DownPointerIcon />
-                    </Button>
-                    {dropdown && <Dropdown />}
-                  </NavBtnLink>
-                </NavBtnLink>
+              {window.innerWidth <= 960 ? (
+                  <>
+                    <NavItem>
+                      <NavLink to='/account' onClick={closeMobileMenu}>
+                        Konto
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink to='/chat' onClick={closeMobileMenu}>
+                        Wiadomości
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink to='/' onClick={handleLogout}>
+                        Wyloguj
+                      </NavLink>
+                    </NavItem>
+                  </>
+                ) : (
+                  <NavItemBtn>
+                    <NavBtnLink to='/account' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+                      <Button onClick={closeMobileMenu} fontBig primary>
+                        Konto <DownPointerIcon />
+                      </Button>
+                      {dropdown && <Dropdown />}
+                    </NavBtnLink>
+                  </NavItemBtn>
+                )}
               </>
             )}
           </NavMenu>

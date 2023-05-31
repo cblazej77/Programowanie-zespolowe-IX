@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import {
@@ -47,6 +49,10 @@ const Chat = () => {
   const [conversation, setConversation] = useState("");
   const [checkMess, setCheckMess] = useState(false);
   const [dataProfile, setDataProfile] = useState([]);
+  const [companyCheck, setCompanyCheck] = useState(false);
+  const [leftStyle, setLeftStyle] = useState({});
+  const [rightStyle, setRightStyle] = useState({});
+  const [click, setClick] = useState(false);
   //const stompClientRef = useRef(null);
   const authApi = useAuth();
   const navigate = useNavigate();
@@ -69,30 +75,40 @@ const Chat = () => {
     }
   };
 
-  const MessagesElement = (props) => {
+  const MessagesElement = React.memo((props) => {
     const [shortLastMessage, setShortLastMessage] = useState('');
     const [notificationCount, setNotificationCount] = useState(null);
     const [returnNotificationCount, setReturnNotificationCount] = useState(false);
     const [leftName, setLeftName] = useState('');
     const [urlMessageElement, setUrlMessageElement] = useState('');
-
+    const urlCompany = `/public/api/artist/getProfileImageByUsername/` + props.nick;
+    const urlArtist = `/public/api/company/getProfileImageByUsername/` + props.nick;
     useEffect(() => {
       const fetchData = async () => {
         const response = await axios.get(`/messages/` + props.nick + `/` + username + `/count`);
         setNotificationCount(response.data);
         if (response.data !== 0) setReturnNotificationCount(true);
         else setReturnNotificationCount(false);
-        try {
-          let responseURL;
-          if (props.company == null) setUrlMessageElement(`/public/api/artist/getProfileImageByUsername/` + props.nick);
-          else setUrlMessageElement(`/public/api/company/getProfileImageByUsername/` + props.nick);
-        } catch (e) {
-          console.log("Błąd w fetchData/useEffet/MessageElement z łapaniem zdjęcia profilowego: " + e);
-          // setUrlMessageElement("/assets/cards/defaultavatar.png");
-        }
       }
       fetchData();
-    }, [props.nick, urlMessageElement]);
+    }, [props.nick]);
+
+    // useEffect(() => {
+    //   const fetchData = async () => {
+    //     try {
+    //       let responseURL;
+    //       if (props.company == null) setUrlMessageElement(`/public/api/artist/getProfileImageByUsername/` + props.nick);
+    //       else setUrlMessageElement(`/public/api/company/getProfileImageByUsername/` + props.nick);
+    //     } catch (e) {
+    //       console.log("Błąd w fetchData/useEffet/MessageElement z łapaniem zdjęcia profilowego: " + e);
+    //       // setUrlMessageElement("/assets/cards/defaultavatar.png");
+    //     }
+    //   }
+    //   if(urlMessageElement != `/public/api/artist/getProfileImageByUsername/` + props.nick || urlMessageElement != `/public/api/company/getProfileImageByUsername/` + props.nick){
+    //     console.log("wchodzi?" + urlMessageElement);
+    //      fetchData();
+    //   }  
+    // }, [urlMessageElement])
 
     useEffect(() => {
       let shortMessage = props.lastMessage.slice(0, 25);
@@ -111,10 +127,13 @@ const Chat = () => {
     return (
       <>
         <ElementContainer onClick={() => handleChangeActive(props.nick)}>
-          <Avatar src={urlMessageElement} onError={(e) => {
+          {companyCheck ? (<Avatar src={urlCompany} onError={(e) => {
             e.target.onerror = null;
             e.target.src = "/assets/cards/defaultavatar.png";
-          }} />
+          }} />) : (<Avatar src={urlArtist} onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/assets/cards/defaultavatar.png";
+          }} />)}
           <BasicInfoContainer>
             <SmallNameText>
               {leftName}
@@ -123,13 +142,12 @@ const Chat = () => {
           </BasicInfoContainer>
           {returnNotificationCount && <DetailedInfoContainer>
             <Notification>{notificationCount}</Notification>
-            {/*<SmallText>{props.lastOnline}</SmallText>*/}
           </DetailedInfoContainer>}
         </ElementContainer>
         <LineForm />
       </>
     );
-  };
+  });
   useEffect(() => {
     if (localStorage.length > 0) {
       let myKey = localStorage.getItem("key");
@@ -156,7 +174,6 @@ const Chat = () => {
       }
     };
     let copySecond = sessionStorage.getItem("active");
-    //if(username !== '' && second !== ""){
     if (username !== '' && second !== '') {
       connect();
     }
@@ -274,13 +291,16 @@ const Chat = () => {
         sessionStorage.setItem("active", response.data[0].username);
         //setSecond(response.data[0].username);
         sessionStorage.setItem("person", JSON.stringify(response.data));
+
         if (response.data[0].company_name === null) {
+          setCompanyCheck(false);
           setFullName(response.data[0].first_name + " " + response.data[0].last_name);
           setUrlActive(`/public/api/artist/getProfileImageByUsername/` + response.data[0].username)
         }
         else {
+          setCompanyCheck(true);
           setFullName(response.data[0].company_name);
-          setUrlActive(`/public/api/company/getProfileImageByUsername/` + response.data[0].username);
+           setUrlActive(`/public/api/company/getProfileImageByUsername/` + response.data[0].username);
         }
         handleChangeActive(response.data[0].username);
         setRenderFlag(true);
@@ -290,6 +310,7 @@ const Chat = () => {
       } else {
         console.log("brak historii wiadomości dla użytkownika: " + users);
         setFullName("Brak uzytkownika do wyswietlenia");
+        setCompanyCheck(false);
         setUrlActive("/assets/cards/defaultavatar.png");
         setRenderFlag(true);
         setfirst(false);
@@ -314,9 +335,11 @@ const Chat = () => {
       if (dfp.company_name == null) {
         setFullName(dfp.first_name + " " + dfp.last_name);
         setUrlActive(`/public/api/artist/getProfileImageByUsername/` + dfp.username);
+        setCompanyCheck(false);
       }
       else {
         setFullName(dfp.company_name);
+        setCompanyCheck(true);
         setUrlActive(`/public/api/company/getProfileImageByUsername/` + dfp.username);
       }
       sessionStorage.removeItem("message");
@@ -362,13 +385,17 @@ const Chat = () => {
     });
   };
 
+  const changeStyled = () => {
+      setClick(!click);
+  }
+
   return (
     <>
       {renderFlag ? (
         <ChatWrapper>
-          <MessagesLabel>
+          <MessagesLabel click={!click}>
             <TitleText>Wiadomości</TitleText>
-            <MessagesWrapper>
+            <MessagesWrapper onClick={() => changeStyled()}>
               {dataProfile.map((item) => (
                 <MessagesElement
                   key={item.username}
@@ -378,29 +405,21 @@ const Chat = () => {
                   lastMessage={item.last_message}
                   nick={item.username}
                 />))}
-              {/* brak hisotrii label */}
             </MessagesWrapper>
-            {/*{!(username === "WojciechDuklas") && <MessagesElement*/}
-            {/*  name="Wojciech"*/}
-            {/*  surname="Duklas"*/}
-            {/*  avatar="/assets/cards/person1.jpg"*/}
-            {/*  lastMessage="Ale zajmę się tym."*/}
-            {/*  unseenMessages={32}*/}
-            {/*  lastOnline="1 godz."*/}
-            {/*  onClick={() => handleChangeActive("mateczka")}*/}
-            {/*/>}*/}
           </MessagesLabel>
-          <DMWrapper>
-            <DMHeaderContainer>
+          <DMWrapper click={click}>
+            <DMHeaderContainer> 
+              {click && <FontAwesomeIcon icon={faAngleLeft} size="2xl" style={{color: "#4A4E69", marginRight: '20px', cursor: 'pointer'}} onClick={() => changeStyled()} />}
               <Avatar
                 onClick={() => handleNavigate(second)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer'}}
                 src={urlActive}
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = "/assets/cards/defaultavatar.png";
                 }} alt="Profile" />
               <DMName>{fullName}</DMName>
+             
             </DMHeaderContainer>
             <LineForm />
             <DMMessagesContainer>
